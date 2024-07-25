@@ -8,6 +8,13 @@ import MembersSinglepage from "../pages/Admin/Members/MembersSinglepage";
 import AddnewMemberSinglepage from "../pages/Admin/Members/AddnewMemberSinglepage";
 import ProductsPage from "../pages/Admin/Products/ProductsPage";
 import AddProductSinglepage from "../pages/Admin/Products/AddProductSinglepage";
+import EventHistorypage from "../pages/Admin/Eventss/Eventhistory/EventHistorypage";
+import EventNewListpage from "../pages/Admin/Eventss/Eventlist/EventNewListpage";
+
+
+
+
+
 const router = createBrowserRouter([
     {
       path: "/",
@@ -57,6 +64,24 @@ const router = createBrowserRouter([
        </AdminLayout>
       ),
     },
+    {
+      path: "/events/eventhistory",
+      element: (
+       <AdminLayout>
+        <EventHistorypage/>
+       </AdminLayout>
+      ),
+    },
+    {
+      path: "/events/eventlist",
+      element: (
+       <AdminLayout>
+        <EventNewListpage/>
+       </AdminLayout>
+      ),
+    },
+    
+    
 
 
     {
