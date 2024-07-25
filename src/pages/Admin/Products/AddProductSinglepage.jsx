@@ -1,6 +1,7 @@
 import React from 'react'
-import Addproductform from '../../../ui/AddProductform'
+
 import { Box, Grid, Typography } from '@mui/material'
+import Addproductform from "../../../components/AddProductform.jsx"
 
 export default function AddProductSinglepage() {
   return (

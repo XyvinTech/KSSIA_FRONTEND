@@ -1,11 +1,11 @@
 import { Box, Grid, Stack, Typography } from '@mui/material'
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { StyledButton } from '../ui/StyledButton.jsx';
-import StyledSearchbar from '../ui/StyledSearchbar.jsx';
-import { ReactComponent as FilterIcon } from "../assets/icons/FilterIcon.svg";
-import StyledTable from '../ui/StyledTable.jsx';
-import { userColumns, userData } from "../assets/json/TableData";
+import { StyledButton } from '../../../../ui/StyledButton.jsx';
+import StyledSearchbar from '../../../../ui/StyledSearchbar.jsx';
+import { ReactComponent as FilterIcon } from "../../../../assets/icons/FilterIcon.svg";
+import StyledTable from '../../../../ui/StyledTable.jsx';
+import { userColumns, userData } from "../../../../assets/json/TableData.js";
 export default function Events() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
@@ -24,7 +24,7 @@ export default function Events() {
   };
   const handleView = (id) => {
     console.log("View item:", id);
-    navigate(`/members/member/${id}`);
+    navigate(`/events/eventlist/:id`);
   };
   const handleView2 = (id) => {
    

@@ -12,7 +12,7 @@ import { ReactComponent as Delete } from "../assets/icons/delete.svg";
 import StyledSwitch from "/src/ui/StyledSwitch.jsx";
 
 
-export default function Addproductform() {
+export default function AddEvent() {
   const {
     control,
     handleSubmit,

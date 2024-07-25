@@ -2,7 +2,7 @@ import { Box, Grid, Stack, Tab, Tabs, Typography } from "@mui/material";
 import React, { useState } from "react";
 
 
-import Events from "../../../../components/Events";
+import Events from "./Events";
 import AddEvent from "../../../../components/AddEvent";
 
 
