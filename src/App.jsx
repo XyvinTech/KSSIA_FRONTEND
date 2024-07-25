@@ -18,6 +18,10 @@ import UserCard from "./ui/Usercard";
 import MemberProfile from "./components/MemberProfile";
 import UserCard2 from "./ui/Usercard2";
 
+import SingleAddform from "./ui/SingleAddform";
+import { StyledEventUpload } from "./ui/StyledEventUpload";
+import AddnewMemberSinglepage from "./pages/Admin/Members/AddnewMemberSinglepage";
+
 
 
 
@@ -81,6 +85,12 @@ function App() {
      <UserCard/>
      <MemberProfile/>
      <UserCard2/>
+
+     <StyledEventUpload/>
+
+     <SingleAddform/>
+
+     <AddnewMemberSinglepage/>
 
     
     

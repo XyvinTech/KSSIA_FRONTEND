@@ -26,7 +26,10 @@ export default function MembersPage() {
     console.log("View item:", id);
     navigate(`/members/member/${id}`);
   };
-
+  const handleView2 = (id) => {
+   
+    navigate(`/members/addmember`);
+  };
   return (
     <>
        {" "}
@@ -44,7 +47,7 @@ export default function MembersPage() {
             </StyledButton>
           </Grid>
           <Grid item>
-            <StyledButton name="Add new member" variant="primary">
+            <StyledButton name="Add new member" variant="primary" onClick={handleView2}>
               Add new member
             </StyledButton>
           </Grid>

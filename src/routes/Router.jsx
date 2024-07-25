@@ -5,6 +5,7 @@ import App from "../App";
 import AdminLayout from "../layout/AdminLayout";
 import MembersPage from "../pages/Admin/Members/MembersPage";
 import MembersSinglepage from "../pages/Admin/Members/MembersSinglepage";
+import AddnewMemberSinglepage from "../pages/Admin/Members/AddnewMemberSinglepage";
 const router = createBrowserRouter([
     {
       path: "/",
@@ -30,6 +31,15 @@ const router = createBrowserRouter([
        </AdminLayout>
       ),
     },
+    {
+      path: "/members/addmember",
+      element: (
+       <AdminLayout>
+        <AddnewMemberSinglepage/>
+       </AdminLayout>
+      ),
+    },
+
 
     {
         path: "/app",
