@@ -1,7 +1,7 @@
 import { Box, Grid, Stack, Tab, Tabs, Typography } from "@mui/material";
 import React, { useState } from "react";
 import SingleAddform from "../../../ui/SingleAddform";
-import BulkAddform from "../../../ui/BulkAddform";
+import BulkAddform from "../../../components/BulkAddform";
 
 
 

@@ -35,8 +35,9 @@ export default function MemberSubscriptionCard() {
           </Typography>
         </Stack>
       </Grid>
-      <Grid item md={6} justifyContent={"center"} alignItems={"center"}>
+      <Grid item md={6} textAlign={"right"}>
         <Stack spacing={2}>
+        <Box spacing={2} alignItems={"right"} >
         <span
   style={{
     border: "2px solid #2E7D32",
@@ -44,17 +45,13 @@ export default function MemberSubscriptionCard() {
     padding: "4px 12px", 
     fontSize: "13px",
     color: "#2E7D32",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "80px", 
-    height: "auto", 
-    textAlign: "center", 
-    lineHeight: "normal" 
+    textAlign: "right", 
+    
   }}
 >
   Active
 </span>
+</Box>
           <Typography>12th July 2025</Typography>
           <Typography>Rs.2000</Typography>
           <Typography>12th July 2026</Typography>

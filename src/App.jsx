@@ -21,8 +21,9 @@ import UserCard2 from "./ui/Usercard2";
 import SingleAddform from "./ui/SingleAddform";
 import { StyledEventUpload } from "./ui/StyledEventUpload";
 import AddnewMemberSinglepage from "./pages/Admin/Members/AddnewMemberSinglepage";
-import Addproductform from "./ui/AddProductform";
-import AddEvent from "./ui/AddEvent";
+import Addproductform from "./components/AddProductform";
+import AddEvent from "./components/AddEvent";
+
 
 
 
@@ -93,6 +94,7 @@ function App() {
 
      <Addproductform/>
      <AddEvent/>
+    
 
 
 

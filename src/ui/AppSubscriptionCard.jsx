@@ -1,6 +1,6 @@
 import React from "react";
-import { Typography, Stack, Grid, Box } from "@mui/material";
-import { StyledButton } from "./StyledButton"; 
+import { Typography, Stack, Grid, Box, Divider } from "@mui/material";
+import { StyledButton } from "./StyledButton";
 
 export default function AppSubscriptionCard() {
   return (
@@ -18,11 +18,12 @@ export default function AppSubscriptionCard() {
           </Typography>
         </Box>
       </Grid>
-      <Grid item md={6} justifyContent={"center"} alignItems={"center"}>
+      <Grid item md={6} >
         <Stack spacing={2}>
           <Typography variant="h6" color={"#686465"}>
             Plan
           </Typography>
+        
           <Typography variant="h6" color={"#686465"}>
             Last Renewed date
           </Typography>
@@ -34,26 +35,25 @@ export default function AppSubscriptionCard() {
           </Typography>
         </Stack>
       </Grid>
-      <Grid item md={6} justifyContent={"center"} alignItems={"center"}>
-        <Stack spacing={2}>
-        <span
-  style={{
-    border: "2px solid #FF9500",
-    borderRadius: "20px",
-    padding: "4px 12px", 
-    fontSize: "13px",
-    color: "#FF9500",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "80px", 
-    height: "auto", 
-    textAlign: "center", 
-    lineHeight: "normal" 
-  }}
->
-  Premium
-</span>
+      <Grid item md={6} textAlign={"right"}>
+        <Stack spacing={2} >
+          <Box spacing={2} alignItems={"right"} >
+          <span
+            style={{
+              border: "2px solid #FF9500",
+              borderRadius: "20px",
+              padding: "4px 12px",
+              fontSize: "13px",
+              color: "#FF9500",
+              textAlign: "right", 
+              display: "inline-block",
+              width: "fit-content"
+             
+            }}
+          >
+            Premium
+          </span>
+          </Box>
 
           <Typography>12th July 2025</Typography>
           <Typography>Rs.2000</Typography>
@@ -63,12 +63,9 @@ export default function AppSubscriptionCard() {
       <Grid item xs={12}>
         <Grid container justifyContent="flex-end">
           <Grid item xs={7}>
-            <Stack direction="row" spacing={4} justifyContent="flex-end" >
-              <StyledButton name="Change Subscription" variant="third"/>
-                
-              
-              <StyledButton name="Renew" variant="primary"/>
-              
+            <Stack direction="row" spacing={2} justifyContent="flex-end">
+              <StyledButton name="Change Subscription" variant="third" />
+              <StyledButton name="Renew" variant="primary" />
             </Stack>
           </Grid>
         </Grid>

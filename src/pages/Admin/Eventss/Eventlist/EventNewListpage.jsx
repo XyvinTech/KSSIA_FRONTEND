@@ -3,7 +3,7 @@ import React, { useState } from "react";
 
 
 import Events from "../../../../components/Events";
-import AddEvent from "../../../../ui/AddEvent";
+import AddEvent from "../../../../components/AddEvent";
 
 
 
@@ -64,7 +64,7 @@ const EventNewListpage = () => {
         )}
         {selectedTab === 1 && (
           <Grid container>
-            <Grid item md={6}>
+            <Grid item md={8}>
             <AddEvent/>
             </Grid>
           </Grid>

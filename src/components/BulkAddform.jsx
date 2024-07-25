@@ -2,7 +2,7 @@ import React from "react";
 
 import { Box, Divider, Stack, Typography } from "@mui/material";
 import { StyledButton } from "../ui/StyledButton";
-import DropZone from "./Dropzone";
+import DropZone from "../ui/Dropzone";
 
 const BulkAddform = () => {
   return (

@@ -6,7 +6,7 @@ import { StyledButton } from "../ui/StyledButton";
 import { StyledMultilineTextField } from "../ui/StyledMultilineTextField ";
 import StyledInput from "../ui/StyledInput";
 import { Controller, useForm } from "react-hook-form";
-import StyledSelectField from "./StyledSelectField";
+import StyledSelectField from "../ui/StyledSelectField";
 
 export default function Addproductform() {
   const {
