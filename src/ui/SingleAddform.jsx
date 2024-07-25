@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import { Box, Typography, Grid, Stack } from "@mui/material";
 
-
 import { StyledEventUpload } from "../ui/StyledEventUpload";
 import { StyledButton } from "../ui/StyledButton";
 import { StyledMultilineTextField } from "../ui/StyledMultilineTextField ";
-import { StyledCalender } from "../ui/StyledCalender";
-import StyledSwitch from "/src/ui/StyledSwitch.jsx";
 import StyledInput from "../ui/StyledInput";
 import { Controller, useForm } from "react-hook-form";
 import StyledSelectField from "./StyledSelectField";
@@ -40,8 +37,6 @@ export default function SingleAddform() {
     <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"4px"}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={4}>
-
-        
           <Grid item xs={12}>
             <Typography
               sx={{ marginBottom: 1 }}
@@ -60,8 +55,8 @@ export default function SingleAddform() {
                 <>
                   <StyledInput placeholder="Enter the First name" {...field}/>
                   {errors.firstname && (
-                    <span style={{ color: "red" }}>{errors.event.message}</span>
-                  )}{" "}
+                    <span style={{ color: "red" }}>{errors.firstname.message}</span>
+                  )}
                 </>
               )}
             />
@@ -85,14 +80,14 @@ export default function SingleAddform() {
                 <>
                   <StyledInput placeholder="Enter the Middle Name" {...field} />
                   {errors.middlename && (
-                    <span style={{ color: "red" }}>{errors.name.message}</span>
-                  )}{" "}
+                    <span style={{ color: "red" }}>{errors.middlename.message}</span>
+                  )}
                 </>
               )}
             />
-            </Grid>
+          </Grid>
 
-            <Grid item xs={12}>
+          <Grid item xs={12}>
             <Typography
               sx={{ marginBottom: 1 }}
               variant="h6"
@@ -110,21 +105,21 @@ export default function SingleAddform() {
                 <>
                   <StyledInput placeholder="Enter the Last Name" {...field} />
                   {errors.lastname && (
-                    <span style={{ color: "red" }}>{errors.name.message}</span>
-                  )}{" "}
+                    <span style={{ color: "red" }}>{errors.lastname.message}</span>
+                  )}
                 </>
               )}
             />
-            </Grid>
+          </Grid>
 
-            <Grid item xs={12}>
+          <Grid item xs={12}>
             <Typography
               sx={{ marginBottom: 1 }}
               variant="h6"
               fontWeight={500}
               color={"#333333"}
             >
-              Member Id
+              Member ID
             </Typography>
             <Controller
               name="memberid"
@@ -134,15 +129,15 @@ export default function SingleAddform() {
               render={({ field }) => (
                 <>
                   <StyledInput placeholder="Enter the Member ID" {...field} />
-                  {errors.memeberid && (
-                    <span style={{ color: "red" }}>{errors.name.message}</span>
-                  )}{" "}
+                  {errors.memberid && (
+                    <span style={{ color: "red" }}>{errors.memberid.message}</span>
+                  )}
                 </>
               )}
             />
-            </Grid>
+          </Grid>
           <Grid item xs={6}>
-          <Typography
+            <Typography
               sx={{ marginBottom: 1 }}
               variant="h6"
               fontWeight={500}
@@ -158,9 +153,9 @@ export default function SingleAddform() {
               render={({ field }) => (
                 <>
                   <StyledInput placeholder="Enter the Blood Group" {...field} />
-                  {errors.bloodgroup&& (
-                    <span style={{ color: "red" }}>{errors.name.message}</span>
-                  )}{" "}
+                  {errors.bloodgroup && (
+                    <span style={{ color: "red" }}>{errors.bloodgroup.message}</span>
+                  )}
                 </>
               )}
             />
@@ -172,8 +167,8 @@ export default function SingleAddform() {
               fontWeight={500}
               color={"#333333"}
             >
-            Photo
-            </Typography>{" "}
+              Photo
+            </Typography>
             <Controller
               name="photo"
               control={control}
@@ -184,9 +179,9 @@ export default function SingleAddform() {
                   <StyledEventUpload
                     label="Upload Photo"
                     onChange={onChange}
-                  />{" "}
+                  />
                   {errors.photo && (
-                    <span style={{ color: "red" }}>{errors.image.message}</span>
+                    <span style={{ color: "red" }}>{errors.photo.message}</span>
                   )}
                 </>
               )}
@@ -199,8 +194,8 @@ export default function SingleAddform() {
               fontWeight={500}
               color={"#333333"}
             >
-            Bio
-            </Typography>{" "}
+              Bio
+            </Typography>
             <Controller
               name="bio"
               control={control}
@@ -211,34 +206,34 @@ export default function SingleAddform() {
                   <StyledMultilineTextField
                     label="Add Description"
                     onChange={onChange}
-                  />{" "}
+                  />
                   {errors.bio && (
-                    <span style={{ color: "red" }}>{errors.image.message}</span>
+                    <span style={{ color: "red" }}>{errors.bio.message}</span>
                   )}
                 </>
               )}
             />
           </Grid>
           <Grid item xs={6}>
-          <Typography
+            <Typography
               sx={{ marginBottom: 1 }}
               variant="h6"
               fontWeight={500}
               color={"#333333"}
             >
-              Blood Group
+              Email ID
             </Typography>
             <Controller
-              name="bloodgroup"
+              name="emails"
               control={control}
               defaultValue=""
-              rules={{ required: "Blood group is required" }}
+              rules={{ required: "Email ID is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput placeholder="Enter the Blood Group" {...field} />
-                  {errors.bloodgroup&& (
-                    <span style={{ color: "red" }}>{errors.name.message}</span>
-                  )}{" "}
+                  <StyledInput placeholder="Enter the Email ID" {...field} />
+                  {errors.emails && (
+                    <span style={{ color: "red" }}>{errors.emails.message}</span>
+                  )}
                 </>
               )}
             />
@@ -316,7 +311,7 @@ export default function SingleAddform() {
               fontWeight={500}
               color={"#333333"}
             >
-             Personal Address
+              Personal Address
             </Typography>
             <Controller
               name="personaladdress"
@@ -327,12 +322,12 @@ export default function SingleAddform() {
                 <>
                   <StyledInput placeholder="Enter the Personal Address" {...field} />
                   {errors.personaladdress && (
-                    <span style={{ color: "red" }}>{errors.name.message}</span>
-                  )}{" "}
+                    <span style={{ color: "red" }}>{errors.personaladdress.message}</span>
+                  )}
                 </>
               )}
             />
-            </Grid>
+          </Grid>
           <Grid item xs={6}>
             <Typography
               sx={{ marginBottom: 1 }}
@@ -340,13 +335,13 @@ export default function SingleAddform() {
               fontWeight={500}
               color={"#333333"}
             >
-             Company Name
+              Company Name
             </Typography>
             <Controller
               name="companyname"
               control={control}
               defaultValue=""
-              rules={{ required: "Name is required" }}
+              rules={{ required: "Company Name is required" }}
               render={({ field }) => (
                 <>
                   <StyledInput
@@ -354,8 +349,8 @@ export default function SingleAddform() {
                     {...field}
                   />
                   {errors.companyname && (
-                    <span style={{ color: "red" }}>{errors.link.message}</span>
-                  )}{" "}
+                    <span style={{ color: "red" }}>{errors.companyname.message}</span>
+                  )}
                 </>
               )}
             />
@@ -367,13 +362,13 @@ export default function SingleAddform() {
               fontWeight={500}
               color={"#333333"}
             >
-             Company Phone
+              Company Phone
             </Typography>
             <Controller
               name="companyphone"
               control={control}
               defaultValue=""
-              rules={{ required: "Number is required" }}
+              rules={{ required: "Company Phone is required" }}
               render={({ field }) => (
                 <>
                   <StyledInput
@@ -381,8 +376,8 @@ export default function SingleAddform() {
                     {...field}
                   />
                   {errors.companyphone && (
-                    <span style={{ color: "red" }}>{errors.link.message}</span>
-                  )}{" "}
+                    <span style={{ color: "red" }}>{errors.companyphone.message}</span>
+                  )}
                 </>
               )}
             />
@@ -394,7 +389,7 @@ export default function SingleAddform() {
               fontWeight={500}
               color={"#333333"}
             >
-             Designation
+              Designation
             </Typography>
             <Controller
               name="designation"
@@ -404,12 +399,12 @@ export default function SingleAddform() {
               render={({ field }) => (
                 <>
                   <StyledInput
-                    placeholder="Enter the members designation"
+                    placeholder="Enter the member's designation"
                     {...field}
                   />
                   {errors.designation && (
-                    <span style={{ color: "red" }}>{errors.link.message}</span>
-                  )}{" "}
+                    <span style={{ color: "red" }}>{errors.designation.message}</span>
+                  )}
                 </>
               )}
             />
@@ -421,22 +416,22 @@ export default function SingleAddform() {
               fontWeight={500}
               color={"#333333"}
             >
-             Company E mail
+              Company Email
             </Typography>
             <Controller
-              name="email"
+              name="companyemail"
               control={control}
               defaultValue=""
-              rules={{ required: "Email is required" }}
+              rules={{ required: "Company Email is required" }}
               render={({ field }) => (
                 <>
                   <StyledInput
                     placeholder="Enter the company email id"
                     {...field}
                   />
-                  {errors.email && (
-                    <span style={{ color: "red" }}>{errors.link.message}</span>
-                  )}{" "}
+                  {errors.companyemail && (
+                    <span style={{ color: "red" }}>{errors.companyemail.message}</span>
+                  )}
                 </>
               )}
             />
@@ -448,49 +443,22 @@ export default function SingleAddform() {
               fontWeight={500}
               color={"#333333"}
             >
-             Website
+              Website
             </Typography>
             <Controller
-              name="report"
+              name="website"
               control={control}
               defaultValue=""
               rules={{ required: "Website is required" }}
               render={({ field }) => (
                 <>
-                   <StyledInput
-                    placeholder="Enter the link here"
-                    {...field}
-                  />
-                  {errors.designation && (
-                    <span style={{ color: "red" }}>{errors.link.message}</span>
-                  )}{" "}
-                </>
-              )}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Typography
-              sx={{ marginBottom: 1 }}
-              variant="h6"
-              fontWeight={500}
-              color={"#333333"}
-            >
-             Designation
-            </Typography>
-            <Controller
-              name="designation"
-              control={control}
-              defaultValue=""
-              rules={{ required: "Designation is required" }}
-              render={({ field }) => (
-                <>
                   <StyledInput
-                    placeholder="Enter the members designation"
+                    placeholder="Enter the website link"
                     {...field}
                   />
-                  {errors.designation && (
-                    <span style={{ color: "red" }}>{errors.link.message}</span>
-                  )}{" "}
+                  {errors.website && (
+                    <span style={{ color: "red" }}>{errors.website.message}</span>
+                  )}
                 </>
               )}
             />
@@ -502,22 +470,23 @@ export default function SingleAddform() {
               fontWeight={500}
               color={"#333333"}
             >
-             Business category
+              Business category
             </Typography>
             <Controller
-              name="designation"
+              name="businesscategory"
               control={control}
               defaultValue=""
-              rules={{ required: "Designation is required" }}
+              rules={{ required: "Business category is required" }}
               render={({ field }) => (
                 <>
                   <StyledSelectField
-                    placeholder="Enter the company email-id" options={option} {...field} 
-                    
+                    placeholder="Select business category"
+                    options={option}
+                    {...field}
                   />
-                  {errors.designation && (
-                    <span style={{ color: "red" }}>{errors.link.message}</span>
-                  )}{" "}
+                  {errors.businesscategory && (
+                    <span style={{ color: "red" }}>{errors.businesscategory.message}</span>
+                  )}
                 </>
               )}
             />
@@ -529,22 +498,23 @@ export default function SingleAddform() {
               fontWeight={500}
               color={"#333333"}
             >
-             Subcategory
+              Subcategory
             </Typography>
             <Controller
               name="subcategory"
               control={control}
               defaultValue=""
-              rules={{ required: "link is required" }}
+              rules={{ required: "Subcategory is required" }}
               render={({ field }) => (
                 <>
                   <StyledSelectField
-                    placeholder="Link is required" options={option} {...field} 
-                    
+                    placeholder="Select subcategory"
+                    options={option}
+                    {...field}
                   />
                   {errors.subcategory && (
-                    <span style={{ color: "red" }}>{errors.link.message}</span>
-                  )}{" "}
+                    <span style={{ color: "red" }}>{errors.subcategory.message}</span>
+                  )}
                 </>
               )}
             />
@@ -556,28 +526,28 @@ export default function SingleAddform() {
               fontWeight={500}
               color={"#333333"}
             >
-             Status
+              Status
             </Typography>
             <Controller
-              name="designation"
+              name="status"
               control={control}
               defaultValue=""
-              rules={{ required: "Designation is required" }}
+              rules={{ required: "Status is required" }}
               render={({ field }) => (
                 <>
                   <StyledSelectField
-                    placeholder="Active" options={option} {...field} 
-                    
+                    placeholder="Select status"
+                    options={option}
+                    {...field}
                   />
-                  {errors.designation && (
-                    <span style={{ color: "red" }}>{errors.link.message}</span>
-                  )}{" "}
+                  {errors.status && (
+                    <span style={{ color: "red" }}>{errors.status.message}</span>
+                  )}
                 </>
               )}
             />
           </Grid>
          
-          
           <Grid item xs={6}></Grid> 
           <Grid item xs={6}>
             {" "}
@@ -604,17 +574,3 @@ export default function SingleAddform() {
     </Box>
   );
 }
-     
-
-
-
-
-
-
-
-
-
-
-
-
-

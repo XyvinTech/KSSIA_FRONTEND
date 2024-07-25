@@ -21,6 +21,7 @@ import UserCard2 from "./ui/Usercard2";
 import SingleAddform from "./ui/SingleAddform";
 import { StyledEventUpload } from "./ui/StyledEventUpload";
 import AddnewMemberSinglepage from "./pages/Admin/Members/AddnewMemberSinglepage";
+import Addproductform from "./ui/AddProductform";
 
 
 
@@ -86,11 +87,12 @@ function App() {
      <MemberProfile/>
      <UserCard2/>
 
-     <StyledEventUpload/>
 
      <SingleAddform/>
 
-     <AddnewMemberSinglepage/>
+     <Addproductform/>
+
+
 
     
     
