@@ -17,6 +17,7 @@ import ApprovalPage from "../pages/Admin/Approvals/ApprovalPage.jsx";
 import Promotionpage from "../pages/Admin/Promotions/Promotionpage.jsx";
 import CreatepromotionSinglepage from "../pages/Admin/Promotions/CreatepromotionSinglepage.jsx";
 import Notificationpage from "../pages/Admin/Notificationss/Notificationpage.jsx";
+import Newspage from "../pages/Admin/NewsandUpdates/NewsPage.jsx";
 
 
 
@@ -140,6 +141,14 @@ const router = createBrowserRouter([
       element: (
        <AdminLayout>
         <Notificationpage/>
+       </AdminLayout>
+      ),
+    },
+    {
+      path: "/News", 
+      element: (
+       <AdminLayout>
+        <Newspage/>
        </AdminLayout>
       ),
     },

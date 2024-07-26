@@ -29,6 +29,8 @@ import DropzoneforForm from "./ui/DropzoneforForm.jsx";
 import EmailNotificationform from "./components/EmailNotificationform.jsx";
 import InappNotificationform from "./components/InappNotificationform.jsx";
 import NotificationLogs from "./components/NotificationLogs.jsx";
+import NewsAddnewform from "./components/NewsAddnewform.jsx";
+import NewsAllpage from "./pages/Admin/NewsandUpdates/NewsAllpage.jsx";
 
 
 
@@ -101,7 +103,8 @@ function App() {
     <EmailNotificationform/>
     <InappNotificationform/>
     <NotificationLogs/>
-    
+    <NewsAddnewform/>
+    <NewsAllpage/>
     
 
 
