@@ -12,8 +12,10 @@ import EventHistorypage from "../pages/Admin/Eventss/Eventhistory/EventHistorypa
 import EventNewListpage from "../pages/Admin/Eventss/Eventlist/EventNewListpage";
 import EditEventpage from "../pages/Admin/Eventss/Eventlist/EditEventpage.jsx";
 import PaymentPage from "../pages/Admin/Payments/PaymentPage.jsx";
-import AddPaymentdetails from "../components/AddPaymentdetails.jsx";
 import AddpaymentsinglePage from "../pages/Admin/Payments/AddpaymentsinglePage.jsx";
+import ApprovalPage from "../pages/Admin/Approvals/ApprovalPage.jsx";
+import Promotionpage from "../pages/Admin/Promotions/Promotionpage.jsx";
+import CreatepromotionSinglepage from "../pages/Admin/Promotions/CreatepromotionSinglepage.jsx";
 
 
 
@@ -108,7 +110,30 @@ const router = createBrowserRouter([
        </AdminLayout>
       ),
     },
-    
+    {
+      path: "/approvals", 
+      element: (
+       <AdminLayout>
+        <ApprovalPage/>
+       </AdminLayout>
+      ),
+    },
+    {
+      path: "/promotions", 
+      element: (
+       <AdminLayout>
+        <Promotionpage/>
+       </AdminLayout>
+      ),
+    },
+    {
+      path: "/promotions/createpromotion", 
+      element: (
+       <AdminLayout>
+        <CreatepromotionSinglepage/>
+       </AdminLayout>
+      ),
+    },
     
 
 

@@ -1,4 +1,4 @@
-import { Box, Grid, Stack, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Divider, Grid, Stack, Tab, Tabs, Typography } from "@mui/material";
 import React, { useState } from "react";
 import MembersPayments from "../../../components/MembersPayments";
 import AppSubscriptionCard from "../../../ui/AppSubscriptionCard";
@@ -31,11 +31,12 @@ const MembersSinglepage = () => {
   
   return (
     <>
-      <Box padding={"10px"} bgcolor={"#FFFFFF"}>
+      <Box padding={"20px"} bgcolor={"#FFFFFF"}>
         <Typography variant="h4" color={"#4A4647"}>
-          Members List / Prabodhan Fitzgerald
+          Members list / Prabodhan Fitzgerald
         </Typography>
       </Box>{" "}
+      <Divider/>
       <Tabs
         value={selectedTab}
         onChange={handleChange}
@@ -57,6 +58,7 @@ const MembersSinglepage = () => {
             textTransform: "none",
             fontSize:'16px', 
             fontWeight: 600,
+            margin: '0 30px',
           },
           "& .Mui-selected": {
             color: "#004797",

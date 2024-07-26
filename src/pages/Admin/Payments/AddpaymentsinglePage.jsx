@@ -19,7 +19,7 @@ export default function AddpaymentsinglePage() {
         <Addproductform/>
         </Box>
         </Box> */}
-        <Grid container spacing={1} item xs={12}>
+        {/* <Grid container spacing={1} item xs={12}>
         <Grid item xs={12}>
      <Box paddingRight={20} paddingTop={5} paddingLeft={5}>
       <AddPaymentdetails/>
@@ -27,7 +27,12 @@ export default function AddpaymentsinglePage() {
 
      </Grid>
      
-        </Grid>
+        </Grid> */}
+         <Grid container>
+            <Grid item md={9} paddingTop={5} paddingLeft={5}>
+            <AddPaymentdetails/>
+            </Grid>
+          </Grid>
         
     </>
   )
