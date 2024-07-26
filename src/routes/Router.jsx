@@ -11,6 +11,9 @@ import AddProductSinglepage from "../pages/Admin/Products/AddProductSinglepage.j
 import EventHistorypage from "../pages/Admin/Eventss/Eventhistory/EventHistorypage";
 import EventNewListpage from "../pages/Admin/Eventss/Eventlist/EventNewListpage";
 import EditEventpage from "../pages/Admin/Eventss/Eventlist/EditEventpage.jsx";
+import PaymentPage from "../pages/Admin/Payments/PaymentPage.jsx";
+import AddPaymentdetails from "../components/AddPaymentdetails.jsx";
+import AddpaymentsinglePage from "../pages/Admin/Payments/AddpaymentsinglePage.jsx";
 
 
 
@@ -86,6 +89,22 @@ const router = createBrowserRouter([
       element: (
        <AdminLayout>
         <EditEventpage/>
+       </AdminLayout>
+      ),
+    },
+    {
+      path: "/payments", 
+      element: (
+       <AdminLayout>
+        <PaymentPage/>
+       </AdminLayout>
+      ),
+    },
+    {
+      path: "/payments/addpaymentdetails", 
+      element: (
+       <AdminLayout>
+        <AddpaymentsinglePage/>
        </AdminLayout>
       ),
     },

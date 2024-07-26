@@ -24,10 +24,7 @@ export default function EditEventpage() {
     console.log("View item:", id);
     navigate(`/members/member/${id}`);
   };
-  const handleView2 = (id) => {
-   
-    navigate(`/members/addmember`);
-  };
+
   return (
     <>
        {" "}
@@ -45,8 +42,8 @@ export default function EditEventpage() {
             </StyledButton>
           </Grid>
           <Grid item>
-            <StyledButton name="Postpone" variant="primary" onClick={handleView2}>
-              Add new member
+            <StyledButton name="Postpone" variant="primary" >
+             Postpone
             </StyledButton>
           </Grid>
         </Grid>

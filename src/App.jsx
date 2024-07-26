@@ -22,6 +22,7 @@ import UserCard2 from "./ui/Usercard2";
 
 import Addproductform from "./components/AddProductform.jsx";
 import AddEvent from "./components/AddEvent";
+import AddPaymentdetails from "./components/AddPaymentdetails.jsx";
 
 
 
@@ -93,7 +94,7 @@ function App() {
 
      <Addproductform/>
      <AddEvent/>
-    
+    <AddPaymentdetails/>
 
 
 
