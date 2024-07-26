@@ -16,6 +16,7 @@ import AddpaymentsinglePage from "../pages/Admin/Payments/AddpaymentsinglePage.j
 import ApprovalPage from "../pages/Admin/Approvals/ApprovalPage.jsx";
 import Promotionpage from "../pages/Admin/Promotions/Promotionpage.jsx";
 import CreatepromotionSinglepage from "../pages/Admin/Promotions/CreatepromotionSinglepage.jsx";
+import Notificationpage from "../pages/Admin/Notificationss/Notificationpage.jsx";
 
 
 
@@ -131,6 +132,14 @@ const router = createBrowserRouter([
       element: (
        <AdminLayout>
         <CreatepromotionSinglepage/>
+       </AdminLayout>
+      ),
+    },
+    {
+      path: "/Notifications", 
+      element: (
+       <AdminLayout>
+        <Notificationpage/>
        </AdminLayout>
       ),
     },

@@ -25,6 +25,11 @@ import AddEvent from "./components/AddEvent";
 import AddPaymentdetails from "./components/AddPaymentdetails.jsx";
 import StyledBannerTables from "./ui/StyledBannerTables.jsx";
 import Promotionform from "./components/Promotionform.jsx";
+import DropzoneforForm from "./ui/DropzoneforForm.jsx";
+import EmailNotificationform from "./components/EmailNotificationform.jsx";
+import InappNotificationform from "./components/InappNotificationform.jsx";
+import NotificationLogs from "./components/NotificationLogs.jsx";
+
 
 
 
@@ -76,12 +81,9 @@ function App() {
       <StyledInput/>
       <StyledCalender/>
       <DashboardCardbig/>
-
-     
       <StyledSearchbar/>
       <MembersPayments/>
-      <AppSubscriptionCard/>
-      
+      <AppSubscriptionCard/> 
       <MemberSubscriptionCard/>
       <MembersProducts/>
       <StyledReview/>
@@ -90,15 +92,17 @@ function App() {
      <UserCard/>
      <MemberProfile/>
      <UserCard2/>
-
-
-     
-
      <Addproductform/>
      <AddEvent/>
     <AddPaymentdetails/>
     <StyledBannerTables/>
     <Promotionform/>
+    <DropzoneforForm/>
+    <EmailNotificationform/>
+    <InappNotificationform/>
+    <NotificationLogs/>
+    
+    
 
 
 
