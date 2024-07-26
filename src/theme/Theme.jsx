@@ -1,18 +1,15 @@
 import { createTheme } from "@mui/material/styles";
 
 const globalStyles = `
-
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-  @import url('https://fonts.googleapis.com/css2?family=STIX+Two+Text&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&display=swap');
 `;
-
 
 const theme = createTheme({
   palette: {},
   typography: {
-    fontFamily: "Inter",
+    fontFamily: "Roboto, sans-serif",
     h1: {
-      fontFamily: "'STIX Two Text', serif",
+      fontFamily: "Roboto, serif",
       fontSize: "43px",
       fontWeight: 600,
     },
@@ -44,15 +41,38 @@ const theme = createTheme({
       fontSize: "10px",
       fontWeight: 600,
     },
+    body1: {
+      fontFamily: "Roboto, sans-serif",
+    },
+    body2: {
+      fontFamily: "Roboto, sans-serif",
+    },
+    subtitle1: {
+      fontFamily: "Roboto, sans-serif",
+    },
+    subtitle2: {
+      fontFamily: "Roboto, sans-serif",
+    },
+    caption: {
+      fontFamily: "Roboto, sans-serif",
+    },
+    overline: {
+      fontFamily: "Roboto, sans-serif",
+    },
+    button: {
+      fontFamily: "Roboto, sans-serif",
+    },
   },
   components: {
     MuiCssBaseline: {
       styleOverrides: `
         ${globalStyles}
+        body {
+          font-family: 'Roboto', sans-serif;
+        }
       `,
     },
   },
 });
 
 export default theme;
-
