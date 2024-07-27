@@ -18,6 +18,8 @@ import Promotionpage from "../pages/Admin/Promotions/Promotionpage.jsx";
 import CreatepromotionSinglepage from "../pages/Admin/Promotions/CreatepromotionSinglepage.jsx";
 import Notificationpage from "../pages/Admin/Notificationss/Notificationpage.jsx";
 import Newspage from "../pages/Admin/NewsandUpdates/NewsPage.jsx";
+import SettingsPage from "../pages/Admin/Settingss/SettingsPage.jsx";
+import AddnewadminSinglepage from "../pages/Admin/Settingss/AddnewadminSinglepage.jsx";
 
 
 
@@ -152,7 +154,22 @@ const router = createBrowserRouter([
        </AdminLayout>
       ),
     },
-    
+    {
+      path: "/settings", 
+      element: (
+       <AdminLayout>
+        <SettingsPage/>
+       </AdminLayout>
+      ),
+    },
+    {
+      path: "/settings/addnewadmin", 
+      element: (
+       <AdminLayout>
+        <AddnewadminSinglepage/>
+       </AdminLayout>
+      ),
+    },
 
 
     {
