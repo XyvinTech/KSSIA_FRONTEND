@@ -35,7 +35,7 @@ const LogoutScreen = ({ onCancel, onLogout }) => {
         <Typography 
           variant="h6" 
           textAlign="center"
-          noWrap  // This ensures the text stays on a single line
+          noWrap  
          
         >
           You will be logged out
