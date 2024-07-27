@@ -21,6 +21,7 @@ import Newspage from "../pages/Admin/NewsandUpdates/NewsPage.jsx";
 import SettingsPage from "../pages/Admin/Settingss/SettingsPage.jsx";
 import AddnewadminSinglepage from "../pages/Admin/Settingss/AddnewadminSinglepage.jsx";
 import AddnewroleSinglepage from "../pages/Admin/Settingss/AddnewroleSinglepage.jsx";
+import LogoutPage from "../pages/Admin/Logout/LogoutPage.jsx";
 
 
 
@@ -176,6 +177,14 @@ const router = createBrowserRouter([
       element: (
        <AdminLayout>
         <AddnewroleSinglepage/>
+       </AdminLayout>
+      ),
+    },
+    {
+      path: "/Logout", 
+      element: (
+       <AdminLayout>
+        <LogoutPage/>
        </AdminLayout>
       ),
     },
