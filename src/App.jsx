@@ -32,6 +32,7 @@ import NotificationLogs from "./components/NotificationLogs.jsx";
 import NewsAddnewform from "./components/NewsAddnewform.jsx";
 import NewsAllpage from "./pages/Admin/NewsandUpdates/NewsAllpage.jsx";
 import SingleaddAdminform from "./components/SingleaddAdminform.jsx";
+import StyledselectAccess from "./ui/StyledselectAccess.jsx";
 
 
 
@@ -107,6 +108,7 @@ function App() {
     <NewsAddnewform/>
     <NewsAllpage/>
     <SingleaddAdminform/>
+    <StyledselectAccess/>
 
 
 

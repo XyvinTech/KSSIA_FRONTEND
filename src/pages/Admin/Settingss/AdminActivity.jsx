@@ -26,10 +26,7 @@ export default function AdminActivity() {
     console.log("View item:", id);
     navigate(`/events/eventlist/:id`);
   };
-  const handleView2 = (id) => {
-   
-    navigate(`/members/addmember`);
-  };
+
   return (
     <>
        {" "}
@@ -59,7 +56,7 @@ export default function AdminActivity() {
               </Box>
           </Grid>
           <Grid item>
-          <StyledButton name="Download report" variant="primary" onClick={handleView2}>
+          <StyledButton name="Download report" variant="primary" >
               Download report
            </StyledButton>
           </Grid>

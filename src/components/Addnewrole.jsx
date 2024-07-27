@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import { Box, Typography, Grid, Stack } from "@mui/material";
+import { Box, Typography, Grid, Stack, Divider } from "@mui/material";
 
-import { StyledEventUpload } from "../ui/StyledEventUpload";
+
 import { StyledButton } from "../ui/StyledButton";
-import { StyledMultilineTextField } from "../ui/StyledMultilineTextField ";
+
 import StyledInput from "../ui/StyledInput";
 import { Controller, useForm } from "react-hook-form";
-import StyledSelectField from "../ui/StyledSelectField";
+
+import StyledSelectAccess from "../ui/StyledselectAccess";
+import StyledSwitch from "../ui/StyledSwitch";
 
 export default function Addnewrole() {
   const {
@@ -37,29 +39,26 @@ export default function Addnewrole() {
     <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"4px"}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={4}>
-        <Grid item xs={12}>
+        
+          <Grid item xs={12}>
             <Typography
               sx={{ marginBottom: 1 }}
               variant="h6"
               fontWeight={500}
               color={"#333333"}
             >
-              Name of the Seller
+              Role Name
             </Typography>
             <Controller
-              name="seller"
+              name="rolename"
               control={control}
               defaultValue=""
-              rules={{ required: "Seller name is required" }}
+              rules={{ required: "Name of role  is required" }}
               render={({ field }) => (
                 <>
-                  <StyledSelectField
-                    placeholder="Enter Seller name"
-                    options={option}
-                    {...field}
-                  />
-                  {errors.seller && (
-                    <span style={{ color: "red" }}>{errors.seller.message}</span>
+                  <StyledInput placeholder="Enter the name of the role" {...field}/>
+                  {errors.rolename && (
+                    <span style={{ color: "red" }}>{errors.rolename.message}</span>
                   )}
                 </>
               )}
@@ -72,117 +71,18 @@ export default function Addnewrole() {
               fontWeight={500}
               color={"#333333"}
             >
-              Name of the product
+              Role Description
             </Typography>
             <Controller
-              name="productname"
+              name="rolename"
               control={control}
               defaultValue=""
-              rules={{ required: "Product Name is required" }}
+              rules={{ required: "Description of role  is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput placeholder="Enter the Product name" {...field}/>
-                  {errors.productname && (
-                    <span style={{ color: "red" }}>{errors.productname.message}</span>
-                  )}
-                </>
-              )}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <Typography
-              sx={{ marginBottom: 1 }}
-              variant="h6"
-              fontWeight={500}
-              color={"#333333"}
-            >
-              Product image
-            </Typography>
-            <Controller
-              name="photo"
-              control={control}
-              defaultValue=""
-              rules={{ required: "Image is required" }}
-              render={({ field: { onChange } }) => (
-                <>
-                  <StyledEventUpload
-                    label="Upload Chief guest image here"
-                    onChange={onChange}
-                  />
-                  {errors.photo && (
-                    <span style={{ color: "red" }}>{errors.photo.message}</span>
-                  )}
-                </>
-              )}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <Typography
-              sx={{ marginBottom: 1 }}
-              variant="h6"
-              fontWeight={500}
-              color={"#333333"}
-            >
-              Description
-            </Typography>
-            <Controller
-              name="desc"
-              control={control}
-              defaultValue=""
-              rules={{ required: "Product Name is required" }}
-              render={({ field }) => (
-                <>
-                  <StyledInput placeholder="Add Description in less than 500 words" {...field}/>
-                  {errors.desc && (
-                    <span style={{ color: "red" }}>{errors.desc.message}</span>
-                  )}
-                </>
-              )}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <Typography
-              sx={{ marginBottom: 1 }}
-              variant="h6"
-              fontWeight={500}
-              color={"#333333"}
-            >
-             Actual price 
-            </Typography>
-            <Controller
-              name="actual"
-              control={control}
-              defaultValue=""
-              rules={{ required: "Actual price  is required" }}
-              render={({ field }) => (
-                <>
-                  <StyledInput placeholder="Rs 00" {...field}/>
-                  {errors.actual && (
-                    <span style={{ color: "red" }}>{errors.actual.message}</span>
-                  )}
-                </>
-              )}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <Typography
-              sx={{ marginBottom: 1 }}
-              variant="h6"
-              fontWeight={500}
-              color={"#333333"}
-            >
-             Offer price 
-            </Typography>
-            <Controller
-              name="offer"
-              control={control}
-              defaultValue=""
-              rules={{ required: "Offer price  is required" }}
-              render={({ field }) => (
-                <>
-                  <StyledInput placeholder="Rs 00" {...field}/>
-                  {errors.offer && (
-                    <span style={{ color: "red" }}>{errors.offer.message}</span>
+                  <StyledInput placeholder="Enter the role description" {...field}/>
+                  {errors.rolename && (
+                    <span style={{ color: "red" }}>{errors.rolename.message}</span>
                   )}
                 </>
               )}
@@ -195,55 +95,65 @@ export default function Addnewrole() {
               fontWeight={500}
               color={"#333333"}
             >
-              MCQ
+              Select Access
             </Typography>
             <Controller
-              name="mcq"
+              name="rolename"
               control={control}
               defaultValue=""
-              rules={{ required: "MCQ is required" }}
+              rules={{ required: "Description of role  is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput placeholder="Enter the Value" {...field} />
-                  {errors.mcq && (
-                    <span style={{ color: "red" }}>{errors.mcq.message}</span>
+                  <Grid marginTop={3} marginLeft={2}><StyledSelectAccess placeholder="Enter the role description" {...field}/></Grid>
+                  {errors.rolename && (
+                    <span style={{ color: "red" }}>{errors.rolename.message}</span>
                   )}
                 </>
               )}
             />
           </Grid>
+          <Grid item xs={6}>
+            
+              <Typography
+                sx={{ marginBottom: 1 }}
+                variant="h6"
+                fontWeight={500}
+                color={"#333333"}
+              >
+                Activate
+              </Typography>
+              </Grid>
+              <Grid item xs={6} style={{ textAlign: 'right' }}> 
+              <Controller
+                name="activate"
+                control={control}
+                defaultValue={false}
+                rules={{ required: "Activate is required" }}
+                render={({ field }) => (
+                  <>
+                    <StyledSwitch
+                      checked={field.value}
+                      onChange={(e) => {
+                        field.onChange(e.target.checked);
+                        handleSwitchChange(e);
+                      }}
+                    />{" "}
+                    {errors.activate && (
+                      <span style={{ color: "red" }}>
+                        {errors.activate.message}
+                      </span>
+                    )}{" "}
+                  </>
+                )}
+              />
+            
+          </Grid>
+          
 
-       
-          <Grid item xs={12}>
-            <Typography
-              sx={{ marginBottom: 1 }}
-              variant="h6"
-              fontWeight={500}
-              color={"#333333"}
-            >
-              Per Unit
-            </Typography>
-            <Controller
-              name="unit"
-              control={control}
-              defaultValue=""
-              rules={{ required: "Status is required" }}
-              render={({ field }) => (
-                <>
-                  <StyledSelectField
-                    placeholder="Select the unit"
-                    options={option}
-                    {...field}
-                  />
-                  {errors.unit && (
-                    <span style={{ color: "red" }}>{errors.unit.message}</span>
-                  )}
-                </>
-              )}
-            />
-          </Grid>
+          
          
           <Grid item xs={6}></Grid> 
+          
           <Grid item xs={6}>
             {" "}
             <Stack direction={"row"} spacing={2}>
