@@ -28,7 +28,7 @@ export default function RoleManagement() {
   };
   const handleView2 = (id) => {
    
-    navigate(`/members/addmember`);
+    navigate(`/settings/addrole`);
   };
   return (
     <>

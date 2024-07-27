@@ -20,6 +20,7 @@ import Notificationpage from "../pages/Admin/Notificationss/Notificationpage.jsx
 import Newspage from "../pages/Admin/NewsandUpdates/NewsPage.jsx";
 import SettingsPage from "../pages/Admin/Settingss/SettingsPage.jsx";
 import AddnewadminSinglepage from "../pages/Admin/Settingss/AddnewadminSinglepage.jsx";
+import AddnewroleSinglepage from "../pages/Admin/Settingss/AddnewroleSinglepage.jsx";
 
 
 
@@ -167,6 +168,14 @@ const router = createBrowserRouter([
       element: (
        <AdminLayout>
         <AddnewadminSinglepage/>
+       </AdminLayout>
+      ),
+    },
+    {
+      path: "/settings/addrole", 
+      element: (
+       <AdminLayout>
+        <AddnewroleSinglepage/>
        </AdminLayout>
       ),
     },
