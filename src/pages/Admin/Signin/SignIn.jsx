@@ -4,15 +4,17 @@ import {
   Grid,
   Stack,
   Typography,
-  TextField,
   Button,
   InputAdornment,
   IconButton,
   Link,
 } from '@mui/material';
-import { Visibility, VisibilityOff, Phone } from '@mui/icons-material';
+import { Visibility, VisibilityOff, Phone} from '@mui/icons-material';
 import kssiaImage from '../../../assets/images/kssia.png';
 import { StyledButton } from '../../../ui/StyledButton';
+import TextField from '@mui/material/TextField';
+import { ReactComponent as Lock } from "../../../assets/icons/Lock.svg";
+
 
 const SignIn = () => {
   const [showOTP, setShowOTP] = useState(false);
@@ -25,25 +27,27 @@ const SignIn = () => {
   };
 
   return (
-    <Grid container justifyContent="center" alignItems="center" height="100vh">
+    <Grid container justifyContent="center" alignItems="center" height="100vh" boxShadow={3}>
       <Grid item xs={12} sm={8} md={6} lg={4} >
-        <Box sx={{ p: 4, bgcolor: 'background.paper', borderRadius: 2 }}>
+        <Box sx={{ p: 4, bgcolor: '#FFFFFF', borderRadius: 2 }}>
           <Stack spacing={3} justifyContent="center" alignItems={'center'} >
           <img src={kssiaImage} alt="KSSIA" width={"133px"} height="36px" />
           </Stack>
-          <Grid marginTop={2} marginBottom={2} padding={2}>
-            <Typography variant="h5" align="center">
-              Sign In
-            </Typography>
-            <Typography variant="body2" color="text.secondary" align="center">
-              Login to your account to continue the process
-            </Typography>
-            </Grid>
-            <Stack>
+          <Stack direction={'column'} spacing={2} sx={{ marginTop: 8, marginBottom: 5}}>
+  <Typography variant="h5" align="left">
+    Sign In
+  </Typography>
+  <Typography variant="body2" color="text.secondary" align="left">
+    Login to your account to continue the process
+  </Typography>
+</Stack>
+
+            <Stack spacing={3}>
             <form onSubmit={handleSubmit}>
-              <Stack spacing={2}>
+              <Stack spacing={3}>
                 <TextField
                   fullWidth
+                  id="outlined-basic"
                   label="Enter your Phone Number"
                   variant="outlined"
                   InputProps={{
@@ -53,13 +57,21 @@ const SignIn = () => {
                       </InputAdornment>
                     ),
                   }}
-                />
+                /> 
+
                 <TextField
                   fullWidth
+                  id="outlined-basic"
                   label="Enter OTP"
                   variant="outlined"
                   type={showOTP ? 'text' : 'password'}
                   InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start"  >
+                        <Lock color="action"   />
+                        </InputAdornment>
+                      
+                    ),
                     endAdornment: (
                       <InputAdornment position="end">
                         <IconButton onClick={() => setShowOTP(!showOTP)} edge="end">
