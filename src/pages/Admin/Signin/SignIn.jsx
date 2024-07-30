@@ -14,9 +14,12 @@ import kssiaImage from '../../../assets/images/kssia.png';
 import { StyledButton } from '../../../ui/StyledButton';
 import TextField from '@mui/material/TextField';
 import { ReactComponent as Lock } from "../../../assets/icons/Lock.svg";
+import { useNavigate } from "react-router-dom";
+
 
 
 const SignIn = () => {
+  const navigate = useNavigate();
   const [showOTP, setShowOTP] = useState(false);
   const [error, setError] = useState(false);
 
@@ -24,6 +27,10 @@ const SignIn = () => {
     event.preventDefault();
    
     setError(true); 
+  };
+  const handleView2 = (id) => {
+   
+    navigate(`/dashboard`);
   };
 
   return (
@@ -86,8 +93,8 @@ const SignIn = () => {
                     Username or OTP is incorrect
                   </Typography>
                 )}
-               <StyledButton name="Sign in" variant="primary" >
-              
+               <StyledButton name="Sign in" variant="primary" onClick={handleView2}>
+              SignIn
            </StyledButton>
               </Stack>
             </form>

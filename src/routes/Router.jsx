@@ -22,6 +22,7 @@ import SettingsPage from "../pages/Admin/Settingss/SettingsPage.jsx";
 import AddnewadminSinglepage from "../pages/Admin/Settingss/AddnewadminSinglepage.jsx";
 import AddnewroleSinglepage from "../pages/Admin/Settingss/AddnewroleSinglepage.jsx";
 import LogoutPage from "../pages/Admin/Logout/LogoutPage.jsx";
+import SignIn from "../pages/Admin/Signin/SignIn.jsx";
 
 
 
@@ -30,6 +31,14 @@ import LogoutPage from "../pages/Admin/Logout/LogoutPage.jsx";
 const router = createBrowserRouter([
     {
       path: "/",
+      element: (
+       
+        <SignIn />
+       
+      ),
+    },
+    {
+      path: "/dashboard",
       element: (
        <AdminLayout>
         <DashboardPage />
