@@ -27,9 +27,9 @@ const SignIn = () => {
   };
 
   return (
-    <Grid container justifyContent="center" alignItems="center" height="100vh" boxShadow={3}>
+    <Grid container justifyContent="center" alignItems="center" height="100vh">
       <Grid item xs={12} sm={8} md={6} lg={4} >
-        <Box sx={{ p: 4, bgcolor: '#FFFFFF', borderRadius: 2 }}>
+        <Box sx={{ p: 4, bgcolor: '#FFFFFF', borderRadius: 5, boxShadow:2}}>
           <Stack spacing={3} justifyContent="center" alignItems={'center'} >
           <img src={kssiaImage} alt="KSSIA" width={"133px"} height="36px" />
           </Stack>
