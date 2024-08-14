@@ -5,7 +5,7 @@ import StyledReview from "../ui/StyledReview";
 
 const Review = () => {
   return (
-    <Grid container item xs={12}>
+    <Grid container item xs={12}bgcolor={'white'}padding={2}borderRadius={'12px'}>
       <Typography 
         variant="h6" 
         color={'#2C2829'} 

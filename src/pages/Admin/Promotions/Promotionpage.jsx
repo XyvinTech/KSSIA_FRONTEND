@@ -13,7 +13,7 @@ export default function Promotionpage() {
   return (
     <>
        {" "}
-       <Box padding={"10px"} bgcolor={"#FFFFFF"}>
+       <Box padding={"10px"} bgcolor={"#FFFFFF"}height={'70px'}display={'flex'}alignItems={'center'}>
       <Grid container alignItems="center">
         <Grid item xs={6}>
           <Typography variant="h4" color={"#4A4647"}>
@@ -30,11 +30,10 @@ export default function Promotionpage() {
         </Grid>
       </Grid>
     </Box>
-    <Box padding="30px" marginBottom={4}>
         <>
           <PromotionItems/>
         </>
-      </Box>
+
       
     </>
   )

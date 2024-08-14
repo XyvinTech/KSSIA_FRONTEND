@@ -5,7 +5,7 @@ const DashboardCard = ({ data }) => {
   return (
     <Stack
       bgcolor={data?.bgcolor}
-      
+      borderRadius={'12px'}
       sx={{
         padding: '16px',
         gap: '16px', 

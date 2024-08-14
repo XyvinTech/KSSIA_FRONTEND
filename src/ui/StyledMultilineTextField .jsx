@@ -3,7 +3,7 @@ import { styled } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 
 const CustomTextField = styled(TextField)(({ theme }) => ({
-  width: "100%",
+  width: "100%",backgroundColor: "white",
   "& .MuiOutlinedInput-root": {
     "& fieldset": {
       borderColor: "rgba(0, 0, 0, 0.2)",
@@ -22,7 +22,7 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
     color: "rgba(0, 0, 0, 0.2)",
   },
   "& .MuiInputBase-input::placeholder": {
-    color: "rgba(0, 0, 0, 0.2)",
+    color: "#79747E",
     opacity: 1,
   },
 }));

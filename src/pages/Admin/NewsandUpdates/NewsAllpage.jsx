@@ -59,15 +59,14 @@ export default function NewsAllpage() {
           </Box>
         </Stack>
       </Stack>
-      <Grid container item md={12} padding={3} marginLeft={2}>
+      <Grid container item md={12} paddingBottom={4}>
         <Grid item md={6}>
-          <Typography variant="h4" color={"#4A4647"}>
-            News
-          </Typography>
+        <Typography variant="h4" color={"#4A4647"}>
+        News
+      </Typography>
         </Grid>
       </Grid>
 
-      <Box padding="30px" marginBottom={4}>
         <Stack
           direction={"row"}
           justifyContent={"space-between"}
@@ -102,7 +101,12 @@ export default function NewsAllpage() {
             />
           </Stack>
         </Stack>
-
+        <Box
+            borderRadius={"16px"}
+            bgcolor={"white"}
+            p={1}
+            border={"1px solid rgba(0, 0, 0, 0.12)"}
+          >
         <StyledTable
           columns={userColumns}
           data={userData}

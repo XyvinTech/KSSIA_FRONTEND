@@ -28,7 +28,7 @@ const DashboardPage = () => {
 
   return (
     <>
-       <Box padding={"20px"} bgcolor={"#FFFFFF"}>
+       <Box padding={"20px"} bgcolor={"white"}height={'70px'}display={'flex'}alignItems={'center'}>
       <Grid container alignItems="center">
         <Grid item xs>
           <Typography variant="h4" color={"#4A4647"}>

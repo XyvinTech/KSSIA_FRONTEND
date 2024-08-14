@@ -41,7 +41,7 @@ const Newspage = () => {
         }}
         sx={{
           bgcolor: "white",
-          paddingTop: "25px",
+          paddingTop: "24px",
           "& .MuiTabs-indicator": {
             backgroundColor: "#004797",
           },

@@ -45,7 +45,7 @@ import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
 import ListOutlinedIcon from '@mui/icons-material/ListOutlined';
 const drawerWidth = 300;
 const subNavigation = [
-  { name: "Dashboard", to: "/", icon: <GridViewIcon /> },
+  { name: "Dashboard", to: "/dashboard", icon: <GridViewIcon /> },
   { name: "Members", to: "/members", icon: <PeopleOutlineOutlinedIcon/> },
   { name: "Products", to: "/products", icon: <LocalMallOutlinedIcon /> },
   {
@@ -399,6 +399,7 @@ const AdminLayout = (props) => {
         sx={{
           flexGrow: 1,
           backgroundColor: "#F3F3F3",
+          minHeight: "100vh",
           paddingTop: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}

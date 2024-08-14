@@ -24,7 +24,7 @@ const AddnewadminSinglepage = () => {
   
   return (
     <>
-      <Box padding={"15px"} bgcolor={"#FFFFFF"}>
+      <Box padding={"15px"} bgcolor={"#FFFFFF"}height={'70px'}display={'flex'}alignItems={'center'}>
         <Typography variant="h4" color={"#4A4647"}>
           Admin management / Add new Admin
         </Typography>
@@ -41,8 +41,8 @@ const AddnewadminSinglepage = () => {
           },
         }}
         sx={{
-          bgcolor: "white",
-          paddingTop: "34px",
+          // bgcolor: "white",
+          paddingTop: "24px",
           "& .MuiTabs-indicator": {
             backgroundColor: "#004797",
           },

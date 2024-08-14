@@ -1,4 +1,12 @@
-import { Box, Divider, Grid, Stack, Tab, Tabs, Typography } from "@mui/material";
+import {
+  Box,
+  Divider,
+  Grid,
+  Stack,
+  Tab,
+  Tabs,
+  Typography,
+} from "@mui/material";
 import React, { useState } from "react";
 import MembersPayments from "../../../components/MembersPayments";
 import AppSubscriptionCard from "../../../ui/AppSubscriptionCard";
@@ -9,34 +17,21 @@ import MemberAnalytics from "../../../components/MemberAnalytics";
 import Review from "../../../components/Review";
 import MemberProfile from "../../../components/MemberProfile";
 
-
-
-
-
 const MembersSinglepage = () => {
   const [selectedTab, setSelectedTab] = useState(0);
-  const [selectedRows, setSelectedRows] = useState([]);
 
-  const handleSelectionChange = (newSelectedIds) => {
-    setSelectedRows(newSelectedIds);
-    console.log("Selected items:", newSelectedIds);
-  };
-
-  const handleView = (id) => {
-    console.log("View item:", id);
-  };
   const handleChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
-  
+
   return (
     <>
-      <Box padding={"20px"} bgcolor={"#FFFFFF"}>
+      <Box padding={"20px"} bgcolor={"#FFFFFF"}height={'70px'}display={'flex'}alignItems={'center'}>
         <Typography variant="h4" color={"#4A4647"}>
           Members list / Prabodhan Fitzgerald
         </Typography>
       </Box>{" "}
-      <Divider/>
+      <Divider />
       <Tabs
         value={selectedTab}
         onChange={handleChange}
@@ -50,15 +45,15 @@ const MembersSinglepage = () => {
         }}
         sx={{
           bgcolor: "white",
-          paddingTop: "34px",
+          paddingTop: "4px",
           "& .MuiTabs-indicator": {
             backgroundColor: "#004797",
           },
           "& .MuiTab-root": {
             textTransform: "none",
-            fontSize:'16px', 
+            fontSize: "16px",
             fontWeight: 600,
-            margin: '0 30px',
+            margin: "0 30px",
           },
           "& .Mui-selected": {
             color: "#004797",
@@ -74,47 +69,42 @@ const MembersSinglepage = () => {
       </Tabs>
       <Box padding="30px" marginBottom={4}>
         {selectedTab === 0 && (
-             <Grid spacing={2}>
-             <MemberProfile/>
-           </Grid>
+          <Grid spacing={2}>
+            <MemberProfile />
+          </Grid>
         )}
         {selectedTab === 1 && (
           <Grid>
-            <MembersPayments/>
+            <MembersPayments />
           </Grid>
         )}
         {selectedTab === 2 && (
-         <Grid container>
+          <Grid container>
             <Stack direction={"column"} spacing={3}>
-                <AppSubscriptionCard/>
-                <MemberSubscriptionCard/>
-                </Stack>
-         </Grid>
+              <AppSubscriptionCard />
+              <MemberSubscriptionCard />
+            </Stack>
+          </Grid>
         )}
         {selectedTab === 3 && (
           <Grid>
-          <MembersProducts/>
-        </Grid>
+            <MembersProducts />
+          </Grid>
         )}
         {selectedTab === 4 && (
-           <Grid>
-           <MembersRequirements/>
-         </Grid>
+          <Grid>
+            <MembersRequirements />
+          </Grid>
         )}
         {selectedTab === 5 && (
-          
-           <Grid container item xs={12}>
+          <Grid container item xs={12}>
             <Grid item xs={12}>
-          <MemberAnalytics/>
+              <MemberAnalytics />
+            </Grid>
+            <Grid item xs={12} marginTop={4}>
+              <Review />
+            </Grid>
           </Grid>
-          <Grid item xs={12} marginTop={4}>
-          <Review/>
-          </Grid>
-          </Grid>
-          
-        
-          
-        
         )}
       </Box>
     </>

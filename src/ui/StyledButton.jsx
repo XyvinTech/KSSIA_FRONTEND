@@ -8,11 +8,10 @@ const buttonVariants = css`
       font-family: Inter;
       border: none;
       font-size: 16px;
-      font-weight: 600;
-      color: #FCFDFE;
-      line-height: 18px;
+      font-weight: 500;
+      color: #fcfdfe;
       background-color: #004797;
-      radius:200px;
+      radius: 200px;
     `}
 
   ${(props) =>
@@ -21,26 +20,25 @@ const buttonVariants = css`
       font-family: Inter;
       border: 1px solid #a8a8a8;
       font-size: 16px;
-      font-weight: 600;
-      color: #004797;
-      line-height: 18px;
-      background-color: #F3EFEF;
-      radius:200px;
+      font-weight: 500;
+      color: #322f3b;
+
+      background-color: #f3efef;
+      radius: 200px;
     `}
 
 
 ${(props) =>
-  props.variant === "third" &&
-  css`
-    font-family: Inter;
-    border: 1px solid #a8a8a8;
-    font-size: 16px;
-    font-weight: 600;
-    color: #4A4647;
-    line-height: 18px;
-    background-color: #F3EFEF;
-    radius:200px;
-  `}
+    props.variant === "third" &&
+    css`
+      font-family: Inter;
+      border: 1px solid #a8a8a8;
+      font-size: 16px;
+      font-weight: 600;
+      color: #4a4647;
+      background-color: #f3efef;
+      radius: 200px;
+    `}
 `;
 
 const disabledStyles = css`
@@ -53,12 +51,11 @@ const disabledStyles = css`
 `;
 
 const ButtonContainer = styled.button`
-  padding: 16px 20px;
+  padding: 10px 20px;
   text-align: center;
-  width: 100%;
   font-family: "Inter", "sans-serif";
   display: flex;
-  
+
   justify-content: center;
   align-items: center;
   border-radius: 50px;

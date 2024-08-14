@@ -8,7 +8,7 @@ export default function AppSubscriptionCard() {
       container
       spacing={2}
       bgcolor={"white"}
-      borderRadius={"16px"}
+      borderRadius={"12px"}
       padding={"20px"}
     >
       <Grid item xs={12}>
@@ -18,48 +18,73 @@ export default function AppSubscriptionCard() {
           </Typography>
         </Box>
       </Grid>
-      <Grid item md={6} >
-        <Stack spacing={2}>
-          <Typography variant="h6" color={"#686465"}>
+      <Grid item md={12}>
+        <Stack
+          spacing={2}
+          padding={2}
+          direction={"row"}
+          justifyContent={"space-between"}
+        >
+          <Typography variant="h7" color={"#2C2829"} fontWeight={700}>
             Plan
           </Typography>
-        
-          <Typography variant="h6" color={"#686465"}>
-            Last Renewed date
-          </Typography>
-          <Typography variant="h6" color={"#686465"}>
-            Amount paid
-          </Typography>
-          <Typography variant="h6" color={"#686465"}>
-            Expiry date
-          </Typography>
-        </Stack>
-      </Grid>
-      <Grid item md={6} textAlign={"right"}>
-        <Stack spacing={2} >
-          <Box spacing={2} alignItems={"right"} >
-          <span
-            style={{
-              border: "2px solid #FF9500",
-              borderRadius: "20px",
-              padding: "4px 12px",
-              fontSize: "13px",
-              color: "#FF9500",
-              textAlign: "right", 
-              display: "inline-block",
-              width: "fit-content"
-             
+          <Typography
+            variant="h6"
+            color="#EB5860"
+            sx={{
+              padding: "0px 6px",
+              borderRadius: "12px",
+              border: "1px solid #EB5860",
             }}
           >
-            Premium
-          </span>
-          </Box>
-
-          <Typography>12th July 2025</Typography>
-          <Typography>Rs.2000</Typography>
-          <Typography>12th July 2026</Typography>
+            premium
+          </Typography>
         </Stack>
+        <Divider />
+        <Stack
+          spacing={2}
+          padding={2}
+          direction={"row"}
+          justifyContent={"space-between"}
+        >
+          <Typography variant="h7" color={"#2C2829"} fontWeight={700}>
+            Last Renewed date
+          </Typography>
+          <Typography variant="h6" color="#2C2829">
+            12th July 2025
+          </Typography>
+        </Stack>
+        <Divider />{" "}
+        <Stack
+          spacing={2}
+          padding={2}
+          direction={"row"}
+          justifyContent={"space-between"}
+        >
+          <Typography variant="h7" color={"#2C2829"} fontWeight={700}>
+            Amount paid
+          </Typography>
+          <Typography variant="h6" color="#2C2829">
+            ₹2000
+          </Typography>
+        </Stack>
+        <Divider />
+        <Stack
+          spacing={2}
+          padding={2}
+          direction={"row"}
+          justifyContent={"space-between"}
+        >
+          <Typography variant="h7" color={"#2C2829"} fontWeight={700}>
+            Expiry date
+          </Typography>
+          <Typography variant="h6" color="#2C2829">
+            12th July 2026
+          </Typography>
+        </Stack>
+        <Divider />
       </Grid>
+
       <Grid item xs={12}>
         <Grid container justifyContent="flex-end">
           <Grid item xs={7}>
