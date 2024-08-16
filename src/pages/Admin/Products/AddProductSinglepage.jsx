@@ -18,7 +18,7 @@ export default function AddProductSinglepage() {
         </Box> */}
       <Grid container spacing={1} item xs={12}>
         <Grid item xs={12}>
-          <Box paddingRight={20} paddingTop={5} paddingLeft={5}>
+          <Box paddingRight={20} paddingTop={5} paddingLeft={4}>
             <Addproductform />
           </Box>
         </Grid>

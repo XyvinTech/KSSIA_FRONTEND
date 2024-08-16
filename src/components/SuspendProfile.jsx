@@ -6,7 +6,7 @@ const SuspendProfile = ({ open, onClose, onChange }) => {
   const { handleSubmit } = useForm();
 
   const onSubmit = async () => {
-    onChange();
+    // onChange();
     onClose();
   };
 
