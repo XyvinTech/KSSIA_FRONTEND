@@ -22,12 +22,11 @@ export default function Events() {
     setSelectedRows(newSelectedIds);
     console.log("Selected items:", newSelectedIds);
   };
-  const handleView = (id) => {
-    console.log("View item:", id);
-    navigate(`/events/eventlist/:id`);
+  const handleEdit = (id) => {
+    navigate(`/events/eventlist/${id}`);
   };
-  const handleView2 = (id) => {
-    navigate(`/members/addmember`);
+  const handleView = (id) => {
+    navigate(`/events/${id}`);
   };
   return (
     <>
@@ -67,7 +66,8 @@ export default function Events() {
             columns={userColumns}
             data={userData}
             onSelectionChange={handleSelectionChange}
-            onModify={handleView}
+            onModify={handleEdit}
+            onView={handleView}
           />{" "}
         </Box>
       </>

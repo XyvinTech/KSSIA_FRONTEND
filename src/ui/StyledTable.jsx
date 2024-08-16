@@ -58,8 +58,9 @@ const StyledTable = ({
   onView,
   onDelete,
   onModify,
-  onAction,
+  onAction,menu,
   data,
+  news,
   dashboard,
   member,
   payment,
@@ -232,27 +233,42 @@ const StyledTable = ({
 
                   <StyledTableCell padding="normal">
                     <Box display="flex" alignItems="center">
-                      <IconButton
-                        aria-controls="simple-view"
-                        aria-haspopup="true"
-                        onClick={() => handleRowClick(row.id)}
-                      >
-                        <ViewIcon />
-                      </IconButton>
+                      {onView && (
+                        <IconButton
+                          aria-controls="simple-view"
+                          aria-haspopup="true"
+                          onClick={handleView}
+                        >
+                          <ViewIcon />
+                        </IconButton>
+                      )} {!menu && (
                       <IconButton
                         aria-controls="simple-menu"
                         aria-haspopup="true"
                         onClick={(event) => handleMenuOpen(event, row.id)}
                       >
                         <MoreVertIcon />
-                      </IconButton>
+                      </IconButton>  )}
                       <Menu
                         id="row-menu"
                         anchorEl={anchorEl}
                         open={Boolean(anchorEl) && rowId === row.id}
                         onClose={handleMenuClose}
                       >
-                        {member ? (
+                        {news ? (
+                          <>
+                            <MenuItem onClick={handleModify}>Edit</MenuItem>
+                            <MenuItem onClick={handleAction}>
+                              Publish/Unpublish
+                            </MenuItem>
+                            <MenuItem
+                              onClick={handleDelete}
+                              style={{ color: "red" }}
+                            >
+                              Remove
+                            </MenuItem>
+                          </>
+                        ) : member ? (
                           <>
                             <MenuItem onClick={handleView}>
                               View Details
@@ -275,7 +291,12 @@ const StyledTable = ({
                           <>
                             {" "}
                             <MenuItem onClick={handleModify}>Edit</MenuItem>
-                            <MenuItem onClick={handleDelete} style={{ color: "red" }}>Remove</MenuItem>
+                            <MenuItem
+                              onClick={handleDelete}
+                              style={{ color: "red" }}
+                            >
+                              Remove
+                            </MenuItem>
                           </>
                         )}
                       </Menu>

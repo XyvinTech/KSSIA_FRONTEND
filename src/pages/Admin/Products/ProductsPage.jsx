@@ -6,11 +6,12 @@ import StyledSearchbar from "../../../ui/StyledSearchbar";
 import { ReactComponent as FilterIcon } from "../../../assets/icons/FilterIcon.svg";
 import StyledTable from "../../../ui/StyledTable";
 import { userColumns, userData } from "../../../assets/json/TableData";
+import RemoveProduct from "../../../components/Removeproduct";
 export default function MembersPage() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);
-
+  const [removeOpen, setRemoveOpen] = useState(false);
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -25,11 +26,25 @@ export default function MembersPage() {
   const handleProduct = () => {
     navigate(`/products/addproduct`);
   };
- 
+  const handleEdit = () => {
+    navigate(`/products/addproduct`);
+  };
+  const handleDelete = () => {
+    setRemoveOpen(true);
+  };
+  const handleCloseDelete = () => {
+    setRemoveOpen(false);
+  };
   return (
     <>
       {" "}
-      <Box padding={"10px"} bgcolor={"#FFFFFF"}height={'70px'}display={'flex'}alignItems={'center'}>
+      <Box
+        padding={"10px"}
+        bgcolor={"#FFFFFF"}
+        height={"70px"}
+        display={"flex"}
+        alignItems={"center"}
+      >
         <Grid container alignItems="center">
           <Grid item xs={6}>
             <Typography variant="h4" color={"#4A4647"}>
@@ -90,8 +105,10 @@ export default function MembersPage() {
               columns={userColumns}
               data={userData}
               onSelectionChange={handleSelectionChange}
-              // onView={handleView}
+              onModify={handleEdit}
+              onDelete={handleDelete}
             />{" "}
+            <RemoveProduct open={removeOpen} onClose={handleCloseDelete} />
           </Box>
         </>
       </Box>

@@ -34,10 +34,10 @@ export default function NewsAddnewform() {
     setAdditionalPhones([...additionalPhones, ""]);
   };
   return (
-    <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"4px"}>
+    <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"12px"}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={4}>
-        <Grid item xs={12}>
+          <Grid item xs={12}>
             <Typography
               sx={{ marginBottom: 1 }}
               variant="h6"
@@ -59,7 +59,9 @@ export default function NewsAddnewform() {
                     {...field}
                   />
                   {errors.category && (
-                    <span style={{ color: "red" }}>{errors.category.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.category.message}
+                    </span>
                   )}
                 </>
               )}
@@ -81,7 +83,7 @@ export default function NewsAddnewform() {
               rules={{ required: "Title is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput placeholder="Enter the news title" {...field}/>
+                  <StyledInput placeholder="Enter the news title" {...field} />
                   {errors.title && (
                     <span style={{ color: "red" }}>{errors.title.message}</span>
                   )}
@@ -96,7 +98,7 @@ export default function NewsAddnewform() {
               fontWeight={500}
               color={"#333333"}
             >
-             Upload Photo or video
+              Upload Photo or video
             </Typography>
             <Controller
               name="file"
@@ -132,7 +134,10 @@ export default function NewsAddnewform() {
               rules={{ required: "Content is required" }}
               render={({ field }) => (
                 <>
-                  <StyledMultilineTextField placeholder="Add Description in less than 500 words" {...field}/>
+                  <StyledMultilineTextField
+                    placeholder="Add Description in less than 500 words"
+                    {...field}
+                  />
                   {errors.desc && (
                     <span style={{ color: "red" }}>{errors.desc.message}</span>
                   )}
@@ -140,8 +145,8 @@ export default function NewsAddnewform() {
               )}
             />
           </Grid>
-          
-          <Grid item xs={6}></Grid> 
+
+          <Grid item xs={6}></Grid>
           <Grid item xs={6}>
             {" "}
             <Stack direction={"row"} spacing={2}>

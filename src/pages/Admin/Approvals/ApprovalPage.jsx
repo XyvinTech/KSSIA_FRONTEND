@@ -6,11 +6,14 @@ import StyledSearchbar from "../../../ui/StyledSearchbar";
 import { ReactComponent as FilterIcon } from "../../../assets/icons/FilterIcon.svg";
 import StyledTable from "../../../ui/StyledTable";
 import { userColumns, userData } from "../../../assets/json/TableData";
+import RejectionEntryForm from "../../../components/Members/RejectionEntryForm";
+import RequirementDetail from "../../../components/RequirementDetail";
 export default function ApprovalPage() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);
-
+  const [rejectOpen, setRejectOpen] = useState(false);
+  const [approveOpen, setApproveOpen] = useState(false);
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -22,7 +25,18 @@ export default function ApprovalPage() {
     setSelectedRows(newSelectedIds);
     console.log("Selected items:", newSelectedIds);
   };
-
+  const handleApprove = () => {
+    setApproveOpen(true);
+  };
+  const handleCloseApprove = () => {
+    setApproveOpen(false);
+  };
+  const handleReject = (id) => {
+    setRejectOpen(true);
+  };
+  const handleCloseReject = (id) => {
+    setRejectOpen(false);
+  };
   return (
     <>
       {" "}
@@ -77,9 +91,15 @@ export default function ApprovalPage() {
               columns={userColumns}
               data={userData}
               onSelectionChange={handleSelectionChange}
-              // onView={handleView}
+              onModify={handleApprove}
               payment
+              onAction={handleReject}
             />{" "}
+            <RejectionEntryForm open={rejectOpen} onClose={handleCloseReject} />
+            <RequirementDetail
+              open={approveOpen}
+              onClose={handleCloseApprove}
+            />
           </Box>
         </>
       </Box>

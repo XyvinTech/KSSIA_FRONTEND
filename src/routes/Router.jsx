@@ -23,186 +23,196 @@ import AddnewadminSinglepage from "../pages/Admin/Settingss/AddnewadminSinglepag
 import AddnewroleSinglepage from "../pages/Admin/Settingss/AddnewroleSinglepage.jsx";
 import LogoutPage from "../pages/Admin/Logout/LogoutPage.jsx";
 import SignIn from "../pages/Admin/Signin/SignIn.jsx";
-
-
-
-
+import NewsAddnewform from "../components/NewsAddnewform.jsx";
+import EditNews from "../pages/Admin/NewsandUpdates/EditNews.jsx";
+import EventSingleView from "../pages/Admin/Eventss/Eventlist/EventSingleView.jsx";
 
 const router = createBrowserRouter([
-    {
-      path: "/",
-      element: (
-       
-        <SignIn />
-       
-      ),
-    },
-    {
-      path: "/dashboard",
-      element: (
-       <AdminLayout>
+  {
+    path: "/",
+    element: <SignIn />,
+  },
+  {
+    path: "/dashboard",
+    element: (
+      <AdminLayout>
         <DashboardPage />
-       </AdminLayout>
-      ),
-    },
-    {
-        path: "/members",
-        element: (
-         <AdminLayout>
-          <MembersPage/>
-         </AdminLayout>
-        ),
-    },
-    {
-      path: "/members/member/:id",
-      element: (
-       <AdminLayout>
-        <MembersSinglepage/>
-       </AdminLayout>
-      ),
-    },
-    {
-      path: "/members/addmember",
-      element: (
-       <AdminLayout>
-        <AddnewMemberSinglepage/>
-       </AdminLayout>
-      ),
-    },
-    {
-      path: "/products",
-      element: (
-       <AdminLayout>
-        <ProductsPage/>
-       </AdminLayout>
-      ),
-    },
-    {
-      path: "/products/addproduct",
-      element: (
-       <AdminLayout>
-        <AddProductSinglepage/>
-       </AdminLayout>
-      ),
-    },
-    {
-      path: "/events/eventhistory",
-      element: (
-       <AdminLayout>
-        <EventHistorypage/>
-       </AdminLayout>
-      ),
-    },
-    {
-      path: "/events/eventlist",
-      element: (
-       <AdminLayout>
-        <EventNewListpage/>
-       </AdminLayout>
-      ),
-    },
-    {
-      path: "/events/eventlist/:id", 
-      element: (
-       <AdminLayout>
-        <EditEventpage/>
-       </AdminLayout>
-      ),
-    },
-    {
-      path: "/payments", 
-      element: (
-       <AdminLayout>
-        <PaymentPage/>
-       </AdminLayout>
-      ),
-    },
-    {
-      path: "/payments/addpaymentdetails", 
-      element: (
-       <AdminLayout>
-        <AddpaymentsinglePage/>
-       </AdminLayout>
-      ),
-    },
-    {
-      path: "/approvals", 
-      element: (
-       <AdminLayout>
-        <ApprovalPage/>
-       </AdminLayout>
-      ),
-    },
-    {
-      path: "/promotions", 
-      element: (
-       <AdminLayout>
-        <Promotionpage/>
-       </AdminLayout>
-      ),
-    },
-    {
-      path: "/promotions/createpromotion", 
-      element: (
-       <AdminLayout>
-        <CreatepromotionSinglepage/>
-       </AdminLayout>
-      ),
-    },
-    {
-      path: "/Notifications", 
-      element: (
-       <AdminLayout>
-        <Notificationpage/>
-       </AdminLayout>
-      ),
-    },
-    {
-      path: "/News", 
-      element: (
-       <AdminLayout>
-        <Newspage/>
-       </AdminLayout>
-      ),
-    },
-    {
-      path: "/settings", 
-      element: (
-       <AdminLayout>
-        <SettingsPage/>
-       </AdminLayout>
-      ),
-    },
-    {
-      path: "/settings/addnewadmin", 
-      element: (
-       <AdminLayout>
-        <AddnewadminSinglepage/>
-       </AdminLayout>
-      ),
-    },
-    {
-      path: "/settings/addrole", 
-      element: (
-       <AdminLayout>
-        <AddnewroleSinglepage/>
-       </AdminLayout>
-      ),
-    },
-    {
-      path: "/Logout", 
-      element: (
-       <AdminLayout>
-        <LogoutPage/>
-       </AdminLayout>
-      ),
-    },
+      </AdminLayout>
+    ),
+  },
+  {
+    path: "/members",
+    element: (
+      <AdminLayout>
+        <MembersPage />
+      </AdminLayout>
+    ),
+  },
+  {
+    path: "/members/member/:id",
+    element: (
+      <AdminLayout>
+        <MembersSinglepage />
+      </AdminLayout>
+    ),
+  },
+  {
+    path: "/members/addmember",
+    element: (
+      <AdminLayout>
+        <AddnewMemberSinglepage />
+      </AdminLayout>
+    ),
+  },
+  {
+    path: "/products",
+    element: (
+      <AdminLayout>
+        <ProductsPage />
+      </AdminLayout>
+    ),
+  },
+  {
+    path: "/products/addproduct",
+    element: (
+      <AdminLayout>
+        <AddProductSinglepage />
+      </AdminLayout>
+    ),
+  },
+  {
+    path: "/events/eventhistory",
+    element: (
+      <AdminLayout>
+        <EventHistorypage />
+      </AdminLayout>
+    ),
+  },
+  {
+    path: "/events/eventlist",
+    element: (
+      <AdminLayout>
+        <EventNewListpage />
+      </AdminLayout>
+    ),
+  },
+  {
+    path: "/events/:id",
+    element: (
+      <AdminLayout>
+        <EventSingleView />
+      </AdminLayout>
+    ),
+  },
+  {
+    path: "/events/eventlist/:id",
+    element: (
+      <AdminLayout>
+        <EditEventpage />
+      </AdminLayout>
+    ),
+  },
+  {
+    path: "/payments",
+    element: (
+      <AdminLayout>
+        <PaymentPage />
+      </AdminLayout>
+    ),
+  },
+  {
+    path: "/payments/addpaymentdetails",
+    element: (
+      <AdminLayout>
+        <AddpaymentsinglePage />
+      </AdminLayout>
+    ),
+  },
+  {
+    path: "/approvals",
+    element: (
+      <AdminLayout>
+        <ApprovalPage />
+      </AdminLayout>
+    ),
+  },
+  {
+    path: "/promotions",
+    element: (
+      <AdminLayout>
+        <Promotionpage />
+      </AdminLayout>
+    ),
+  },
+  {
+    path: "/promotions/createpromotion",
+    element: (
+      <AdminLayout>
+        <CreatepromotionSinglepage />
+      </AdminLayout>
+    ),
+  },
+  {
+    path: "/Notifications",
+    element: (
+      <AdminLayout>
+        <Notificationpage />
+      </AdminLayout>
+    ),
+  },
+  {
+    path: "/News",
+    element: (
+      <AdminLayout>
+        <Newspage />
+      </AdminLayout>
+    ),
+  },
+  {
+    path: "news/edit",
+    element: (
+      <AdminLayout>
+        <EditNews />
+      </AdminLayout>
+    ),
+  },
+  {
+    path: "/settings",
+    element: (
+      <AdminLayout>
+        <SettingsPage />
+      </AdminLayout>
+    ),
+  },
+  {
+    path: "/settings/addnewadmin",
+    element: (
+      <AdminLayout>
+        <AddnewadminSinglepage />
+      </AdminLayout>
+    ),
+  },
+  {
+    path: "/settings/addrole",
+    element: (
+      <AdminLayout>
+        <AddnewroleSinglepage />
+      </AdminLayout>
+    ),
+  },
+  {
+    path: "/Logout",
+    element: (
+      <AdminLayout>
+        <LogoutPage />
+      </AdminLayout>
+    ),
+  },
 
-
-    {
-        path: "/app",
-        element: <App />,
-      },
+  {
+    path: "/app",
+    element: <App />,
+  },
 ]);
 
 export default router;

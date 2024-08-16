@@ -6,17 +6,26 @@ import StyledSearchbar from "../../../ui/StyledSearchbar";
 import { ReactComponent as FilterIcon } from "../../../assets/icons/FilterIcon.svg";
 import StyledTable from "../../../ui/StyledTable";
 import { userColumns, userData } from "../../../assets/json/TableData";
+import RejectionEntryForm from "../../../components/Members/RejectionEntryForm";
+import MemberShipRenewal from "../../../components/MemberShipRenewal";
 export default function PaymentPage() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);
-
+  const [approveOpen, setApproveOpen] = useState(false);
+  const [rejectOpen, setRejectOpen] = useState(false);
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
 
   const handleCloseFilter = () => {
     setFilterOpen(false);
+  };
+  const handleReject = (id) => {
+    setRejectOpen(true);
+  };
+  const handleCloseReject = (id) => {
+    setRejectOpen(false);
   };
   const handleSelectionChange = (newSelectedIds) => {
     setSelectedRows(newSelectedIds);
@@ -25,6 +34,12 @@ export default function PaymentPage() {
 
   const handleView2 = (id) => {
     navigate(`/payments/addpaymentdetails`);
+  };
+  const handleApprove = () => {
+    setApproveOpen(true);
+  };
+  const handleCloseApprove = () => {
+    setApproveOpen(false);
   };
   return (
     <>
@@ -97,7 +112,11 @@ export default function PaymentPage() {
               data={userData}
               onSelectionChange={handleSelectionChange}
               payment
+              onModify={handleApprove}
+              onAction={handleReject}
             />{" "}
+            <RejectionEntryForm open={rejectOpen} onClose={handleCloseReject} />
+            <MemberShipRenewal open={approveOpen} onClose={handleCloseApprove} />
           </Box>
         </>
       </Box>

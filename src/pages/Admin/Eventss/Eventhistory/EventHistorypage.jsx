@@ -33,7 +33,13 @@ export default function EventHistorypage() {
   return (
     <>
       {" "}
-      <Box padding={"10px"} bgcolor={"#FFFFFF"}height={'70px'}display={'flex'}alignItems={'center'}>
+      <Box
+        padding={"10px"}
+        bgcolor={"#FFFFFF"}
+        height={"70px"}
+        display={"flex"}
+        alignItems={"center"}
+      >
         <Grid container alignItems="center">
           <Grid item xs={6}>
             <Typography variant="h4" color={"#4A4647"}>
@@ -85,7 +91,6 @@ export default function EventHistorypage() {
               columns={userColumns}
               data={userData}
               onSelectionChange={handleSelectionChange}
-              onView={handleView}
             />{" "}
           </Box>
         </>
