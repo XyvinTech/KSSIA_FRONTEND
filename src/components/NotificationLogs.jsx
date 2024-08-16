@@ -56,7 +56,9 @@ export default function NotificationLogs() {
             columns={userColumns}
             data={userData}
             onSelectionChange={handleSelectionChange}
-            // onView={handleView}
+            // onView={handleView 
+             menu
+
           />{" "}
         </Box>
       </>
