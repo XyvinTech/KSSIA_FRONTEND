@@ -58,7 +58,7 @@ const DashboardPage = () => {
 
 
      <Grid>
-     <Grid container spacing={1} item xs={12}>
+     <Grid container spacing={1} item xs={12}padding={'10px'}>
       <Grid item xs={6} >
         <Box padding={2}>
         <DashboardRevnue/>
