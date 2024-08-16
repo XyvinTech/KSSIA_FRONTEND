@@ -33,7 +33,7 @@ export default function AddpaymentsinglePage() {
      
         </Grid> */}
       <Grid container>
-        <Grid item md={9} paddingTop={5} paddingLeft={5}>
+        <Grid item md={9} paddingTop={5} paddingLeft={4}>
           <AddPaymentdetails />
         </Grid>
       </Grid>

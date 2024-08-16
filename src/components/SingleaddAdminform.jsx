@@ -34,10 +34,10 @@ export default function SingleaddAdminform() {
     setAdditionalPhones([...additionalPhones, ""]);
   };
   return (
-    <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"4px"}>
+    <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"12px"}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={4}>
-        <Grid item xs={12}>
+          <Grid item xs={12}>
             <Typography
               sx={{ marginBottom: 1 }}
               variant="h6"
@@ -53,12 +53,11 @@ export default function SingleaddAdminform() {
               rules={{ required: "Person name is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput
-                    placeholder="Enter person name"
-                    {...field}
-                  />
+                  <StyledInput placeholder="Enter person name" {...field} />
                   {errors.person && (
-                    <span style={{ color: "red" }}>{errors.person.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.person.message}
+                    </span>
                   )}
                 </>
               )}
@@ -71,7 +70,7 @@ export default function SingleaddAdminform() {
               fontWeight={500}
               color={"#333333"}
             >
-             Designation
+              Designation
             </Typography>
             <Controller
               name="designation"
@@ -80,9 +79,11 @@ export default function SingleaddAdminform() {
               rules={{ required: "Designation is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput placeholder="Enter the Designation" {...field}/>
+                  <StyledInput placeholder="Enter the Designation" {...field} />
                   {errors.designation && (
-                    <span style={{ color: "red" }}>{errors.designation.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.designation.message}
+                    </span>
                   )}
                 </>
               )}
@@ -116,7 +117,7 @@ export default function SingleaddAdminform() {
               )}
             />
           </Grid>
-         
+
           <Grid item xs={6}>
             <Typography
               sx={{ marginBottom: 1 }}
@@ -133,7 +134,7 @@ export default function SingleaddAdminform() {
               rules={{ required: "Email ID is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput placeholder="Enter the email ID" {...field}/>
+                  <StyledInput placeholder="Enter the email ID" {...field} />
                   {errors.desc && (
                     <span style={{ color: "red" }}>{errors.desc.message}</span>
                   )}
@@ -148,7 +149,7 @@ export default function SingleaddAdminform() {
               fontWeight={500}
               color={"#333333"}
             >
-            Phone number
+              Phone number
             </Typography>
             <Controller
               name="actual"
@@ -157,53 +158,52 @@ export default function SingleaddAdminform() {
               rules={{ required: "Phone number  is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput placeholder="ENter phone number" {...field}/>
+                  <StyledInput placeholder="ENter phone number" {...field} />
                   {errors.actual && (
-                    <span style={{ color: "red" }}>{errors.actual.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.actual.message}
+                    </span>
                   )}
                 </>
               )}
             />
           </Grid>
           <Grid item xs={6}>
-            
-              <Typography
-                sx={{ marginBottom: 1 }}
-                variant="h6"
-                fontWeight={500}
-                color={"#333333"}
-              >
-                Activate
-              </Typography>
-              </Grid>
-              <Grid item xs={6} style={{ textAlign: 'right' }}> 
-              <Controller
-                name="activate"
-                control={control}
-                defaultValue={false}
-                rules={{ required: "Activate is required" }}
-                render={({ field }) => (
-                  <>
-                    <StyledSwitch
-                      checked={field.value}
-                      onChange={(e) => {
-                        field.onChange(e.target.checked);
-                        handleSwitchChange(e);
-                      }}
-                    />{" "}
-                    {errors.activate && (
-                      <span style={{ color: "red" }}>
-                        {errors.activate.message}
-                      </span>
-                    )}{" "}
-                  </>
-                )}
-              />
-            
+            <Typography
+              sx={{ marginBottom: 1 }}
+              variant="h6"
+              fontWeight={500}
+              color={"#333333"}
+            >
+              Activate
+            </Typography>
+          </Grid>
+          <Grid item xs={6} style={{ textAlign: "right" }}>
+            <Controller
+              name="activate"
+              control={control}
+              defaultValue={false}
+              rules={{ required: "Activate is required" }}
+              render={({ field }) => (
+                <>
+                  <StyledSwitch
+                    checked={field.value}
+                    onChange={(e) => {
+                      field.onChange(e.target.checked);
+                      handleSwitchChange(e);
+                    }}
+                  />{" "}
+                  {errors.activate && (
+                    <span style={{ color: "red" }}>
+                      {errors.activate.message}
+                    </span>
+                  )}{" "}
+                </>
+              )}
+            />
           </Grid>
 
-         
-          <Grid item xs={6}></Grid> 
+          <Grid item xs={6}></Grid>
           <Grid item xs={6}>
             {" "}
             <Stack direction={"row"} spacing={2}>
