@@ -72,7 +72,7 @@ const DashboardPage = () => {
      </Grid>
      </Grid>
      <Grid item xs={12}>
-     <Box padding={2}>
+     <Box padding={'20px'}>
       <DashboardEvents/>
       </Box>
 
