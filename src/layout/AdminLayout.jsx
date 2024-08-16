@@ -43,7 +43,7 @@ import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined
 import NewspaperOutlinedIcon from '@mui/icons-material/NewspaperOutlined';
 import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
 import ListOutlinedIcon from '@mui/icons-material/ListOutlined';
-const drawerWidth = 300;
+const drawerWidth = 250;
 const subNavigation = [
   { name: "Dashboard", to: "/dashboard", icon: <GridViewIcon /> },
   { name: "Members", to: "/members", icon: <PeopleOutlineOutlinedIcon/> },
@@ -138,7 +138,6 @@ const AdminLayout = (props) => {
     setDialogOpen(false);
   };
 
-  const drawerWidth = 240; 
 
   const drawer = (
     <Box
