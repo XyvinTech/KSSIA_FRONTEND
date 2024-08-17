@@ -1,7 +1,7 @@
 import axios from "axios";
-
+import CONSTANTS from "../constants";
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:3000/api/vi/"
+  baseURL: CONSTANTS.BASE_URL
 //   baseURL: "https://support.acuteangle.io/"
 });
 axiosInstance.interceptors.request.use(

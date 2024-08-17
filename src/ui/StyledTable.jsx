@@ -59,6 +59,7 @@ const StyledTable = ({
   onDelete,
   data,
   dashboard,
+  hideView
 }) => {
   const [selectedIds, setSelectedIds] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -212,13 +213,13 @@ const StyledTable = ({
 
                 <StyledTableCell padding="normal">
                 <Box display="flex" alignItems="center">
-                  <IconButton
-                    aria-controls="simple-view"
-                    aria-haspopup="true"
-                    onClick={() => handleRowClick(row.id)}
-                  >
-                    <ViewIcon />
-                  </IconButton>
+              { !hideView && <IconButton
+                  aria-controls="simple-view"
+                  aria-haspopup="true"
+                  onClick={() => handleRowClick(row.id)}
+                >
+                  <ViewIcon />
+                </IconButton>}
                   <IconButton
                     aria-controls="simple-menu"
                     aria-haspopup="true"

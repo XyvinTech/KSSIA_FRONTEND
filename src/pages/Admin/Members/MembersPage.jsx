@@ -1,16 +1,31 @@
 import { Box, Grid, Stack, Typography } from '@mui/material'
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { StyledButton } from '../../../ui/StyledButton';
 import StyledSearchbar from '../../../ui/StyledSearchbar';
 import { ReactComponent as FilterIcon } from "../../../assets/icons/FilterIcon.svg";
 import StyledTable from '../../../ui/StyledTable';
-import { userColumns, userData } from "../../../assets/json/TableData";
+import { userColumns } from "../../../assets/json/TableData";
+import axiosInstance from '../../../api/axios-interceptor';
+import CONSTANTS from '../../../constants';
 export default function MembersPage() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);
+  const [userData,setUserData] = useState([])
+  useEffect(()=>{
+    async function fetchUserData(){
 
+      const response = await axiosInstance.get(CONSTANTS.MEMBERS_API);
+      if(response.status !=200){
+        // handle error
+        return
+      }
+      setUserData(response.data.data);
+      
+    }
+    fetchUserData()
+  },[])
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -26,6 +41,16 @@ export default function MembersPage() {
     console.log("View item:", id);
     navigate(`/members/member/${id}`);
   };
+  const handleDelete = async (id) => {
+    const resp = await axiosInstance.delete(`${CONSTANTS.MEMBERS_API}/${id}`)
+    if(resp.status != 200){
+      // handle error
+      return
+    }
+    setUserData(userDatas=>{
+      return userDatas.filter(userData=> userData.id != id)
+    })
+  }
   const handleView2 = (id) => {
    
     navigate(`/members/addmember`);
@@ -85,6 +110,7 @@ export default function MembersPage() {
             data={userData}
             onSelectionChange={handleSelectionChange}
             onView={handleView}
+            onDelete={handleDelete}
           />{" "}
         </>
       </Box>
