@@ -5,11 +5,18 @@ export const userColumns = [
     { title: "Company Name", field: "companyname" },
     { title: "Designation", field: "designation" },
     { title: "Phone Number", field: "phonenumber" },
-    { title: "Subscription", field: "status" },
-    { title: "Rating", field: "rating" },
-    { title: "Membership Status", field: "status" },
+    // { title: "Subscription", field: "status" },
+    // { title: "Rating", field: "rating" },
+    // { title: "Membership Status", field: "status" },
 
   ];
+  export const productColums = [
+    {title:"Product Name",field:"productname"},
+    {title:"Product Image",field:"image"},
+    {title:"Seller Price",field:"price"},
+    {title:"Product Description",field:"description"},
+    {title:"Date",field:""},
+  ]
   
   export const userData = [
     {

@@ -1,17 +1,41 @@
 import { Box, Grid, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { StyledButton } from "../../../ui/StyledButton";
 import StyledSearchbar from "../../../ui/StyledSearchbar";
 import { ReactComponent as FilterIcon } from "../../../assets/icons/FilterIcon.svg";
 import StyledTable from "../../../ui/StyledTable";
-import { userColumns, userData } from "../../../assets/json/TableData";
-import RemoveProduct from "../../../components/Removeproduct";
+import { productColums, userData } from "../../../assets/json/TableData";
+import axiosInstance from "../../../api/axios-interceptor";
+import CONSTANTS from "../../../constants";
 export default function MembersPage() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);
-  const [removeOpen, setRemoveOpen] = useState(false);
+  const [productData, setProductData] = useState([]);
+  useEffect(() => {
+    async function init() {
+      const response = await axiosInstance.get(CONSTANTS.PRODUCTS_API);
+      if (response.status != 200) {
+        // handle return
+        return;
+      }
+      console.log(response.data.data);
+      setProductData(response.data.data);
+    }
+    init();
+  }, []);
+  const handleDelete = async (id) => {
+    const resp = await axiosInstance.delete(`${CONSTANTS.PRODUCTS_API}/${id}`);
+
+    if (resp.status != 200) {
+      // handle error
+      return;
+    }
+    setProductData((products) =>
+      products.filter((product) => product.id != id)
+    );
+  };
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -29,9 +53,9 @@ export default function MembersPage() {
   const handleEdit = () => {
     navigate(`/products/addproduct`);
   };
-  const handleDelete = () => {
-    setRemoveOpen(true);
-  };
+  // const handleDelete = () => {
+  //   setRemoveOpen(true);
+  // };
   const handleCloseDelete = () => {
     setRemoveOpen(false);
   };
@@ -102,13 +126,12 @@ export default function MembersPage() {
             border={"1px solid rgba(0, 0, 0, 0.12)"}
           >
             <StyledTable
-              columns={userColumns}
-              data={userData}
+              columns={productColums}
+              data={productData}
               onSelectionChange={handleSelectionChange}
-              onModify={handleEdit}
               onDelete={handleDelete}
+              // onView={handleView}
             />{" "}
-            <RemoveProduct open={removeOpen} onClose={handleCloseDelete} />
           </Box>
         </>
       </Box>

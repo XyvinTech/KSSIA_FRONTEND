@@ -15,26 +15,46 @@ const UserCard = ({ user }) => {
       padding={"10px"} minHeight={'420px'}
       position="relative"
     >
-      <Grid item md={4} xs={12} justifyContent={"center"} alignItems={"center"}>
-        <img
-          src={user?.img}
-          alt="img"
-          width={"216px"}
-          height={"216px"}
-          style={{ borderRadius: "12px" }}
-        />
-      </Grid>
-
-      <Grid item md={6} xs={12} justifyContent={"center"} alignItems={"center"}>
-        <Stack spacing={"10px"}>
-          <Typography
-            variant="h8"
-            color={"rgba(44, 40, 41, 0.6)"}
-            sx={{ display: "flex", alignItems: "center", gap: "8px" }}
-          >
-            <StarIcon /> {user?.id}
-          </Typography>
-
+      
+      <Box
+        position="absolute"
+        top={10}
+        right={10}
+        bgcolor="orange"
+        borderRadius="20px"
+        padding="2px 8px"
+        display="flex"
+        alignItems="center"
+      >
+        <Typography variant="caption" color="white" fontWeight="bold">
+          Premium
+        </Typography>
+      </Box>
+      
+      {user?.img ? (
+        <Grid
+          item
+          md={4}
+          xs={6}
+          justifyContent={"center"}
+          alignItems={"center"}
+        >
+          <img
+            src={user?.img}
+            alt="img"
+            width={"118px"}
+            height={"118px"}
+            style={{ borderRadius: "12px" }}
+          />
+        </Grid>
+      ) : null}
+      <Grid item md={8} xs={6}>
+        <Stack spacing={1}>
+          {/* {user?.id ? (
+            <Typography variant="h8" color={"rgba(44, 40, 41, 0.6)"}>
+              {user?.id}
+            </Typography>
+          ) : null} */}
           <Typography variant="h5" color={"#4A4647"}>
             {user?.name}
           </Typography>

@@ -1,11 +1,13 @@
 import { Box, Grid, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { StyledButton } from "../../../ui/StyledButton";
 import StyledSearchbar from "../../../ui/StyledSearchbar";
 import { ReactComponent as FilterIcon } from "../../../assets/icons/FilterIcon.svg";
 import StyledTable from "../../../ui/StyledTable";
-import { userColumns, userData } from "../../../assets/json/TableData";
+import { userColumns } from "../../../assets/json/TableData";
+import axiosInstance from "../../../api/axios-interceptor";
+import CONSTANTS from "../../../constants";
 import SuspendProfile from "../../../components/SuspendProfile";
 import DeleteProfile from "../../../components/DeleteProfile";
 export default function MembersPage() {
@@ -14,6 +16,18 @@ export default function MembersPage() {
   const [suspendOpen, setSuspendOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [isChange, setIsChange] = useState(false);
+  const [userData, setUserData] = useState([]);
+  useEffect(() => {
+    async function fetchUserData() {
+      const response = await axiosInstance.get(CONSTANTS.MEMBERS_API);
+      if (response.status != 200) {
+        // handle error
+        return;
+      }
+      setUserData(response.data.data);
+    }
+    fetchUserData();
+  }, []);
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -27,9 +41,9 @@ export default function MembersPage() {
   const handleCloseSuspend = () => {
     setSuspendOpen(false);
   };
-  const handleDelete = () => {
-    setDeleteOpen(true);
-  };
+  // const handleDelete = () => {
+  //   setDeleteOpen(true);
+  // };
   const handleCloseDelete = () => {
     setDeleteOpen(false);
   };
@@ -40,13 +54,29 @@ export default function MembersPage() {
     console.log("View item:", id);
     navigate(`/members/member/${id}`);
   };
+  const handleDelete = async (id) => {
+    const resp = await axiosInstance.delete(`${CONSTANTS.MEMBERS_API}/${id}`);
+    if (resp.status != 200) {
+      // handle error
+      return;
+    }
+    setUserData((userDatas) => {
+      return userDatas.filter((userData) => userData.id != id);
+    });
+  };
   const handleView2 = (id) => {
     navigate(`/members/addmember`);
   };
   return (
     <>
       {" "}
-      <Box padding={"10px"} bgcolor={"#FFFFFF"}height={'70px'}display={'flex'}alignItems={'center'}>
+      <Box
+        padding={"10px"}
+        bgcolor={"#FFFFFF"}
+        height={"70px"}
+        display={"flex"}
+        alignItems={"center"}
+      >
         <Grid container alignItems="center">
           <Grid item xs={6}>
             <Typography variant="h4" color={"#4A4647"}>
