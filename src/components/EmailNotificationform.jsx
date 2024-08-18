@@ -35,7 +35,7 @@ export default function EmailNotificationform() {
     setAdditionalPhones([...additionalPhones, ""]);
   };
   return (
-    <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"4px"}>
+    <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"12px"}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={4}>
         <Grid item xs={12}>
@@ -196,13 +196,13 @@ export default function EmailNotificationform() {
        
          
           <Grid item xs={6}></Grid> 
-          <Grid item xs={6}>
+          <Grid item xs={6} display={'flex'} justifyContent={'end'}>
             {" "}
             <Stack direction={"row"} spacing={2}>
               <StyledButton
                 name="Cancel"
                 variant="secondary"
-                style={{ width: "auto" }}
+            
               >
                 Cancel
               </StyledButton>
@@ -210,7 +210,7 @@ export default function EmailNotificationform() {
                 name="Save"
                 variant="primary"
                 type="submit"
-                style={{ width: "auto" }}
+              
               >
                 Save
               </StyledButton>

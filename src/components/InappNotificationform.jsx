@@ -35,7 +35,7 @@ export default function InappNotificationform() {
     setAdditionalPhones([...additionalPhones, ""]);
   };
   return (
-    <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"4px"}>
+    <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"12px"}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={4}>
         <Grid item xs={12}>
@@ -173,7 +173,7 @@ export default function InappNotificationform() {
        
          
           <Grid item xs={6}></Grid> 
-          <Grid item xs={6}>
+          <Grid item xs={6} display={'flex'} justifyContent={'end'}>
             {" "}
             <Stack direction={"row"} spacing={2}>
               <StyledButton

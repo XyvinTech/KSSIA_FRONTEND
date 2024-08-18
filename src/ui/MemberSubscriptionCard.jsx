@@ -1,8 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { Typography, Stack, Grid, Box, Divider } from "@mui/material";
 import { StyledButton } from "./StyledButton";
+import RenewForm from "../components/Members/RenewForm";
+import SuspendProfile from "../components/SuspendProfile";
 
 export default function MemberSubscriptionCard() {
+  const [renew, setRenew] = useState(false);
+
+  const [suspend, setSuspend] = useState(false);
+  const handleRenew = () => {
+    setRenew(true);
+  };
+  const handleCloseRenew = () => {
+    setRenew(false);
+  };
+  const handleSuspend = () => {
+    setSuspend(true);
+  };
+  const handleCloseSuspend = () => {
+    setSuspend(false);
+  };
   return (
     <Grid
       container
@@ -90,10 +107,20 @@ export default function MemberSubscriptionCard() {
         <Grid container justifyContent="flex-end">
           <Grid item xs={6}>
             <Stack direction="row" spacing={2} justifyContent="flex-end">
-              <StyledButton name="Suspend" variant="third" />
+              <StyledButton
+                name="Suspend"
+                variant="third"
+                onClick={handleSuspend}
+              />
 
-              <StyledButton name="Renew" variant="primary" />
-            </Stack>
+              <StyledButton
+                name="Renew"
+                variant="primary"
+                onClick={handleRenew}
+              />
+            </Stack>{" "}
+            <RenewForm open={renew} onClose={handleCloseRenew} />
+            <SuspendProfile open={suspend} onClose={handleCloseSuspend} />
           </Grid>
         </Grid>
       </Grid>

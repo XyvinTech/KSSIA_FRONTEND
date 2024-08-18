@@ -36,7 +36,7 @@ export default function Addnewrole() {
     setAdditionalPhones([...additionalPhones, ""]);
   };
   return (
-    <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"4px"}>
+    <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"12px"}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={4}>
         

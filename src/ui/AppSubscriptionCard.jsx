@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { Typography, Stack, Grid, Box, Divider } from "@mui/material";
 import { StyledButton } from "./StyledButton";
+import RenewForm from "../components/Members/RenewForm";
 
 export default function AppSubscriptionCard() {
+  const [renew, setRenew] = useState(false);
+  const handleRenew = () => {
+    setRenew(true);
+  };
+  const handleCloseRenew = () => {
+    setRenew(false);
+  };
   return (
     <Grid
       container
@@ -89,9 +97,10 @@ export default function AppSubscriptionCard() {
         <Grid container justifyContent="flex-end">
           <Grid item xs={7}>
             <Stack direction="row" spacing={2} justifyContent="flex-end">
-              <StyledButton name="Change Subscription" variant="third" />
-              <StyledButton name="Renew" variant="primary" />
+              <StyledButton name="Change Subscription" variant="third"onClick={handleRenew} />
+              <StyledButton name="Renew" variant="primary"onClick={handleRenew} />
             </Stack>
+            <RenewForm open={renew} onClose={handleCloseRenew} />
           </Grid>
         </Grid>
       </Grid>
