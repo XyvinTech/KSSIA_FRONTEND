@@ -7,9 +7,14 @@ import { StyledMultilineTextField } from "../ui/StyledMultilineTextField ";
 import StyledInput from "../ui/StyledInput";
 import { Controller, useForm } from "react-hook-form";
 import StyledSelectField from "../ui/StyledSelectField";
+import CONSTANTS from "../constants";
+import { createMember } from "../api/members-api";
+import { useNavigate } from "react-router-dom";
 
-
+import axiosInstance from "../api/axios-interceptor";
 export default function SingleAddform() {
+  const navigate = useNavigate();
+
   const {
     control,
     handleSubmit,
@@ -27,8 +32,25 @@ export default function SingleAddform() {
     { value: "option2", label: "Option 2" },
     { value: "option3", label: "Option 3" },
   ];
-  const onSubmit = (data) => {
-    console.log("Form data:", data);
+  const onSubmit = async (data) => {
+    console.log("inside");
+    data.business_category = data.business_category.value;
+    data.sub_category= data.sub_category.value;
+    data.status=data.status.value;
+    // currently dealing only one website
+    data.websites = [{name:"test",url:data.website}]
+
+    try {
+      const resp =await axiosInstance.post(CONSTANTS.MEMBERS_API,data)
+      if(resp.status != 201){
+        // hand;e error
+        return
+      }
+      navigate(`/members`);     
+      
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const addPhoneNumber = () => {
@@ -48,7 +70,7 @@ export default function SingleAddform() {
               First Name
             </Typography>
             <Controller
-              name="firstname"
+              name="first_name"
               control={control}
               defaultValue=""
               rules={{ required: "First Name is required" }}
@@ -73,10 +95,9 @@ export default function SingleAddform() {
               Middle Name
             </Typography>
             <Controller
-              name="middlename"
+              name="middle_name"
               control={control}
               defaultValue=""
-              rules={{ required: "Middle Name is required" }}
               render={({ field }) => (
                 <>
                   <StyledInput placeholder="Enter the Middle Name" {...field} />
@@ -98,7 +119,7 @@ export default function SingleAddform() {
               Last Name
             </Typography>
             <Controller
-              name="lastname"
+              name="last_name"
               control={control}
               defaultValue=""
               rules={{ required: "Last Name is required" }}
@@ -123,7 +144,7 @@ export default function SingleAddform() {
               Member ID
             </Typography>
             <Controller
-              name="memberid"
+              name="membership_id"
               control={control}
               defaultValue=""
               rules={{ required: "Member ID is required" }}
@@ -147,10 +168,10 @@ export default function SingleAddform() {
               Blood Group
             </Typography>
             <Controller
-              name="bloodgroup"
+              name="blood_group"
               control={control}
               defaultValue=""
-              rules={{ required: "Blood group is required" }}
+              // rules={{ required: "Blood group is required" }}
               render={({ field }) => (
                 <>
                   <StyledInput placeholder="Enter the Blood Group" {...field} />
@@ -171,7 +192,7 @@ export default function SingleAddform() {
               Photo
             </Typography>
             <Controller
-              name="photo"
+              name="profile_picture"
               control={control}
               defaultValue=""
               rules={{ required: "Image is required" }}
@@ -201,7 +222,6 @@ export default function SingleAddform() {
               name="bio"
               control={control}
               defaultValue=""
-              rules={{ required: "Add Description" }}
               render={({ field: { onChange } }) => (
                 <>
                   <StyledMultilineTextField
@@ -225,7 +245,7 @@ export default function SingleAddform() {
               Email ID
             </Typography>
             <Controller
-              name="emails"
+              name="email"
               control={control}
               defaultValue=""
               rules={{ required: "Email ID is required" }}
@@ -249,7 +269,7 @@ export default function SingleAddform() {
               Phone number
             </Typography>
             <Controller
-              name="phone"
+              name="phone_number"
               control={control}
               defaultValue=""
               rules={{ required: "Phone number is required" }}
@@ -267,7 +287,7 @@ export default function SingleAddform() {
                 name="landline"
                 control={control}
                 defaultValue=""
-                rules={{ required: "Landline number is required" }}
+                // rules={{ required: "Landline number is required" }}
                 render={({ field }) => (
                   <>
                     <StyledInput placeholder="Enter landline number" {...field} />
@@ -339,7 +359,7 @@ export default function SingleAddform() {
               Company Name
             </Typography>
             <Controller
-              name="companyname"
+              name="company_name"
               control={control}
               defaultValue=""
               rules={{ required: "Company Name is required" }}
@@ -420,7 +440,7 @@ export default function SingleAddform() {
               Company Email
             </Typography>
             <Controller
-              name="companyemail"
+              name="company_email"
               control={control}
               defaultValue=""
               rules={{ required: "Company Email is required" }}
@@ -447,10 +467,10 @@ export default function SingleAddform() {
               Website
             </Typography>
             <Controller
-              name="website"
+              name="websites"
               control={control}
               defaultValue=""
-              rules={{ required: "Website is required" }}
+              // rules={{ required: "Website is required" }}
               render={({ field }) => (
                 <>
                   <StyledInput
@@ -474,7 +494,7 @@ export default function SingleAddform() {
               Business category
             </Typography>
             <Controller
-              name="businesscategory"
+              name="business_category"
               control={control}
               defaultValue=""
               rules={{ required: "Business category is required" }}
@@ -502,7 +522,7 @@ export default function SingleAddform() {
               Subcategory
             </Typography>
             <Controller
-              name="subcategory"
+              name="sub_category"
               control={control}
               defaultValue=""
               rules={{ required: "Subcategory is required" }}

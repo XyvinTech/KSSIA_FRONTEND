@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Grid, Stack } from "@mui/material";
 
 import { StyledEventUpload } from "../ui/StyledEventUpload";
@@ -7,8 +7,12 @@ import { StyledMultilineTextField } from "../ui/StyledMultilineTextField ";
 import StyledInput from "../ui/StyledInput";
 import { Controller, useForm } from "react-hook-form";
 import StyledSelectField from "../ui/StyledSelectField";
+import axiosInstance from "../api/axios-interceptor";
+import CONSTANTS from "../constants";
+import { useNavigate } from "react-router-dom";
 
 export default function Addproductform() {
+  const navigate = useNavigate();
   const {
     control,
     handleSubmit,
@@ -17,7 +21,22 @@ export default function Addproductform() {
   } = useForm();
   const [isChecked, setIsChecked] = useState(false);
   const [additionalPhones, setAdditionalPhones] = useState([]);
+  const [users,setUsers] = useState([])
 
+  useEffect(()=>{
+    async function init(){
+      const resp = await axiosInstance.get(CONSTANTS.MEMBERS_API);
+      const refinedDat = resp.data.data.map(user=>(
+        {
+          label : user.name,
+          value :user.id
+        }
+      ))
+      
+      setUsers(refinedDat)
+    }
+    init()
+  },[])
   const handleSwitchChange = (e) => {
     setIsChecked(e.target.checked);
   };
@@ -26,8 +45,23 @@ export default function Addproductform() {
     { value: "option2", label: "Option 2" },
     { value: "option3", label: "Option 3" },
   ];
-  const onSubmit = (data) => {
+  const onSubmit = async  (data) => {
     console.log("Form data:", data);
+    try {
+      data.seller_id =data.seller_id.value
+      data.unit =data.unit.value
+      delete data.seller
+      delete data.mcq
+      const response = await axiosInstance.post(CONSTANTS.PRODUCTS_API,data)
+      if(response.status != 201) {
+        // handle error 
+        return
+      } 
+      navigate(`/products`);
+    } catch (error) {
+      console.log(error);
+      
+    }
   };
 
   const addPhoneNumber = () => {
@@ -47,7 +81,7 @@ export default function Addproductform() {
               Name of the Seller
             </Typography>
             <Controller
-              name="seller"
+              name="seller_id"
               control={control}
               defaultValue=""
               rules={{ required: "Seller name is required" }}
@@ -55,7 +89,7 @@ export default function Addproductform() {
                 <>
                   <StyledSelectField
                     placeholder="Enter Seller name"
-                    options={option}
+                    options={users}
                     {...field}
                   />
                   {errors.seller && (
@@ -99,7 +133,7 @@ export default function Addproductform() {
               Product image
             </Typography>
             <Controller
-              name="photo"
+              name="image"
               control={control}
               defaultValue=""
               rules={{ required: "Image is required" }}
@@ -126,7 +160,7 @@ export default function Addproductform() {
               Description
             </Typography>
             <Controller
-              name="desc"
+              name="description"
               control={control}
               defaultValue=""
               rules={{ required: "Product Name is required" }}
@@ -150,7 +184,7 @@ export default function Addproductform() {
              Actual price 
             </Typography>
             <Controller
-              name="actual"
+              name="price"
               control={control}
               defaultValue=""
               rules={{ required: "Actual price  is required" }}
@@ -174,7 +208,7 @@ export default function Addproductform() {
              Offer price 
             </Typography>
             <Controller
-              name="offer"
+              name="offer_price"
               control={control}
               defaultValue=""
               rules={{ required: "Offer price  is required" }}

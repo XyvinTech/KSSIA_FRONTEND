@@ -1,5 +1,5 @@
 import { Box, Divider, Grid, Stack, Tab, Tabs, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MembersPayments from "../../../components/MembersPayments";
 import AppSubscriptionCard from "../../../ui/AppSubscriptionCard";
 import MemberSubscriptionCard from "../../../ui/MemberSubscriptionCard";
@@ -8,7 +8,9 @@ import MembersRequirements from "../../../components/MemberRequirements";
 import MemberAnalytics from "../../../components/MemberAnalytics";
 import Review from "../../../components/Review";
 import MemberProfile from "../../../components/MemberProfile";
-
+import axiosInstance from "../../../api/axios-interceptor";
+import CONSTANTS from "../../../constants";
+import { useParams } from "react-router-dom";
 
 
 
@@ -16,7 +18,21 @@ import MemberProfile from "../../../components/MemberProfile";
 const MembersSinglepage = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [selectedRows, setSelectedRows] = useState([]);
+  const [userData ,setUserData] = useState({})
+  const { id } = useParams()
+  
+  useEffect(()=>{
+    async function init(){
 
+      const response = await axiosInstance.get(`${CONSTANTS.MEMBERS_API}/${id}`)
+      if(response.status != 200) {
+        // handle error
+        return
+      }
+      setUserData(response.data.data);
+    }
+    init()
+  },[id])
   const handleSelectionChange = (newSelectedIds) => {
     setSelectedRows(newSelectedIds);
     console.log("Selected items:", newSelectedIds);
@@ -33,7 +49,7 @@ const MembersSinglepage = () => {
     <>
       <Box padding={"20px"} bgcolor={"#FFFFFF"}>
         <Typography variant="h4" color={"#4A4647"}>
-          Members list / Prabodhan Fitzgerald
+          Members list / {userData.name}
         </Typography>
       </Box>{" "}
       <Divider/>
@@ -75,7 +91,7 @@ const MembersSinglepage = () => {
       <Box padding="30px" marginBottom={4}>
         {selectedTab === 0 && (
              <Grid spacing={2}>
-             <MemberProfile/>
+             <MemberProfile data={userData}/>
            </Grid>
         )}
         {selectedTab === 1 && (

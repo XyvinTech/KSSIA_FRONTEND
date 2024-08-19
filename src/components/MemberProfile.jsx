@@ -5,17 +5,17 @@ import imag from "../assets/images/staff.png";
 import UserCard from "../ui/Usercard";
 import UserCard2 from "../ui/Usercard2";
 
-const MemberProfile = () => {
+const MemberProfile = ({data}) => {
   
-  const data = {
-    id: "4.5",
-    name: "Prabodhan Fitzgerald",
-    title: "Member ID: KSSIA-GM-0934",
-    phone: "+1234567890",
-    email: "john.doe@example.com",
-    address:"123,cross ,Lorel ipsumLorel ipsum,567788",
-    img: imag,
-  };
+  // const data = {
+  //   id: "4.5",
+  //   name: "Prabodhan Fitzgerald",
+  //   title: "Member ID: KSSIA-GM-0934",
+  //   phone: "+1234567890",
+  //   email: "john.doe@example.com",
+  //   address:"123,cross ,Lorel ipsumLorel ipsum,567788",
+  //   img: imag,
+  // };
 
  
   return (

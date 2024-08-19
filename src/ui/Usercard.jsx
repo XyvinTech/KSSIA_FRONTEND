@@ -49,11 +49,11 @@ const UserCard = ({ user }) => {
       ) : null}
       <Grid item md={8} xs={6}>
         <Stack spacing={1}>
-          {user?.id ? (
+          {/* {user?.id ? (
             <Typography variant="h8" color={"rgba(44, 40, 41, 0.6)"}>
               {user?.id}
             </Typography>
-          ) : null}
+          ) : null} */}
           <Typography variant="h5" color={"#4A4647"}>
             {user?.name}
           </Typography>
