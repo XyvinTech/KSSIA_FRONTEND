@@ -8,59 +8,63 @@ import StyledInput from "../ui/StyledInput";
 import { Controller, useForm } from "react-hook-form";
 import StyledSelectField from "../ui/StyledSelectField";
 import { useNewsStore } from "../store/newsStore";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { addFile } from "../api/upload-api";
 
-export default function NewsAddnewform({ isUpdate }) {
+export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
   const {
     control,
     handleSubmit,
     reset,
     formState: { errors },
     setValue,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      category: null,
+      title: "",
+      image: "",
+      content: "",
+    },
+  });
+  const navigate = useNavigate();
   const { id } = useParams();
   const { news, fetchNewsById, addNewses, updateNews } = useNewsStore();
-  const [file, setFile] = useState(null);
 
   useEffect(() => {
     if (isUpdate && id) {
       fetchNewsById(id).then(() => {
-        setValue("category", { value: news.category, label: news.category });
-
-        setValue("title", news.title);
-        setValue("image", news.image);
-        setValue("content", news.content);
+        if (news) {
+          setValue("category", { value: news.category, label: news.category });
+          setValue("title", news.title);
+          setValue("content", news.content);
+        
+          setValue("image", news.image);
+        }
       });
     }
-  }, [id, isUpdate, news, setValue]);
+  }, [id, isUpdate, fetchNewsById, news, setValue]);
+  
+
   const option = [
     { value: "businesses", label: "businesses" },
     { value: "option2", label: "Option 2" },
     { value: "option3", label: "Option 3" },
   ];
   const onSubmit = async (data) => {
-    // try {
-    //   let imageUrl = data.image; // Default to current image URL if any
-
-    //   if (file) {
-    //     imageUrl = await uploadFile(file); // Upload file and get URL
-    //   }
-
-      const formData = {
-        category: data?.category.value,
-        title: data?.title,
-        content: data?.content,
-        image: imageUrl, // Use the uploaded file URL
-      };
-
-      if (isUpdate && id) {
-        updateNews(id, formData);
-      } else {
-        addNewses(formData);
-      }
-  
+    const formData = new FormData();
+    formData.append("category", data.category.value);
+    formData.append("title", data.title);
+    formData.append("content", data.content);
+    formData.append("image", data.image);
+    if (isUpdate && id) {
+      await updateNews(id, formData);
+      navigate(`/news`);
+    } else {
+      await addNewses(formData);
+      setSelectedTab(0);
+    }
+   
   };
-
   return (
     <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"12px"}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -131,15 +135,14 @@ export default function NewsAddnewform({ isUpdate }) {
               control={control}
               defaultValue=""
               rules={{ required: "File is required" }}
-              render={({ field: { onChange } }) => (
+              render={({ field }) => (
                 <>
                   <StyledEventUpload
                     label="Upload image here"
-                    onChange={(file) => {
-                      setFile(file); // Set file state
-                      onChange(file); // Pass to react-hook-form
+                    {...field}
+                    onChange={(selectedFile) => {
+                      field.onChange(selectedFile);
                     }}
-
                   />
                   {errors.image && (
                     <span style={{ color: "red" }}>{errors.image.message}</span>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Grid, Stack } from "@mui/material";
 
 import { StyledEventUpload } from "../ui/StyledEventUpload";
@@ -9,6 +9,7 @@ import { Controller, useForm } from "react-hook-form";
 import StyledSelectField from "../ui/StyledSelectField";
 import DropZoneforForm from "../ui/DropzoneforForm";
 import { useNotificationStore } from "../store/notificationStore";
+import { useDropDownStore } from "../store/dropDownStore";
 
 export default function InappNotificationform() {
   const {
@@ -17,37 +18,37 @@ export default function InappNotificationform() {
     reset,
     formState: { errors },
   } = useForm();
-  const [imageFile, setImageFile] = useState(null);
+
   const { addAppNotifications } = useNotificationStore();
-  const option = [
-    { value: "option1", label: "Option 1" },
-    { value: "option2", label: "Option 2" },
-    { value: "option3", label: "Option 3" },
-  ];
+  const { users, fetchUsers } = useDropDownStore();
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+  const option =
+    users && Array.isArray(users)
+      ? users.map((user) => ({
+          value: user._id,
+          label: `${user.name.first_name} ${user.name.middle_name} ${user.name.last_name}`,
+        }))
+      : [];
   const onSubmit = async (data) => {
-    // let imageUrl = "";
-  
-    // if (imageFile) {
-    //   try {
-    //     imageUrl = await uploadFile(imageFile);
-    //   } catch (error) {
-    //     console.error("Failed to upload image:", error);
-    //     return;
-    //   }
-    // }
-  
-    const formData = {
-      to: data?.to.value,
-      subject: data?.subject,
-      content: data?.content,
-      link_url: data?.link_url,
-      media_url: imageUrl ? imageUrl : "",
-    };
-  
+    const formData = new FormData();
+
+    const userIds = data.to.map(user => user.value);
+    formData.append("to", JSON.stringify(userIds));
+    formData.append("subject", data?.subject);
+    formData.append("content", data?.content);
+    formData.append("link_url", data?.link_url);
+
+    if (data?.file) {
+      formData.append("image", data.file); // Assuming 'file' is an array from file input
+    }
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
     await addAppNotifications(formData);
     reset(); // Optionally reset the form after submission
   };
-  
 
   return (
     <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"12px"}>
@@ -72,6 +73,7 @@ export default function InappNotificationform() {
                   <StyledSelectField
                     placeholder="Select member"
                     options={option}
+                    isMulti
                     {...field}
                   />
                   {errors.to && (
@@ -146,20 +148,21 @@ export default function InappNotificationform() {
               Upload photo or video
             </Typography>
             <Controller
-              name="media_url"
+              name="file"
               control={control}
               defaultValue=""
               rules={{ required: "File is required" }}
-              render={({ field: { onChange } }) => (
+              render={({ field }) => (
                 <>
                   <StyledEventUpload
-                    label="Upload your file"
-                    onChange={onChange}
+                    label="Upload image here"
+                    {...field}
+                    onChange={(selectedFile) => {
+                      field.onChange(selectedFile);
+                    }}
                   />
-                  {errors.media_url && (
-                    <span style={{ color: "red" }}>
-                      {errors.media_url.message}
-                    </span>
+                  {errors.file && (
+                    <span style={{ color: "red" }}>{errors.file.message}</span>
                   )}
                 </>
               )}

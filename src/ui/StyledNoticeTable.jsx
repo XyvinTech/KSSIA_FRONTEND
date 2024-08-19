@@ -5,9 +5,11 @@ import { ReactComponent as FilterIcon } from "../assets/icons/FilterIcon.svg";
 import StyledTable from "./StyledTable";
 import { userColumns, userData } from "../assets/json/TableData";
 import { usePromotionStore } from "../store/promotionStore";
+import { useNavigate } from "react-router-dom";
 
 export default function StyledNoticeTable() {
   const [filterOpen, setFilterOpen] = useState(false);
+  const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
   const [isChange, setIsChange] = useState(false);
   const { promotions, fetchPromotion, deletePromotions } = usePromotionStore();
@@ -17,6 +19,9 @@ export default function StyledNoticeTable() {
 
   const handleCloseFilter = () => {
     setFilterOpen(false);
+  };
+  const handleEdit = (id) => {
+    navigate(`/promotion/edit/${id}`);
   };
   const handleSelectionChange = (newSelectedIds) => {
     setSelectedRows(newSelectedIds);
@@ -81,6 +86,7 @@ export default function StyledNoticeTable() {
             onSelectionChange={handleSelectionChange}
             onDelete={handleDelete}
             onDeleteRow={handleRowDelete}
+            onModify={handleEdit}
           />{" "}
         </Box>
       </>

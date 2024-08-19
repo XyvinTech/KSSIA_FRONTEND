@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Grid, Stack } from "@mui/material";
 import { StyledButton } from "../ui/StyledButton.jsx";
 import { StyledCalender } from "../ui/StyledCalender.jsx";
@@ -8,19 +8,22 @@ import { StyledEventUpload } from "../ui/StyledEventUpload.jsx";
 import StyledInput from "../ui/StyledInput.jsx";
 import { StyledMultilineTextField } from "../ui/StyledMultilineTextField .jsx";
 import { usePromotionStore } from "../store/promotionStore.js";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-export default function Promotionform() {
+export default function Promotionform({ isUpdate }) {
   const {
     control,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
+  const { id } = useParams();
   const [type, setType] = useState();
-  const [file, setFile] = useState(null);
-  const { addPromotions } = usePromotionStore();
+  const [submitting, setSubmitting] = useState(false);
+  const { addPromotions, fetchPromotionById, promotions, updatePromotion } =
+    usePromotionStore();
   const handleTypeChange = (selectedOption) => {
     setType(selectedOption.value);
   };
@@ -31,29 +34,66 @@ export default function Promotionform() {
     { value: "poster", label: "Poster" },
     { value: "notice", label: "Notice" },
   ];
+  useEffect(() => {
+    if (isUpdate && id) {
+      fetchPromotionById(id).then(() => {
+        if (promotions) {
+          setValue("type", { value: promotions.type, label: promotions.type });
+          setValue("startDate", promotions.startDate);
+          setValue("endDate", promotions.endDate);
+          setValue("title", promotions.notice_title || "");
+          // setValue("title", promotions.video_title || "");
+          setValue("description", promotions.notice_description || "");
+          setValue("link", promotions.notice_link || "");
+          setValue("yt_link", promotions.yt_link || "");
+          setType(promotions.type);
+        }
+      });
+    }
+  }, [id, isUpdate, fetchPromotionById, promotions, setValue]);
   const onSubmit = async (data) => {
-    const formData = {
-      startDate: data?.startDate,
-      endDate: data?.endDate,
-    };
+    setSubmitting(true);
+    const formData = new FormData();
+
+    formData.append("startDate", data?.startDate);
+    formData.append("endDate", data?.endDate);
+
     if (type === "notice") {
-      formData.type = "notice";
-      formData.notice_title = data?.title;
-      formData.notice_description = data?.description;
-      formData.notice_link = data?.link;
+      formData.append("type", "notice");
+      formData.append("notice_title", data?.title);
+      formData.append("notice_description", data?.description);
+      formData.append("notice_link", data?.link);
     }
+
     if (type === "banner") {
-      formData.type = "banner";
-      formData.file= data?.file;
+      formData.append("type", "banner");
+      if (data?.file) {
+        formData.append("file", data?.file);
+      }
     }
+    if (type === "poster") {
+      formData.append("type", "poster");
+      if (data?.file) {
+        formData.append("file", data?.file);
+      }
+    }
+
     if (type === "video") {
-      formData.type = "video";
-      formData. yt_link= data?. yt_link;
-      formData. video_title= data?. title;
-      formData.file= data?.upload_video;
+      formData.append("type", "video");
+      formData.append("yt_link", data?.yt_link);
+      formData.append("video_title", data?.title);
+      if (data?.upload_video) {
+        formData.append("file", data?.upload_video);
+      }
     }
-    await addPromotions(formData);
-    navigate(`/promotions`);
+    if (isUpdate && id) {
+      await updatePromotion(id, formData);
+      navigate(`/promotions`);
+    } else {
+      await addPromotions(formData);
+      navigate(`/promotions`);
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -106,11 +146,14 @@ export default function Promotionform() {
                 name="file"
                 control={control}
                 defaultValue=""
-                render={({ field: { onChange } }) => (
+                render={({ field }) => (
                   <>
                     <StyledEventUpload
                       label="Upload image here"
-                      onChange={onChange}
+                      {...field}
+                      onChange={(selectedFile) => {
+                        field.onChange(selectedFile);
+                      }}
                     />
                   </>
                 )}
@@ -298,7 +341,7 @@ export default function Promotionform() {
               <StyledButton
                 name="Preview"
                 variant="secondary"
-                style={{ width: "auto" }}
+                disabled={submitting}
               >
                 Preview
               </StyledButton>
@@ -306,7 +349,7 @@ export default function Promotionform() {
                 name="Publish"
                 variant="primary"
                 type="submit"
-                style={{ width: "auto" }}
+                disabled={submitting}
               >
                 Publish
               </StyledButton>

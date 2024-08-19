@@ -5,9 +5,11 @@ import { ReactComponent as FilterIcon } from "../assets/icons/FilterIcon.svg";
 import StyledTable from "./StyledTable";
 import { userColumns, userData } from "../assets/json/TableData";
 import { usePromotionStore } from "../store/promotionStore";
+import { useNavigate } from "react-router-dom";
 
 export default function StyledBannerTables() {
   const [filterOpen, setFilterOpen] = useState(false);
+  const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
   const [isChange, setIsChange] = useState(false);
   const { promotions, fetchPromotion, deletePromotions } = usePromotionStore();
@@ -31,6 +33,9 @@ export default function StyledBannerTables() {
   const handleRowDelete = async (id) => {
     await deletePromotions(id);
     setIsChange(!isChange);
+  };
+  const handleEdit = (id) => {
+    navigate(`/promotion/edit/${id}`);
   };
   useEffect(() => {
     fetchPromotion();
@@ -79,7 +84,9 @@ export default function StyledBannerTables() {
             onSelectionChange={handleSelectionChange}
             onDelete={handleDelete}
             onDeleteRow={handleRowDelete}
+            onModify={handleEdit}
           />{" "}
+
         </Box>
       </>
     </>

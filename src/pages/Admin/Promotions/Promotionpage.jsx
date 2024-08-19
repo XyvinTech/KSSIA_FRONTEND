@@ -9,6 +9,7 @@ export default function Promotionpage() {
   const handleView2 = (id) => {
     navigate(`/promotions/createpromotion`);
   };
+ 
   return (
     <>
       {" "}

@@ -55,11 +55,8 @@ const CustomTextField = styled(TextField)({
   },
 });
 
-export const StyledCalender = ({ label, onChange, placeholder }) => {
-  const [selectedDate, setSelectedDate] = React.useState(null);
-
+export const StyledCalender = ({ label, value, onChange, placeholder }) => {
   const handleDateChange = (date) => {
-    setSelectedDate(date);
     if (onChange) {
       onChange(date);
     }
@@ -70,7 +67,7 @@ export const StyledCalender = ({ label, onChange, placeholder }) => {
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <DatePicker
           label={label}
-          value={selectedDate}
+          value={value ? new Date(value) : null} // Ensure value is a Date object
           onChange={handleDateChange}
           renderInput={(params) => (
             <CustomTextField
@@ -84,3 +81,4 @@ export const StyledCalender = ({ label, onChange, placeholder }) => {
     </ThemeProvider>
   );
 };
+

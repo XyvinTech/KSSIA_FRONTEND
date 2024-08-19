@@ -26,6 +26,7 @@ import SignIn from "../pages/Admin/Signin/SignIn.jsx";
 import NewsAddnewform from "../components/NewsAddnewform.jsx";
 import EditNews from "../pages/Admin/NewsandUpdates/EditNews.jsx";
 import EventSingleView from "../pages/Admin/Eventss/Eventlist/EventSingleView.jsx";
+import EditPromotion from "../pages/Admin/Promotions/EditPromotion.jsx";
 
 const router = createBrowserRouter([
   {
@@ -149,6 +150,14 @@ const router = createBrowserRouter([
     element: (
       <AdminLayout>
         <CreatepromotionSinglepage />
+      </AdminLayout>
+    ),
+  },
+  {
+    path: "/promotion/edit/:id",
+    element: (
+      <AdminLayout>
+        <EditPromotion />
       </AdminLayout>
     ),
   },

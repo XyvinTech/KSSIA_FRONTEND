@@ -29,9 +29,9 @@ export const editNews = async (id, data) => {
 };
 export const addNews = async (data) => {
   try {
-    const response = await axiosInstance.post("/news", data, {
+    const response = await axiosInstance.post("/news", data,{
       headers: {
-        "Content-Type": "multipart/form-data",
+        'Content-Type': 'multipart/form-data',
       },
     });
     toast.success(response.data.message);

@@ -1,16 +1,11 @@
 import { Box, Grid, Stack, Tab, Tabs, Typography } from "@mui/material";
 import React, { useState } from "react";
-import SingleAddform from "../../../components/SingleAddform.jsx"
+import SingleAddform from "../../../components/SingleAddform.jsx";
 import BulkAddform from "../../../components/BulkAddform";
 import EmailNotificationform from "../../../components/EmailNotificationform.jsx";
 import InappNotificationform from "../../../components/InappNotificationform.jsx";
 import NewsAddnewform from "../../../components/NewsAddnewform.jsx";
 import NewsAllpage from "./NewsAllpage.jsx";
-
-
-
-
-
 
 const Newspage = () => {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -21,11 +16,10 @@ const Newspage = () => {
     console.log("Selected items:", newSelectedIds);
   };
 
-  
   const handleChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
-  
+
   return (
     <>
       <Tabs
@@ -47,9 +41,9 @@ const Newspage = () => {
           },
           "& .MuiTab-root": {
             textTransform: "none",
-            fontSize:'16px', 
+            fontSize: "16px",
             fontWeight: 600,
-            margin: '0 60px',
+            margin: "0 60px",
           },
           "& .Mui-selected": {
             color: "#004797",
@@ -58,24 +52,22 @@ const Newspage = () => {
       >
         <Tab label="All" />
         <Tab label="Add new" />
-        
       </Tabs>
       <Box padding="30px" marginBottom={4}>
         {selectedTab === 0 && (
-            <Grid container>
+          <Grid container>
             <Grid item md={12}>
-            <NewsAllpage/>
+              <NewsAllpage />
             </Grid>
           </Grid>
         )}
         {selectedTab === 1 && (
           <Grid container>
             <Grid item md={7}>
-            <NewsAddnewform/>
+              <NewsAddnewform setSelectedTab={setSelectedTab} />
             </Grid>
           </Grid>
         )}
-        
       </Box>
     </>
   );
