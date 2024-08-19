@@ -26,7 +26,7 @@ const MemberProfile = ({data}) => {
         <UserCard user={data} />
       </Grid>
       <Grid item md={6}>
-        <UserCard2 />
+        <UserCard2 data ={data} />
       </Grid>
     </Grid>
 

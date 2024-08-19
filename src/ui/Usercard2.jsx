@@ -4,7 +4,8 @@ import { ReactComponent as EmailIcon } from "../assets/icons/EmailIcon.svg";
 import { ReactComponent as PhoneIcon } from "../assets/icons/PhoneIcon.svg";
 import staffImage from "../assets/images/staff.png";
 
-const UserCard2 = () => {
+const UserCard2 = ({data}) => {
+  
   return (
     <Grid
       container
@@ -37,7 +38,7 @@ const UserCard2 = () => {
           />
         </Box>
         <Typography variant="h6" color="#000000" mt={1}>
-          Fitzer Textiles
+          {data.company_name}
         </Typography>
       </Grid>
       <Grid item xs={8}>
@@ -50,7 +51,7 @@ const UserCard2 = () => {
             </Grid>
             <Grid item xs={6} sx={{ textAlign: 'right' }}>
               <Typography variant="body2" color="#000000" noWrap>
-                General Manager
+                {data.designation}
               </Typography>
             </Grid>
 
@@ -61,7 +62,7 @@ const UserCard2 = () => {
             </Grid>
             <Grid item xs={6} sx={{ textAlign: 'right' }}>
               <Chip 
-                label="Textile" 
+                label={data.business_category} 
                 size="small" 
                 variant="outlined" 
                 sx={{ 
@@ -79,7 +80,7 @@ const UserCard2 = () => {
             </Grid>
             <Grid item xs={6} sx={{ textAlign: 'right' }}>
               <Chip 
-                label="Textile" 
+                label={data.sub_category} 
                 size="small" 
                 variant="outlined" 
                 sx={{ 
@@ -98,7 +99,7 @@ const UserCard2 = () => {
             <Grid item xs={6} sx={{ textAlign: 'right' }}>
               <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={0.5}>
                 <Typography variant="body2" color="#000000" noWrap>
-                  9865432123
+                  {data.company_phone_number}
                 </Typography>
                 <Box sx={{ minWidth: '24px' }}>
                   <PhoneIcon />
@@ -114,7 +115,7 @@ const UserCard2 = () => {
             <Grid item xs={6} sx={{ textAlign: 'right' }}>
               <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={0.5}>
                 <Typography variant="body2" color="#000000" noWrap>
-                  Prabfitz@gmail.com
+                  {data.company_email}
                 </Typography>
                 <Box sx={{ minWidth: '24px' }}>
                   <EmailIcon />
@@ -130,7 +131,7 @@ const UserCard2 = () => {
             <Grid item xs={6} sx={{ textAlign: 'right' }}>
               <Stack direction="row" justifyContent="flex-end" alignItems="flex-start" spacing={0.5}>
                 <Typography variant="body2" color="#000000">
-                  123, Cross, Lorel ipsum Lorel ipsum
+                  {data.address}
                 </Typography>
                 <Box sx={{ minWidth: '40px' }}>
                   <PhoneIcon />

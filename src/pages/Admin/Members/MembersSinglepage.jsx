@@ -109,7 +109,7 @@ const MembersSinglepage = () => {
         )}
         {selectedTab === 3 && (
           <Grid>
-          <MembersProducts/>
+          <MembersProducts userId = {id}/>
         </Grid>
         )}
         {selectedTab === 4 && (
