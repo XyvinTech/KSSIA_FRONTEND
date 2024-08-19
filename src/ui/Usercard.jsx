@@ -75,7 +75,7 @@ const UserCard = ({ user }) => {
           <Stack direction="row" alignItems="center" spacing={1}>
             <PhoneIcon />
             <Typography variant="h6" color={"#2C2829"}>
-              {user?.address}
+              {/* {user?.address?.street} */}
             </Typography>
           </Stack>
         </Stack>

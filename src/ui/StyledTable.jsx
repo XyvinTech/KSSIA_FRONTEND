@@ -104,7 +104,6 @@ const StyledTable = ({
   };
 
   const handleRowClick = (id) => {
-    console.log(id)
     onView(id);
   };
 
@@ -143,7 +142,7 @@ const StyledTable = ({
         return "default";
     }
   };
-  console.log('dddddddddd',data)
+  console.log('dddddddddd',columns)
   return (
     <Box bgcolor={"white"} borderRadius={"16px"}>
       <TableContainer sx={{ border: "none" }}>
@@ -185,7 +184,9 @@ const StyledTable = ({
                     key={column.field}
                     padding={column.padding || "normal"}
                     sx={{ cursor: "pointer" }}
-                    onClick={() => handleRowClick(row._id)}
+                    onClick={() => handleRowClick(row.id)
+                  
+                    }
                   >
                     {column.field === "status" ? (
                       <Box
@@ -224,14 +225,14 @@ const StyledTable = ({
                   <IconButton
                     aria-controls="simple-menu"
                     aria-haspopup="true"
-                    onClick={(event) => handleMenuOpen(event, row._id)}
+                    onClick={(event) => handleMenuOpen(event, row.id)}
                   >
                     <MoreVertIcon />
                   </IconButton>
                   <Menu
                     id="row-menu"
                     anchorEl={anchorEl}
-                    open={Boolean(anchorEl) && rowId === row._id}
+                    open={Boolean(anchorEl) && rowId === row.id}
                     onClose={handleMenuClose}
                   >
                     <MenuItem onClick={handleView}>View</MenuItem>
