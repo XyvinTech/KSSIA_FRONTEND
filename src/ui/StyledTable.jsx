@@ -101,7 +101,7 @@ const StyledTable = ({
     setRowId(null);
   };
 
-  const handleView = () => {
+  const handleView = (rowId) => {
     onView(rowId);
     handleMenuClose();
   };
@@ -253,7 +253,7 @@ const StyledTable = ({
                         <IconButton
                           aria-controls="simple-view"
                           aria-haspopup="true"
-                          onClick={handleView}
+                          onClick={()=>handleView(row._id)}
                         >
                           <ViewIcon />
                         </IconButton>

@@ -29,7 +29,7 @@ export default function Addproductform() {
       const refinedDat = resp.data.data.map(user=>(
         {
           label : user.name,
-          value :user.id
+          value :user._id
         }
       ))
       
@@ -50,6 +50,7 @@ export default function Addproductform() {
     try {
       data.seller_id =data.seller_id.value
       data.unit =data.unit.value
+      data.image = data.image.img
       delete data.seller
       delete data.mcq
       const response = await axiosInstance.post(CONSTANTS.PRODUCTS_API,data)

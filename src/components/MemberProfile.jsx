@@ -32,58 +32,63 @@ const MemberProfile = ({data}) => {
           <UserCard user={data} />
         </Grid>
         <Grid item md={5}>
-          <UserCard2 />
+          <UserCard2 company={data} />
         </Grid>
-        <Grid item md={12}>
-          <Typography variant="h5" color="#2C2829" mt={1}>
-            Social Media
-          </Typography>
-        </Grid>{" "}
-        <Grid item md={4} xs={12}>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="flex-start"
-            bgcolor="white"
-            borderRadius={"12px"}
-            p={2}
-          >
-            <InstagramIcon />
-            <Typography variant="h5" color="#6D6D6D" fontWeight={400} ml={1}>
-              John.346.ig
+        {!!data.social_media?.length &&
+        <>
+        
+          <Grid item md={12}>
+            <Typography variant="h5" color="#2C2829" mt={1}>
+              Social Media
             </Typography>
-          </Box>
-        </Grid>
-        <Grid item md={4} xs={12}>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="flex-start"
-            borderRadius={"12px"}
-            bgcolor="white"
-            p={2}
-          >
-            <LinkedInIcon />
-            <Typography variant="h5" color="#6D6D6D" fontWeight={400} ml={1}>
-              John Flitzgerald
-            </Typography>
-          </Box>
-        </Grid>
-        <Grid item md={4} xs={12}>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="flex-start"
-            bgcolor="white"
-            borderRadius={"12px"}
-            p={2}
-          >
-            <TwitterIcon />
-            <Typography variant="h5" color="#6D6D6D" fontWeight={400} ml={1}>
-              John.346.twitter
-            </Typography>
-          </Box>
-        </Grid>
+          </Grid>
+          <Grid item md={4} xs={12}>
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="flex-start"
+              bgcolor="white"
+              borderRadius={"12px"}
+              p={2}
+            >
+              <InstagramIcon />
+              <Typography variant="h5" color="#6D6D6D" fontWeight={400} ml={1}>
+                {data.social_media}
+              </Typography>
+            </Box>
+          </Grid>
+          <Grid item md={4} xs={12}>
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="flex-start"
+              borderRadius={"12px"}
+              bgcolor="white"
+              p={2}
+            >
+              <LinkedInIcon />
+              <Typography variant="h5" color="#6D6D6D" fontWeight={400} ml={1}>
+                {data.social_media}
+              </Typography>
+            </Box>
+          </Grid>
+          <Grid item md={4} xs={12}>
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="flex-start"
+              bgcolor="white"
+              borderRadius={"12px"}
+              p={2}
+            >
+              <TwitterIcon />
+              <Typography variant="h5" color="#6D6D6D" fontWeight={400} ml={1}>
+              {data.social_media}
+              </Typography>
+            </Box>
+          </Grid>
+        </>
+        }
         <Grid item md={12}>
           <Typography variant="h5" color="#2C2829" mt={1}>
             Websites & links
@@ -100,7 +105,7 @@ const MemberProfile = ({data}) => {
           >
             <WebsiteIcon />
             <Typography variant="h5" color="#6D6D6D" fontWeight={400} ml={1}>
-              Allindiaexports.com
+              {/* {data.websites} */}
             </Typography>
           </Box>
         </Grid>

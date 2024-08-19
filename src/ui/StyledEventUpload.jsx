@@ -60,6 +60,7 @@ export const StyledEventUpload = ({ label, placeholder, onChange, value}) => {
       setFileType(file.type.split('/')[0]); // Get the file type (image or video)
       const reader = new FileReader();
       reader.onload = (e) => {
+        file.img = e.target.result
         setFilePreview(e.target.result);
         onChange(file); // Pass the file object to the parent component
       };
