@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Box, Typography, Grid, Stack } from "@mui/material";
-
 import { StyledEventUpload } from "../ui/StyledEventUpload.jsx";
 import { StyledButton } from "../ui/StyledButton.jsx";
 import {StyledTime} from "../ui/StyledTime.jsx"
@@ -10,9 +9,11 @@ import { Controller, useForm } from "react-hook-form";
 import StyledSelectField from "../ui/StyledSelectField.jsx";
 import { ReactComponent as Delete } from "../assets/icons/delete.svg";
 import StyledSwitch from "/src/ui/StyledSwitch.jsx";
+import {createEvent,getEventById,updateEventById} from "/src/api/events-api.js";
 
 
-export default function AddEvent() {
+
+export default function AddEvent({ eventId }) {
   const {
     control,
     handleSubmit,
@@ -21,17 +22,107 @@ export default function AddEvent() {
   } = useForm();
   const [isChecked, setIsChecked] = useState(false);
   const [additionalPhones, setAdditionalPhones] = useState([]);
-
+  const [dateValue, setDate] = useState("");
+  const [speakers, setSpeakers] = useState([{ speaker_name: "", speaker_designation: "", speaker_image: "", speaker_role: "" }]);
   const handleSwitchChange = (e) => {
     setIsChecked(e.target.checked);
   };
+
   const option = [
     { value: "option1", label: "Option 1" },
     { value: "option2", label: "Option 2" },
     { value: "option3", label: "Option 3" },
   ];
-  const onSubmit = (data) => {
-    console.log("Form data:", data);
+  const removeIdFields = (obj) => {
+    if (Array.isArray(obj)) {
+      return obj.map(removeIdFields);
+    }
+    if (typeof obj === 'object' && obj !== null) {
+      const { _id,createdAt,updatedAt,__v, ...rest } = obj;
+      return Object.keys(rest).reduce((acc, key) => {
+        acc[key] = removeIdFields(rest[key]); 
+        return acc;
+      }, {});
+    }
+    return obj;
+  };
+
+  const onSubmit = async(data) => {
+    try {
+      const cleanedData = removeIdFields(data);
+      const formData = {
+        ...cleanedData,
+        speakers: removeIdFields(speakers)
+      };
+      
+      if (eventId) {
+        await updateEventById(eventId, formData); 
+      } else {
+        await createEvent(formData);
+        reset({
+          type: '',
+          name: '',
+          image: '',
+          date: '',
+          time: '',
+          platform: '',
+          meeting_link: '',
+          organiser_name: '',
+          organiser_company_name: '',
+          guest_image: '',
+          organiser_role: '',
+          activate: false,
+        });
+        setSpeakers([{ speaker_name: "", speaker_designation: "", speaker_image: "", speaker_role: "" }]);
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  };
+  const addSpeaker = () => {
+    setSpeakers([...speakers, { speaker_name: "", speaker_designation: "", speaker_image: "", speaker_role: "" }]);
+  };
+  useEffect(() => {
+    if (eventId) {
+      const fetchEventData = async () => {
+        try {
+          const response = await getEventById(eventId);
+          const eventData = response.data;
+          const updatedEventData = {
+            ...eventData,
+          };
+
+          reset(updatedEventData);
+          setSpeakers(updatedEventData.speakers || []);
+          setIsChecked(updatedEventData.activate || false);
+        } catch (error) {
+          console.error("Error fetching event data:", error);
+        }
+      };
+
+      fetchEventData();
+    }
+  }, [eventId, reset]);
+
+  // const handleSpeakerChange = (index, field, value) => {
+  //   const newSpeakers = [...speakers];
+  //   newSpeakers[index][field] = value;
+  //   setSpeakers(newSpeakers);
+  // };
+
+  const handleSpeakerChange = (index, field, value) => {
+    const updatedSpeakers = [...speakers];
+    updatedSpeakers[index] = {
+      ...updatedSpeakers[index],
+      [field]: value,
+    };
+    setSpeakers(updatedSpeakers);
+  };
+  
+
+  const removeSpeaker = (index) => {
+    const newSpeakers = speakers.filter((_, i) => i !== index);
+    setSpeakers(newSpeakers);
   };
 
   const addPhoneNumber = () => {
@@ -51,19 +142,21 @@ export default function AddEvent() {
              Type of event
             </Typography>
             <Controller
-              name="event"
+              name="type"
               control={control}
               defaultValue=""
               rules={{ required: "Type of event is required" }}
               render={({ field }) => (
                 <>
                   <StyledSelectField
-                    placeholder="Online"
+                    placeholder="Enter Event Type"
                     options={option}
                     {...field}
+                    value={option.find(opt => opt.value === field.value)}
+                    onChange={(selectedOption) => field.onChange(selectedOption.value)}
                   />
-                  {errors.event && (
-                    <span style={{ color: "red" }}>{errors.event.message}</span>
+                  {errors.type && (
+                    <span style={{ color: "red" }}>{errors.type.message}</span>
                   )}
                 </>
               )}
@@ -79,15 +172,15 @@ export default function AddEvent() {
               Name of event
             </Typography>
             <Controller
-              name="event"
+              name="name"
               control={control}
               defaultValue=""
               rules={{ required: "Name of event is required" }}
               render={({ field }) => (
                 <>
                   <StyledInput placeholder="Enter the name of event" {...field}/>
-                  {errors.event && (
-                    <span style={{ color: "red" }}>{errors.event.message}</span>
+                  {errors.name && (
+                    <span style={{ color: "red" }}>{errors.name.message}</span>
                   )}
                 </>
               )}
@@ -103,18 +196,19 @@ export default function AddEvent() {
               Event Image
             </Typography>
             <Controller
-              name="photo"
+              name="image"
               control={control}
               defaultValue=""
               rules={{ required: "Image is required" }}
-              render={({ field: { onChange } }) => (
+              render={({ field: { onChange,value } }) => (
                 <>
                   <StyledEventUpload
-                    label="Upload image here"
-                    onChange={onChange}
+                    label = "Upload image here"
+                    onChange = {onChange}
+                    value = {value}
                   />
-                  {errors.photo && (
-                    <span style={{ color: "red" }}>{errors.photo.message}</span>
+                  {errors.image && (
+                    <span style={{ color: "red" }}>{errors.image.message}</span>
                   )}
                 </>
               )}
@@ -132,11 +226,14 @@ export default function AddEvent() {
             <Controller
               name="date"
               control={control}
-              defaultValue=""
+              defaultValue={''}
               rules={{ required: " Date is required" }}
               render={({ field }) => (
                 <>
-                  <StyledCalender label="Select Date from Calender" {...field} />
+                  <StyledCalender label="Select Date from Calender" 
+                  {...field}
+                  value={field.value}
+                  />
                   {errors.date && (
                     <span style={{ color: "red" }}>{errors.date.message}</span>
                   )}
@@ -160,7 +257,10 @@ export default function AddEvent() {
               rules={{ required: "Time is required" }}
               render={({ field }) => (
                 <>
-                  <StyledTime label="Select Time" {...field} />
+                  <StyledTime label="Select Time" 
+                  {...field}
+                  value={field.value}
+                   />
                   {errors.time && (
                     <span style={{ color: "red" }}>{errors.time.message}</span>
                   )}{" "}
@@ -178,19 +278,21 @@ export default function AddEvent() {
              Virtual platform
             </Typography>
             <Controller
-              name="virtual"
+              name="platform"
               control={control}
               defaultValue=""
               rules={{ required: "Virtual platform is required" }}
               render={({ field }) => (
                 <>
                   <StyledSelectField
-                    placeholder="Online"
+                    placeholder="Select Virtual Platform"
                     options={option}
                     {...field}
+                    value={option.find(opt => opt.value === field.value)}
+                    onChange={(selectedOption) => field.onChange(selectedOption.value)}
                   />
-                  {errors.virtual && (
-                    <span style={{ color: "red" }}>{errors.virtual.message}</span>
+                  {errors.platform && (
+                    <span style={{ color: "red" }}>{errors.platform.message}</span>
                   )}
                 </>
               )}
@@ -206,15 +308,15 @@ export default function AddEvent() {
              Add link
             </Typography>
             <Controller
-              name="link"
+              name="meeting_link"
               control={control}
               defaultValue=""
               rules={{ required: "Link  is required" }}
               render={({ field }) => (
                 <>
                   <StyledInput placeholder="Add Meeting Link here" {...field}/>
-                  {errors.link && (
-                    <span style={{ color: "red" }}>{errors.link.message}</span>
+                  {errors.meeting_link && (
+                    <span style={{ color: "red" }}>{errors.meeting_link.message}</span>
                   )}
                 </>
               )}
@@ -230,15 +332,15 @@ export default function AddEvent() {
              Organiser name
             </Typography>
             <Controller
-              name="ogname"
+              name="organiser_name"
               control={control}
               defaultValue=""
               rules={{ required: "Organiser name  is required" }}
               render={({ field }) => (
                 <>
                   <StyledInput placeholder="Enter organiser name" {...field}/>
-                  {errors.ogname && (
-                    <span style={{ color: "red" }}>{errors.ogname.message}</span>
+                  {errors.organiser_name && (
+                    <span style={{ color: "red" }}>{errors.organiser_name.message}</span>
                   )}
                 </>
               )}
@@ -254,15 +356,15 @@ export default function AddEvent() {
              Organiser's company name
             </Typography>
             <Controller
-              name="ogcompname"
+              name="organiser_company_name"
               control={control}
               defaultValue=""
               rules={{ required: "Organiser's company name  is required" }}
               render={({ field }) => (
                 <>
                   <StyledInput placeholder="Enter organiser's company name" {...field}/>
-                  {errors.ogcompname && (
-                    <span style={{ color: "red" }}>{errors.ogcompname.message}</span>
+                  {errors.organiser_company_name && (
+                    <span style={{ color: "red" }}>{errors.organiser_company_name.message}</span>
                   )}
                 </>
               )}
@@ -278,18 +380,19 @@ export default function AddEvent() {
              Upload image
             </Typography>
             <Controller
-              name="photos"
+              name="guest_image"
               control={control}
               defaultValue=""
               rules={{ required: "Image is required" }}
-              render={({ field: { onChange } }) => (
+              render={({ field: { onChange,value } }) => (
                 <>
                   <StyledEventUpload
                     label="Upload Chief guest image here"
                     onChange={onChange}
+                    value={value}
                   />
-                  {errors.photos && (
-                    <span style={{ color: "red" }}>{errors.photos.message}</span>
+                  {errors.guest_image && (
+                    <span style={{ color: "red" }}>{errors.guest_image.message}</span>
                   )}
                 </>
               )}
@@ -305,24 +408,28 @@ export default function AddEvent() {
              Role
             </Typography>
             <Controller
-              name="roles"
+              name="organiser_role"
               control={control}
               defaultValue=""
               rules={{ required: "Role  is required" }}
               render={({ field }) => (
                 <>
                   <StyledInput placeholder="Enter speaker's role" {...field}/>
-                  {errors.roles && (
-                    <span style={{ color: "red" }}>{errors.roles.message}</span>
+                  {errors.organiser_role && (
+                    <span style={{ color: "red" }}>{errors.organiser_role.message}</span>
                   )}
                 </>
               )}
             />
           </Grid>
           <Grid item xs={6}></Grid>
-          <Grid item xs={6} style={{ textAlign: 'right' }} >
+          <Grid item xs={6}></Grid>
+          {/* <Grid item xs={6} style={{ textAlign: 'right' }} >
             <Delete/>
-          </Grid>
+          </Grid> */}
+
+        {speakers.map((speaker, index) => (
+          <React.Fragment key={index}>
           <Grid item xs={6}>
             <Typography
               sx={{ marginBottom: 1 }}
@@ -332,19 +439,24 @@ export default function AddEvent() {
             >
              Add speaker name
             </Typography>
-            <Controller
-              name="spr"
+            {/* <Controller
+              name="speaker.speaker_name"
               control={control}
               defaultValue=""
               rules={{ required: "Speaker name  is required" }}
               render={({ field }) => (
                 <>
                   <StyledInput placeholder="Enter speaker name" {...field}/>
-                  {errors.spr && (
-                    <span style={{ color: "red" }}>{errors.spr.message}</span>
+                  {errors.speaker_name && (
+                    <span style={{ color: "red" }}>{errors.speaker_name.message}</span>
                   )}
                 </>
               )}
+            /> */}
+            <StyledInput
+               placeholder="Enter speaker name"
+               value={speaker.speaker_name}
+               onChange={(e) => handleSpeakerChange(index, "speaker_name", e.target.value)}
             />
           </Grid>
           <Grid item xs={6}>
@@ -356,20 +468,25 @@ export default function AddEvent() {
             >
              Add speaker designation
             </Typography>
-            <Controller
-              name="des"
+            {/* <Controller
+              name="speaker_designation"
               control={control}
               defaultValue=""
               rules={{ required: "Speaker designstion  is required" }}
               render={({ field }) => (
                 <>
                   <StyledInput placeholder="Enter speaker designation" {...field}/>
-                  {errors.des && (
-                    <span style={{ color: "red" }}>{errors.des.message}</span>
+                  {errors.speaker_designation && (
+                    <span style={{ color: "red" }}>{errors.speaker_designation.message}</span>
                   )}
                 </>
               )}
-            />
+            /> */}
+             <StyledInput
+                  placeholder="Enter speaker designation"
+                  value={speaker.speaker_designation}
+                  onChange={(e) => handleSpeakerChange(index, "speaker_designation", e.target.value)}
+              />
           </Grid>
           <Grid item xs={6}>
             <Typography
@@ -380,23 +497,33 @@ export default function AddEvent() {
             >
              Upload image
             </Typography>
-            <Controller
-              name="chiefphoto"
+            {/* <Controller
+              name="speaker_image"
               control={control}
               defaultValue=""
-              rules={{ required: "Image is required" }}
-              render={({ field: { onChange } }) => (
+              // rules={{ required: "Image is required" }}
+              render={({ field: { onChange,value } }) => (
                 <>
                   <StyledEventUpload
-                    label="Upload Chief guest image here"
-                    onChange={onChange}
+                  label="Upload Chief guest image here"
+                  onChange={(e) => {
+                        handleSpeakerChange(index, "speaker_image", e);
+                  }}
+                  value={speaker.speaker_image}
                   />
-                  {errors.chiefphoto && (
-                    <span style={{ color: "red" }}>{errors.chiefphoto.message}</span>
+                  {errors.speaker_image && (
+                    <span style={{ color: "red" }}>{errors.speaker_image.message}</span>
                   )}
                 </>
               )}
-            />
+            />  */}
+            <StyledEventUpload
+                  label="Upload Chief guest image here"
+                  onChange={(e) => {
+                        handleSpeakerChange(index, "speaker_image", e);
+                  }}
+                  value={speaker.speaker_image}
+            /> 
           </Grid>
           <Grid item xs={6}>
             <Typography
@@ -407,27 +534,39 @@ export default function AddEvent() {
             >
              Role
             </Typography>
-            <Controller
-              name="des"
+            {/* <Controller
+              name="speaker_role"
               control={control}
               defaultValue=""
               rules={{ required: "Role  is required" }}
               render={({ field }) => (
                 <>
                   <StyledInput placeholder="Enter speaker's role" {...field}/>
-                  {errors.des && (
-                    <span style={{ color: "red" }}>{errors.des.message}</span>
+                  {errors.speaker_role && (
+                    <span style={{ color: "red" }}>{errors.speaker_role.message}</span>
                   )}
                 </>
               )}
+            /> */}
+            <StyledInput
+                  placeholder="Enter speaker's role"
+                  value={speaker.speaker_role}
+                  onChange={(e) => handleSpeakerChange(index, "speaker_role", e.target.value)}
             />
           </Grid>
+          <Grid item xs={6}></Grid>
+              <Grid item xs={6} style={{ textAlign: 'right' }}>
+                <Delete onClick={() => removeSpeaker(index)} />
+              </Grid>
+            </React.Fragment>
+          ))}
           <Grid item xs={12}>
             <Typography
               sx={{ marginBottom: 1 }}
               variant="h6"
               fontWeight={500}
               color={"#004797"}
+              onClick={addSpeaker}
             >
             + Add more
             </Typography>

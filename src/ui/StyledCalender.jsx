@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-
+import moment from 'moment';
 const theme = createTheme({
   components: {
     MuiOutlinedInput: {
@@ -55,13 +55,23 @@ const CustomTextField = styled(TextField)({
   },
 });
 
-export const StyledCalender = ({ label, onChange, placeholder }) => {
-  const [selectedDate, setSelectedDate] = React.useState(null);
+export const StyledCalender = ({ label, onChange, placeholder, value }) => {
+  
+  const [selectedDate, setSelectedDate] = React.useState(
+    value ? moment(value).toDate() : null
+  );
+
+  React.useEffect(() => {
+    if (value) {
+      setSelectedDate(moment(value).toDate());
+    }
+  }, [value]);
 
   const handleDateChange = (date) => {
+    const isoDate = moment(date).toISOString(); 
     setSelectedDate(date);
     if (onChange) {
-      onChange(date);
+      onChange(isoDate); 
     }
   };
 

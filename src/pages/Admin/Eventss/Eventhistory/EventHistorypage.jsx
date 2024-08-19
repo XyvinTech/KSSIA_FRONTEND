@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import { ReactComponent as FilterIcon } from "../../../../assets/icons/FilterIcon.svg";
 import StyledTable from '../../../../ui/StyledTable.jsx';
-import { userColumns, userData } from "../../../../assets/json/TableData";
+import { eventColumns, userData } from "../../../../assets/json/TableData";
 import { StyledButton } from '../../../../ui/StyledButton';
 import StyledSearchbar from '../../../../ui/StyledSearchbar';
 export default function EventHistorypage() {
@@ -79,8 +79,8 @@ export default function EventHistorypage() {
             </Stack>
           </Stack>
           <StyledTable
-            columns={userColumns}
-            data={userData}
+            columns={eventColumns}
+            data={[]}
             onSelectionChange={handleSelectionChange}
             onView={handleView}
           />{" "}

@@ -5,7 +5,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import BackupOutlinedIcon from '@mui/icons-material/BackupOutlined';
 import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
-
+import { useEffect } from "react";
 const CustomTextField = styled(TextField)(({ theme }) => ({
   '& .MuiOutlinedInput-root': {
     '& fieldset': {
@@ -41,16 +41,22 @@ const ImagePreview = styled(Box)({
   borderRadius: '4px',
 });
 
-export const StyledEventUpload = ({ label, placeholder, onChange }) => {
+export const StyledEventUpload = ({ label, placeholder, onChange, value}) => {
   const fileInputRef = useRef(null);
   const [selectedImage, setSelectedImage] = useState(null);
-
+  useEffect(() => {
+    if (value) {
+      setSelectedImage(value);
+    }
+  }, [value]);
   const handleIconClick = () => {
     fileInputRef.current.click();
   };
 
   const handleFileChange = (event) => {
+    console.log('selectedImage',event)
     const file = event.target.files[0];
+    console.log('selectedImage',file)
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -61,6 +67,7 @@ export const StyledEventUpload = ({ label, placeholder, onChange }) => {
       console.log('Selected file:', file.name);
     }
   };
+  console.log('value......',value)
 
   return (
     <>
@@ -77,6 +84,7 @@ export const StyledEventUpload = ({ label, placeholder, onChange }) => {
             </InputAdornment>
           ),
           readOnly: true,
+          // value: value ? "Image Selected" : "",
         }}
       />
       <input

@@ -4,6 +4,7 @@ import TextField from "@mui/material/TextField";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import moment from 'moment';
 
 const theme = createTheme({
   components: {
@@ -58,13 +59,30 @@ const CustomTextField = styled(TextField)({
 });
 
 export const StyledTime = ({ label, placeholder, onChange, value }) => {
+  const [selectedDate, setSelectedDate] = React.useState(
+    value ? moment(value).toDate() : null
+  );
+
+  React.useEffect(() => {
+    if (value) {
+      setSelectedDate(moment(value).toDate());
+    }
+  }, [value]);
+
+  const handleDateChange = (date) => {
+    const isoDate = moment(date).toISOString(); 
+    setSelectedDate(date);
+    if (onChange) {
+      onChange(isoDate); 
+    }
+  };
   return (
     <ThemeProvider theme={theme}>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <TimePicker
           label={label}
-          value={value}
-          onChange={onChange}
+          value={selectedDate}
+          onChange={handleDateChange}
           renderInput={(params) => (
             <CustomTextField {...params} placeholder={placeholder} />
           )}
