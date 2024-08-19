@@ -6,7 +6,7 @@ import StyledTable from "./StyledTable";
 import { userColumns, userData } from "../assets/json/TableData";
 import { usePromotionStore } from "../store/promotionStore";
 
-export default function StyledBannerTables() {
+export default function StyledPosterTable() {
   const [filterOpen, setFilterOpen] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
   const [isChange, setIsChange] = useState(false);

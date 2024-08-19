@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Grid, Stack, Divider } from "@mui/material";
 
 import { StyledEventUpload } from "../ui/StyledEventUpload";
@@ -7,32 +7,60 @@ import { StyledMultilineTextField } from "../ui/StyledMultilineTextField ";
 import StyledInput from "../ui/StyledInput";
 import { Controller, useForm } from "react-hook-form";
 import StyledSelectField from "../ui/StyledSelectField";
+import { useNewsStore } from "../store/newsStore";
+import { useParams } from "react-router-dom";
 
-export default function NewsAddnewform() {
+export default function NewsAddnewform({ isUpdate }) {
   const {
     control,
     handleSubmit,
     reset,
     formState: { errors },
+    setValue,
   } = useForm();
-  const [isChecked, setIsChecked] = useState(false);
-  const [additionalPhones, setAdditionalPhones] = useState([]);
+  const { id } = useParams();
+  const { news, fetchNewsById, addNewses, updateNews } = useNewsStore();
+  const [file, setFile] = useState(null);
 
-  const handleSwitchChange = (e) => {
-    setIsChecked(e.target.checked);
-  };
+  useEffect(() => {
+    if (isUpdate && id) {
+      fetchNewsById(id).then(() => {
+        setValue("category", { value: news.category, label: news.category });
+
+        setValue("title", news.title);
+        setValue("image", news.image);
+        setValue("content", news.content);
+      });
+    }
+  }, [id, isUpdate, news, setValue]);
   const option = [
-    { value: "option1", label: "Option 1" },
+    { value: "businesses", label: "businesses" },
     { value: "option2", label: "Option 2" },
     { value: "option3", label: "Option 3" },
   ];
-  const onSubmit = (data) => {
-    console.log("Form data:", data);
+  const onSubmit = async (data) => {
+    // try {
+    //   let imageUrl = data.image; // Default to current image URL if any
+
+    //   if (file) {
+    //     imageUrl = await uploadFile(file); // Upload file and get URL
+    //   }
+
+      const formData = {
+        category: data?.category.value,
+        title: data?.title,
+        content: data?.content,
+        image: imageUrl, // Use the uploaded file URL
+      };
+
+      if (isUpdate && id) {
+        updateNews(id, formData);
+      } else {
+        addNewses(formData);
+      }
+  
   };
 
-  const addPhoneNumber = () => {
-    setAdditionalPhones([...additionalPhones, ""]);
-  };
   return (
     <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"12px"}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -49,7 +77,6 @@ export default function NewsAddnewform() {
             <Controller
               name="category"
               control={control}
-              defaultValue=""
               rules={{ required: "Category  is required" }}
               render={({ field }) => (
                 <>
@@ -79,7 +106,6 @@ export default function NewsAddnewform() {
             <Controller
               name="title"
               control={control}
-              defaultValue=""
               rules={{ required: "Title is required" }}
               render={({ field }) => (
                 <>
@@ -101,18 +127,22 @@ export default function NewsAddnewform() {
               Upload Photo or video
             </Typography>
             <Controller
-              name="file"
+              name="image"
               control={control}
               defaultValue=""
-              rules={{ required: "file is required" }}
+              rules={{ required: "File is required" }}
               render={({ field: { onChange } }) => (
                 <>
                   <StyledEventUpload
-                    label="Upload your file"
-                    onChange={onChange}
+                    label="Upload image here"
+                    onChange={(file) => {
+                      setFile(file); // Set file state
+                      onChange(file); // Pass to react-hook-form
+                    }}
+
                   />
-                  {errors.file && (
-                    <span style={{ color: "red" }}>{errors.file.message}</span>
+                  {errors.image && (
+                    <span style={{ color: "red" }}>{errors.image.message}</span>
                   )}
                 </>
               )}
@@ -128,9 +158,8 @@ export default function NewsAddnewform() {
               Add content
             </Typography>
             <Controller
-              name="desc"
+              name="content"
               control={control}
-              defaultValue=""
               rules={{ required: "Content is required" }}
               render={({ field }) => (
                 <>
@@ -138,8 +167,10 @@ export default function NewsAddnewform() {
                     placeholder="Add Description in less than 500 words"
                     {...field}
                   />
-                  {errors.desc && (
-                    <span style={{ color: "red" }}>{errors.desc.message}</span>
+                  {errors.content && (
+                    <span style={{ color: "red" }}>
+                      {errors.content.message}
+                    </span>
                   )}
                 </>
               )}

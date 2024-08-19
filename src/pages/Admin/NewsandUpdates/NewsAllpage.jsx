@@ -1,18 +1,21 @@
 import { Box, Grid, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import StyledTable from "../../../ui/StyledTable.jsx";
-import { userColumns, userData } from "../../../assets/json/TableData";
 import { StyledButton } from "../../../ui/StyledButton.jsx";
 import { ReactComponent as FilterIcon } from "../../../assets/icons/FilterIcon.svg";
 import StyledSearchbar from "../../../ui/StyledSearchbar.jsx";
 import { useNavigate } from "react-router-dom";
 import NewsPreview from "../../../components/NewsPreview.jsx";
+import { useNewsStore } from "../../../store/newsStore.js";
 
 export default function NewsAllpage() {
   const navigate = useNavigate();
   const [selectedTab, setSelectedTab] = useState("All");
   const [selectedRows, setSelectedRows] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);
+  const [isChange, setIsChange] = useState(false);
+
+  const { news, fetchNews, deleteNews } = useNewsStore();
   const [previewOpen, setPreviewOpen] = useState(false);
   const handleOpenFilter = () => {
     setFilterOpen(true);
@@ -28,11 +31,21 @@ export default function NewsAllpage() {
 
   const handleSelectionChange = (newSelectedIds) => {
     setSelectedRows(newSelectedIds);
-    console.log("Selected items:", newSelectedIds);
+  };
+  const handleDelete = async () => {
+    if (selectedRows.length > 0) {
+      await Promise.all(selectedRows?.map((id) => deleteNews(id)));
+      setIsChange(!isChange);
+      setSelectedRows([]);
+    }
+  };
+  const handleRowDelete = async (id) => {
+    await deleteNews(id);
+    setIsChange(!isChange);
   };
 
   const handleEdit = (id) => {
-    navigate(`/news/edit`);
+    navigate(`/news/edit/${id}`);
   };
   const handlePreview = () => {
     setPreviewOpen(true);
@@ -40,6 +53,16 @@ export default function NewsAllpage() {
   const handleClosePreview = () => {
     setPreviewOpen(false);
   };
+  useEffect(() => {
+    fetchNews();
+  }, [isChange]);
+  const userColumns = [
+    { title: "Category", field: "category", padding: "none" },
+
+    { title: "Title", field: "title" },
+    { title: "content", field: "content" },
+    { title: "image", field: "image" },
+  ];
   return (
     <>
       <Stack
@@ -117,11 +140,13 @@ export default function NewsAllpage() {
       >
         <StyledTable
           columns={userColumns}
-          data={userData}
+          data={news}
           news
           onSelectionChange={handleSelectionChange}
           onModify={handleEdit}
           onAction={handlePreview}
+          onDelete={handleDelete}
+          onDeleteRow={handleRowDelete}
         />{" "}
         <NewsPreview open={previewOpen} onClose={handleClosePreview} />
       </Box>

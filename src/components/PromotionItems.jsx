@@ -1,6 +1,9 @@
 import { Box, Divider, Grid, Stack, Tab, Tabs, Typography } from "@mui/material";
 import React, { useState } from "react";
 import StyledBannerTables from "../ui/StyledBannerTables";
+import StyledVideoTable from "../ui/StyledVideoTable";
+import StyledPosterTable from "../ui/StyledPosterTable";
+import StyledNoticeTable from "../ui/StyledNoticeTable";
 
 
 
@@ -68,17 +71,17 @@ const PromotionItems = () => {
         )}
         {selectedTab === 1 && (
           <Grid>
-           <StyledBannerTables/>
+           <StyledVideoTable/>
           </Grid>
         )}
         {selectedTab === 2 && (
          <Grid>
-           <StyledBannerTables/>
+           <StyledPosterTable/>
          </Grid>
         )}
         {selectedTab === 3 && (
           <Grid>
-          <StyledBannerTables/>
+          <StyledNoticeTable/>
         </Grid>
         )}
        

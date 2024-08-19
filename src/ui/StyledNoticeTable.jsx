@@ -6,7 +6,7 @@ import StyledTable from "./StyledTable";
 import { userColumns, userData } from "../assets/json/TableData";
 import { usePromotionStore } from "../store/promotionStore";
 
-export default function StyledBannerTables() {
+export default function StyledNoticeTable() {
   const [filterOpen, setFilterOpen] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
   const [isChange, setIsChange] = useState(false);
@@ -38,7 +38,9 @@ export default function StyledBannerTables() {
   const userColumns = [
     { title: "Date", field: "startDate", padding: "none" },
 
-    { title: "Media", field: "banner_image_url" },
+    { title: "Title", field: "notice_title" },
+    { title: "Description", field: "notice_description" },
+    { title: "Link", field: "notice_link" },
   ];
   return (
     <>

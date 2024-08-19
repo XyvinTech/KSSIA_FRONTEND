@@ -6,10 +6,10 @@ import StyledTable from "./StyledTable";
 import { userColumns, userData } from "../assets/json/TableData";
 import { usePromotionStore } from "../store/promotionStore";
 
-export default function StyledBannerTables() {
+export default function StyledVideoTable() {
   const [filterOpen, setFilterOpen] = useState(false);
-  const [selectedRows, setSelectedRows] = useState([]);
   const [isChange, setIsChange] = useState(false);
+  const [selectedRows, setSelectedRows] = useState([]);
   const { promotions, fetchPromotion, deletePromotions } = usePromotionStore();
   const handleOpenFilter = () => {
     setFilterOpen(true);

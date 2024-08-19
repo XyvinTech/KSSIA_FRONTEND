@@ -169,7 +169,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "news/edit",
+    path: "/news/edit/:id",
     element: (
       <AdminLayout>
         <EditNews />

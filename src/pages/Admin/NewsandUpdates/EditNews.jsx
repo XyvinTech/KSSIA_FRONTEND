@@ -1,22 +1,9 @@
-import { Box, Grid, Stack, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import React, { useState } from "react";
-import SingleAddform from "../../../components/SingleAddform.jsx";
-import BulkAddform from "../../../components/BulkAddform";
 import NewsAddnewform from "../../../components/NewsAddnewform.jsx";
 
 const EditNews = () => {
-  const [selectedTab, setSelectedTab] = useState(0);
-  const [selectedRows, setSelectedRows] = useState([]);
-
-  const handleSelectionChange = (newSelectedIds) => {
-    setSelectedRows(newSelectedIds);
-    console.log("Selected items:", newSelectedIds);
-  };
-
-  const handleChange = (event, newValue) => {
-    setSelectedTab(newValue);
-  };
-
+  const isUpdate = true; 
   return (
     <>
       <Box
@@ -37,7 +24,7 @@ const EditNews = () => {
       <Box padding="30px" marginBottom={4}>
         <Grid container>
           <Grid item md={6}>
-            <NewsAddnewform />
+            <NewsAddnewform  isUpdate={isUpdate}/>
           </Grid>
         </Grid>
       </Box>

@@ -1,13 +1,14 @@
 import { Box, Stack } from "@mui/material";
-import { react, useState } from "react";
+import { react, useEffect, useState } from "react";
 import StyledSearchbar from "../ui/StyledSearchbar.jsx";
 import { ReactComponent as FilterIcon } from "../assets/icons/FilterIcon.svg";
 import StyledTable from "../ui/StyledTable.jsx";
 import { userColumns, userData } from "../assets/json/TableData";
+import { useNotificationStore } from "../store/notificationStore.js";
 
 export default function NotificationLogs() {
   const [filterOpen, setFilterOpen] = useState(false);
-
+  const { notifications, fetchNotification } = useNotificationStore();
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -15,10 +16,17 @@ export default function NotificationLogs() {
   const handleCloseFilter = () => {
     setFilterOpen(false);
   };
-  const handleSelectionChange = (newSelectedIds) => {
-    setSelectedRows(newSelectedIds);
-    console.log("Selected items:", newSelectedIds);
-  };
+  useEffect(() => {
+    fetchNotification();
+  }, []);
+  const userColumns = [
+    { title: "Name", field: "name", padding: "none" },
+
+    { title: "Member ID", field: "memberid" },
+    { title: "Company Name", field: "companyname" },
+    { title: "Designation", field: "designation" },
+    { title: "Phone Number", field: "phonenumber" },
+  ];
   return (
     <>
       <>
@@ -52,14 +60,7 @@ export default function NotificationLogs() {
           p={1}
           border={"1px solid rgba(0, 0, 0, 0.12)"}
         >
-          <StyledTable
-            columns={userColumns}
-            data={userData}
-            onSelectionChange={handleSelectionChange}
-            // onView={handleView 
-             menu
-
-          />{" "}
+          <StyledTable columns={userColumns} data={notifications} menu />{" "}
         </Box>
       </>
     </>
