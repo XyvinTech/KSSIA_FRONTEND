@@ -15,11 +15,13 @@ import {
   Checkbox,
   Menu,
   MenuItem,
+  Typography,
 } from "@mui/material";
 import { ReactComponent as ViewIcon } from "../assets/icons/ViewIcon.svg";
 import { ReactComponent as LeftIcon } from "../assets/icons/LeftIcon.svg";
 import { ReactComponent as RightIcon } from "../assets/icons/RightIcon.svg";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { StyledButton } from "./StyledButton";
 
 const StyledTableCell = styled(TableCell)`
   &.${tableCellClasses.head} {
@@ -57,22 +59,26 @@ const StyledTable = ({
   onSelectionChange,
   onView,
   onDelete,
+  onModify,
+  onAction,
+  menu,
   data,
+  news,
+  onDeleteRow,
   dashboard,
-  hideView
+  member,
+  payment,
 }) => {
   const [selectedIds, setSelectedIds] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const [rowId, setRowId] = useState(null);
 
   const handleSelectAllClick = (event) => {
-    if (!data || !Array.isArray(data)) return;
     const isChecked = event.target.checked;
-    const newSelectedIds = isChecked ? data.map((row) => row.id) : [];
+    const newSelectedIds = isChecked ? data.map((row) => row._id) : [];
     setSelectedIds(newSelectedIds);
     onSelectionChange(newSelectedIds);
   };
-
   const handleRowCheckboxChange = (event, id) => {
     const isChecked = event.target.checked;
     const newSelectedIds = isChecked
@@ -81,7 +87,10 @@ const StyledTable = ({
     setSelectedIds(newSelectedIds);
     onSelectionChange(newSelectedIds);
   };
-
+  const handleRowDelete = (id) => {
+    onDeleteRow(id);
+    handleMenuClose();
+  };
   const handleMenuOpen = (event, id) => {
     setAnchorEl(event.currentTarget);
     setRowId(id);
@@ -98,8 +107,17 @@ const StyledTable = ({
   };
 
   const handleDelete = () => {
-    onDelete(rowId);
+    onDelete();
     setSelectedIds([]);
+    handleMenuClose();
+  };
+  const handleAction = () => {
+    onAction(rowId);
+    handleMenuClose();
+  };
+
+  const handleModify = () => {
+    onModify(rowId);
     handleMenuClose();
   };
 
@@ -122,21 +140,21 @@ const StyledTable = ({
         return "mint";
       case "pending":
         return "#BFBABA";
-      case "upcoming": 
+      case "upcoming":
         return "#0072BC";
-      case "ongoing": 
+      case "ongoing":
         return "green";
-      case "closed": 
+      case "closed":
         return "#938F8F";
-      case "completed": 
+      case "completed":
         return "#2E7D32";
-      case "live":        
+      case "live":
         return "red";
-      case "Recording Available": 
+      case "Recording Available":
         return "green";
-      case "published": 
+      case "published":
         return "green";
-      case "draft": 
+      case "draft":
         return "#BFBABA";
       default:
         return "default";
@@ -151,7 +169,11 @@ const StyledTable = ({
             <TableRow>
               <StyledTableCell padding="checkbox">
                 <Checkbox
-                  checked={data && data.length > 0 && selectedIds.length === data.length}
+                  checked={
+                    data &&
+                    data.length > 0 &&
+                    selectedIds.length === data.length
+                  }
                   onChange={handleSelectAllClick}
                 />
               </StyledTableCell>
@@ -167,86 +189,145 @@ const StyledTable = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {data && Array.isArray(data) && data.map((row) => (
-              <StyledTableRow
-                role="checkbox"
-                key={row.id}
-                selected={isSelected(row.id)}
-              >
-                <StyledTableCell padding="checkbox">
-                  <Checkbox
-                    checked={isSelected(row.id)}
-                    onChange={(event) => handleRowCheckboxChange(event, row.id)}
-                  />
-                </StyledTableCell>
-                {columns.map((column) => (
-                  <StyledTableCell
-                    key={column.field}
-                    padding={column.padding || "normal"}
-                    sx={{ cursor: "pointer" }}
-                    onClick={() => handleRowClick(row.id)
-                  
-                    }
-                  >
-                    {column.field === "status" ? (
-                      <Box
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                      >
-                        <span
-                          style={{
-                            backgroundColor: getStatusVariant(
-                              row[column.field]
-                            ),
-                            padding: "3px 8px",
-                            borderRadius: "100px",
-                            color: "#fff",
-                          }}
-                        >
-                          {row[column.field]}
-                        </span>
-                      </Box>
-                    ) : (
-                      row[column.field]
-                    )}
-                  </StyledTableCell>
-                ))}
-
-                <StyledTableCell padding="normal">
-                <Box display="flex" alignItems="center">
-              { !hideView && <IconButton
-                  aria-controls="simple-view"
-                  aria-haspopup="true"
-                  onClick={() => handleRowClick(row.id)}
+            {data &&
+              Array.isArray(data) &&
+              data.map((row) => (
+                <StyledTableRow
+                  role="checkbox"
+                  key={row._id}
+                  selected={isSelected(row._id)}
                 >
-                  <ViewIcon />
-                </IconButton>}
-                  <IconButton
-                    aria-controls="simple-menu"
-                    aria-haspopup="true"
-                    onClick={(event) => handleMenuOpen(event, row.id)}
-                  >
-                    <MoreVertIcon />
-                  </IconButton>
-                  <Menu
-                    id="row-menu"
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl) && rowId === row.id}
-                    onClose={handleMenuClose}
-                  >
-                    <MenuItem onClick={handleView}>View</MenuItem>
-                    <MenuItem onClick={handleDelete}>Delete</MenuItem>
-                  </Menu></Box>
-                </StyledTableCell>
-              </StyledTableRow>
-            ))}
+                  <StyledTableCell padding="checkbox">
+                    <Checkbox
+                      checked={isSelected(row._id)}
+                      onChange={(event) =>
+                        handleRowCheckboxChange(event, row._id)
+                      }
+                    />
+                  </StyledTableCell>
+                  {columns.map((column) => (
+                    <StyledTableCell
+                      key={column.field}
+                      padding={column.padding || "normal"}
+                      sx={{ cursor: "pointer" }}
+                      onClick={() => handleRowClick(row._id)}
+                    >
+                      {[
+                        "banner_image_url",
+                        "image",
+                        "event image",
+                      ].includes(column.field) ? (
+                        <img
+                          src={row[column.field]}
+                          alt={column.title}
+                          style={{ width: "50px", height: "50px" }}
+                        />
+                      ) : column.field === "status" ? (
+                        <Box
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          <span
+                            style={{
+                              backgroundColor: getStatusVariant(
+                                row[column.field]
+                              ),
+                              padding: "3px 8px",
+                              borderRadius: "100px",
+                              color: "#fff",
+                            }}
+                          >
+                            {row[column.field]}
+                          </span>
+                        </Box>
+                      ) : (
+                        row[column.field]
+                      )}
+                    </StyledTableCell>
+                  ))}
+
+                  <StyledTableCell padding="normal">
+                    <Box display="flex" alignItems="center">
+                      {onView && (
+                        <IconButton
+                          aria-controls="simple-view"
+                          aria-haspopup="true"
+                          onClick={handleView}
+                        >
+                          <ViewIcon />
+                        </IconButton>
+                      )}{" "}
+                      {!menu && (
+                        <IconButton
+                          aria-controls="simple-menu"
+                          aria-haspopup="true"
+                          onClick={(event) => handleMenuOpen(event, row._id)}
+                        >
+                          <MoreVertIcon />
+                        </IconButton>
+                      )}
+                      <Menu
+                        id="row-menu"
+                        anchorEl={anchorEl}
+                        open={Boolean(anchorEl) && rowId === row._id}
+                        onClose={handleMenuClose}
+                      >
+                        {news ? (
+                          <>
+                            <MenuItem onClick={handleModify}>Edit</MenuItem>
+                            <MenuItem onClick={handleAction}>
+                              Publish/Unpublish
+                            </MenuItem>
+                            <MenuItem
+                              onClick={() => handleRowDelete(row._id)}
+                              style={{ color: "red" }}
+                            >
+                              Remove
+                            </MenuItem>
+                          </>
+                        ) : member ? (
+                          <>
+                            <MenuItem onClick={handleView}>
+                              View Details
+                            </MenuItem>
+                            <MenuItem onClick={handleModify}>Edit</MenuItem>
+                            <MenuItem onClick={handleAction}>Suspend</MenuItem>
+                            <MenuItem
+                              onClick={handleDelete}
+                              style={{ color: "red" }}
+                            >
+                              Delete
+                            </MenuItem>
+                          </>
+                        ) : payment ? (
+                          <>
+                            <MenuItem onClick={handleModify}>Approve</MenuItem>
+                            <MenuItem onClick={handleAction}>Reject</MenuItem>
+                          </>
+                        ) : (
+                          <>
+                            {" "}
+                            <MenuItem onClick={handleModify}>Edit</MenuItem>
+                            <MenuItem
+                              onClick={() => handleRowDelete(row._id)}
+                              style={{ color: "red" }}
+                            >
+                              Remove
+                            </MenuItem>
+                          </>
+                        )}
+                      </Menu>
+                    </Box>
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
           </TableBody>
         </Table>
         <Divider />
         {!dashboard && (
           <Stack
-            padding={2}
+            // padding={2}
             component="div"
             direction={"row"}
             justifyContent={
@@ -254,8 +335,20 @@ const StyledTable = ({
             }
             alignItems="center"
           >
-            <Stack direction="row" alignItems="center"></Stack>
-
+            {selectedIds.length > 0 && (
+              <Stack direction="row" alignItems="center">
+                <Typography paddingRight={3}>
+                  {`${selectedIds.length} item${
+                    selectedIds.length > 1 ? "s" : ""
+                  } selected`}
+                </Typography>
+                <StyledButton
+                  variant="primary"
+                  name="Delete"
+                  onClick={() => handleDelete(selectedIds)}
+                />
+              </Stack>
+            )}
             <Stack
               direction="row"
               alignItems="center"

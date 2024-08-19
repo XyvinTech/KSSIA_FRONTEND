@@ -80,7 +80,7 @@ export const StyledCalender = ({ label, onChange, placeholder, value }) => {
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <DatePicker
           label={label}
-          value={selectedDate}
+          value={value ? new Date(value) : null} // Ensure value is a Date object
           onChange={handleDateChange}
           renderInput={(params) => (
             <CustomTextField
@@ -94,3 +94,4 @@ export const StyledCalender = ({ label, onChange, placeholder, value }) => {
     </ThemeProvider>
   );
 };
+

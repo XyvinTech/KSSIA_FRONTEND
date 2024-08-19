@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Grid, Stack } from "@mui/material";
 
 import { StyledEventUpload } from "../ui/StyledEventUpload";
@@ -8,6 +8,8 @@ import StyledInput from "../ui/StyledInput";
 import { Controller, useForm } from "react-hook-form";
 import StyledSelectField from "../ui/StyledSelectField";
 import DropZoneforForm from "../ui/DropzoneforForm";
+import { useNotificationStore } from "../store/notificationStore";
+import { useDropDownStore } from "../store/dropDownStore";
 
 export default function InappNotificationform() {
   const {
@@ -16,39 +18,53 @@ export default function InappNotificationform() {
     reset,
     formState: { errors },
   } = useForm();
-  const [isChecked, setIsChecked] = useState(false);
-  const [additionalPhones, setAdditionalPhones] = useState([]);
 
-  const handleSwitchChange = (e) => {
-    setIsChecked(e.target.checked);
-  };
-  const option = [
-    { value: "option1", label: "Option 1" },
-    { value: "option2", label: "Option 2" },
-    { value: "option3", label: "Option 3" },
-  ];
-  const onSubmit = (data) => {
-    console.log("Form data:", data);
+  const { addAppNotifications } = useNotificationStore();
+  const { users, fetchUsers } = useDropDownStore();
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+  const option =
+    users && Array.isArray(users)
+      ? users.map((user) => ({
+          value: user._id,
+          label: `${user.name.first_name} ${user.name.middle_name} ${user.name.last_name}`,
+        }))
+      : [];
+  const onSubmit = async (data) => {
+    const formData = new FormData();
+
+    const userIds = data.to.map(user => user.value);
+    formData.append("to", JSON.stringify(userIds));
+    formData.append("subject", data?.subject);
+    formData.append("content", data?.content);
+    formData.append("link_url", data?.link_url);
+
+    if (data?.file) {
+      formData.append("image", data.file); // Assuming 'file' is an array from file input
+    }
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+    await addAppNotifications(formData);
+    reset(); // Optionally reset the form after submission
   };
 
-  const addPhoneNumber = () => {
-    setAdditionalPhones([...additionalPhones, ""]);
-  };
   return (
-    <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"4px"}>
+    <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"12px"}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={4}>
-        <Grid item xs={12}>
+          <Grid item xs={12}>
             <Typography
               sx={{ marginBottom: 1 }}
               variant="h6"
               fontWeight={500}
               color={"#333333"}
             >
-             Send to
+              Send to
             </Typography>
             <Controller
-              name="sendto"
+              name="to"
               control={control}
               defaultValue=""
               rules={{ required: "Member is required" }}
@@ -57,10 +73,11 @@ export default function InappNotificationform() {
                   <StyledSelectField
                     placeholder="Select member"
                     options={option}
+                    isMulti
                     {...field}
                   />
-                  {errors.sendto && (
-                    <span style={{ color: "red" }}>{errors.sendto.message}</span>
+                  {errors.to && (
+                    <span style={{ color: "red" }}>{errors.to.message}</span>
                   )}
                 </>
               )}
@@ -82,9 +99,11 @@ export default function InappNotificationform() {
               rules={{ required: "Subject is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput placeholder="Enter subject line" {...field}/>
+                  <StyledInput placeholder="Enter subject line" {...field} />
                   {errors.subject && (
-                    <span style={{ color: "red" }}>{errors.subject.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.subject.message}
+                    </span>
                   )}
                 </>
               )}
@@ -111,7 +130,9 @@ export default function InappNotificationform() {
                     onChange={onChange}
                   />
                   {errors.content && (
-                    <span style={{ color: "red" }}>{errors.content.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.content.message}
+                    </span>
                   )}
                 </>
               )}
@@ -127,24 +148,27 @@ export default function InappNotificationform() {
               Upload photo or video
             </Typography>
             <Controller
-              name="photovideo"
+              name="file"
               control={control}
               defaultValue=""
               rules={{ required: "File is required" }}
-              render={({ field: { onChange } }) => (
+              render={({ field }) => (
                 <>
                   <StyledEventUpload
-                    label="Upload your file"
-                    onChange={onChange}
+                    label="Upload image here"
+                    {...field}
+                    onChange={(selectedFile) => {
+                      field.onChange(selectedFile);
+                    }}
                   />
-                  {errors.photovideo && (
-                    <span style={{ color: "red" }}>{errors.photovideo.message}</span>
+                  {errors.file && (
+                    <span style={{ color: "red" }}>{errors.file.message}</span>
                   )}
                 </>
               )}
             />
           </Grid>
-         
+
           <Grid item xs={12}>
             <Typography
               sx={{ marginBottom: 1 }}
@@ -155,25 +179,25 @@ export default function InappNotificationform() {
               Add Link
             </Typography>
             <Controller
-              name="link"
+              name="link_url"
               control={control}
               defaultValue=""
               rules={{ required: "Link is required" }}
               render={({ field }) => (
                 <>
                   <StyledInput placeholder="Paste link here" {...field} />
-                  {errors.link && (
-                    <span style={{ color: "red" }}>{errors.link.message}</span>
+                  {errors.link_url && (
+                    <span style={{ color: "red" }}>
+                      {errors.link_url.message}
+                    </span>
                   )}
                 </>
               )}
             />
           </Grid>
 
-       
-         
-          <Grid item xs={6}></Grid> 
-          <Grid item xs={6}>
+          <Grid item xs={6}></Grid>
+          <Grid item xs={6} display={"flex"} justifyContent={"end"}>
             {" "}
             <Stack direction={"row"} spacing={2}>
               <StyledButton

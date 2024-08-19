@@ -23,11 +23,13 @@ const AddnewMemberSinglepage = () => {
   
   return (
     <>
-      <Box padding={"10px"} bgcolor={"#FFFFFF"}>
+      <Box padding={"10px"}height={'70px'}display={'flex'}alignItems={'center'}bgcolor={"#FFFFFF"}>
+      <Grid container alignItems="center">
+      <Grid item xs={6} spacing={2}>
         <Typography variant="h4" color={"#4A4647"}>
           Members List / Add new Member
-        </Typography>
-      </Box>{" "}
+        </Typography></Grid>  </Grid>
+      </Box>{" "}  
       <Tabs
         value={selectedTab}
         onChange={handleChange}
@@ -40,8 +42,8 @@ const AddnewMemberSinglepage = () => {
           },
         }}
         sx={{
-          bgcolor: "white",
-          paddingTop: "34px",
+          // bgcolor: "white",
+          paddingTop: "4px",
           "& .MuiTabs-indicator": {
             backgroundColor: "#004797",
           },

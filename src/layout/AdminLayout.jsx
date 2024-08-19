@@ -16,9 +16,9 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import kssiaImage from '../assets/images/kssia.png';
-import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import kssiaImage from "../assets/images/kssia.png";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Avatar,
@@ -31,35 +31,47 @@ import {
 } from "@mui/material";
 import { ReactComponent as NotificationIcon } from "../assets/icons/NotificationIcon.svg";
 import profile from "../assets/images/profile.png";
-import GridViewIcon from '@mui/icons-material/GridView';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import PeopleOutlineOutlinedIcon from '@mui/icons-material/PeopleOutlineOutlined';
-import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
-import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
-import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined';
-import GavelOutlinedIcon from '@mui/icons-material/GavelOutlined';
-import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
-import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
-import NewspaperOutlinedIcon from '@mui/icons-material/NewspaperOutlined';
-import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
-import ListOutlinedIcon from '@mui/icons-material/ListOutlined';
-const drawerWidth = 300;
+import GridViewIcon from "@mui/icons-material/GridView";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import PeopleOutlineOutlinedIcon from "@mui/icons-material/PeopleOutlineOutlined";
+import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
+import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
+import PaymentsOutlinedIcon from "@mui/icons-material/PaymentsOutlined";
+import GavelOutlinedIcon from "@mui/icons-material/GavelOutlined";
+import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
+import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
+import NewspaperOutlinedIcon from "@mui/icons-material/NewspaperOutlined";
+import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
+import ListOutlinedIcon from "@mui/icons-material/ListOutlined";
+const drawerWidth = 250;
 const subNavigation = [
-  { name: "Dashboard", to: "/", icon: <GridViewIcon /> },
-  { name: "Members", to: "/members", icon: <PeopleOutlineOutlinedIcon/> },
+  { name: "Dashboard", to: "/dashboard", icon: <GridViewIcon /> },
+  { name: "Members", to: "/members", icon: <PeopleOutlineOutlinedIcon /> },
   { name: "Products", to: "/products", icon: <LocalMallOutlinedIcon /> },
   {
     name: "Events",
     icon: <CalendarMonthOutlinedIcon />,
     subItems: [
-      { name: "Event list", to: "/events/eventlist", icon: <ListOutlinedIcon /> },
-      { name: "Event history", to: "/events/eventhistory", icon: <HistoryOutlinedIcon /> },
+      {
+        name: "Event list",
+        to: "/events/eventlist",
+        icon: <ListOutlinedIcon />,
+      },
+      {
+        name: "Event history",
+        to: "/events/eventhistory",
+        icon: <HistoryOutlinedIcon />,
+      },
     ],
   },
   { name: "Payments", to: "/payments", icon: <PaymentsOutlinedIcon /> },
   { name: "Approvals", to: "/approvals", icon: <GavelOutlinedIcon /> },
   { name: "Promotions", to: "/promotions", icon: <ReceiptLongOutlinedIcon /> },
-  { name: "Notifications", to: "/notifications", icon: <NotificationsOutlinedIcon /> },
+  {
+    name: "Notifications",
+    to: "/notifications",
+    icon: <NotificationsOutlinedIcon />,
+  },
   { name: "News and Updates", to: "/news", icon: <NewspaperOutlinedIcon /> },
   { name: "Settings", to: "/settings", icon: <SettingsOutlinedIcon /> },
   { name: "Logout", to: "/logout", icon: <LogoutOutlinedIcon /> },
@@ -138,41 +150,46 @@ const AdminLayout = (props) => {
     setDialogOpen(false);
   };
 
-  const drawerWidth = 240; 
-
   const drawer = (
     <Box
       sx={{
-        width: '250px',
-        height: '1024px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '10px',
-        borderRight: '1px solid rgba(0, 0, 0, 0.12)', // Right border
+        width: "250px",
+        height: "1024px",
+        display: "flex",
+        flexDirection: "column",
+        gap: "10px",
+        borderRight: "1px solid rgba(0, 0, 0, 0.12)", // Right border
       }}
     >
-      <Toolbar 
-        sx={{ 
-          width: '250px',
-          height: '130px',
-          padding: '33px 20px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-          gap: '10px',
+      <Toolbar
+        sx={{
+          width: "250px",
+          height: "90px",
+          padding: "33px 20px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          
+          gap: "10px",
         }}
       >
-        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+          }}
+        >
           <img src={kssiaImage} alt="KSSIA" width={"133px"} height="36px" />
-          <Typography 
+          <Typography
             sx={{
-              fontFamily: 'Inter',
-              fontSize: '10px',
+              fontFamily: "Inter",
+              fontSize: "10px",
               fontWeight: 300,
-              lineHeight: '12.1px',
-              letterSpacing: '0.3px',
-              textAlign: 'left',
-              marginTop: '10px',
+              lineHeight: "12.1px",
+              letterSpacing: "0.3px",
+              textAlign: "left",
+              marginTop: "10px",
             }}
           >
             version 1.0
@@ -181,12 +198,27 @@ const AdminLayout = (props) => {
       </Toolbar>
       <List
         sx={{
-          width: '250px',
-          height: '556px', 
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '5px',
-          padding: 0, 
+          width: "250px",
+          height: "600px",
+          overflowY: "auto",
+          display: "flex",
+          flexDirection: "column",
+          gap: "5px",
+          padding: 0,
+          "&::-webkit-scrollbar": {
+            width: "6px",
+          },
+          "&::-webkit-scrollbar-track": {
+            backgroundColor: "#f1f1f1",
+            borderRadius: "10px",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "#c1c1c1",
+            borderRadius: "10px",
+            "&:hover": {
+              backgroundColor: "#a1a1a1",
+            },
+          },
         }}
       >
         {subNavigation.map((item) =>
@@ -203,12 +235,10 @@ const AdminLayout = (props) => {
                     "&:hover .MuiListItemIcon-root": { color: "#2C2829" },
                   }}
                 >
-                  <ListItemIcon sx={{ minWidth: 24, mr: 2, color: 'inherit' }}>
+                  <ListItemIcon sx={{ minWidth: 24, mr: 2, color: "inherit" }}>
                     {item.icon}
                   </ListItemIcon>
-                  <ListItemText
-                    primary={item.name}
-                  />
+                  <ListItemText primary={item.name} />
                   {open ? <ExpandLess /> : <ExpandMore />}
                 </ListItemButton>
               </ListItem>
@@ -223,19 +253,27 @@ const AdminLayout = (props) => {
                           py: 1,
                           pl: 7,
                           pr: 3,
-                          color: location.pathname === item.to ? "#2C2829" : "#686465",
-                          backgroundColor: location.pathname === item.to ? "#F7F7F7" : "transparent",
-                          "&:hover": { color: "#004797", backgroundColor: "#E7EBF9" },
+                          color:
+                            location.pathname === item.to
+                              ? "#2C2829"
+                              : "#686465",
+                          backgroundColor:
+                            location.pathname === item.to
+                              ? "#F7F7F7"
+                              : "transparent",
+                          "&:hover": {
+                            color: "#004797",
+                            backgroundColor: "#E7EBF9",
+                          },
                           "&:hover .MuiListItemIcon-root": { color: "#004797" },
                         }}
                       >
-                        <ListItemIcon sx={{ minWidth: 24, mr: 2, color: 'inherit' }}>
+                        <ListItemIcon
+                          sx={{ minWidth: 24, mr: 2, color: "inherit" }}
+                        >
                           {subItem.icon}
                         </ListItemIcon>
-                        <ListItemText
-                          primary={subItem.name}
-                        
-                        />
+                        <ListItemText primary={subItem.name} />
                       </ListItemButton>
                     </ListItem>
                   ))}
@@ -251,18 +289,16 @@ const AdminLayout = (props) => {
                   py: 1,
                   px: 3,
                   color: location.pathname === item.to ? "#2C2829" : "#686465",
-                  backgroundColor: location.pathname === item.to ? "#F7F7F7" : "transparent",
+                  backgroundColor:
+                    location.pathname === item.to ? "#F7F7F7" : "transparent",
                   "&:hover": { color: "#2C2829", backgroundColor: "#F7F7F7" },
                   "&:hover .MuiListItemIcon-root": { color: "#2C2829" },
                 }}
               >
-                <ListItemIcon sx={{ minWidth: 24, mr: 2, color: 'inherit' }}>
+                <ListItemIcon sx={{ minWidth: 24, mr: 2, color: "inherit" }}>
                   {item.icon}
                 </ListItemIcon>
-                <ListItemText
-                  primary={item.name}
-                 
-                />
+                <ListItemText primary={item.name} />
               </ListItemButton>
             </ListItem>
           )
@@ -271,7 +307,8 @@ const AdminLayout = (props) => {
     </Box>
   );
 
-  const container = window !== undefined ? () => window().document.body : undefined;
+  const container =
+    window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -312,10 +349,9 @@ const AdminLayout = (props) => {
           </Box>
 
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            
             <Box display={isMobile && "none"}> </Box>
-            <NotificationIcon/>
-          
+            <NotificationIcon />
+
             <Box
               borderRadius="24px"
               padding={"5px 20px 5px 5px"}
@@ -399,6 +435,7 @@ const AdminLayout = (props) => {
         sx={{
           flexGrow: 1,
           backgroundColor: "#F3F3F3",
+          minHeight: "100vh",
           paddingTop: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
@@ -415,4 +452,4 @@ AdminLayout.propTypes = {
   window: PropTypes.func,
 };
 
-export default AdminLayout
+export default AdminLayout;

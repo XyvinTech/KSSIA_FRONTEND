@@ -8,6 +8,7 @@ import StyledInput from "../ui/StyledInput";
 import { Controller, useForm } from "react-hook-form";
 import StyledSelectField from "../ui/StyledSelectField";
 import DropZoneforForm from "../ui/DropzoneforForm";
+import { useNotificationStore } from "../store/notificationStore";
 
 export default function EmailNotificationform() {
   const {
@@ -16,39 +17,56 @@ export default function EmailNotificationform() {
     reset,
     formState: { errors },
   } = useForm();
-  const [isChecked, setIsChecked] = useState(false);
-  const [additionalPhones, setAdditionalPhones] = useState([]);
+  const [imageFile, setImageFile] = useState(null);
+  const { addEmailNotifications } = useNotificationStore();
 
-  const handleSwitchChange = (e) => {
-    setIsChecked(e.target.checked);
-  };
   const option = [
     { value: "option1", label: "Option 1" },
     { value: "option2", label: "Option 2" },
     { value: "option3", label: "Option 3" },
   ];
-  const onSubmit = (data) => {
-    console.log("Form data:", data);
+  const onSubmit = async (data) => {
+    let imageUrl = data?.event_image || "";
+
+    if (imageFile) {
+      try {
+        imageUrl = await new Promise((resolve, reject) => {
+          // uploadFileToS3(
+          //   imageFile,
+          //   (location) => resolve(location),
+          //   (error) => reject(error)
+          // );
+        });
+      } catch (error) {
+        console.error("Failed to upload image:", error);
+        return;
+      }
+    }
+    const formData = {
+      to: data?.to.value,
+      subject: data?.subject,
+      content: data?.content,
+      link_url: data?.link_url,
+      media_url: imageUrl ? imageUrl : "",
+    };
+    await addEmailNotifications(formData);
   };
 
-  const addPhoneNumber = () => {
-    setAdditionalPhones([...additionalPhones, ""]);
-  };
   return (
-    <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"4px"}>
+    <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"12px"}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={4}>
-        <Grid item xs={12}>
+          <Grid item xs={12}>
             <Typography
               sx={{ marginBottom: 1 }}
               variant="h6"
               fontWeight={500}
               color={"#333333"}
             >
-             Send to
+              Send to
             </Typography>
             <Controller
-              name="sendto"
+              name="to"
               control={control}
               defaultValue=""
               rules={{ required: "Member is required" }}
@@ -59,8 +77,8 @@ export default function EmailNotificationform() {
                     options={option}
                     {...field}
                   />
-                  {errors.sendto && (
-                    <span style={{ color: "red" }}>{errors.sendto.message}</span>
+                  {errors.to && (
+                    <span style={{ color: "red" }}>{errors.to.message}</span>
                   )}
                 </>
               )}
@@ -82,9 +100,11 @@ export default function EmailNotificationform() {
               rules={{ required: "Subject is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput placeholder="Enter subject line" {...field}/>
+                  <StyledInput placeholder="Enter subject line" {...field} />
                   {errors.subject && (
-                    <span style={{ color: "red" }}>{errors.subject.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.subject.message}
+                    </span>
                   )}
                 </>
               )}
@@ -111,7 +131,9 @@ export default function EmailNotificationform() {
                     onChange={onChange}
                   />
                   {errors.content && (
-                    <span style={{ color: "red" }}>{errors.content.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.content.message}
+                    </span>
                   )}
                 </>
               )}
@@ -127,7 +149,7 @@ export default function EmailNotificationform() {
               Upload photo or video
             </Typography>
             <Controller
-              name="photovideo"
+              name="media_url"
               control={control}
               defaultValue=""
               rules={{ required: "File is required" }}
@@ -137,8 +159,10 @@ export default function EmailNotificationform() {
                     label="Upload your file"
                     onChange={onChange}
                   />
-                  {errors.photovideo && (
-                    <span style={{ color: "red" }}>{errors.photovideo.message}</span>
+                  {errors.media_url && (
+                    <span style={{ color: "red" }}>
+                      {errors.media_url.message}
+                    </span>
                   )}
                 </>
               )}
@@ -151,18 +175,20 @@ export default function EmailNotificationform() {
               fontWeight={500}
               color={"#333333"}
             >
-           Upload File
+              Upload File
             </Typography>
             <Controller
-              name="file"
+              name="file_url"
               control={control}
               defaultValue=""
               rules={{ required: "File  is required" }}
               render={({ field }) => (
                 <>
-                  <DropZoneforForm placeholder="Rs 00" {...field}/>
-                  {errors.file && (
-                    <span style={{ color: "red" }}>{errors.file.message}</span>
+                  <DropZoneforForm placeholder="Rs 00" {...field} />
+                  {errors.file_url && (
+                    <span style={{ color: "red" }}>
+                      {errors.file_url.message}
+                    </span>
                   )}
                 </>
               )}
@@ -178,40 +204,31 @@ export default function EmailNotificationform() {
               Add Link
             </Typography>
             <Controller
-              name="link"
+              name="link_url"
               control={control}
               defaultValue=""
               rules={{ required: "Link is required" }}
               render={({ field }) => (
                 <>
                   <StyledInput placeholder="Paste link here" {...field} />
-                  {errors.link && (
-                    <span style={{ color: "red" }}>{errors.link.message}</span>
+                  {errors.link_url && (
+                    <span style={{ color: "red" }}>
+                      {errors.link_url.message}
+                    </span>
                   )}
                 </>
               )}
             />
           </Grid>
 
-       
-         
-          <Grid item xs={6}></Grid> 
-          <Grid item xs={6}>
+          <Grid item xs={6}></Grid>
+          <Grid item xs={6} display={"flex"} justifyContent={"end"}>
             {" "}
             <Stack direction={"row"} spacing={2}>
-              <StyledButton
-                name="Cancel"
-                variant="secondary"
-                style={{ width: "auto" }}
-              >
+              <StyledButton name="Cancel" variant="secondary">
                 Cancel
               </StyledButton>
-              <StyledButton
-                name="Save"
-                variant="primary"
-                type="submit"
-                style={{ width: "auto" }}
-              >
+              <StyledButton name="Save" variant="primary" type="submit">
                 Save
               </StyledButton>
             </Stack>

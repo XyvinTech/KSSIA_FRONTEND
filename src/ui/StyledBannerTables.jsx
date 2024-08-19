@@ -1,13 +1,18 @@
-import { Box, Stack } from '@mui/material'
-import {react,useState}from 'react'
-import StyledSearchbar from './StyledSearchbar'
+import { Box, Stack } from "@mui/material";
+import { react, useEffect, useState } from "react";
+import StyledSearchbar from "./StyledSearchbar";
 import { ReactComponent as FilterIcon } from "../assets/icons/FilterIcon.svg";
-import StyledTable from './StyledTable';
+import StyledTable from "./StyledTable";
 import { userColumns, userData } from "../assets/json/TableData";
+import { usePromotionStore } from "../store/promotionStore";
+import { useNavigate } from "react-router-dom";
 
 export default function StyledBannerTables() {
-    const [filterOpen, setFilterOpen] = useState(false);
-
+  const [filterOpen, setFilterOpen] = useState(false);
+  const navigate = useNavigate();
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [isChange, setIsChange] = useState(false);
+  const { promotions, fetchPromotion, deletePromotions } = usePromotionStore();
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -17,46 +22,73 @@ export default function StyledBannerTables() {
   };
   const handleSelectionChange = (newSelectedIds) => {
     setSelectedRows(newSelectedIds);
-    console.log("Selected items:", newSelectedIds);
   };
+  const handleDelete = async () => {
+    if (selectedRows.length > 0) {
+      await Promise.all(selectedRows?.map((id) => deletePromotions(id)));
+      setIsChange(!isChange);
+      setSelectedRows([]);
+    }
+  };
+  const handleRowDelete = async (id) => {
+    await deletePromotions(id);
+    setIsChange(!isChange);
+  };
+  const handleEdit = (id) => {
+    navigate(`/promotion/edit/${id}`);
+  };
+  useEffect(() => {
+    fetchPromotion();
+  }, [isChange]);
+  const userColumns = [
+    { title: "Date", field: "startDate", padding: "none" },
+
+    { title: "Media", field: "banner_image_url" },
+  ];
   return (
     <>
-    <Box padding="30px" marginBottom={4}>
-        <>
-          <Stack
-            direction={"row"}
-            justifyContent={"end"}
-            paddingBottom={3}
-            alignItems={"center"}
-          >
-            <Stack direction={"row"} spacing={2}>
-              <StyledSearchbar />
-              <Box
-                bgcolor={"#FFFFFF"}
-                borderRadius={"50%"}
-                width={"48px"}
-                height={"48px"}
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                border="1px solid rgba(0, 0, 0, 0.12)"
-                onClick={handleOpenFilter}
-                style={{ cursor: "pointer" }}
-              >
-                <FilterIcon />
-              </Box>
-            </Stack>
+      <>
+        <Stack
+          direction={"row"}
+          justifyContent={"end"}
+          paddingBottom={3}
+          alignItems={"center"}
+        >
+          <Stack direction={"row"} spacing={2}>
+            <StyledSearchbar />
+            <Box
+              bgcolor={"#FFFFFF"}
+              borderRadius={"50%"}
+              width={"48px"}
+              height={"48px"}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              border="1px solid rgba(0, 0, 0, 0.12)"
+              onClick={handleOpenFilter}
+              style={{ cursor: "pointer" }}
+            >
+              <FilterIcon />
+            </Box>
           </Stack>
+        </Stack>{" "}
+        <Box
+          borderRadius={"16px"}
+          bgcolor={"white"}
+          p={1}
+          border={"1px solid rgba(0, 0, 0, 0.12)"}
+        >
           <StyledTable
             columns={userColumns}
-            data={userData}
+            data={promotions}
             onSelectionChange={handleSelectionChange}
-            // onView={handleView}
+            onDelete={handleDelete}
+            onDeleteRow={handleRowDelete}
+            onModify={handleEdit}
           />{" "}
-        </>
-      </Box>
-      
 
+        </Box>
+      </>
     </>
-  )
+  );
 }

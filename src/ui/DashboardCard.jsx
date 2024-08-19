@@ -4,11 +4,9 @@ import React from "react";
 const DashboardCard = ({ data }) => {
   return (
     <Stack
-      bgcolor={data?.bgcolor}
-      
+      bgcolor={data?.bgcolor}height={'93px'}padding={2}
+      borderRadius={'12px'} 
       sx={{
-        padding: '16px',
-        gap: '16px', 
         justifyContent: 'start' 
       }}
     >

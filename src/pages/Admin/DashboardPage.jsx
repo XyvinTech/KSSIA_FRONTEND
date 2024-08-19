@@ -28,7 +28,7 @@ const DashboardPage = () => {
 
   return (
     <>
-       <Box padding={"20px"} bgcolor={"#FFFFFF"}>
+       <Box padding={"20px"} bgcolor={"white"}height={'70px'}display={'flex'}alignItems={'center'}>
       <Grid container alignItems="center">
         <Grid item xs>
           <Typography variant="h4" color={"#4A4647"}>
@@ -58,7 +58,7 @@ const DashboardPage = () => {
 
 
      <Grid>
-     <Grid container spacing={1} item xs={12}>
+     <Grid container spacing={1} item xs={12}padding={'10px'}>
       <Grid item xs={6} >
         <Box padding={2}>
         <DashboardRevnue/>
@@ -72,7 +72,7 @@ const DashboardPage = () => {
      </Grid>
      </Grid>
      <Grid item xs={12}>
-     <Box padding={2}>
+     <Box padding={'20px'}>
       <DashboardEvents/>
       </Box>
 

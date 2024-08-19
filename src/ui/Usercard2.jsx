@@ -1,9 +1,11 @@
 import React from "react";
 import { Grid, Stack, Typography, Box, Chip } from "@mui/material";
+import officer from "../assets/images/officer.png";
 import { ReactComponent as EmailIcon } from "../assets/icons/EmailIcon.svg";
 import { ReactComponent as PhoneIcon } from "../assets/icons/PhoneIcon.svg";
-import staffImage from "../assets/images/staff.png";
-
+import { ReactComponent as LocationIcon } from "../assets/icons/LocationIcon.svg";
+import { ReactComponent as BusinessIcon } from "../assets/icons/BusinessWhatsappIcon.svg";
+import { ReactComponent as WhatsappIcon } from "../assets/icons/WhatsappIcon.svg";
 const UserCard2 = () => {
   return (
     <Grid
@@ -12,132 +14,99 @@ const UserCard2 = () => {
       bgcolor={"white"}
       borderRadius={"12px"}
       padding={"9px"}
-      minHeight={"160px"}
-      position="relative"
-      direction="row"
+      minHeight={'420px'}
     >
-      <Grid item xs={4} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <Box
-          sx={{
-            width: '100px',
-            height: '100px',
-            borderRadius: '50%',
-            overflow: 'hidden',
-          }}
-        >
-          <Box
-            component="img"
-            src={staffImage}
-            alt="Fitzer Textiles"
-            sx={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-            }}
-          />
+      <Grid item xs={12} display="flex" alignItems="center">
+        <img
+          src={officer}
+          alt="img"
+          width={"50px"}
+          height={"50px"}
+          style={{ borderRadius: "12px", marginRight: "16px" }} // Add margin to the right of the image
+        />
+        <Box>
+          <Typography variant="h4" color="#000000" mt={1}>
+            Chief Financial Officer
+          </Typography>
+          <Typography variant="h6" color="#000000" mt={1}>
+            Company Name
+          </Typography>
         </Box>
-        <Typography variant="h6" color="#000000" mt={1}>
-          Fitzer Textiles
-        </Typography>
       </Grid>
-      <Grid item xs={8}>
-        <Stack spacing={1} sx={{ flexGrow: 1, overflow: 'hidden', alignItems: 'flex-end' }}>
-          <Grid container spacing={1}>
-            <Grid item xs={6}>
-              <Typography variant="body2" color="#666666">
-                Designation
-              </Typography>
-            </Grid>
-            <Grid item xs={6} sx={{ textAlign: 'right' }}>
-              <Typography variant="body2" color="#000000" noWrap>
-                General Manager
-              </Typography>
-            </Grid>
-
-            <Grid item xs={6}>
-              <Typography variant="body2" color="#666666">
-                Business category
-              </Typography>
-            </Grid>
-            <Grid item xs={6} sx={{ textAlign: 'right' }}>
-              <Chip 
-                label="Textile" 
-                size="small" 
-                variant="outlined" 
-                sx={{ 
-                  borderRadius: '16px',
-                  borderColor: '#0288D1',
-                  color: '#0288D1'
-                }} 
-              />
-            </Grid>
-
-            <Grid item xs={6}>
-              <Typography variant="body2" color="#666666">
-                Sub category
-              </Typography>
-            </Grid>
-            <Grid item xs={6} sx={{ textAlign: 'right' }}>
-              <Chip 
-                label="Textile" 
-                size="small" 
-                variant="outlined" 
-                sx={{ 
-                  borderRadius: '16px',
-                  borderColor: '#0288D1',
-                  color: '#0288D1'
-                }} 
-              />
-            </Grid>
-
-            <Grid item xs={6}>
-              <Typography variant="body2" color="#666666">
-                Company Phone
-              </Typography>
-            </Grid>
-            <Grid item xs={6} sx={{ textAlign: 'right' }}>
-              <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={0.5}>
-                <Typography variant="body2" color="#000000" noWrap>
-                  9865432123
-                </Typography>
-                <Box sx={{ minWidth: '24px' }}>
-                  <PhoneIcon />
-                </Box>
-              </Stack>
-            </Grid>
-
-            <Grid item xs={6}>
-              <Typography variant="body2" color="#666666">
-                Company Email
-              </Typography>
-            </Grid>
-            <Grid item xs={6} sx={{ textAlign: 'right' }}>
-              <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={0.5}>
-                <Typography variant="body2" color="#000000" noWrap>
-                  Prabfitz@gmail.com
-                </Typography>
-                <Box sx={{ minWidth: '24px' }}>
-                  <EmailIcon />
-                </Box>
-              </Stack>
-            </Grid>
-
-            <Grid item xs={6}>
-              <Typography variant="body2" color="#666666">
-                Company Address
-              </Typography>
-            </Grid>
-            <Grid item xs={6} sx={{ textAlign: 'right' }}>
-              <Stack direction="row" justifyContent="flex-end" alignItems="flex-start" spacing={0.5}>
-                <Typography variant="body2" color="#000000">
-                  123, Cross, Lorel ipsum Lorel ipsum
-                </Typography>
-                <Box sx={{ minWidth: '40px' }}>
-                  <PhoneIcon />
-                </Box>
-              </Stack>
-            </Grid>
-          </Grid>
+      <Grid item xs={12}>
+        <Stack spacing={"14px"}>
+          <Stack
+            direction="row"
+            justifyContent={"space-between"}
+            alignItems="center"
+          >
+            <Typography variant="h6" color={"#2C2829"}>
+              Bussiness category
+            </Typography>
+            <Typography
+              variant="h7"
+              color="#0288D1"
+              sx={{
+                padding: "0px 6px",
+                borderRadius: "12px",
+                border: "1px solid #0288D1",
+              }}
+            >
+              Textile
+            </Typography>
+          </Stack>
+          <Stack
+            direction="row"
+            justifyContent={"space-between"}
+            alignItems="center"
+            paddingBottom={2}
+          >
+            <Typography variant="h6" color={"#2C2829"}>
+              Sub category
+            </Typography>
+            <Typography
+              variant="h7"
+              color="#9C27B0"
+              sx={{
+                padding: "0px 6px",
+                borderRadius: "12px",
+                border: "1px solid #9C27B0",
+              }}
+            >
+              Textile
+            </Typography>
+          </Stack>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <PhoneIcon />
+            <Typography variant="h6" color={"#2C2829"}>
+              +91 9458652637
+            </Typography>
+          </Stack>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <BusinessIcon />
+            <Typography variant="h6" color={"#2C2829"}>
+              +91 9458652637
+            </Typography>
+          </Stack>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <WhatsappIcon />
+            <Typography variant="h6" color={"#2C2829"}>
+              +91 9458652637
+            </Typography>
+          </Stack>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <EmailIcon />
+            <Typography variant="h6" color={"#2C2829"}>
+              johndoe@gmail.com
+            </Typography>
+          </Stack>
+          <Stack direction="row" alignItems="flex-start" spacing={1}>
+            <LocationIcon />
+            <Typography variant="h6" color={"#2C2829"}>
+              Lorem ipsum dolor sit amet consectetur. Viverra sed posuere
+              placerat est donec.{" "}
+            </Typography>
+          </Stack>{" "}
         </Stack>
       </Grid>
     </Grid>

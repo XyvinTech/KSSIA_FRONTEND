@@ -42,7 +42,7 @@ const SettingsPage= () => {
         }}
         sx={{
           bgcolor: "white",
-          paddingTop: "34px",
+          paddingTop: "24px",
           "& .MuiTabs-indicator": {
             backgroundColor: "#004797",
           },

@@ -57,7 +57,7 @@ export default function SingleAddform() {
     setAdditionalPhones([...additionalPhones, ""]);
   };
   return (
-    <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"4px"}>
+    <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"12px"}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={4}>
           <Grid item xs={12}>
@@ -76,9 +76,11 @@ export default function SingleAddform() {
               rules={{ required: "First Name is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput placeholder="Enter the First name" {...field}/>
+                  <StyledInput placeholder="Enter the First name" {...field} />
                   {errors.firstname && (
-                    <span style={{ color: "red" }}>{errors.firstname.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.firstname.message}
+                    </span>
                   )}
                 </>
               )}
@@ -102,7 +104,9 @@ export default function SingleAddform() {
                 <>
                   <StyledInput placeholder="Enter the Middle Name" {...field} />
                   {errors.middlename && (
-                    <span style={{ color: "red" }}>{errors.middlename.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.middlename.message}
+                    </span>
                   )}
                 </>
               )}
@@ -127,7 +131,9 @@ export default function SingleAddform() {
                 <>
                   <StyledInput placeholder="Enter the Last Name" {...field} />
                   {errors.lastname && (
-                    <span style={{ color: "red" }}>{errors.lastname.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.lastname.message}
+                    </span>
                   )}
                 </>
               )}
@@ -152,7 +158,9 @@ export default function SingleAddform() {
                 <>
                   <StyledInput placeholder="Enter the Member ID" {...field} />
                   {errors.memberid && (
-                    <span style={{ color: "red" }}>{errors.memberid.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.memberid.message}
+                    </span>
                   )}
                 </>
               )}
@@ -176,7 +184,9 @@ export default function SingleAddform() {
                 <>
                   <StyledInput placeholder="Enter the Blood Group" {...field} />
                   {errors.bloodgroup && (
-                    <span style={{ color: "red" }}>{errors.bloodgroup.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.bloodgroup.message}
+                    </span>
                   )}
                 </>
               )}
@@ -198,10 +208,7 @@ export default function SingleAddform() {
               rules={{ required: "Image is required" }}
               render={({ field: { onChange } }) => (
                 <>
-                  <StyledEventUpload
-                    label="Upload Photo"
-                    onChange={onChange}
-                  />
+                  <StyledEventUpload label="Upload Photo" onChange={onChange} />
                   {errors.photo && (
                     <span style={{ color: "red" }}>{errors.photo.message}</span>
                   )}
@@ -253,7 +260,9 @@ export default function SingleAddform() {
                 <>
                   <StyledInput placeholder="Enter the Email ID" {...field} />
                   {errors.emails && (
-                    <span style={{ color: "red" }}>{errors.emails.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.emails.message}
+                    </span>
                   )}
                 </>
               )}
@@ -275,7 +284,10 @@ export default function SingleAddform() {
               rules={{ required: "Phone number is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput placeholder="Enter personal phone number" {...field} />
+                  <StyledInput
+                    placeholder="Enter personal phone number"
+                    {...field}
+                  />
                   {errors.phone && (
                     <span style={{ color: "red" }}>{errors.phone.message}</span>
                   )}
@@ -290,9 +302,14 @@ export default function SingleAddform() {
                 // rules={{ required: "Landline number is required" }}
                 render={({ field }) => (
                   <>
-                    <StyledInput placeholder="Enter landline number" {...field} />
+                    <StyledInput
+                      placeholder="Enter landline number"
+                      {...field}
+                    />
                     {errors.landline && (
-                      <span style={{ color: "red" }}>{errors.landline.message}</span>
+                      <span style={{ color: "red" }}>
+                        {errors.landline.message}
+                      </span>
                     )}
                   </>
                 )}
@@ -341,9 +358,14 @@ export default function SingleAddform() {
               rules={{ required: "Personal Address is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput placeholder="Enter the Personal Address" {...field} />
+                  <StyledInput
+                    placeholder="Enter the Personal Address"
+                    {...field}
+                  />
                   {errors.personaladdress && (
-                    <span style={{ color: "red" }}>{errors.personaladdress.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.personaladdress.message}
+                    </span>
                   )}
                 </>
               )}
@@ -370,7 +392,9 @@ export default function SingleAddform() {
                     {...field}
                   />
                   {errors.companyname && (
-                    <span style={{ color: "red" }}>{errors.companyname.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.companyname.message}
+                    </span>
                   )}
                 </>
               )}
@@ -397,7 +421,9 @@ export default function SingleAddform() {
                     {...field}
                   />
                   {errors.companyphone && (
-                    <span style={{ color: "red" }}>{errors.companyphone.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.companyphone.message}
+                    </span>
                   )}
                 </>
               )}
@@ -424,7 +450,9 @@ export default function SingleAddform() {
                     {...field}
                   />
                   {errors.designation && (
-                    <span style={{ color: "red" }}>{errors.designation.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.designation.message}
+                    </span>
                   )}
                 </>
               )}
@@ -451,7 +479,9 @@ export default function SingleAddform() {
                     {...field}
                   />
                   {errors.companyemail && (
-                    <span style={{ color: "red" }}>{errors.companyemail.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.companyemail.message}
+                    </span>
                   )}
                 </>
               )}
@@ -478,7 +508,9 @@ export default function SingleAddform() {
                     {...field}
                   />
                   {errors.website && (
-                    <span style={{ color: "red" }}>{errors.website.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.website.message}
+                    </span>
                   )}
                 </>
               )}
@@ -506,7 +538,9 @@ export default function SingleAddform() {
                     {...field}
                   />
                   {errors.businesscategory && (
-                    <span style={{ color: "red" }}>{errors.businesscategory.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.businesscategory.message}
+                    </span>
                   )}
                 </>
               )}
@@ -534,7 +568,9 @@ export default function SingleAddform() {
                     {...field}
                   />
                   {errors.subcategory && (
-                    <span style={{ color: "red" }}>{errors.subcategory.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.subcategory.message}
+                    </span>
                   )}
                 </>
               )}
@@ -562,14 +598,16 @@ export default function SingleAddform() {
                     {...field}
                   />
                   {errors.status && (
-                    <span style={{ color: "red" }}>{errors.status.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.status.message}
+                    </span>
                   )}
                 </>
               )}
             />
           </Grid>
-         
-          <Grid item xs={6}></Grid> 
+
+          <Grid item xs={6}></Grid>
           <Grid item xs={6}>
             {" "}
             <Stack direction={"row"} spacing={2}>

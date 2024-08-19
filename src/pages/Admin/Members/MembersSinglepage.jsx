@@ -44,15 +44,15 @@ const MembersSinglepage = () => {
   const handleChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
-  
+
   return (
     <>
-      <Box padding={"20px"} bgcolor={"#FFFFFF"}>
+      <Box padding={"20px"} bgcolor={"#FFFFFF"}height={'70px'}display={'flex'}alignItems={'center'}>
         <Typography variant="h4" color={"#4A4647"}>
           Members list / {userData.name}
         </Typography>
       </Box>{" "}
-      <Divider/>
+      <Divider />
       <Tabs
         value={selectedTab}
         onChange={handleChange}
@@ -66,15 +66,15 @@ const MembersSinglepage = () => {
         }}
         sx={{
           bgcolor: "white",
-          paddingTop: "34px",
+          paddingTop: "4px",
           "& .MuiTabs-indicator": {
             backgroundColor: "#004797",
           },
           "& .MuiTab-root": {
             textTransform: "none",
-            fontSize:'16px', 
+            fontSize: "16px",
             fontWeight: 600,
-            margin: '0 30px',
+            margin: "0 30px",
           },
           "& .Mui-selected": {
             color: "#004797",
@@ -96,41 +96,36 @@ const MembersSinglepage = () => {
         )}
         {selectedTab === 1 && (
           <Grid>
-            <MembersPayments/>
+            <MembersPayments />
           </Grid>
         )}
         {selectedTab === 2 && (
-         <Grid container>
+          <Grid container>
             <Stack direction={"column"} spacing={3}>
-                <AppSubscriptionCard/>
-                <MemberSubscriptionCard/>
-                </Stack>
-         </Grid>
+              <AppSubscriptionCard />
+              <MemberSubscriptionCard />
+            </Stack>
+          </Grid>
         )}
         {selectedTab === 3 && (
           <Grid>
-          <MembersProducts/>
-        </Grid>
+            <MembersProducts />
+          </Grid>
         )}
         {selectedTab === 4 && (
-           <Grid>
-           <MembersRequirements/>
-         </Grid>
+          <Grid>
+            <MembersRequirements />
+          </Grid>
         )}
         {selectedTab === 5 && (
-          
-           <Grid container item xs={12}>
+          <Grid container item xs={12}>
             <Grid item xs={12}>
-          <MemberAnalytics/>
+              <MemberAnalytics />
+            </Grid>
+            <Grid item xs={12} marginTop={4}>
+              <Review />
+            </Grid>
           </Grid>
-          <Grid item xs={12} marginTop={4}>
-          <Review/>
-          </Grid>
-          </Grid>
-          
-        
-          
-        
         )}
       </Box>
     </>

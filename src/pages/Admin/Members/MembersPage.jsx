@@ -1,31 +1,33 @@
-import { Box, Grid, Stack, Typography } from '@mui/material'
+import { Box, Grid, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { StyledButton } from '../../../ui/StyledButton';
-import StyledSearchbar from '../../../ui/StyledSearchbar';
+import { StyledButton } from "../../../ui/StyledButton";
+import StyledSearchbar from "../../../ui/StyledSearchbar";
 import { ReactComponent as FilterIcon } from "../../../assets/icons/FilterIcon.svg";
-import StyledTable from '../../../ui/StyledTable';
+import StyledTable from "../../../ui/StyledTable";
 import { userColumns } from "../../../assets/json/TableData";
-import axiosInstance from '../../../api/axios-interceptor';
-import CONSTANTS from '../../../constants';
+import axiosInstance from "../../../api/axios-interceptor";
+import CONSTANTS from "../../../constants";
+import SuspendProfile from "../../../components/SuspendProfile";
+import DeleteProfile from "../../../components/DeleteProfile";
 export default function MembersPage() {
   const navigate = useNavigate();
-  const [selectedRows, setSelectedRows] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);
-  const [userData,setUserData] = useState([])
-  useEffect(()=>{
-    async function fetchUserData(){
-
+  const [suspendOpen, setSuspendOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [isChange, setIsChange] = useState(false);
+  const [userData, setUserData] = useState([]);
+  useEffect(() => {
+    async function fetchUserData() {
       const response = await axiosInstance.get(CONSTANTS.MEMBERS_API);
-      if(response.status !=200){
+      if (response.status != 200) {
         // handle error
-        return
+        return;
       }
       setUserData(response.data.data);
-      
     }
-    fetchUserData()
-  },[])
+    fetchUserData();
+  }, []);
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -33,53 +35,73 @@ export default function MembersPage() {
   const handleCloseFilter = () => {
     setFilterOpen(false);
   };
-  const handleSelectionChange = (newSelectedIds) => {
-    setSelectedRows(newSelectedIds);
-    console.log("Selected items:", newSelectedIds);
+  const handleSuspend = () => {
+    setSuspendOpen(true);
+  };
+  const handleCloseSuspend = () => {
+    setSuspendOpen(false);
+  };
+  // const handleDelete = () => {
+  //   setDeleteOpen(true);
+  // };
+  const handleCloseDelete = () => {
+    setDeleteOpen(false);
+  };
+  const handleChange = () => {
+    setIsChange(!isChange);
   };
   const handleView = (id) => {
     console.log("View item:", id);
     navigate(`/members/member/${id}`);
   };
   const handleDelete = async (id) => {
-    const resp = await axiosInstance.delete(`${CONSTANTS.MEMBERS_API}/${id}`)
-    if(resp.status != 200){
+    const resp = await axiosInstance.delete(`${CONSTANTS.MEMBERS_API}/${id}`);
+    if (resp.status != 200) {
       // handle error
-      return
+      return;
     }
-    setUserData(userDatas=>{
-      return userDatas.filter(userData=> userData.id != id)
-    })
-  }
+    setUserData((userDatas) => {
+      return userDatas.filter((userData) => userData.id != id);
+    });
+  };
   const handleView2 = (id) => {
-   
     navigate(`/members/addmember`);
   };
   return (
     <>
-       {" "}
-       <Box padding={"10px"} bgcolor={"#FFFFFF"}>
-      <Grid container alignItems="center">
-        <Grid item xs={6}>
-          <Typography variant="h4" color={"#4A4647"}>
-            Members List
-          </Typography>
-        </Grid>
-        <Grid item xs={6} container justifyContent="flex-end" spacing={2}>
-          <Grid item>
-            <StyledButton name="Download" variant="secondary">
-              Download
-            </StyledButton>
+      {" "}
+      <Box
+        padding={"10px"}
+        bgcolor={"#FFFFFF"}
+        height={"70px"}
+        display={"flex"}
+        alignItems={"center"}
+      >
+        <Grid container alignItems="center">
+          <Grid item xs={6}>
+            <Typography variant="h4" color={"#4A4647"}>
+              Members List
+            </Typography>
           </Grid>
-          <Grid item>
-            <StyledButton name="Add new member" variant="primary" onClick={handleView2}>
-              Add new member
-            </StyledButton>
+          <Grid item xs={6} container justifyContent="flex-end" spacing={2}>
+            <Grid item>
+              <StyledButton name="Download" variant="secondary">
+                Download
+              </StyledButton>
+            </Grid>
+            <Grid item>
+              <StyledButton
+                name="Add new member"
+                variant="primary"
+                onClick={handleView2}
+              >
+                Add new member
+              </StyledButton>
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
-    </Box>
-    <Box padding="30px" marginBottom={4}>
+      </Box>
+      <Box padding="30px" marginBottom={4}>
         <>
           <Stack
             direction={"row"}
@@ -104,17 +126,34 @@ export default function MembersPage() {
                 <FilterIcon />
               </Box>
             </Stack>
-          </Stack>
-          <StyledTable
-            columns={userColumns}
-            data={userData}
-            onSelectionChange={handleSelectionChange}
-            onView={handleView}
-            onDelete={handleDelete}
-          />{" "}
+          </Stack>{" "}
+          <Box
+            borderRadius={"16px"}
+            bgcolor={"white"}
+            p={1}
+            border={"1px solid rgba(0, 0, 0, 0.12)"}
+          >
+            <StyledTable
+              columns={userColumns}
+              data={userData}
+              onView={handleView}
+              member
+              onAction={handleSuspend}
+              onDelete={handleDelete}
+            />{" "}
+          </Box>
+          <SuspendProfile
+            open={suspendOpen}
+            onClose={handleCloseSuspend}
+            onChange={handleChange}
+          />
+          <DeleteProfile
+            open={deleteOpen}
+            onClose={handleCloseDelete}
+            onChange={handleChange}
+          />
         </>
       </Box>
-      
     </>
-  )
+  );
 }
