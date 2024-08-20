@@ -9,7 +9,7 @@ import { Controller, useForm } from "react-hook-form";
 import StyledSelectField from "../ui/StyledSelectField";
 import { useNewsStore } from "../store/newsStore";
 import { useNavigate, useParams } from "react-router-dom";
-import { addFile } from "../api/upload-api";
+
 
 export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
   const {
