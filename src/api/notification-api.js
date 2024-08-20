@@ -25,7 +25,11 @@ export const addAppNotification = async (data) => {
 };
 export const addEmailNotification = async (data) => {
   try {
-    const response = await axiosInstance.post("/notification/email", data);
+    const response = await axiosInstance.post("/notification/email", data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     toast.success(response.data.message);
     return response.data;
   } catch (error) {

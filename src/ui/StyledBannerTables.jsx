@@ -38,7 +38,7 @@ export default function StyledBannerTables() {
     navigate(`/promotion/edit/${id}`);
   };
   useEffect(() => {
-    fetchPromotion();
+    fetchPromotion("banner");
   }, [isChange]);
   const userColumns = [
     { title: "Date", field: "startDate", padding: "none" },
@@ -86,7 +86,6 @@ export default function StyledBannerTables() {
             onDeleteRow={handleRowDelete}
             onModify={handleEdit}
           />{" "}
-
         </Box>
       </>
     </>

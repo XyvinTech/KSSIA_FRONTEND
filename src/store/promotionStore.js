@@ -10,8 +10,8 @@ import {
 const usePromotionStore = create((set) => ({
   promotions: [],
 
-  fetchPromotion: async () => {
-    const allData = await getPromotion();
+  fetchPromotion: async (type) => {
+    const allData = await getPromotion(type);
     set({ promotions: allData?.data || [] });
   },
   addPromotions: async (data) => {

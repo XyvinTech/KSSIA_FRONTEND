@@ -5,8 +5,10 @@ import { ReactComponent as FilterIcon } from "../assets/icons/FilterIcon.svg";
 import StyledTable from "./StyledTable";
 import { userColumns, userData } from "../assets/json/TableData";
 import { usePromotionStore } from "../store/promotionStore";
+import { useNavigate } from "react-router-dom";
 
 export default function StyledPosterTable() {
+  const navigate = useNavigate();
   const [filterOpen, setFilterOpen] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
   const [isChange, setIsChange] = useState(false);
@@ -21,6 +23,9 @@ export default function StyledPosterTable() {
   const handleSelectionChange = (newSelectedIds) => {
     setSelectedRows(newSelectedIds);
   };
+  const handleEdit = (id) => {
+    navigate(`/promotion/edit/${id}`);
+  };
   const handleDelete = async () => {
     if (selectedRows.length > 0) {
       await Promise.all(selectedRows?.map((id) => deletePromotions(id)));
@@ -33,7 +38,7 @@ export default function StyledPosterTable() {
     setIsChange(!isChange);
   };
   useEffect(() => {
-    fetchPromotion();
+    fetchPromotion("poster");
   }, [isChange]);
   const userColumns = [
     { title: "Date", field: "startDate", padding: "none" },
@@ -79,6 +84,7 @@ export default function StyledPosterTable() {
             onSelectionChange={handleSelectionChange}
             onDelete={handleDelete}
             onDeleteRow={handleRowDelete}
+            onModify={handleEdit}
           />{" "}
         </Box>
       </>

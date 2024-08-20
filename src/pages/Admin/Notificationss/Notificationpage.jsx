@@ -61,14 +61,14 @@ const Notificationpage = () => {
         {selectedTab === 0 && (
             <Grid container>
             <Grid item md={7}>
-            <EmailNotificationform/>
+            <EmailNotificationform setSelectedTab={setSelectedTab}/>
             </Grid>
           </Grid>
         )}
         {selectedTab === 1 && (
           <Grid container>
             <Grid item md={7}>
-            <InappNotificationform/>
+            <InappNotificationform setSelectedTab={setSelectedTab}/>
             </Grid>
           </Grid>
         )}

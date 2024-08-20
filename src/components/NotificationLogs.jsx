@@ -20,12 +20,11 @@ export default function NotificationLogs() {
     fetchNotification();
   }, []);
   const userColumns = [
-    { title: "Name", field: "name", padding: "none" },
+    { title: "DATE", field: "createdAt", padding: "none" },
 
-    { title: "Member ID", field: "memberid" },
-    { title: "Company Name", field: "companyname" },
-    { title: "Designation", field: "designation" },
-    { title: "Phone Number", field: "phonenumber" },
+    { title: "type", field: "type" },
+    { title: "subject", field: "subject" },
+    { title: "content", field: "content" },
   ];
   return (
     <>

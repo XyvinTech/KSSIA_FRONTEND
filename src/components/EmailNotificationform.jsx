@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Grid, Stack } from "@mui/material";
 
 import { StyledEventUpload } from "../ui/StyledEventUpload";
@@ -9,47 +9,47 @@ import { Controller, useForm } from "react-hook-form";
 import StyledSelectField from "../ui/StyledSelectField";
 import DropZoneforForm from "../ui/DropzoneforForm";
 import { useNotificationStore } from "../store/notificationStore";
+import { useDropDownStore } from "../store/dropDownStore";
 
-export default function EmailNotificationform() {
+export default function EmailNotificationform({ setSelectedTab }) {
   const {
     control,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm();
-  const [imageFile, setImageFile] = useState(null);
+  const { users, fetchUsers } = useDropDownStore();
   const { addEmailNotifications } = useNotificationStore();
-
-  const option = [
-    { value: "option1", label: "Option 1" },
-    { value: "option2", label: "Option 2" },
-    { value: "option3", label: "Option 3" },
-  ];
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+  const option =
+    users && Array.isArray(users)
+      ? users.map((user) => ({
+          value: user._id,
+          label: `${user.name.first_name} ${user.name.middle_name} ${user.name.last_name}`,
+        }))
+      : [];
   const onSubmit = async (data) => {
-    let imageUrl = data?.event_image || "";
+    const formData = new FormData();
 
-    if (imageFile) {
-      try {
-        imageUrl = await new Promise((resolve, reject) => {
-          // uploadFileToS3(
-          //   imageFile,
-          //   (location) => resolve(location),
-          //   (error) => reject(error)
-          // );
-        });
-      } catch (error) {
-        console.error("Failed to upload image:", error);
-        return;
-      }
+    const userIds = data.to.map((user) => user.value);
+    userIds.forEach((id) => {
+      formData.append("to", id);
+    });
+    formData.append("subject", data?.subject);
+    formData.append("content", data?.content);
+    formData.append("link_url", data?.link_url);
+    formData.append("file_url", data.file_url);
+    if (data?.media_url) {
+      formData.append("media_url", data.media_url);
     }
-    const formData = {
-      to: data?.to.value,
-      subject: data?.subject,
-      content: data?.content,
-      link_url: data?.link_url,
-      media_url: imageUrl ? imageUrl : "",
-    };
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
     await addEmailNotifications(formData);
+    reset();
+    setSelectedTab(2);
   };
 
   return (
@@ -68,13 +68,14 @@ export default function EmailNotificationform() {
             <Controller
               name="to"
               control={control}
-              defaultValue=""
+              defaultValue={[]}
               rules={{ required: "Member is required" }}
               render={({ field }) => (
                 <>
                   <StyledSelectField
                     placeholder="Select member"
                     options={option}
+                    isMulti
                     {...field}
                   />
                   {errors.to && (
@@ -153,11 +154,13 @@ export default function EmailNotificationform() {
               control={control}
               defaultValue=""
               rules={{ required: "File is required" }}
-              render={({ field: { onChange } }) => (
+              render={({ field }) => (
                 <>
                   <StyledEventUpload
                     label="Upload your file"
-                    onChange={onChange}
+                    onChange={(selectedFile) => {
+                      field.onChange(selectedFile);
+                    }}
                   />
                   {errors.media_url && (
                     <span style={{ color: "red" }}>
@@ -184,7 +187,11 @@ export default function EmailNotificationform() {
               rules={{ required: "File  is required" }}
               render={({ field }) => (
                 <>
-                  <DropZoneforForm placeholder="Rs 00" {...field} />
+                  <DropZoneforForm
+          onChange={(selectedFile) => {
+            field.onChange(selectedFile); // Pass the file object
+          }}
+        />
                   {errors.file_url && (
                     <span style={{ color: "red" }}>
                       {errors.file_url.message}

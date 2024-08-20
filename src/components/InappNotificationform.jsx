@@ -11,7 +11,7 @@ import DropZoneforForm from "../ui/DropzoneforForm";
 import { useNotificationStore } from "../store/notificationStore";
 import { useDropDownStore } from "../store/dropDownStore";
 
-export default function InappNotificationform() {
+export default function InappNotificationform({ setSelectedTab }) {
   const {
     control,
     handleSubmit,
@@ -34,20 +34,23 @@ export default function InappNotificationform() {
   const onSubmit = async (data) => {
     const formData = new FormData();
 
-    const userIds = data.to.map(user => user.value);
-    formData.append("to", JSON.stringify(userIds));
+    const userIds = data.to.map((user) => user.value);
+    userIds.forEach((id) => {
+      formData.append("to", id);
+    });
     formData.append("subject", data?.subject);
     formData.append("content", data?.content);
     formData.append("link_url", data?.link_url);
 
     if (data?.file) {
-      formData.append("image", data.file); // Assuming 'file' is an array from file input
+      formData.append("file_url", data.file); 
     }
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
+    // for (let [key, value] of formData.entries()) {
+    //   console.log(`${key}: ${value}`);
+    // }
     await addAppNotifications(formData);
-    reset(); // Optionally reset the form after submission
+    reset(); 
+    setSelectedTab(2);
   };
 
   return (
@@ -66,7 +69,7 @@ export default function InappNotificationform() {
             <Controller
               name="to"
               control={control}
-              defaultValue=""
+              defaultValue={[]}
               rules={{ required: "Member is required" }}
               render={({ field }) => (
                 <>

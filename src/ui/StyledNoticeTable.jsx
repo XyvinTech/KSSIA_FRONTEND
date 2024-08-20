@@ -38,7 +38,7 @@ export default function StyledNoticeTable() {
     setIsChange(!isChange);
   };
   useEffect(() => {
-    fetchPromotion();
+    fetchPromotion("notice");
   }, [isChange]);
   const userColumns = [
     { title: "Date", field: "startDate", padding: "none" },

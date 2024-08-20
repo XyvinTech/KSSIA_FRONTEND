@@ -5,8 +5,10 @@ import { ReactComponent as FilterIcon } from "../assets/icons/FilterIcon.svg";
 import StyledTable from "./StyledTable";
 import { userColumns, userData } from "../assets/json/TableData";
 import { usePromotionStore } from "../store/promotionStore";
+import { useNavigate } from "react-router-dom";
 
 export default function StyledVideoTable() {
+  const navigate = useNavigate();
   const [filterOpen, setFilterOpen] = useState(false);
   const [isChange, setIsChange] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
@@ -28,12 +30,15 @@ export default function StyledVideoTable() {
       setSelectedRows([]);
     }
   };
+  const handleEdit = (id) => {
+    navigate(`/promotion/edit/${id}`);
+  };
   const handleRowDelete = async (id) => {
     await deletePromotions(id);
     setIsChange(!isChange);
   };
   useEffect(() => {
-    fetchPromotion();
+    fetchPromotion("video");
   }, [isChange]);
   const userColumns = [
     { title: "Date", field: "startDate", padding: "none" },
@@ -79,6 +84,7 @@ export default function StyledVideoTable() {
             onSelectionChange={handleSelectionChange}
             onDelete={handleDelete}
             onDeleteRow={handleRowDelete}
+            onModify={handleEdit}
           />{" "}
         </Box>
       </>
