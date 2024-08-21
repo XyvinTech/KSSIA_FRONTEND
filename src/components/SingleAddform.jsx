@@ -33,12 +33,12 @@ export default function SingleAddform() {
     { value: "option3", label: "Option 3" },
   ];
   const onSubmit = async (data) => {
-    console.log("inside");
     data.business_category = data.business_category.value;
     data.sub_category= data.sub_category.value;
     data.status=data.status.value;
     // currently dealing only one website
     data.websites = [{name:"test",url:data.website}]
+    data.profile_picture = data.profile_picture.img
 
     try {
       const resp =await axiosInstance.post(CONSTANTS.MEMBERS_API,data)
@@ -156,7 +156,10 @@ export default function SingleAddform() {
               rules={{ required: "Member ID is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput placeholder="Enter the Member ID" {...field} />
+                  <StyledInput 
+                  placeholder="Enter the Member ID" 
+                  {...field}
+                  />
                   {errors.memberid && (
                     <span style={{ color: "red" }}>
                       {errors.memberid.message}

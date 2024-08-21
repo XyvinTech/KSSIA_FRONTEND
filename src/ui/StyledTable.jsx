@@ -101,7 +101,7 @@ const StyledTable = ({
     setRowId(null);
   };
 
-  const handleView = () => {
+  const handleView = (rowId) => {
     onView(rowId);
     handleMenuClose();
   };
@@ -160,7 +160,7 @@ const StyledTable = ({
         return "default";
     }
   };
-
+  console.log('dddddddddd',columns)
   return (
     <Box bgcolor={"white"} borderRadius={"16px"}>
       <TableContainer sx={{ border: "none" }}>
@@ -253,7 +253,7 @@ const StyledTable = ({
                         <IconButton
                           aria-controls="simple-view"
                           aria-haspopup="true"
-                          onClick={handleView}
+                          onClick={()=>handleView(row._id)}
                         >
                           <ViewIcon />
                         </IconButton>

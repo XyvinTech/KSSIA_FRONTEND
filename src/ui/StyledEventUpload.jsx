@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState,useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -43,7 +43,7 @@ const PreviewContainer = styled(Box)({
   borderRadius: '4px',
 });
 
-export const StyledEventUpload = ({ label, placeholder, onChange }) => {
+export const StyledEventUpload = ({ label, placeholder, onChange, value}) => {
   const fileInputRef = useRef(null);
   const [filePreview, setFilePreview] = useState(null);
   const [fileType, setFileType] = useState(null);
@@ -53,17 +53,21 @@ export const StyledEventUpload = ({ label, placeholder, onChange }) => {
   };
 
   const handleFileChange = (event) => {
+    console.log('selectedImage',event)
     const file = event.target.files[0];
+    console.log('selectedImage',file)
     if (file) {
       setFileType(file.type.split('/')[0]); // Get the file type (image or video)
       const reader = new FileReader();
       reader.onload = (e) => {
+        file.img = e.target.result
         setFilePreview(e.target.result);
         onChange(file); // Pass the file object to the parent component
       };
       reader.readAsDataURL(file);
     }
   };
+  console.log('value......',value)
 
   return (
     <>
@@ -80,6 +84,7 @@ export const StyledEventUpload = ({ label, placeholder, onChange }) => {
             </InputAdornment>
           ),
           readOnly: true,
+          // value: value ? "Image Selected" : "",
         }}
       />
       <input

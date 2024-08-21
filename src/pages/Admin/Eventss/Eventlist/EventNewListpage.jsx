@@ -1,7 +1,6 @@
 import { Box, Grid, Stack, Tab, Tabs, Typography } from "@mui/material";
 import React, { useState } from "react";
-
-
+import { eventColumns, userData } from "../../../../assets/json/TableData";
 import Events from "./Events";
 import AddEvent from "../../../../components/AddEvent";
 
@@ -65,7 +64,8 @@ const EventNewListpage = () => {
         {selectedTab === 1 && (
           <Grid container>
             <Grid item md={8}>
-            <AddEvent/>
+            <AddEvent 
+            />
             </Grid>
           </Grid>
         )}

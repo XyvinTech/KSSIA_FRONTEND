@@ -3,10 +3,10 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { ReactComponent as FilterIcon } from "../../../../assets/icons/FilterIcon.svg";
-import StyledTable from "../../../../ui/StyledTable.jsx";
-import { userColumns, userData } from "../../../../assets/json/TableData";
-import { StyledButton } from "../../../../ui/StyledButton";
-import StyledSearchbar from "../../../../ui/StyledSearchbar";
+import StyledTable from '../../../../ui/StyledTable.jsx';
+import { eventColumns, userData } from "../../../../assets/json/TableData";
+import { StyledButton } from '../../../../ui/StyledButton';
+import StyledSearchbar from '../../../../ui/StyledSearchbar';
 export default function EventHistorypage() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
@@ -88,9 +88,10 @@ export default function EventHistorypage() {
             border={"1px solid rgba(0, 0, 0, 0.12)"}
           >
             <StyledTable
-              columns={userColumns}
-              data={userData}
+              columns={eventColumns}
+              data={[]}
               onSelectionChange={handleSelectionChange}
+              onView={handleView}
             />{" "}
           </Box>
         </>

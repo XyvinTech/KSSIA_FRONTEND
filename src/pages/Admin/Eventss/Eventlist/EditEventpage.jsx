@@ -3,12 +3,13 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { StyledButton } from '../../../../ui/StyledButton.jsx';
 import AddEvent from '../../../../components/AddEvent.jsx';
+import { useParams } from "react-router-dom";
 
 export default function EditEventpage() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);
-
+  const { id } = useParams();
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -18,12 +19,11 @@ export default function EditEventpage() {
   };
   const handleSelectionChange = (newSelectedIds) => {
     setSelectedRows(newSelectedIds);
-    console.log("Selected items:", newSelectedIds);
   };
-  const handleView = (id) => {
-    console.log("View item:", id);
-    navigate(`/members/member/${id}`);
-  };
+  // const handleView = (id) => {
+  //   console.log("View item:", id);
+  //   navigate(`/members/member/${id}`);
+  // };
 
   return (
     <>
@@ -51,7 +51,9 @@ export default function EditEventpage() {
     </Box>
     <Grid container item xs={12}>
       <Grid item xs={10} padding={5}>
-       <AddEvent/>
+       <AddEvent
+        eventId = {id}
+       />
 
       </Grid>
     </Grid>

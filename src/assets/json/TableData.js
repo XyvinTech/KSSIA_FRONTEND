@@ -1,6 +1,5 @@
 export const userColumns = [
-    { title: "Name", field: "name", padding: "none" },
-  
+    { title: "Name", field: "name", padding: "none" },  
     { title: "Member ID", field: "memberid" },
     { title: "Company Name", field: "companyname" },
     { title: "Designation", field: "designation" },
@@ -43,4 +42,18 @@ export const userColumns = [
     },
   
   ];
+
+  export const eventColumns = [
+    { title: "Event Name", field: "name", padding: "none" },  
+    { title: "Date", field: "date" },
+    { title: "Time", field: "time" },
+    { title: "Duration", field: "time" },
+    { title: "Organizer Name", field: "organiser_name" },
+    { title: "activate", field: "activate" },
+    { title: "Type", field: "type" },
+    { title: "Mode", field: "platform" },
+    { title: "RSVP", field: "rsvp" }
+
+  ];
+  
   

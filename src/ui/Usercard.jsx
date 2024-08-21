@@ -76,7 +76,7 @@ const UserCard = ({ user }) => {
           <Stack direction="row" alignItems="flex-start" spacing={1}>
             <LocationIcon />
             <Typography variant="h6" color={"#2C2829"}>
-              {user?.address}
+              {/* {user?.address?.street} */}
             </Typography>
           </Stack>
         </Stack>
