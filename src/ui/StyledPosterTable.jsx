@@ -24,7 +24,7 @@ export default function StyledPosterTable() {
     setSelectedRows(newSelectedIds);
   };
   const handleEdit = (id) => {
-    navigate(`/promotion/edit/${id}`);
+    navigate(`/promotion/edit/${id}`, { state: { value: "poster" } });
   };
   const handleDelete = async () => {
     if (selectedRows.length > 0) {

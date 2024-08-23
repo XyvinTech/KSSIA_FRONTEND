@@ -10,7 +10,7 @@ export const userColumns = [
 
   ];
   export const productColums = [
-    {title:"Product Name",field:"productname"},
+    {title:"Product Name",field:"name"},
     {title:"Product Image",field:"image"},
     {title:"Seller Price",field:"price"},
     {title:"Product Description",field:"description"},

@@ -12,10 +12,10 @@ const UserCard = ({ user }) => {
       spacing={2}
       bgcolor={"white"}
       borderRadius={"12px"}
-      padding={"10px"} minHeight={'420px'}
+      padding={"10px"}
+      minHeight={"420px"}
       position="relative"
     >
-      
       <Box
         position="absolute"
         top={10}
@@ -30,7 +30,7 @@ const UserCard = ({ user }) => {
           Premium
         </Typography>
       </Box>
-      
+
       {user?.img ? (
         <Grid
           item
@@ -49,22 +49,24 @@ const UserCard = ({ user }) => {
         </Grid>
       ) : null}
       <Grid item md={8} xs={6}>
-        <Stack spacing={1}>
-          {/* {user?.id ? (
-            <Typography variant="h8" color={"rgba(44, 40, 41, 0.6)"}>
-              {user?.id}
-            </Typography>
-          ) : null} */}
+        <Stack spacing={"10px"}>
+          <Typography
+            variant="h8"
+            color={"rgba(44, 40, 41, 0.6)"}
+            sx={{ display: "flex", alignItems: "center", gap: "8px" }}
+          >
+            <StarIcon />
+          </Typography>
           <Typography variant="h5" color={"#4A4647"}>
-            {user?.name}
+            {user?.full_name}
           </Typography>
           <Typography variant="h6" color={"#4A4647"}>
-            {user?.title}
+            Member ID: {user?.title}
           </Typography>
           <Stack direction="row" alignItems="center" spacing={1}>
             <PhoneIcon />
             <Typography variant="h6" color={"#2C2829"}>
-              {user?.phone}
+              {user?.phone_numbers?.personal}
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="center" spacing={1}>
@@ -76,12 +78,12 @@ const UserCard = ({ user }) => {
           <Stack direction="row" alignItems="flex-start" spacing={1}>
             <LocationIcon />
             <Typography variant="h6" color={"#2C2829"}>
-              {/* {user?.address?.street} */}
+              {user?.address}
             </Typography>
           </Stack>
         </Stack>
       </Grid>
-      <Grid
+      {/* <Grid
         item
         md={2}
         xs={12}
@@ -101,27 +103,20 @@ const UserCard = ({ user }) => {
         >
           Premium
         </Typography>
-      </Grid>
+      </Grid> */}
       <Grid
         item
         md={12}
         xs={12}
         display={"flex"}
         alignItems={"flex-start"}
-      flexDirection={'column'}
+        flexDirection={"column"}
       >
         <Typography variant="h7" color={"#626262"} fontWeight={700}>
           Bio
         </Typography>
         <Typography variant="h6" color={"#626262"}>
-          Lorem ipsum dolor sit amet consectetur. Hendrerit malesuada tortor
-          etiam lacus mollis nam nisl duis vulputate. Accumsan pulvinar luctus
-          vitae facilisi nisi metus. Ullamcorper etiam pellentesque id semper
-          sollicitudin. Feugiat pellentesque sed neque suscipit aliquam egestas
-          purus ante eu. Enim elementum lacus lacus scelerisque. Aliquet
-          molestie id ullamcorper facilisi consectetur orci varius eros
-          dictumst. Diam nulla aliquam mus malesuada vel. Quam molestie neque
-          aenean urna sapien. Dictumst amet lectus cras et neque eu diam etiam.
+        {user?.bio}
         </Typography>
       </Grid>
     </Grid>

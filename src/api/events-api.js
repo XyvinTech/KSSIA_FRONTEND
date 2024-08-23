@@ -11,7 +11,11 @@ export const getEvents = async () => {
 
 export const createEvent = async (eventData) => {
     try {
-      const response = await axiosInstance.post("/events",eventData);
+      const response = await axiosInstance.post("/events",eventData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       return response.data; 
     } catch (error) {
       console.error('Error caught:', error);

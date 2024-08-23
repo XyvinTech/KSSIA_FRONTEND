@@ -9,7 +9,9 @@ import { Controller, useForm } from "react-hook-form";
 import StyledSelectField from "../ui/StyledSelectField";
 import axiosInstance from "../api/axios-interceptor";
 import CONSTANTS from "../constants";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useDropDownStore } from "../store/dropDownStore";
+import { useProductsStore } from "../store/productStore";
 
 export default function Addproductform() {
   const navigate = useNavigate();
@@ -17,52 +19,65 @@ export default function Addproductform() {
     control,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm();
-  const [isChecked, setIsChecked] = useState(false);
   const [additionalPhones, setAdditionalPhones] = useState([]);
-  const [users,setUsers] = useState([])
 
-  useEffect(()=>{
-    async function init(){
-      const resp = await axiosInstance.get(CONSTANTS.MEMBERS_API);
-      const refinedDat = resp.data.data.map(user=>(
-        {
-          label : user.name,
-          value :user._id
-        }
-      ))
-      
-      setUsers(refinedDat)
+  const { addProducts, fetchProductById, updateProduct, products } =
+    useProductsStore();
+  const { users, fetchUsers } = useDropDownStore();
+  const location = useLocation();
+  const { productId, isUpdate } = location.state || {};
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+  useEffect(() => {
+    if (isUpdate && productId) {
+      fetchProductById(productId);
     }
-    init()
-  },[])
-  const handleSwitchChange = (e) => {
-    setIsChecked(e.target.checked);
-  };
-  const option = [
-    { value: "option1", label: "Option 1" },
-    { value: "option2", label: "Option 2" },
-    { value: "option3", label: "Option 3" },
-  ];
-  const onSubmit = async  (data) => {
-    console.log("Form data:", data);
-    try {
-      data.seller_id =data.seller_id.value
-      data.unit =data.unit.value
-      data.image = data.image.img
-      delete data.seller
-      delete data.mcq
-      const response = await axiosInstance.post(CONSTANTS.PRODUCTS_API,data)
-      if(response.status != 201) {
-        // handle error 
-        return
-      } 
-      navigate(`/products`);
-    } catch (error) {
-      console.log(error);
-      
+  }, [productId, isUpdate, fetchProductById]);
+  useEffect(() => {
+    if (products && isUpdate) {
+      setValue("productname", products.name);
+      setValue("description", products.description);
+      setValue("price", products.price);
+      setValue("offer_price", products.offer_price);
+      setValue("units", products.units);
+      const sellerUser = users.find(
+        (user) => user._id === products.seller_id._id
+      );
+      if (sellerUser) {
+        setValue("seller_id", {
+          value: sellerUser._id,
+          label: `${sellerUser.name.first_name} ${sellerUser.name.middle_name} ${sellerUser.name.last_name}`,
+        });
+      }
     }
+  }, [products, isUpdate, setValue, users]);
+  const option =
+    users && Array.isArray(users)
+      ? users.map((user) => ({
+          value: user._id,
+          label: `${user.name.first_name} ${user.name.middle_name} ${user.name.last_name}`,
+        }))
+      : [];
+
+  const onSubmit = async (data) => {
+    const formData = new FormData();
+    formData.append("seller_id", data?.seller_id.value);
+    formData.append("description", data?.description);
+    formData.append("offer_price", data?.offer_price);
+    formData.append("price", data?.price);
+    formData.append("units", data?.units);
+    formData.append("image", data?.image);
+    formData.append("name", data?.productname);
+    if (isUpdate && productId) {
+      await updateProduct(productId, formData);
+    } else {
+      await addProducts(formData);
+    }
+    navigate(`/products`);
   };
 
   const addPhoneNumber = () => {
@@ -72,7 +87,7 @@ export default function Addproductform() {
     <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"12px"}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={4}>
-        <Grid item xs={12}>
+          <Grid item xs={12}>
             <Typography
               sx={{ marginBottom: 1 }}
               variant="h6"
@@ -90,11 +105,13 @@ export default function Addproductform() {
                 <>
                   <StyledSelectField
                     placeholder="Enter Seller name"
-                    options={users}
+                    options={option}
                     {...field}
                   />
                   {errors.seller && (
-                    <span style={{ color: "red" }}>{errors.seller.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.seller.message}
+                    </span>
                   )}
                 </>
               )}
@@ -116,9 +133,14 @@ export default function Addproductform() {
               rules={{ required: "Product Name is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput placeholder="Enter the Product name" {...field}/>
+                  <StyledInput
+                    placeholder="Enter the Product name"
+                    {...field}
+                  />
                   {errors.productname && (
-                    <span style={{ color: "red" }}>{errors.productname.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.productname.message}
+                    </span>
                   )}
                 </>
               )}
@@ -167,7 +189,10 @@ export default function Addproductform() {
               rules={{ required: "Product Name is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput placeholder="Add Description in less than 500 words" {...field}/>
+                  <StyledInput
+                    placeholder="Add Description in less than 500 words"
+                    {...field}
+                  />
                   {errors.desc && (
                     <span style={{ color: "red" }}>{errors.desc.message}</span>
                   )}
@@ -182,7 +207,7 @@ export default function Addproductform() {
               fontWeight={500}
               color={"#333333"}
             >
-             Actual price 
+              Actual price
             </Typography>
             <Controller
               name="price"
@@ -191,9 +216,11 @@ export default function Addproductform() {
               rules={{ required: "Actual price  is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput placeholder="Rs 00" {...field}/>
+                  <StyledInput placeholder="Rs 00" {...field} />
                   {errors.actual && (
-                    <span style={{ color: "red" }}>{errors.actual.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.actual.message}
+                    </span>
                   )}
                 </>
               )}
@@ -206,7 +233,7 @@ export default function Addproductform() {
               fontWeight={500}
               color={"#333333"}
             >
-             Offer price 
+              Offer price
             </Typography>
             <Controller
               name="offer_price"
@@ -215,7 +242,7 @@ export default function Addproductform() {
               rules={{ required: "Offer price  is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput placeholder="Rs 00" {...field}/>
+                  <StyledInput placeholder="Rs 00" {...field} />
                   {errors.offer && (
                     <span style={{ color: "red" }}>{errors.offer.message}</span>
                   )}
@@ -223,7 +250,7 @@ export default function Addproductform() {
               )}
             />
           </Grid>
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <Typography
               sx={{ marginBottom: 1 }}
               variant="h6"
@@ -246,9 +273,8 @@ export default function Addproductform() {
                 </>
               )}
             />
-          </Grid>
+          </Grid> */}
 
-       
           <Grid item xs={12}>
             <Typography
               sx={{ marginBottom: 1 }}
@@ -259,17 +285,13 @@ export default function Addproductform() {
               Per Unit
             </Typography>
             <Controller
-              name="unit"
+              name="units"
               control={control}
               defaultValue=""
               rules={{ required: "Status is required" }}
               render={({ field }) => (
                 <>
-                  <StyledSelectField
-                    placeholder="Select the unit"
-                    options={option}
-                    {...field}
-                  />
+                  <StyledInput placeholder="Select the unit" {...field} />
                   {errors.unit && (
                     <span style={{ color: "red" }}>{errors.unit.message}</span>
                   )}
@@ -277,9 +299,9 @@ export default function Addproductform() {
               )}
             />
           </Grid>
-         
-          <Grid item xs={6}></Grid> 
-          <Grid item xs={6}>
+
+          <Grid item xs={6}></Grid>
+          <Grid item xs={6} display={"flex"} justifyContent={"end"}>
             {" "}
             <Stack direction={"row"} spacing={2}>
               <StyledButton

@@ -6,33 +6,42 @@ import {
   DialogTitle,
   Box,
 } from "@mui/material";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { StyledButton } from "../../ui/StyledButton";
-import StyledSelectField from "../../ui/StyledSelectField";
-import { StyledMultilineTextField } from "../../ui/StyledMultilineTextField ";
 import { ReactComponent as CloseIcon } from "../../assets/icons/CloseIcon.svg";
 import { useState } from "react";
 import RejectForm from "./RejectForm";
+import { usePaymentStore } from "../../store/payment-store";
+import { StyledMultilineTextField } from "../../ui/StyledMultilineTextField ";
 
-const RejectionEntryForm = ({ open, onClose, onChange }) => {
-  const { handleSubmit } = useForm();
+const RejectionEntryForm = ({ open, onClose, data }) => {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },getValues
+  } = useForm();
+  const { patchPayments } = usePaymentStore();
   const [reject, setReject] = useState(false);
-  const onSubmit = async () => {
-    onChange();
+  const [previewData, setPreviewData] = useState(null);
+
+  const onSubmit = async (formData) => {
+    const updateData = {
+      reason: formData?.reason,
+      status: "rejected",
+    };
+    await patchPayments(data?._id, updateData);
     onClose();
   };
 
-  const handleClear = (event) => {
-    event.preventDefault();
-    onClose();
-  };
   const handleReject = (event) => {
     event.preventDefault();
-    onClose();
+    setPreviewData({ ...data, reason: getValues("reason") }); // Capture the reason and other data
     setReject(true);
   };
+
   const handleCloseReject = () => {
     setReject(false);
+    setPreviewData(null);
   };
 
   return (
@@ -44,7 +53,6 @@ const RejectionEntryForm = ({ open, onClose, onChange }) => {
           sx: { borderRadius: "12px" },
         }}
       >
-        {" "}
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogTitle sx={{ height: "auto", padding: 3 }}>
             <Box
@@ -56,7 +64,7 @@ const RejectionEntryForm = ({ open, onClose, onChange }) => {
                 Rejection notice
               </Typography>
               <Typography
-                onClick={(event) => handleClear(event)}
+                onClick={onClose}
                 color="#E71D36"
                 style={{ cursor: "pointer" }}
               >
@@ -67,16 +75,28 @@ const RejectionEntryForm = ({ open, onClose, onChange }) => {
           <DialogContent
             sx={{ height: "auto", width: "430px", backgroundColor: "#F9F9F9" }}
           >
-            {" "}
             <Stack spacing={2} paddingTop={2}>
               <Typography variant="h6" color={"#333333"}>
                 Reason for Rejection
               </Typography>
-              <StyledSelectField placeholder={"Select Category"} />
-              <Typography variant="h6" color={"#333333"}>
-                Description
-              </Typography>
-              <StyledMultilineTextField placeholder={"Add Message"} />{" "}
+              <Controller
+                name="reason"
+                control={control}
+                rules={{ required: "Content is required" }}
+                render={({ field }) => (
+                  <>
+                    <StyledMultilineTextField
+                      placeholder={"Add reason"}
+                      {...field}
+                    />
+                    {errors.reason && (
+                      <span style={{ color: "red" }}>
+                        {errors.reason.message}
+                      </span>
+                    )}
+                  </>
+                )}
+              />
             </Stack>
           </DialogContent>
           <Stack
@@ -88,13 +108,19 @@ const RejectionEntryForm = ({ open, onClose, onChange }) => {
             <StyledButton
               variant="secondary"
               name="Preview"
-              onClick={(event) => handleReject(event)}
+              onClick={handleReject}
             />
             <StyledButton variant="primary" name="Send" type="submit" />
           </Stack>
         </form>
-      </Dialog>{" "}
-      <RejectForm open={reject} onClose={handleCloseReject} />
+      </Dialog>
+
+      {/* Open RejectForm with preview data */}
+      <RejectForm
+        open={reject}
+        onClose={handleCloseReject}
+        data={previewData} // Pass the preview data
+      />
     </>
   );
 };

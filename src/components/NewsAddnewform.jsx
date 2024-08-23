@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Grid, Stack, Divider } from "@mui/material";
+import { Box, Typography, Grid, Stack } from "@mui/material";
 
 import { StyledEventUpload } from "../ui/StyledEventUpload";
 import { StyledButton } from "../ui/StyledButton";
@@ -9,7 +9,6 @@ import { Controller, useForm } from "react-hook-form";
 import StyledSelectField from "../ui/StyledSelectField";
 import { useNewsStore } from "../store/newsStore";
 import { useNavigate, useParams } from "react-router-dom";
-
 
 export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
   const {
@@ -26,30 +25,32 @@ export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
       content: "",
     },
   });
+
   const navigate = useNavigate();
   const { id } = useParams();
   const { news, fetchNewsById, addNewses, updateNews } = useNewsStore();
 
   useEffect(() => {
     if (isUpdate && id) {
-      fetchNewsById(id).then(() => {
-        if (news) {
-          setValue("category", { value: news.category, label: news.category });
-          setValue("title", news.title);
-          setValue("content", news.content);
-        
-          setValue("image", news.image);
-        }
-      });
+      fetchNewsById(id);
     }
-  }, [id, isUpdate, fetchNewsById, news, setValue]);
-  
+  }, [id, isUpdate, fetchNewsById]);
+
+  useEffect(() => {
+    if (news && isUpdate) {
+      setValue("category", { value: news.category, label: news.category });
+      setValue("title", news.title);
+      setValue("content", news.content);
+      setValue("image", news.image);
+    }
+  }, [news, isUpdate, setValue]);
 
   const option = [
     { value: "businesses", label: "businesses" },
     { value: "option2", label: "Option 2" },
     { value: "option3", label: "Option 3" },
   ];
+
   const onSubmit = async (data) => {
     const formData = new FormData();
     formData.append("category", data.category.value);
@@ -63,8 +64,8 @@ export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
       await addNewses(formData);
       setSelectedTab(0);
     }
-   
   };
+
   return (
     <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"12px"}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -81,7 +82,7 @@ export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
             <Controller
               name="category"
               control={control}
-              rules={{ required: "Category  is required" }}
+              rules={{ required: "Category is required" }}
               render={({ field }) => (
                 <>
                   <StyledSelectField
@@ -179,10 +180,8 @@ export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
               )}
             />
           </Grid>
-
           <Grid item xs={6}></Grid>
           <Grid item xs={6}>
-            {" "}
             <Stack direction={"row"} spacing={2}>
               <StyledButton
                 name="Preview"

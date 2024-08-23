@@ -8,11 +8,17 @@ import StyledTable from "../../../ui/StyledTable";
 import { productColums, userData } from "../../../assets/json/TableData";
 import axiosInstance from "../../../api/axios-interceptor";
 import CONSTANTS from "../../../constants";
+import RemoveProduct from "../../../components/Removeproduct";
+import { useProductsStore } from "../../../store/productStore";
 export default function MembersPage() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
+  const [isChange, setIsChange] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
+  const [removeOpen, setRemoveOpen] = useState(false);
   const [productData, setProductData] = useState([]);
+  const [productId, setProductId] = useState(null);
+  const { deleteProducts } = useProductsStore();
   useEffect(() => {
     async function init() {
       const response = await axiosInstance.get(CONSTANTS.PRODUCTS_API);
@@ -20,22 +26,11 @@ export default function MembersPage() {
         // handle return
         return;
       }
-      console.log(response.data.data);
       setProductData(response.data.data);
     }
     init();
-  }, []);
-  const handleDelete = async (id) => {
-    const resp = await axiosInstance.delete(`${CONSTANTS.PRODUCTS_API}/${id}`);
+  }, [isChange]);
 
-    if (resp.status != 200) {
-      // handle error
-      return;
-    }
-    setProductData((products) =>
-      products.filter((product) => product.id != id)
-    );
-  };
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -50,14 +45,26 @@ export default function MembersPage() {
   const handleProduct = () => {
     navigate(`/products/addproduct`);
   };
-  const handleEdit = () => {
-    navigate(`/products/addproduct`);
+  const handleEdit = (id) => {
+    navigate(`/products/addproduct`, { state: { productId: id, isUpdate: true } });
   };
-  // const handleDelete = () => {
-  //   setRemoveOpen(true);
-  // };
+  const handleRowDelete = async (id) => {
+    setProductId(id);
+    setRemoveOpen(true);
+  };
+  const handleRemove = async () => {
+    await deleteProducts(productId);
+    setIsChange(!isChange);
+  };
   const handleCloseDelete = () => {
     setRemoveOpen(false);
+  };
+  const handleDelete = async () => {
+    if (selectedRows.length > 0) {
+      await Promise.all(selectedRows?.map((id) => deleteProducts(id)));
+      setIsChange(!isChange);
+      setSelectedRows([]);
+    }
   };
   return (
     <>
@@ -129,9 +136,15 @@ export default function MembersPage() {
               columns={productColums}
               data={productData}
               onSelectionChange={handleSelectionChange}
+              onDeleteRow={handleRowDelete}
               onDelete={handleDelete}
-              // onView={handleView}
+              onModify={handleEdit}
             />{" "}
+            <RemoveProduct
+              open={removeOpen}
+              onClose={handleCloseDelete}
+              onChange={handleRemove}
+            />
           </Box>
         </>
       </Box>

@@ -1,19 +1,33 @@
 import { Box, Grid, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { StyledButton } from "../../../ui/StyledButton";
 import StyledSearchbar from "../../../ui/StyledSearchbar";
 import { ReactComponent as FilterIcon } from "../../../assets/icons/FilterIcon.svg";
 import StyledTable from "../../../ui/StyledTable";
-import { userColumns, userData } from "../../../assets/json/TableData";
 import RejectionEntryForm from "../../../components/Members/RejectionEntryForm";
 import MemberShipRenewal from "../../../components/MemberShipRenewal";
+import { usePaymentStore } from "../../../store/payment-store";
 export default function PaymentPage() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);
   const [approveOpen, setApproveOpen] = useState(false);
-  const [rejectOpen, setRejectOpen] = useState(false);
+
+  const [isChange, setIsChange] = useState(false);
+
+  const { payments, fetchPayment, deletePayments, fetchPaymentById, payment } =
+    usePaymentStore();
+  const userColumns = [
+    { title: "Member name", field: "name", padding: "none" },
+    { title: "Date", field: "date" },
+    { title: "time", field: "time" },
+    { title: "category", field: "category" },
+    { title: "amount", field: "amount" },
+    { title: "mode_of_payment", field: "mode_of_payment" },
+    { title: "status", field: "status" },
+    // { title: "Membership Status", field: "status" },
+  ];
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -21,21 +35,33 @@ export default function PaymentPage() {
   const handleCloseFilter = () => {
     setFilterOpen(false);
   };
-  const handleReject = (id) => {
-    setRejectOpen(true);
-  };
-  const handleCloseReject = (id) => {
-    setRejectOpen(false);
-  };
+
+  useEffect(() => {
+    fetchPayment();
+  }, [isChange]);
+
   const handleSelectionChange = (newSelectedIds) => {
     setSelectedRows(newSelectedIds);
-    console.log("Selected items:", newSelectedIds);
   };
-
+  const handleDelete = async () => {
+    if (selectedRows.length > 0) {
+      await Promise.all(selectedRows?.map((id) => deletePayments(id)));
+      setIsChange(!isChange);
+      setSelectedRows([]);
+    }
+  };
+  const handleRowDelete = async (id) => {
+    await deletePayments(id);
+    setIsChange(!isChange);
+  };
   const handleView2 = (id) => {
     navigate(`/payments/addpaymentdetails`);
   };
-  const handleApprove = () => {
+  const handleEdit = (id) => {
+    navigate(`/payments/addpaymentdetails`, { state: { paymentId: id, isUpdate: true } });
+  };
+  const handleApprove = async (id) => {
+    await fetchPaymentById(id);
     setApproveOpen(true);
   };
   const handleCloseApprove = () => {
@@ -109,14 +135,18 @@ export default function PaymentPage() {
           >
             <StyledTable
               columns={userColumns}
-              data={userData}
+              data={payments}
               onSelectionChange={handleSelectionChange}
-              payment
-              onModify={handleApprove}
-              onAction={handleReject}
+              onView={handleApprove}
+              onDelete={handleDelete}
+              onModify={handleEdit}
+              onDeleteRow={handleRowDelete}
             />{" "}
-            <RejectionEntryForm open={rejectOpen} onClose={handleCloseReject} />
-            <MemberShipRenewal open={approveOpen} onClose={handleCloseApprove} />
+            <MemberShipRenewal
+              open={approveOpen}
+              onClose={handleCloseApprove}
+              data={payment}
+            />
           </Box>
         </>
       </Box>

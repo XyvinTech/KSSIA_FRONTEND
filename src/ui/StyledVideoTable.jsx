@@ -31,7 +31,7 @@ export default function StyledVideoTable() {
     }
   };
   const handleEdit = (id) => {
-    navigate(`/promotion/edit/${id}`);
+    navigate(`/promotion/edit/${id}`, { state: { value: "video" } });
   };
   const handleRowDelete = async (id) => {
     await deletePromotions(id);

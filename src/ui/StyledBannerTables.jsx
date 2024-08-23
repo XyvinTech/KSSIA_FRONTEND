@@ -35,7 +35,7 @@ export default function StyledBannerTables() {
     setIsChange(!isChange);
   };
   const handleEdit = (id) => {
-    navigate(`/promotion/edit/${id}`);
+    navigate(`/promotion/edit/${id}`, { state: { value: "banner" } });
   };
   useEffect(() => {
     fetchPromotion("banner");

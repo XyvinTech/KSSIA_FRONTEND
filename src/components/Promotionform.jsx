@@ -8,7 +8,7 @@ import { StyledEventUpload } from "../ui/StyledEventUpload.jsx";
 import StyledInput from "../ui/StyledInput.jsx";
 import { StyledMultilineTextField } from "../ui/StyledMultilineTextField .jsx";
 import { usePromotionStore } from "../store/promotionStore.js";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 export default function Promotionform({ isUpdate }) {
   const {
@@ -20,6 +20,9 @@ export default function Promotionform({ isUpdate }) {
   } = useForm();
   const navigate = useNavigate();
   const { id } = useParams();
+  const location = useLocation();
+  const { value } = location.state || {};
+
   const [type, setType] = useState();
   const [submitting, setSubmitting] = useState(false);
   const { addPromotions, fetchPromotionById, promotions, updatePromotion } =
@@ -36,21 +39,22 @@ export default function Promotionform({ isUpdate }) {
   ];
   useEffect(() => {
     if (isUpdate && id) {
-      fetchPromotionById(id).then(() => {
-        if (promotions) {
-          setValue("type", { value: promotions.type, label: promotions.type });
-          setValue("startDate", promotions.startDate);
-          setValue("endDate", promotions.endDate);
-          setValue("title", promotions.notice_title || "");
-          // setValue("title", promotions.video_title || "");
-          setValue("description", promotions.notice_description || "");
-          setValue("link", promotions.notice_link || "");
-          setValue("yt_link", promotions.yt_link || "");
-          setType(promotions.type);
-        }
-      });
+      fetchPromotionById(value, id);
     }
-  }, [id, isUpdate, fetchPromotionById, promotions, setValue]);
+  }, [id, isUpdate, fetchPromotionById]);
+  useEffect(() => {
+    if (isUpdate && promotions) {
+      setValue("type", { value: promotions.type, label: promotions.type });
+      setValue("startDate", promotions.startDate);
+      setValue("endDate", promotions.endDate);
+      setValue("title", promotions.notice_title || "");
+      // setValue("title", promotions.video_title || "");
+      setValue("description", promotions.notice_description || "");
+      setValue("link", promotions.notice_link || "");
+      setValue("yt_link", promotions.yt_link || "");
+      setType(promotions.type);
+    }
+  }, [isUpdate, promotions, setValue]);
   const onSubmit = async (data) => {
     setSubmitting(true);
     const formData = new FormData();

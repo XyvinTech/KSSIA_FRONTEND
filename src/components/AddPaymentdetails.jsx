@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Grid, Stack } from "@mui/material";
 
 import { StyledEventUpload } from "../ui/StyledEventUpload";
@@ -8,38 +8,76 @@ import StyledInput from "../ui/StyledInput";
 import { Controller, useForm } from "react-hook-form";
 import StyledSelectField from "../ui/StyledSelectField";
 import { StyledCalender } from "../ui/StyledCalender.jsx";
-import {StyledTime} from "../ui/StyledTime.jsx"
+import { StyledTime } from "../ui/StyledTime.jsx";
+import { useDropDownStore } from "../store/dropDownStore.js";
+import { usePaymentStore } from "../store/payment-store.js";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function AddPaymentdetails() {
   const {
     control,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm();
-  const [isChecked, setIsChecked] = useState(false);
-  const [additionalPhones, setAdditionalPhones] = useState([]);
+  const location = useLocation();
+  const { paymentId, isUpdate } = location.state || {};
+  const { addPayments, fetchPaymentById, updatePayment, payment } =
+    usePaymentStore();
+  const navigate = useNavigate();
+  const { users, fetchUsers } = useDropDownStore();
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+  useEffect(() => {
+    if (isUpdate && paymentId) {
+      fetchPaymentById(paymentId);
+    }
+  }, [paymentId, isUpdate]);
 
-  const handleSwitchChange = (e) => {
-    setIsChecked(e.target.checked);
-  };
-  const option = [
-    { value: "option1", label: "Option 1" },
-    { value: "option2", label: "Option 2" },
-    { value: "option3", label: "Option 3" },
-  ];
-  const onSubmit = (data) => {
-    console.log("Form data:", data);
-  };
+  useEffect(() => {
+    if (payment && isUpdate) {
+      setValue("date", payment.date || "");
+      setValue("time", payment.time || "");
+      setValue("amount", payment.amount || "");
+      setValue("mode_of_payment", payment.mode_of_payment || "");
+      setValue("category", payment.category || "");
+      setValue("status", payment.status || "");
+      setValue("remarks", payment.remarks || "");
+    }
+  }, [payment, isUpdate, setValue]);
 
-  const addPhoneNumber = () => {
-    setAdditionalPhones([...additionalPhones, ""]);
+  const option =
+    users && Array.isArray(users)
+      ? users.map((user) => ({
+          value: user._id,
+          label: `${user.name.first_name} ${user.name.middle_name} ${user.name.last_name}`,
+        }))
+      : [];
+  const onSubmit = async (data) => {
+    const formData = new FormData();
+    formData.append("member", data.member.value);
+    formData.append("date", data.date);
+    formData.append("time", data.time);
+    formData.append("amount", data.amount);
+    formData.append("mode_of_payment", data.mode_of_payment);
+    formData.append("category", data.category);
+    formData.append("status", data.status);
+    formData.append("remarks", data.remarks);
+    formData.append("file", data.file);
+    if (isUpdate && paymentId) {
+      await updatePayment(paymentId, formData);
+    } else {
+      await addPayments(formData);
+    }
+    navigate(`/payments`);
   };
   return (
     <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"12px"}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={4}>
-        <Grid item xs={6}>
+          <Grid item xs={6}>
             <Typography
               sx={{ marginBottom: 1 }}
               variant="h6"
@@ -61,13 +99,15 @@ export default function AddPaymentdetails() {
                     {...field}
                   />
                   {errors.member && (
-                    <span style={{ color: "red" }}>{errors.member.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.member.message}
+                    </span>
                   )}
                 </>
               )}
             />
           </Grid>
-          <Grid item xs={6}>
+          {/* <Grid item xs={6}>
             <Typography
               sx={{ marginBottom: 1 }}
               variant="h6"
@@ -90,7 +130,7 @@ export default function AddPaymentdetails() {
                 </>
               )}
             />
-          </Grid>
+          </Grid> */}
           <Grid item xs={6}>
             <Typography
               sx={{ marginBottom: 1 }}
@@ -98,7 +138,7 @@ export default function AddPaymentdetails() {
               fontWeight={500}
               color={"#333333"}
             >
-              Date 
+              Date
             </Typography>
             <Controller
               name="date"
@@ -107,7 +147,10 @@ export default function AddPaymentdetails() {
               rules={{ required: " Date is required" }}
               render={({ field }) => (
                 <>
-                  <StyledCalender label="Select Date from Calender" {...field} />
+                  <StyledCalender
+                    label="Select Date from Calender"
+                    {...field}
+                  />
                   {errors.date && (
                     <span style={{ color: "red" }}>{errors.date.message}</span>
                   )}
@@ -146,7 +189,7 @@ export default function AddPaymentdetails() {
               fontWeight={500}
               color={"#333333"}
             >
-             Amount
+              Amount
             </Typography>
             <Controller
               name="amount"
@@ -155,9 +198,11 @@ export default function AddPaymentdetails() {
               rules={{ required: "Amount is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput placeholder="Enter the payment " {...field}/>
+                  <StyledInput placeholder="Enter the payment " {...field} />
                   {errors.amount && (
-                    <span style={{ color: "red" }}>{errors.amount.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.amount.message}
+                    </span>
                   )}
                 </>
               )}
@@ -170,18 +215,23 @@ export default function AddPaymentdetails() {
               fontWeight={500}
               color={"#333333"}
             >
-             Mode of Payment
+              Mode of Payment
             </Typography>
             <Controller
-              name="modeofp"
+              name="mode_of_payment"
               control={control}
               defaultValue=""
               rules={{ required: "Mode of payment is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput placeholder="Enter the mode of payment " {...field}/>
-                  {errors.modeofp && (
-                    <span style={{ color: "red" }}>{errors.modeofp.message}</span>
+                  <StyledInput
+                    placeholder="Enter the mode of payment "
+                    {...field}
+                  />
+                  {errors.mode_of_payment && (
+                    <span style={{ color: "red" }}>
+                      {errors.mode_of_payment.message}
+                    </span>
                   )}
                 </>
               )}
@@ -194,7 +244,7 @@ export default function AddPaymentdetails() {
               fontWeight={500}
               color={"#333333"}
             >
-             Category
+              Category
             </Typography>
             <Controller
               name="category"
@@ -203,9 +253,14 @@ export default function AddPaymentdetails() {
               rules={{ required: "Payment Category is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput placeholder="Enter the payment category" {...field}/>
+                  <StyledInput
+                    placeholder="Enter the payment category"
+                    {...field}
+                  />
                   {errors.category && (
-                    <span style={{ color: "red" }}>{errors.category.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.category.message}
+                    </span>
                   )}
                 </>
               )}
@@ -218,18 +273,23 @@ export default function AddPaymentdetails() {
               fontWeight={500}
               color={"#333333"}
             >
-             Status
+              Status
             </Typography>
             <Controller
-              name="statusofpayment"
+              name="status"
               control={control}
               defaultValue=""
               rules={{ required: "Status of payment is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput placeholder="Enter the Status of payment " {...field}/>
-                  {errors.statusofpayment && (
-                    <span style={{ color: "red" }}>{errors.statusofpayment.message}</span>
+                  <StyledInput
+                    placeholder="Enter the Status of payment "
+                    {...field}
+                  />
+                  {errors.status && (
+                    <span style={{ color: "red" }}>
+                      {errors.status.message}
+                    </span>
                   )}
                 </>
               )}
@@ -242,10 +302,10 @@ export default function AddPaymentdetails() {
               fontWeight={500}
               color={"#333333"}
             >
-             Upload invoice
+              Upload invoice
             </Typography>
             <Controller
-              name="photos"
+              name="file"
               control={control}
               defaultValue=""
               rules={{ required: "Invoice image is required" }}
@@ -255,8 +315,8 @@ export default function AddPaymentdetails() {
                     label="Upload ivoice"
                     onChange={onChange}
                   />
-                  {errors.photos && (
-                    <span style={{ color: "red" }}>{errors.photos.message}</span>
+                  {errors.file && (
+                    <span style={{ color: "red" }}>{errors.file.message}</span>
                   )}
                 </>
               )}
@@ -269,28 +329,27 @@ export default function AddPaymentdetails() {
               fontWeight={500}
               color={"#333333"}
             >
-            Remarks
+              Remarks
             </Typography>
             <Controller
-              name="modeofp"
+              name="remarks"
               control={control}
               defaultValue=""
               rules={{ required: "Remarks is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput placeholder="Add any Remarks " {...field}/>
-                  {errors.modeofp && (
-                    <span style={{ color: "red" }}>{errors.modeofp.message}</span>
+                  <StyledInput placeholder="Add any Remarks " {...field} />
+                  {errors.remarks && (
+                    <span style={{ color: "red" }}>
+                      {errors.remarks.message}
+                    </span>
                   )}
                 </>
               )}
             />
           </Grid>
 
-       
-         
-         
-          <Grid item xs={6}></Grid> 
+          <Grid item xs={6}></Grid>
           <Grid item xs={6}>
             {" "}
             <Stack direction={"row"} spacing={2}>

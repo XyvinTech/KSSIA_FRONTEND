@@ -17,6 +17,16 @@ export default function MembersPage() {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [isChange, setIsChange] = useState(false);
   const [userData, setUserData] = useState([]);
+  const userColumns = [
+    { title: "Name", field: "full_name", padding: "none" },
+    { title: "Member ID", field: "membership_id" },
+    { title: "Company Name", field: "company_name" },
+    { title: "Designation", field: "designation" },
+    { title: "Phone Number", field: "mobile" },
+    // { title: "Subscription", field: "status" },
+    // { title: "Rating", field: "rating" },
+    // { title: "Membership Status", field: "status" },
+  ];
   useEffect(() => {
     async function fetchUserData() {
       const response = await axiosInstance.get(CONSTANTS.MEMBERS_API);

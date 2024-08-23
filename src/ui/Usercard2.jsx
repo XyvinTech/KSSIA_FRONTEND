@@ -6,7 +6,7 @@ import { ReactComponent as PhoneIcon } from "../assets/icons/PhoneIcon.svg";
 import { ReactComponent as LocationIcon } from "../assets/icons/LocationIcon.svg";
 import { ReactComponent as BusinessIcon } from "../assets/icons/BusinessWhatsappIcon.svg";
 import { ReactComponent as WhatsappIcon } from "../assets/icons/WhatsappIcon.svg";
-const UserCard2 = ({company}) => {
+const UserCard2 = ({ company }) => {
   return (
     <Grid
       container
@@ -14,7 +14,7 @@ const UserCard2 = ({company}) => {
       bgcolor={"white"}
       borderRadius={"12px"}
       padding={"9px"}
-      minHeight={'420px'}
+      minHeight={"420px"}
     >
       <Grid item xs={12} display="flex" alignItems="center">
         <img
@@ -26,10 +26,10 @@ const UserCard2 = ({company}) => {
         />
         <Box>
           <Typography variant="h4" color="#000000" mt={1}>
-            {company.designation}
+            {company?.designation}
           </Typography>
           <Typography variant="h6" color="#000000" mt={1}>
-            {company.company_name}
+            {company?.company_name}
           </Typography>
         </Box>
       </Grid>
@@ -52,7 +52,7 @@ const UserCard2 = ({company}) => {
                 border: "1px solid #0288D1",
               }}
             >
-              {company.business_category}
+              {company?.business_category}
             </Typography>
           </Stack>
           <Stack
@@ -73,37 +73,37 @@ const UserCard2 = ({company}) => {
                 border: "1px solid #9C27B0",
               }}
             >
-              {company.sub_category}
+              {company?.sub_category}
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="center" spacing={1}>
             <PhoneIcon />
             <Typography variant="h6" color={"#2C2829"}>
-              {company.phone_numbers?.personal}
+              {company?.phone_numbers?.personal}
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="center" spacing={1}>
             <BusinessIcon />
             <Typography variant="h6" color={"#2C2829"}>
-              {company.phone_numbers?.landline}
+              {company?.phone_numbers?.whatsapp_business_number}
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="center" spacing={1}>
             <WhatsappIcon />
             <Typography variant="h6" color={"#2C2829"}>
-              {company.company_phone_number?.watsapp}
+              {company?.phone_numbers?.whatsapp_number}
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="center" spacing={1}>
             <EmailIcon />
             <Typography variant="h6" color={"#2C2829"}>
-              {company.company_email}
+              {company?.company_email}
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="flex-start" spacing={1}>
             <LocationIcon />
             <Typography variant="h6" color={"#2C2829"}>
-              {company.bio}
+              {company?.bio}
             </Typography>
           </Stack>{" "}
         </Stack>

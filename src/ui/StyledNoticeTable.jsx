@@ -21,7 +21,7 @@ export default function StyledNoticeTable() {
     setFilterOpen(false);
   };
   const handleEdit = (id) => {
-    navigate(`/promotion/edit/${id}`);
+    navigate(`/promotion/edit/${id}`, { state: { value: "notice" } });
   };
   const handleSelectionChange = (newSelectedIds) => {
     setSelectedRows(newSelectedIds);

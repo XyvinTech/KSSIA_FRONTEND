@@ -22,7 +22,10 @@ const useNewsStore = create((set) => ({
   },
   fetchNewsById: async (id) => {
     const allData = await getNewsById(id);
-    set({ news: allData?.data || [] });
+   
+    set({ news: allData?.data  });
+   
+
   },
   deleteNews: async (id) => {
     await deleteNews(id);

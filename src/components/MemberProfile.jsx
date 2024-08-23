@@ -12,8 +12,7 @@ import ProductCard from "./ProductCard";
 import CertificateCard from "./CertificateCard";
 import AwardCard from "./AwardCard";
 
-const MemberProfile = ({data}) => {
-  
+const MemberProfile = ({ data }) => {
   // const data = {
   //   id: "4.5",
   //   name: "Prabodhan Fitzgerald",
@@ -24,7 +23,6 @@ const MemberProfile = ({data}) => {
   //   img: imag,
   // };
 
- 
   return (
     <>
       <Grid container spacing={4} padding={2}>
@@ -34,9 +32,7 @@ const MemberProfile = ({data}) => {
         <Grid item md={5}>
           <UserCard2 company={data} />
         </Grid>
-        {!!data.social_media?.length &&
         <>
-        
           <Grid item md={12}>
             <Typography variant="h5" color="#2C2829" mt={1}>
               Social Media
@@ -53,7 +49,7 @@ const MemberProfile = ({data}) => {
             >
               <InstagramIcon />
               <Typography variant="h5" color="#6D6D6D" fontWeight={400} ml={1}>
-                {data.social_media}
+                {/* {data?.social_media?.platform} */}
               </Typography>
             </Box>
           </Grid>
@@ -68,7 +64,7 @@ const MemberProfile = ({data}) => {
             >
               <LinkedInIcon />
               <Typography variant="h5" color="#6D6D6D" fontWeight={400} ml={1}>
-                {data.social_media}
+                {/* {data?.social_media} */}
               </Typography>
             </Box>
           </Grid>
@@ -82,13 +78,21 @@ const MemberProfile = ({data}) => {
               p={2}
             >
               <TwitterIcon />
-              <Typography variant="h5" color="#6D6D6D" fontWeight={400} ml={1}>
-              {data.social_media}
-              </Typography>
+
+              {/* {data?.social_media.map((item, index) => (
+                <Typography
+                  variant="h5"
+                  color="#6D6D6D"
+                  fontWeight={400}
+                  ml={1}
+                >
+                  {" "}
+                  {item.platform}{" "}
+                </Typography>
+              ))} */}
             </Box>
           </Grid>
         </>
-        }
         <Grid item md={12}>
           <Typography variant="h5" color="#2C2829" mt={1}>
             Websites & links

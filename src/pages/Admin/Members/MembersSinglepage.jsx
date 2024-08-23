@@ -49,7 +49,7 @@ const MembersSinglepage = () => {
     <>
       <Box padding={"20px"} bgcolor={"#FFFFFF"}height={'70px'}display={'flex'}alignItems={'center'}>
         <Typography variant="h4" color={"#4A4647"}>
-          Members list / {userData.name}
+          {/* Members list / {userData.name} */}
         </Typography>
       </Box>{" "}
       <Divider />
@@ -109,7 +109,7 @@ const MembersSinglepage = () => {
         )}
         {selectedTab === 3 && (
           <Grid>
-            <MembersProducts id ={id}/>
+            {/* <MembersProducts id ={id}/> */}
           </Grid>
         )}
         {selectedTab === 4 && (

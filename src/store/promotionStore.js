@@ -20,8 +20,8 @@ const usePromotionStore = create((set) => ({
   deletePromotions: async (id) => {
     await deletePromotion(id);
   },
-  fetchPromotionById: async (id) => {
-    const allData = await getPromotionById(id);
+  fetchPromotionById: async (type, id) => {
+    const allData = await getPromotionById(type, id);
     set({ promotions: allData?.data || [] });
   },
   updatePromotion: async (id, data) => {

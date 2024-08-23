@@ -23,9 +23,9 @@ export const addPromotion = async (data) => {
     toast.error(error.response.data.message);
   }
 };
-export const getPromotionById = async (id) => {
+export const getPromotionById = async (type,id) => {
   try {
-    const response = await axiosInstance.get(`/promotions/${id}`);
+    const response = await axiosInstance.get(`/promotions/${type}/${id}`);
     return response.data;
   } catch (error) {
     throw error;
