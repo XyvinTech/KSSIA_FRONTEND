@@ -13,6 +13,7 @@ import { ReactComponent as CloseIcon } from "../assets/icons/CloseIcon.svg";
 import { useState } from "react";
 import RejectionEntryForm from "./Members/RejectionEntryForm";
 import { usePaymentStore } from "../store/payment-store";
+import moment from "moment";
 
 const MemberShipRenewal = ({ open, onClose, data, onChange }) => {
   const { patchPayments } = usePaymentStore();
@@ -32,9 +33,19 @@ const MemberShipRenewal = ({ open, onClose, data, onChange }) => {
     setRejectOpen(true);
     onClose();
   };
+  const handleClose = (event) => {
+    event.preventDefault();
+    onClose();
+  };
   const handleChange = () => {
     setRejectOpen(false);
     onChange();
+  };
+  const formatDate = (date) => {
+    return moment(date).format("DD-MM-YYYY");
+  };
+  const formatTime = (time) => {
+    return moment(time).format("h:mm A");
   };
   return (
     <>
@@ -57,7 +68,7 @@ const MemberShipRenewal = ({ open, onClose, data, onChange }) => {
                 Membership renewal
               </Typography>
               <Typography
-                onClick={(event) => handleClear(event)}
+                onClick={(event) => handleClose(event)}
                 color="#E71D36"
                 style={{ cursor: "pointer" }}
               >
@@ -140,7 +151,7 @@ const MemberShipRenewal = ({ open, onClose, data, onChange }) => {
                 Payment date and time
               </Typography>
               <Typography variant="h6" color={"#4A4647"}>
-                {data?.date} {data?.time}
+                {formatDate(data?.date)} {formatTime(data?.time)}
               </Typography>
             </Stack>{" "}
             <Divider />
@@ -157,7 +168,7 @@ const MemberShipRenewal = ({ open, onClose, data, onChange }) => {
                 {data?.mode_of_payment}
               </Typography>
             </Stack>
-            <Divider />
+            {/* <Divider />
             <Stack
               spacing={2}
               padding={2}
@@ -170,25 +181,28 @@ const MemberShipRenewal = ({ open, onClose, data, onChange }) => {
               <Typography variant="h6" color={"#4A4647"}>
                 {data?.invoice}
               </Typography>
+            </Stack> */}
+          </DialogContent>{" "}
+          {data?.status === "pending" && (
+            <Stack
+              direction={"row"}
+              spacing={2}
+              padding={2}
+              justifyContent={"end"}
+            >
+              <StyledButton
+                variant="secondary"
+                name="Deny"
+                onClick={(event) => handleClear(event)}
+              />
+              <StyledButton variant="primary" name="Approve" type="submit" />
             </Stack>
-          </DialogContent>
-          <Stack
-            direction={"row"}
-            spacing={2}
-            padding={2}
-            justifyContent={"end"}
-          >
-            <StyledButton
-              variant="secondary"
-              name="Deny"
-              onClick={(event) => handleClear(event)}
-            />
-            <StyledButton variant="primary" name="Approve" type="submit" />
-          </Stack>
+          )}
         </form>
       </Dialog>
       <RejectionEntryForm
         open={rejectOpen}
+        a
         onClose={handleCloseReject}
         data={data}
         onChange={handleChange}

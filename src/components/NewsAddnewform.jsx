@@ -181,7 +181,7 @@ export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
             />
           </Grid>
           <Grid item xs={6}></Grid>
-          <Grid item xs={6}>
+          <Grid item xs={6} display={'flex'} justifyContent={'end'}>
             <Stack direction={"row"} spacing={2}>
               <StyledButton
                 name="Preview"

@@ -23,6 +23,7 @@ import { ReactComponent as LeftIcon } from "../assets/icons/LeftIcon.svg";
 import { ReactComponent as RightIcon } from "../assets/icons/RightIcon.svg";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { StyledButton } from "./StyledButton";
+import moment from "moment";
 
 const StyledTableCell = styled(TableCell)`
   &.${tableCellClasses.head} {
@@ -143,35 +144,20 @@ const StyledTable = ({
       return status ? "green" : "rejected";
     }
     switch (status) {
-      case "active":
-        return "green";
-      case "premium":
-        return "orange";
-      case "free":
-        return "mint";
       case "pending":
         return "#BFBABA";
-      case "upcoming":
-        return "#0072BC";
-      case "ongoing":
-        return "green";
-      case "closed":
-        return "#938F8F";
-      case "completed":
-        return "#2E7D32";
-      case "live":
-        return "red";
-      case "Recording Available":
-        return "green";
-      case "published":
-        return "green";
-      case "draft":
-        return "#BFBABA";
+      case "rejected":
+        return "#ff4d4f";
       default:
         return "default";
     }
   };
-  console.log(columns) 
+  const formatIndianDate = (date) => {
+    return moment(date).format("DD-MM-YYYY");
+  };
+  const formatTime = (time) => {
+    return moment(time).format("h:mm A");
+  };
   return (
     <Box bgcolor={"white"} borderRadius={"16px"}>
       <TableContainer sx={{ border: "none" }}>
@@ -200,7 +186,7 @@ const StyledTable = ({
             </TableRow>
           </TableHead>
           <TableBody>
-          {loading ? (
+            {loading ? (
               // Display skeletons while loading
 
               Array.from(new Array(5)).map((_, index) => (
@@ -229,7 +215,7 @@ const StyledTable = ({
                   </StyledTableCell>
                 </StyledTableRow>
               ))
-            ) : !data || data.length === 0  ? (
+            ) : !data || data.length === 0 ? (
               <StyledTableRow>
                 <StyledTableCell colSpan={columns.length + 2}>
                   <Typography variant="h6" textAlign="center">
@@ -259,18 +245,27 @@ const StyledTable = ({
                       sx={{ cursor: "pointer" }}
                       onClick={() => handleRowClick(row._id)}
                     >
-                      {[
-                        "banner_image_url",
-                        "image",
-                        "event image",
-                        "speaker_image",
-                      ].includes(column.field) ? (
+                      {["renewal", "paymentdate", "date","createdAt","startDate"].includes(
+                        column.field
+                      ) ? (
+                        formatIndianDate(row[column.field])
+                      ) : ["starttime", "endtime", "time"].includes(
+                          column.field
+                        ) ? (
+                        formatTime(row[column.field])
+                      ) : [
+                          "banner_image_url",
+                          "image",
+                          "event image",
+                          "speaker_image",
+                        ].includes(column.field) ? (
                         <img
                           src={row[column.field]}
                           alt={column.title}
                           style={{ width: "50px", height: "50px" }}
                         />
-                      ) : column.field === "status" ? (
+                      ) : column.field === "status" ||
+                        column.field === "activate" ? (
                         <Box
                           display="flex"
                           alignItems="center"
@@ -286,7 +281,13 @@ const StyledTable = ({
                               color: "#fff",
                             }}
                           >
-                            {row[column.field]}
+                          {row[column.field] === true ||
+                            row[column.field] === "activated"
+                              ? "active"
+                              : row[column.field] === false ||
+                                row[column.field] === "deactivated"
+                              ? "inactive"
+                              : row[column.field]}
                           </span>
                         </Box>
                       ) : (
@@ -369,8 +370,8 @@ const StyledTable = ({
                     </Box>
                   </StyledTableCell>
                 </StyledTableRow>
-            ))
-          )}
+              ))
+            )}
           </TableBody>
         </Table>
         <Divider />

@@ -51,6 +51,7 @@ export default function AddPaymentdetails() {
       );
       setValue("status", selectedStatus || "");
       setValue("remarks", payment.remarks || "");
+      setValue("file", payment.invoice_url || "");
     }
   }, [payment, isUpdate, setValue]);
 
@@ -325,11 +326,12 @@ export default function AddPaymentdetails() {
               control={control}
               defaultValue=""
               rules={{ required: "Invoice image is required" }}
-              render={({ field: { onChange } }) => (
+              render={({ field }) => (
                 <>
                   <StyledEventUpload
-                    label="Upload ivoice"
-                    onChange={onChange}
+                    label="Upload Product Image"
+                    onChange={field.onChange}
+                    value={field.value}
                   />
                   {errors.file && (
                     <span style={{ color: "red" }}>{errors.file.message}</span>

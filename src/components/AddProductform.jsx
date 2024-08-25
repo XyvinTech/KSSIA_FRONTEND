@@ -44,8 +44,9 @@ export default function Addproductform() {
       setValue("price", products.price);
       setValue("offer_price", products.offer_price);
       setValue("units", products.units);
+      setValue("image", products.image);
       const sellerUser = users.find(
-        (user) => user._id === products.seller_id._id
+        (user) => user?._id === products.seller_id?._id
       );
       if (sellerUser) {
         setValue("seller_id", {
@@ -160,11 +161,12 @@ export default function Addproductform() {
               control={control}
               defaultValue=""
               rules={{ required: "Image is required" }}
-              render={({ field: { onChange } }) => (
+              render={({ field }) => (
                 <>
                   <StyledEventUpload
-                    label="Upload Chief guest image here"
-                    onChange={onChange}
+                    label="Upload Product Image"
+                    onChange={field.onChange}
+                    value={field.value}
                   />
                   {errors.photo && (
                     <span style={{ color: "red" }}>{errors.photo.message}</span>
@@ -250,30 +252,6 @@ export default function Addproductform() {
               )}
             />
           </Grid>
-          {/* <Grid item xs={12}>
-            <Typography
-              sx={{ marginBottom: 1 }}
-              variant="h6"
-              fontWeight={500}
-              color={"#333333"}
-            >
-              MCQ
-            </Typography>
-            <Controller
-              name="mcq"
-              control={control}
-              defaultValue=""
-              rules={{ required: "MCQ is required" }}
-              render={({ field }) => (
-                <>
-                  <StyledInput placeholder="Enter the Value" {...field} />
-                  {errors.mcq && (
-                    <span style={{ color: "red" }}>{errors.mcq.message}</span>
-                  )}
-                </>
-              )}
-            />
-          </Grid> */}
 
           <Grid item xs={12}>
             <Typography

@@ -16,57 +16,35 @@ const UserCard = ({ user }) => {
       minHeight={"420px"}
       position="relative"
     >
-      <Box
-        position="absolute"
-        top={10}
-        right={10}
-        bgcolor="orange"
-        borderRadius="20px"
-        padding="2px 8px"
-        display="flex"
-        alignItems="center"
-      >
-        <Typography variant="caption" color="white" fontWeight="bold">
-          Premium
-        </Typography>
-      </Box>
-
-      {user?.profile_picture? (
-        <Grid
-          item
-          md={4}
-          xs={6}
-          justifyContent={"center"}
-          alignItems={"center"}
-        >
-          <img
-            src={user?.profile_picture}
-            alt="img"
-            width={"118px"}
-            height={"118px"}
-            style={{ borderRadius: "12px" }}
-          />
-        </Grid>
-      ) : null}
-      <Grid item md={8} xs={6}>
+      <Grid item md={4} xs={12} justifyContent={"center"} alignItems={"center"}>
+        <img
+          src={user?.profile_picture}
+          alt="img"
+          width={"216px"}
+          height={"216px"}
+          style={{ borderRadius: "12px" }}
+        />
+      </Grid>
+      <Grid item md={6} xs={12} justifyContent={"center"} alignItems={"center"}>
         <Stack spacing={"10px"}>
           <Typography
             variant="h8"
             color={"rgba(44, 40, 41, 0.6)"}
             sx={{ display: "flex", alignItems: "center", gap: "8px" }}
           >
-            <StarIcon />
+            <StarIcon /> {user?.id}
           </Typography>
+
           <Typography variant="h5" color={"#4A4647"}>
             {user?.full_name}
           </Typography>
           <Typography variant="h6" color={"#4A4647"}>
-            Member ID: {user?.title}
+            {user?.title}
           </Typography>
           <Stack direction="row" alignItems="center" spacing={1}>
             <PhoneIcon />
             <Typography variant="h6" color={"#2C2829"}>
-              {user?.phone_numbers?.personal}
+              {user?.mobile}
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="center" spacing={1}>
@@ -83,7 +61,7 @@ const UserCard = ({ user }) => {
           </Stack>
         </Stack>
       </Grid>
-      {/* <Grid
+      <Grid
         item
         md={2}
         xs={12}
@@ -103,7 +81,7 @@ const UserCard = ({ user }) => {
         >
           Premium
         </Typography>
-      </Grid> */}
+      </Grid>
       <Grid
         item
         md={12}

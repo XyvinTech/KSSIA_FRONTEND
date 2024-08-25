@@ -22,15 +22,7 @@ export default function Events() {
     setFilterOpen(false);
   };
 
-  const timeFormatter = (time) => {
-    const date = new Date(time);
-    const formattedTime = date.toLocaleTimeString("en-US", {
-      hour: "numeric",
-      minute: "numeric",
-      hour12: true,
-    });
-    return formattedTime;
-  };
+ 
 
   const handleDelete = async () => {
     if (selectedRows.length > 0) {
@@ -47,13 +39,13 @@ export default function Events() {
     const fetchEvents = async () => {
       try {
         const response = await getEvents();
-        const formattedData = response.data.map((event) => ({
-          ...event,
-          date: new Date(event.date).toDateString(),
-          time: timeFormatter(event.time),
-          activate: event.activate ? "active" : "inactive",
-        }));
-        setTableData(formattedData);
+        // const formattedData = response.data.map((event) => ({
+        //   ...event,
+        //   date: new Date(event.date).toDateString(),
+        //   time: timeFormatter(event.time),
+        //   activate: event.activate ? "active" : "inactive",
+        // }));
+        setTableData(response.data);
       } catch (error) {
         console.error("Error fetching events:", error);
       }

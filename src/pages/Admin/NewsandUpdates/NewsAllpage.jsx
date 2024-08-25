@@ -90,13 +90,13 @@ export default function NewsAllpage() {
           </Box>
         </Stack>
       </Stack>
-      <Grid container item md={12} paddingBottom={4}>
+      {/* <Grid container item md={12} paddingBottom={4}>
         <Grid item md={6}>
           <Typography variant="h4" color={"#4A4647"}>
             News
           </Typography>
         </Grid>
-      </Grid>
+      </Grid> */}
 
       <Stack
         direction={"row"}

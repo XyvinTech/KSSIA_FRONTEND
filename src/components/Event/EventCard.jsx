@@ -4,8 +4,12 @@ import { ReactComponent as EmailIcon } from "../../assets/icons/EmailIcon.svg";
 import { ReactComponent as PhoneIcon } from "../../assets/icons/PhoneIcon.svg";
 import { ReactComponent as StarIcon } from "../../assets/icons/StarIcon.svg";
 import { ReactComponent as LocationIcon } from "../../assets/icons/LocationIcon.svg";
+import moment from "moment";
 
 const EventCard = ({ user }) => {
+  const formatDate = (date) => {
+    return moment(date).format("DD-MM-YYYY");
+  };
   return (
     <Grid
       container
@@ -41,19 +45,19 @@ const EventCard = ({ user }) => {
               width: "fit-content",
             }}
           >
-            offline
+            {user?.type}
           </Typography>
 
           <Stack direction="row" alignItems="center" spacing={1}>
             <EmailIcon />
             <Typography variant="h6" color={"#2C2829"}>
-              {user?.date}
+            {formatDate(user?.date)}
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="flex-start" spacing={1}>
             <LocationIcon />
             <Typography variant="h6" color={"#2C2829"}>
-              {user?.address}
+              {user?.platform}
             </Typography>
           </Stack>
         </Stack>

@@ -43,31 +43,34 @@ const PreviewContainer = styled(Box)({
   borderRadius: '4px',
 });
 
-export const StyledEventUpload = ({ label, placeholder, onChange, value}) => {
+export const StyledEventUpload = ({ label, placeholder, onChange, value }) => {
   const fileInputRef = useRef(null);
   const [filePreview, setFilePreview] = useState(null);
   const [fileType, setFileType] = useState(null);
+
+  useEffect(() => {
+    if (value && typeof value === "string") {
+      setFilePreview(value);
+      setFileType(value.split('.').pop().toLowerCase() === 'mp4' ? 'video' : 'image');
+    }
+  }, [value]);
 
   const handleIconClick = () => {
     fileInputRef.current.click();
   };
 
   const handleFileChange = (event) => {
-    console.log('selectedImage',event)
     const file = event.target.files[0];
-    console.log('selectedImage',file)
     if (file) {
-      setFileType(file.type.split('/')[0]); // Get the file type (image or video)
+      setFileType(file.type.split("/")[0]); 
       const reader = new FileReader();
       reader.onload = (e) => {
-        file.img = e.target.result
         setFilePreview(e.target.result);
-        onChange(file); // Pass the file object to the parent component
+        onChange(file); 
       };
       reader.readAsDataURL(file);
     }
   };
-  console.log('value......',value)
 
   return (
     <>
@@ -84,27 +87,31 @@ export const StyledEventUpload = ({ label, placeholder, onChange, value}) => {
             </InputAdornment>
           ),
           readOnly: true,
-          // value: value ? "Image Selected" : "",
+          value: value ? "File Selected" : "",
         }}
       />
       <input
         type="file"
         ref={fileInputRef}
         onChange={handleFileChange}
-        style={{ display: 'none' }}
+        style={{ display: "none" }}
         accept="image/*, video/*"
       />
       {filePreview && (
         <PreviewContainer>
-          {fileType === 'image' ? (
+          {fileType === "image" ? (
             <Box
               component="img"
               src={filePreview}
               alt="preview"
-              style={{ maxHeight: '100%', maxWidth: '100%' }}
+              style={{ maxHeight: "100%", maxWidth: "100%" }}
             />
           ) : (
-            <Box component="video" controls style={{ maxHeight: '100%', maxWidth: '100%' }}>
+            <Box
+              component="video"
+              controls
+              style={{ maxHeight: "100%", maxWidth: "100%" }}
+            >
               <source src={filePreview} type="video/mp4" />
               Your browser does not support the video tag.
             </Box>
@@ -114,3 +121,4 @@ export const StyledEventUpload = ({ label, placeholder, onChange, value}) => {
     </>
   );
 };
+

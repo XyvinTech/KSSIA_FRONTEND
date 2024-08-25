@@ -4,6 +4,7 @@ import { StyledButton } from "./StyledButton";
 import RenewForm from "../components/Members/RenewForm";
 import SuspendProfile from "../components/SuspendProfile";
 import { usePaymentStore } from "../store/payment-store";
+import moment from "moment";
 
 export default function MemberSubscriptionCard({ payment,onChange }) {
   const [renew, setRenew] = useState(false);
@@ -25,6 +26,9 @@ export default function MemberSubscriptionCard({ payment,onChange }) {
     const updateData = { status: "rejected" };
     await patchPayments(payment?._id, updateData);
     onChange();
+  };
+  const formatDate = (date) => {
+    return moment(date).format("DD-MM-YYYY");
   };
   return (
     <Grid
@@ -75,7 +79,7 @@ export default function MemberSubscriptionCard({ payment,onChange }) {
             Last Renewed date
           </Typography>
           <Typography variant="h6" color="#2C2829">
-            {payment?.date}
+          {formatDate(payment?.date)}
           </Typography>
         </Stack>
         <Divider />{" "}
@@ -103,7 +107,7 @@ export default function MemberSubscriptionCard({ payment,onChange }) {
             Expiry date
           </Typography>
           <Typography variant="h6" color="#2C2829">
-            {payment?.renewal}
+          {formatDate(payment?.renewal)}
           </Typography>
         </Stack>
         <Divider />
