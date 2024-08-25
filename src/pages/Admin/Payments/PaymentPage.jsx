@@ -26,7 +26,6 @@ export default function PaymentPage() {
     { title: "amount", field: "amount" },
     { title: "mode_of_payment", field: "mode_of_payment" },
     { title: "status", field: "status" },
-    // { title: "Membership Status", field: "status" },
   ];
   const handleOpenFilter = () => {
     setFilterOpen(true);
@@ -35,7 +34,9 @@ export default function PaymentPage() {
   const handleCloseFilter = () => {
     setFilterOpen(false);
   };
-
+  const handleChange = () => {
+    setIsChange(!isChange);
+  };
   useEffect(() => {
     fetchPayment();
   }, [isChange]);
@@ -58,7 +59,9 @@ export default function PaymentPage() {
     navigate(`/payments/addpaymentdetails`);
   };
   const handleEdit = (id) => {
-    navigate(`/payments/addpaymentdetails`, { state: { paymentId: id, isUpdate: true } });
+    navigate(`/payments/addpaymentdetails`, {
+      state: { paymentId: id, isUpdate: true },
+    });
   };
   const handleApprove = async (id) => {
     await fetchPaymentById(id);
@@ -146,6 +149,7 @@ export default function PaymentPage() {
               open={approveOpen}
               onClose={handleCloseApprove}
               data={payment}
+              onChange={handleChange}
             />
           </Box>
         </>

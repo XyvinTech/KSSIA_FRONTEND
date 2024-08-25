@@ -2,7 +2,7 @@ import React from "react";
 
 import image from "../assets/images/award.png";
 import { Box, Typography } from "@mui/material";
-const AwardCard = () => {
+const AwardCard = ({ award }) => {
   return (
     <Box
       borderRadius={"8px"}
@@ -12,7 +12,7 @@ const AwardCard = () => {
     >
       <Box
         component="img"
-        src={image}
+        src={award?.url}
         sx={{
           borderTopLeftRadius: "12px",
           borderTopRightRadius: "12px",
@@ -27,7 +27,7 @@ const AwardCard = () => {
           textAlign={"start"}
           sx={{ marginBottom: "10px" }}
         >
-          Best Supplier 2023
+          {award?.name}
         </Typography>
         <Typography
           variant="h5"
@@ -36,7 +36,7 @@ const AwardCard = () => {
           textAlign={"start"}
           sx={{ marginBottom: "10px" }}
         >
-          council
+          {award?.authority_name}
         </Typography>
       </Box>
     </Box>

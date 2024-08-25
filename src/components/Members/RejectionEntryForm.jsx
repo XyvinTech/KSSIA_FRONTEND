@@ -14,7 +14,7 @@ import RejectForm from "./RejectForm";
 import { usePaymentStore } from "../../store/payment-store";
 import { StyledMultilineTextField } from "../../ui/StyledMultilineTextField ";
 
-const RejectionEntryForm = ({ open, onClose, data }) => {
+const RejectionEntryForm = ({ open, onClose, data,onChange }) => {
   const {
     control,
     handleSubmit,
@@ -30,7 +30,9 @@ const RejectionEntryForm = ({ open, onClose, data }) => {
       status: "rejected",
     };
     await patchPayments(data?._id, updateData);
+    onChange();
     onClose();
+    
   };
 
   const handleReject = (event) => {

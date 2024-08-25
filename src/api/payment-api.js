@@ -6,7 +6,7 @@ export const getPayment = async () => {
     const response = await axiosInstance.get(`/payments`);
     return response.data;
   } catch (error) {
-    throw error;
+    return null;
   }
 };
 

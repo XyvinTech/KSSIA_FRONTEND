@@ -13,15 +13,18 @@ import CertificateCard from "./CertificateCard";
 import AwardCard from "./AwardCard";
 
 const MemberProfile = ({ data }) => {
-  // const data = {
-  //   id: "4.5",
-  //   name: "Prabodhan Fitzgerald",
-  //   title: "Member ID: KSSIA-GM-0934",
-  //   phone: "+1234567890",
-  //   email: "john.doe@example.com",
-  //   address:"123,cross ,Lorel ipsumLorel ipsum,567788",
-  //   img: imag,
-  // };
+  const renderSocialIcon = (platform) => {
+    switch (platform) {
+      case "instagram":
+        return <InstagramIcon />;
+      case "twitter":
+        return <TwitterIcon />;
+      case "linkedin":
+        return <LinkedInIcon />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <>
@@ -32,113 +35,120 @@ const MemberProfile = ({ data }) => {
         <Grid item md={5}>
           <UserCard2 company={data} />
         </Grid>
-        <>
-          <Grid item md={12}>
-            <Typography variant="h5" color="#2C2829" mt={1}>
-              Social Media
-            </Typography>
-          </Grid>
-          <Grid item md={4} xs={12}>
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="flex-start"
-              bgcolor="white"
-              borderRadius={"12px"}
-              p={2}
-            >
-              <InstagramIcon />
-              <Typography variant="h5" color="#6D6D6D" fontWeight={400} ml={1}>
-                {/* {data?.social_media?.platform} */}
+        {data?.social_media && data?.social_media?.length > 0 && (
+          <>
+            <Grid item md={12}>
+              <Typography variant="h5" color="#2C2829" mt={1}>
+                Social Media
               </Typography>
-            </Box>
-          </Grid>
-          <Grid item md={4} xs={12}>
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="flex-start"
-              borderRadius={"12px"}
-              bgcolor="white"
-              p={2}
-            >
-              <LinkedInIcon />
-              <Typography variant="h5" color="#6D6D6D" fontWeight={400} ml={1}>
-                {/* {data?.social_media} */}
-              </Typography>
-            </Box>
-          </Grid>
-          <Grid item md={4} xs={12}>
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="flex-start"
-              bgcolor="white"
-              borderRadius={"12px"}
-              p={2}
-            >
-              <TwitterIcon />
+            </Grid>
 
-              {/* {data?.social_media.map((item, index) => (
-                <Typography
-                  variant="h5"
-                  color="#6D6D6D"
-                  fontWeight={400}
-                  ml={1}
+            {data?.social_media?.map((media, index) => (
+              <Grid item md={4} xs={12} key={index}>
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="flex-start"
+                  bgcolor="white"
+                  borderRadius={"12px"}
+                  p={2}
                 >
-                  {" "}
-                  {item.platform}{" "}
-                </Typography>
-              ))} */}
-            </Box>
-          </Grid>
-        </>
-        <Grid item md={12}>
-          <Typography variant="h5" color="#2C2829" mt={1}>
-            Websites & links
-          </Typography>
-        </Grid>
-        <Grid item md={4} xs={12}>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="flex-start"
-            bgcolor="white"
-            borderRadius={"12px"}
-            p={2}
-          >
-            <WebsiteIcon />
-            <Typography variant="h5" color="#6D6D6D" fontWeight={400} ml={1}>
-              {/* {data.websites} */}
-            </Typography>
-          </Box>
-        </Grid>
+                  {renderSocialIcon(media?.platform)}
+                  <Typography
+                    variant="h5"
+                    color="#6D6D6D"
+                    fontWeight={400}
+                    ml={1}
+                  >
+                    <a
+                      href={media?.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {media?.platform?.charAt(0).toUpperCase() +
+                        media?.platform.slice(1)}
+                    </a>
+                  </Typography>
+                </Box>
+              </Grid>
+            ))}
+          </>
+        )}{" "}
+        {data?.websites && data?.websites?.length > 0 && (
+          <>
+            <Grid item md={12}>
+              <Typography variant="h5" color="#2C2829" mt={1}>
+                Websites & links
+              </Typography>
+            </Grid>
+            {data?.websites?.map((website, index) => (
+              <Grid item md={4} xs={12} key={index}>
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="flex-start"
+                  bgcolor="white"
+                  borderRadius={"12px"}
+                  p={2}
+                >
+                  <WebsiteIcon />
+                  <Typography
+                    variant="h5"
+                    color="#6D6D6D"
+                    fontWeight={400}
+                    ml={1}
+                  >
+                    <a
+                      href={website?.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {website?.name}
+                    </a>
+                  </Typography>
+                </Box>
+              </Grid>
+            ))}
+          </>
+        )}
         <Grid item md={12}>
           <Typography variant="h5" color="#2C2829" mt={1}>
             Products
           </Typography>
         </Grid>{" "}
-        {products.map((product) => (
-          <Grid item md={2} xs={12} key={product.id}>
+        {products?.map((product) => (
+          <Grid item md={2} xs={12} key={product?.id}>
             <ProductCard product={product} />
           </Grid>
         ))}
-        <Grid item md={12}>
-          <Typography variant="h5" color="#2C2829" mt={1}>
-            Certificates
-          </Typography>
-        </Grid>
-        <Grid item md={6} xs={12}>
-          <CertificateCard />
-        </Grid>
-        <Grid item md={12}>
-          <Typography variant="h5" color="#2C2829" mt={1}>
-            Awards
-          </Typography>
-        </Grid>
-        <Grid item md={6} xs={12}>
-          <AwardCard />
-        </Grid>
+        {data?.certificates && data?.certificates?.length > 0 && (
+          <>
+            <Grid item md={12}>
+              <Typography variant="h5" color="#2C2829" mt={1}>
+                Certificates
+              </Typography>
+            </Grid>
+            {data?.certificates?.map((certificate, index) => (
+              <Grid item md={6} xs={12} key={index}>
+                <CertificateCard certificate={certificate} />
+              </Grid>
+            ))}
+          </>
+        )}{" "}
+        {data?.awards && data?.awards?.length > 0 && (
+          <>
+            <Grid item md={12}>
+              <Typography variant="h5" color="#2C2829" mt={1}>
+                Awards
+              </Typography>
+            </Grid>
+            {data?.awards?.map((award, index) => (
+              <Grid item md={6} xs={12} key={index}>
+                <AwardCard award={award} />
+              </Grid>
+            ))}
+          </>
+        )}
       </Grid>
     </>
   );

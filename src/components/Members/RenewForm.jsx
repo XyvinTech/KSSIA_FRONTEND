@@ -16,7 +16,7 @@ import { StyledCalender } from "../../ui/StyledCalender";
 const RenewForm = ({ open, onClose, onChange }) => {
   const { handleSubmit } = useForm();
   const onSubmit = async () => {
-    // onChange();
+    onChange();
     onClose();
   };
 
@@ -24,7 +24,11 @@ const RenewForm = ({ open, onClose, onChange }) => {
     event.preventDefault();
     onClose();
   };
-
+  const option = [
+    { value: 1, label: "1 Year" },
+    { value: 2, label: "2 Year" },
+    { value:3, label: "3 Year" },
+  ];
   return (
     <>
       <Dialog
@@ -62,7 +66,7 @@ const RenewForm = ({ open, onClose, onChange }) => {
               <Typography variant="h6" color={"#333333"}>
                 Time metric
               </Typography>
-              <StyledSelectField placeholder={"Year"} />
+              <StyledSelectField placeholder={"Year"} options={option}/>
               <Typography variant="h6" color={"#333333"}>
                 Value
               </Typography>

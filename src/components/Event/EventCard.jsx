@@ -17,7 +17,7 @@ const EventCard = ({ user }) => {
     >
       <Grid item md={4} xs={12} justifyContent={"center"} alignItems={"center"}>
         <img
-          src={user?.img}
+          src={user?.image}
           alt="img"
           width={"192px"}
           height={"200px"}

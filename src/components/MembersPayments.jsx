@@ -1,5 +1,5 @@
 import { Box, Grid, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { ReactComponent as FilterIcon } from "../assets/icons/FilterIcon.svg";
 
@@ -8,33 +8,37 @@ import { StyledButton } from "../ui/StyledButton";
 import StyledSearchbar from "../ui/StyledSearchbar";
 import StyledTable from "../ui/StyledTable";
 import RejectionEntryForm from "./Members/RejectionEntryForm";
+import { useMemberStore } from "../store/member-store";
 
-export default function MembersPayments() {
-  const [selectedRows, setSelectedRows] = useState([]);
+export default function MembersPayments({ id }) {
   const [filterOpen, setFilterOpen] = useState(false);
+  
+  const { fetchPaymentByUser,payments } = useMemberStore();
   const [isChange, setIsChange] = useState(false);
   const [rejectOpen, setRejectOpen] = useState(false);
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
+  const userColumns = [
+    { title: "Payment Date ", field: "date", padding: "none" },  
+    { title: "Category", field: "category" },
+    { title: "Time", field: "time" },
+    { title: "Expiry", field: "renewal" },
+    { title: "Amount", field: "amount" },
+    { title: "Payment Status", field: "status" }
 
+  ];
   const handleCloseFilter = () => {
     setFilterOpen(false);
   };
+  useEffect(() => {
+    fetchPaymentByUser(id);
+  }, []);
   const handleChange = () => {
     setIsChange(!isChange);
   };
-  const handleSelectionChange = (newSelectedIds) => {
-    setSelectedRows(newSelectedIds);
-    console.log("Selected items:", newSelectedIds);
-  };
+ 
 
-  const handleApprove = (id) => {
-    console.log("View item:", id);
-  };
-  const handleReject = (id) => {
-    setRejectOpen(true);
-  };
   const handleCloseReject = (id) => {
     setRejectOpen(false);
   };
@@ -83,10 +87,8 @@ export default function MembersPayments() {
         >
           <StyledTable
             columns={userColumns}
-            data={userData}
-            onSelectionChange={handleSelectionChange}
-            onModify={handleApprove}
-            onAction={handleReject}
+            data={payments}
+         menu
             payment
           />{" "}
           <RejectionEntryForm

@@ -1,4 +1,12 @@
-import { Box, Divider, Grid, Stack, Tab, Tabs, Typography } from "@mui/material";
+import {
+  Box,
+  Divider,
+  Grid,
+  Stack,
+  Tab,
+  Tabs,
+  Typography,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import MembersPayments from "../../../components/MembersPayments";
 import AppSubscriptionCard from "../../../ui/AppSubscriptionCard";
@@ -11,28 +19,31 @@ import MemberProfile from "../../../components/MemberProfile";
 import axiosInstance from "../../../api/axios-interceptor";
 import CONSTANTS from "../../../constants";
 import { useParams } from "react-router-dom";
-
-
-
+import { useMemberStore } from "../../../store/member-store";
 
 const MembersSinglepage = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [selectedRows, setSelectedRows] = useState([]);
-  const [userData ,setUserData] = useState({})
-  const { id } = useParams()
-  
-  useEffect(()=>{
-    async function init(){
-
-      const response = await axiosInstance.get(`${CONSTANTS.MEMBERS_API}/${id}`)
-      if(response.status != 200) {
+  const [userData, setUserData] = useState({});
+  const [isChange, setIsChange] = useState(false);
+  const { id } = useParams();
+  const { fetchPaymentByUser, payments } = useMemberStore();
+  useEffect(() => {
+    async function init() {
+      const response = await axiosInstance.get(
+        `${CONSTANTS.MEMBERS_API}/${id}`
+      );
+      if (response.status != 200) {
         // handle error
-        return
+        return;
       }
       setUserData(response.data.data);
     }
-    init()
-  },[id])
+    init();
+  }, [id]);
+  const handleIsChange = () => {
+    setIsChange(!isChange);
+  };
   const handleSelectionChange = (newSelectedIds) => {
     setSelectedRows(newSelectedIds);
     console.log("Selected items:", newSelectedIds);
@@ -44,10 +55,19 @@ const MembersSinglepage = () => {
   const handleChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
-
+  useEffect(() => {
+    fetchPaymentByUser(id);
+  }, [isChange]);
+  console.log(payments);
   return (
     <>
-      <Box padding={"20px"} bgcolor={"#FFFFFF"}height={'70px'}display={'flex'}alignItems={'center'}>
+      <Box
+        padding={"20px"}
+        bgcolor={"#FFFFFF"}
+        height={"70px"}
+        display={"flex"}
+        alignItems={"center"}
+      >
         <Typography variant="h4" color={"#4A4647"}>
           {/* Members list / {userData.name} */}
         </Typography>
@@ -90,28 +110,34 @@ const MembersSinglepage = () => {
       </Tabs>
       <Box padding="30px" marginBottom={4}>
         {selectedTab === 0 && (
-             <Grid spacing={2}>
-             <MemberProfile data={userData}/>
-           </Grid>
+          <Grid spacing={2}>
+            <MemberProfile data={userData} />
+          </Grid>
         )}
         {selectedTab === 1 && (
           <Grid>
-            <MembersPayments />
+            <MembersPayments id={id} />
           </Grid>
         )}
         {selectedTab === 2 && (
           <Grid container>
             <Stack direction={"column"} spacing={3}>
-              <AppSubscriptionCard />
-              <MemberSubscriptionCard />
+              {payments && payments.length > 0 && payments[0].category ? (
+                payments[0].category === "app" ? (
+                  <AppSubscriptionCard />
+                ) : (
+                  <MemberSubscriptionCard payment={payments[0]}onChange={handleIsChange} />
+                )
+              ) : (
+                <Typography variant="h6" textAlign="center">
+                  No Subscription
+                </Typography>
+              )}
             </Stack>
           </Grid>
         )}
-        {selectedTab === 3 && (
-          <Grid>
-            {/* <MembersProducts id ={id}/> */}
-          </Grid>
-        )}
+
+        {selectedTab === 3 && <Grid>{/* <MembersProducts id ={id}/> */}</Grid>}
         {selectedTab === 4 && (
           <Grid>
             <MembersRequirements />

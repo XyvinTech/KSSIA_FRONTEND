@@ -31,7 +31,7 @@ const UserCard = ({ user }) => {
         </Typography>
       </Box>
 
-      {user?.img ? (
+      {user?.profile_picture? (
         <Grid
           item
           md={4}
@@ -40,7 +40,7 @@ const UserCard = ({ user }) => {
           alignItems={"center"}
         >
           <img
-            src={user?.img}
+            src={user?.profile_picture}
             alt="img"
             width={"118px"}
             height={"118px"}

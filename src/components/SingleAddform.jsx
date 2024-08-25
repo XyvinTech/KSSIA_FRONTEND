@@ -23,39 +23,73 @@ export default function SingleAddform() {
   } = useForm();
   const [isChecked, setIsChecked] = useState(false);
   const [additionalPhones, setAdditionalPhones] = useState([]);
+  const [addMoreDisabled, setAddMoreDisabled] = useState(false);
 
-  const handleSwitchChange = (e) => {
-    setIsChecked(e.target.checked);
-  };
-  const option = [
-    { value: "option1", label: "Option 1" },
-    { value: "option2", label: "Option 2" },
-    { value: "option3", label: "Option 3" },
-  ];
   const onSubmit = async (data) => {
-    data.business_category = data.business_category.value;
-    data.sub_category= data.sub_category.value;
-    data.status=data.status.value;
-    // currently dealing only one website
-    data.websites = [{name:"test",url:data.website}]
-    data.profile_picture = data.profile_picture.img
+    const formData = new FormData();
+    formData.append(
+      "name",
+      JSON.stringify({
+        first_name: data.first_name,
+        middle_name: data.middle_name,
+        last_name: data.last_name,
+      })
+    );
 
+    const phoneNumbers = {
+      personal: data.phone_number,
+      landline: data.landline,
+      company_phone_number: data.company_phone_number,
+      whatsapp_number: data.whatsapp_number,
+      whatsapp_business_number: data.whatsapp_business_number,
+    };
+    formData.append("phone_numbers", JSON.stringify(phoneNumbers));
+    formData.append("membership_id", data.membership_id);
+    formData.append("blood_group", data.blood_group);
+    formData.append("designation", data.designation);
+    formData.append("email", data.email);
+    formData.append("company_name", data.company_name);
+    formData.append("address", data.address);
+    formData.append("bio", data.bio);
+    formData.append("company_email", data.company_email);
+    formData.append("business_category", data.business_category.value);
+    formData.append("sub_category", data.sub_category.value);
     try {
-      const resp =await axiosInstance.post(CONSTANTS.MEMBERS_API,data)
-      if(resp.status != 201){
-        // hand;e error
-        return
+      const resp = await axiosInstance.post(CONSTANTS.MEMBERS_API, formData);
+      if (resp.status === 201) {
+        navigate("/members");
       }
-      navigate(`/members`);     
-      
     } catch (error) {
       console.log(error);
     }
   };
 
   const addPhoneNumber = () => {
-    setAdditionalPhones([...additionalPhones, ""]);
+    setAdditionalPhones((prevPhones) => {
+      const newPhones = [...prevPhones];
+
+      if (newPhones.length === 0) {
+        newPhones.push({ name: "WhatsApp Number", key: "whatsapp_number" });
+      } else if (newPhones.length === 1) {
+        newPhones.push({
+          name: "WhatsApp Business Number",
+          key: "whatsapp_business_number",
+        });
+      }
+
+      if (newPhones.length === 3) {
+        setAddMoreDisabled(true);
+      }
+
+      return newPhones;
+    });
   };
+
+  const option = [
+    { value: "option1", label: "Option 1" },
+    { value: "option2", label: "Option 2" },
+    { value: "option3", label: "Option 3" },
+  ];
   return (
     <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"12px"}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -156,10 +190,7 @@ export default function SingleAddform() {
               rules={{ required: "Member ID is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput 
-                  placeholder="Enter the Member ID" 
-                  {...field}
-                  />
+                  <StyledInput placeholder="Enter the Member ID" {...field} />
                   {errors.memberid && (
                     <span style={{ color: "red" }}>
                       {errors.memberid.message}
@@ -318,28 +349,32 @@ export default function SingleAddform() {
                 )}
               />
             </Grid>
-            {additionalPhones.map((_, index) => (
-              <Grid marginTop={2} key={index}>
+            {additionalPhones.map((phone) => (
+              <Grid marginTop={2} key={phone.key}>
                 <Controller
-                  name={`additionalPhone${index}`}
+                  name={phone.key}
                   control={control}
                   defaultValue=""
                   render={({ field }) => (
-                    <StyledInput
-                      placeholder={`Enter additional phone number ${index + 1}`}
-                      {...field}
-                    />
+                    <>
+                      <StyledInput
+                        placeholder={`Enter ${phone.name.toLowerCase()}`}
+                        {...field}
+                      />
+                    </>
                   )}
                 />
               </Grid>
             ))}
             <Typography
               onClick={addPhoneNumber}
+              display={addMoreDisabled ? "none" : ""}
               sx={{
                 color: "#004797",
-                cursor: "pointer",
+                cursor: addMoreDisabled ? "default" : "pointer",
                 marginTop: 1,
                 fontSize: "0.9rem",
+                textDecoration: addMoreDisabled ? "line-through" : "none",
               }}
             >
               + Add more
@@ -355,7 +390,7 @@ export default function SingleAddform() {
               Personal Address
             </Typography>
             <Controller
-              name="personaladdress"
+              name="address"
               control={control}
               defaultValue=""
               rules={{ required: "Personal Address is required" }}
@@ -365,9 +400,9 @@ export default function SingleAddform() {
                     placeholder="Enter the Personal Address"
                     {...field}
                   />
-                  {errors.personaladdress && (
+                  {errors.address && (
                     <span style={{ color: "red" }}>
-                      {errors.personaladdress.message}
+                      {errors.address.message}
                     </span>
                   )}
                 </>
@@ -413,7 +448,7 @@ export default function SingleAddform() {
               Company Phone
             </Typography>
             <Controller
-              name="companyphone"
+              name="company_phone_number"
               control={control}
               defaultValue=""
               rules={{ required: "Company Phone is required" }}
@@ -423,9 +458,9 @@ export default function SingleAddform() {
                     placeholder="Enter the phone number"
                     {...field}
                   />
-                  {errors.companyphone && (
+                  {errors.company_phone_number && (
                     <span style={{ color: "red" }}>
-                      {errors.companyphone.message}
+                      {errors.company_phone_number.message}
                     </span>
                   )}
                 </>

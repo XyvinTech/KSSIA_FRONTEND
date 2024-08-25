@@ -1,17 +1,19 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Typography, Grid, Stack } from "@mui/material";
 import { StyledEventUpload } from "../ui/StyledEventUpload.jsx";
 import { StyledButton } from "../ui/StyledButton.jsx";
-import {StyledTime} from "../ui/StyledTime.jsx"
+import { StyledTime } from "../ui/StyledTime.jsx";
 import { StyledCalender } from "../ui/StyledCalender.jsx";
 import StyledInput from "../ui/StyledInput.jsx";
 import { Controller, useForm } from "react-hook-form";
 import StyledSelectField from "../ui/StyledSelectField.jsx";
 import { ReactComponent as Delete } from "../assets/icons/delete.svg";
 import StyledSwitch from "/src/ui/StyledSwitch.jsx";
-import {createEvent,getEventById,updateEventById} from "/src/api/events-api.js";
-
-
+import {
+  createEvent,
+  getEventById,
+  updateEventById,
+} from "/src/api/events-api.js";
 
 export default function AddEvent({ eventId }) {
   const {
@@ -23,7 +25,13 @@ export default function AddEvent({ eventId }) {
   const [isChecked, setIsChecked] = useState(false);
   const [additionalPhones, setAdditionalPhones] = useState([]);
   const [dateValue, setDate] = useState("");
-  const [speakers, setSpeakers] = useState([{ speaker_name: "", speaker_designation: "", speaker_image: "", speaker_role: "" }]);
+  const [speakers, setSpeakers] = useState([
+    {
+      speaker_name: "",
+      speaker_designation: "",
+      speaker_role: "",
+    },
+  ]);
   const handleSwitchChange = (e) => {
     setIsChecked(e.target.checked);
   };
@@ -37,50 +45,59 @@ export default function AddEvent({ eventId }) {
     if (Array.isArray(obj)) {
       return obj.map(removeIdFields);
     }
-    if (typeof obj === 'object' && obj !== null) {
-      const { _id,createdAt,updatedAt,__v, ...rest } = obj;
+    if (typeof obj === "object" && obj !== null) {
+      const { _id, createdAt, updatedAt, __v, ...rest } = obj;
       return Object.keys(rest).reduce((acc, key) => {
-        acc[key] = removeIdFields(rest[key]); 
+        acc[key] = removeIdFields(rest[key]);
         return acc;
       }, {});
     }
     return obj;
   };
 
-  const onSubmit = async(data) => {
+  const onSubmit = async (data) => {
+    console.log(data);
     try {
       const cleanedData = removeIdFields(data);
       const formData = {
         ...cleanedData,
-        speakers: removeIdFields(speakers)
+        speakers: removeIdFields(speakers),
       };
-      
+
       if (eventId) {
-        await updateEventById(eventId, formData); 
+        await updateEventById(eventId, formData);
       } else {
         await createEvent(formData);
-        reset({
-          type: '',
-          name: '',
-          image: '',
-          date: '',
-          time: '',
-          platform: '',
-          meeting_link: '',
-          organiser_name: '',
-          organiser_company_name: '',
-          guest_image: '',
-          organiser_role: '',
-          activate: false,
-        });
-        setSpeakers([{ speaker_name: "", speaker_designation: "", speaker_image: "", speaker_role: "" }]);
+        console.log(formData);
+        // reset({
+        //   type: '',
+        //   name: '',
+        //   image: '',
+        //   date: '',
+        //   time: '',
+        //   platform: '',
+        //   meeting_link: '',
+        //   organiser_name: '',
+        //   organiser_company_name: '',
+        //   guest_image: '',
+        //   organiser_role: '',
+        //   activate: false,
+        // });
+        // setSpeakers([{ speaker_name: "", speaker_designation: "", speaker_image: "", speaker_role: "" }]);
       }
     } catch (error) {
       console.error("Error submitting form:", error);
     }
   };
   const addSpeaker = () => {
-    setSpeakers([...speakers, { speaker_name: "", speaker_designation: "", speaker_image: "", speaker_role: "" }]);
+    setSpeakers([
+      ...speakers,
+      {
+        speaker_name: "",
+        speaker_designation: "",
+        speaker_role: "",
+      },
+    ]);
   };
   useEffect(() => {
     if (eventId) {
@@ -118,7 +135,6 @@ export default function AddEvent({ eventId }) {
     };
     setSpeakers(updatedSpeakers);
   };
-  
 
   const removeSpeaker = (index) => {
     const newSpeakers = speakers.filter((_, i) => i !== index);
@@ -132,14 +148,14 @@ export default function AddEvent({ eventId }) {
     <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"12px"}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={4}>
-        <Grid item xs={12}>
+          <Grid item xs={12}>
             <Typography
               sx={{ marginBottom: 1 }}
               variant="h6"
               fontWeight={500}
               color={"#333333"}
             >
-             Type of event
+              Type of event
             </Typography>
             <Controller
               name="type"
@@ -152,8 +168,10 @@ export default function AddEvent({ eventId }) {
                     placeholder="Enter Event Type"
                     options={option}
                     {...field}
-                    value={option.find(opt => opt.value === field.value)}
-                    onChange={(selectedOption) => field.onChange(selectedOption.value)}
+                    value={option.find((opt) => opt.value === field.value)}
+                    onChange={(selectedOption) =>
+                      field.onChange(selectedOption.value)
+                    }
                   />
                   {errors.type && (
                     <span style={{ color: "red" }}>{errors.type.message}</span>
@@ -178,7 +196,10 @@ export default function AddEvent({ eventId }) {
               rules={{ required: "Name of event is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput placeholder="Enter the name of event" {...field}/>
+                  <StyledInput
+                    placeholder="Enter the name of event"
+                    {...field}
+                  />
                   {errors.name && (
                     <span style={{ color: "red" }}>{errors.name.message}</span>
                   )}
@@ -200,12 +221,12 @@ export default function AddEvent({ eventId }) {
               control={control}
               defaultValue=""
               rules={{ required: "Image is required" }}
-              render={({ field: { onChange,value } }) => (
+              render={({ field: { onChange, value } }) => (
                 <>
                   <StyledEventUpload
-                    label = "Upload image here"
-                    onChange = {onChange}
-                    value = {value}
+                    label="Upload image here"
+                    onChange={onChange}
+                    value={value}
                   />
                   {errors.image && (
                     <span style={{ color: "red" }}>{errors.image.message}</span>
@@ -221,18 +242,19 @@ export default function AddEvent({ eventId }) {
               fontWeight={500}
               color={"#333333"}
             >
-              Date 
+              Date
             </Typography>
             <Controller
               name="date"
               control={control}
-              defaultValue={''}
+              defaultValue={""}
               rules={{ required: " Date is required" }}
               render={({ field }) => (
                 <>
-                  <StyledCalender label="Select Date from Calender" 
-                  {...field}
-                  value={field.value}
+                  <StyledCalender
+                    label="Select Date from Calender"
+                    {...field}
+                    value={field.value}
                   />
                   {errors.date && (
                     <span style={{ color: "red" }}>{errors.date.message}</span>
@@ -257,10 +279,11 @@ export default function AddEvent({ eventId }) {
               rules={{ required: "Time is required" }}
               render={({ field }) => (
                 <>
-                  <StyledTime label="Select Time" 
-                  {...field}
-                  value={field.value}
-                   />
+                  <StyledTime
+                    label="Select Time"
+                    {...field}
+                    value={field.value}
+                  />
                   {errors.time && (
                     <span style={{ color: "red" }}>{errors.time.message}</span>
                   )}{" "}
@@ -275,7 +298,7 @@ export default function AddEvent({ eventId }) {
               fontWeight={500}
               color={"#333333"}
             >
-             Virtual platform
+              Virtual platform
             </Typography>
             <Controller
               name="platform"
@@ -288,11 +311,15 @@ export default function AddEvent({ eventId }) {
                     placeholder="Select Virtual Platform"
                     options={option}
                     {...field}
-                    value={option.find(opt => opt.value === field.value)}
-                    onChange={(selectedOption) => field.onChange(selectedOption.value)}
+                    value={option.find((opt) => opt.value === field.value)}
+                    onChange={(selectedOption) =>
+                      field.onChange(selectedOption.value)
+                    }
                   />
                   {errors.platform && (
-                    <span style={{ color: "red" }}>{errors.platform.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.platform.message}
+                    </span>
                   )}
                 </>
               )}
@@ -305,7 +332,7 @@ export default function AddEvent({ eventId }) {
               fontWeight={500}
               color={"#333333"}
             >
-             Add link
+              Add link
             </Typography>
             <Controller
               name="meeting_link"
@@ -314,9 +341,11 @@ export default function AddEvent({ eventId }) {
               rules={{ required: "Link  is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput placeholder="Add Meeting Link here" {...field}/>
+                  <StyledInput placeholder="Add Meeting Link here" {...field} />
                   {errors.meeting_link && (
-                    <span style={{ color: "red" }}>{errors.meeting_link.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.meeting_link.message}
+                    </span>
                   )}
                 </>
               )}
@@ -329,7 +358,7 @@ export default function AddEvent({ eventId }) {
               fontWeight={500}
               color={"#333333"}
             >
-             Organiser name
+              Organiser name
             </Typography>
             <Controller
               name="organiser_name"
@@ -338,9 +367,11 @@ export default function AddEvent({ eventId }) {
               rules={{ required: "Organiser name  is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput placeholder="Enter organiser name" {...field}/>
+                  <StyledInput placeholder="Enter organiser name" {...field} />
                   {errors.organiser_name && (
-                    <span style={{ color: "red" }}>{errors.organiser_name.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.organiser_name.message}
+                    </span>
                   )}
                 </>
               )}
@@ -353,7 +384,7 @@ export default function AddEvent({ eventId }) {
               fontWeight={500}
               color={"#333333"}
             >
-             Organiser's company name
+              Organiser's company name
             </Typography>
             <Controller
               name="organiser_company_name"
@@ -362,9 +393,14 @@ export default function AddEvent({ eventId }) {
               rules={{ required: "Organiser's company name  is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput placeholder="Enter organiser's company name" {...field}/>
+                  <StyledInput
+                    placeholder="Enter organiser's company name"
+                    {...field}
+                  />
                   {errors.organiser_company_name && (
-                    <span style={{ color: "red" }}>{errors.organiser_company_name.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.organiser_company_name.message}
+                    </span>
                   )}
                 </>
               )}
@@ -377,14 +413,14 @@ export default function AddEvent({ eventId }) {
               fontWeight={500}
               color={"#333333"}
             >
-             Upload image
+              Upload image
             </Typography>
             <Controller
               name="guest_image"
               control={control}
               defaultValue=""
               rules={{ required: "Image is required" }}
-              render={({ field: { onChange,value } }) => (
+              render={({ field: { onChange, value } }) => (
                 <>
                   <StyledEventUpload
                     label="Upload Chief guest image here"
@@ -392,7 +428,9 @@ export default function AddEvent({ eventId }) {
                     value={value}
                   />
                   {errors.guest_image && (
-                    <span style={{ color: "red" }}>{errors.guest_image.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.guest_image.message}
+                    </span>
                   )}
                 </>
               )}
@@ -405,7 +443,7 @@ export default function AddEvent({ eventId }) {
               fontWeight={500}
               color={"#333333"}
             >
-             Role
+              Role
             </Typography>
             <Controller
               name="organiser_role"
@@ -414,9 +452,11 @@ export default function AddEvent({ eventId }) {
               rules={{ required: "Role  is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput placeholder="Enter speaker's role" {...field}/>
+                  <StyledInput placeholder="Enter speaker's role" {...field} />
                   {errors.organiser_role && (
-                    <span style={{ color: "red" }}>{errors.organiser_role.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.organiser_role.message}
+                    </span>
                   )}
                 </>
               )}
@@ -428,18 +468,18 @@ export default function AddEvent({ eventId }) {
             <Delete/>
           </Grid> */}
 
-        {speakers.map((speaker, index) => (
-          <React.Fragment key={index}>
-          <Grid item xs={6}>
-            <Typography
-              sx={{ marginBottom: 1 }}
-              variant="h6"
-              fontWeight={500}
-              color={"#333333"}
-            >
-             Add speaker name
-            </Typography>
-            {/* <Controller
+          {speakers.map((speaker, index) => (
+            <React.Fragment key={index}>
+              <Grid item xs={6}>
+                <Typography
+                  sx={{ marginBottom: 1 }}
+                  variant="h6"
+                  fontWeight={500}
+                  color={"#333333"}
+                >
+                  Add speaker name
+                </Typography>
+                {/* <Controller
               name="speaker.speaker_name"
               control={control}
               defaultValue=""
@@ -453,22 +493,24 @@ export default function AddEvent({ eventId }) {
                 </>
               )}
             /> */}
-            <StyledInput
-               placeholder="Enter speaker name"
-               value={speaker.speaker_name}
-               onChange={(e) => handleSpeakerChange(index, "speaker_name", e.target.value)}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <Typography
-              sx={{ marginBottom: 1 }}
-              variant="h6"
-              fontWeight={500}
-              color={"#333333"}
-            >
-             Add speaker designation
-            </Typography>
-            {/* <Controller
+                <StyledInput
+                  placeholder="Enter speaker name"
+                  value={speaker.speaker_name}
+                  onChange={(e) =>
+                    handleSpeakerChange(index, "speaker_name", e.target.value)
+                  }
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <Typography
+                  sx={{ marginBottom: 1 }}
+                  variant="h6"
+                  fontWeight={500}
+                  color={"#333333"}
+                >
+                  Add speaker designation
+                </Typography>
+                {/* <Controller
               name="speaker_designation"
               control={control}
               defaultValue=""
@@ -482,22 +524,28 @@ export default function AddEvent({ eventId }) {
                 </>
               )}
             /> */}
-             <StyledInput
+                <StyledInput
                   placeholder="Enter speaker designation"
                   value={speaker.speaker_designation}
-                  onChange={(e) => handleSpeakerChange(index, "speaker_designation", e.target.value)}
-              />
-          </Grid>
-          <Grid item xs={6}>
-            <Typography
-              sx={{ marginBottom: 1 }}
-              variant="h6"
-              fontWeight={500}
-              color={"#333333"}
-            >
-             Upload image
-            </Typography>
-            {/* <Controller
+                  onChange={(e) =>
+                    handleSpeakerChange(
+                      index,
+                      "speaker_designation",
+                      e.target.value
+                    )
+                  }
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <Typography
+                  sx={{ marginBottom: 1 }}
+                  variant="h6"
+                  fontWeight={500}
+                  color={"#333333"}
+                >
+                  Upload image
+                </Typography>
+                {/* <Controller
               name="speaker_image"
               control={control}
               defaultValue=""
@@ -517,24 +565,24 @@ export default function AddEvent({ eventId }) {
                 </>
               )}
             />  */}
-            <StyledEventUpload
+                <StyledEventUpload
                   label="Upload Chief guest image here"
                   onChange={(e) => {
-                        handleSpeakerChange(index, "speaker_image", e);
+                    handleSpeakerChange(index, "speaker_image", e);
                   }}
                   value={speaker.speaker_image}
-            /> 
-          </Grid>
-          <Grid item xs={6}>
-            <Typography
-              sx={{ marginBottom: 1 }}
-              variant="h6"
-              fontWeight={500}
-              color={"#333333"}
-            >
-             Role
-            </Typography>
-            {/* <Controller
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <Typography
+                  sx={{ marginBottom: 1 }}
+                  variant="h6"
+                  fontWeight={500}
+                  color={"#333333"}
+                >
+                  Role
+                </Typography>
+                {/* <Controller
               name="speaker_role"
               control={control}
               defaultValue=""
@@ -548,14 +596,16 @@ export default function AddEvent({ eventId }) {
                 </>
               )}
             /> */}
-            <StyledInput
+                <StyledInput
                   placeholder="Enter speaker's role"
                   value={speaker.speaker_role}
-                  onChange={(e) => handleSpeakerChange(index, "speaker_role", e.target.value)}
-            />
-          </Grid>
-          <Grid item xs={6}></Grid>
-              <Grid item xs={6} style={{ textAlign: 'right' }}>
+                  onChange={(e) =>
+                    handleSpeakerChange(index, "speaker_role", e.target.value)
+                  }
+                />
+              </Grid>
+              <Grid item xs={6}></Grid>
+              <Grid item xs={6} style={{ textAlign: "right" }}>
                 <Delete onClick={() => removeSpeaker(index)} />
               </Grid>
             </React.Fragment>
@@ -568,51 +618,45 @@ export default function AddEvent({ eventId }) {
               color={"#004797"}
               onClick={addSpeaker}
             >
-            + Add more
+              + Add more
             </Typography>
           </Grid>
           <Grid item xs={6}>
-            
-              <Typography
-                sx={{ marginBottom: 1 }}
-                variant="h6"
-                fontWeight={500}
-                color={"#333333"}
-              >
-                Activate
-              </Typography>
-              </Grid>
-              <Grid item xs={6} style={{ textAlign: 'right' }}> 
-              <Controller
-                name="activate"
-                control={control}
-                defaultValue={false}
-                rules={{ required: "Activate is required" }}
-                render={({ field }) => (
-                  <>
-                    <StyledSwitch
-                      checked={field.value}
-                      onChange={(e) => {
-                        field.onChange(e.target.checked);
-                        handleSwitchChange(e);
-                      }}
-                    />{" "}
-                    {errors.activate && (
-                      <span style={{ color: "red" }}>
-                        {errors.activate.message}
-                      </span>
-                    )}{" "}
-                  </>
-                )}
-              />
-            
+            <Typography
+              sx={{ marginBottom: 1 }}
+              variant="h6"
+              fontWeight={500}
+              color={"#333333"}
+            >
+              Activate
+            </Typography>
+          </Grid>
+          <Grid item xs={6} style={{ textAlign: "right" }}>
+            <Controller
+              name="activate"
+              control={control}
+              defaultValue={false}
+              rules={{ required: "Activate is required" }}
+              render={({ field }) => (
+                <>
+                  <StyledSwitch
+                    checked={field.value}
+                    onChange={(e) => {
+                      field.onChange(e.target.checked);
+                      handleSwitchChange(e);
+                    }}
+                  />{" "}
+                  {errors.activate && (
+                    <span style={{ color: "red" }}>
+                      {errors.activate.message}
+                    </span>
+                  )}{" "}
+                </>
+              )}
+            />
           </Grid>
 
-
-
-
-         
-          <Grid item xs={6}></Grid> 
+          <Grid item xs={6}></Grid>
           <Grid item xs={6}>
             {" "}
             <Stack direction={"row"} spacing={2}>

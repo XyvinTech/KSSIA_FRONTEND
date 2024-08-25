@@ -6,7 +6,7 @@ export const getPromotion = async (type) => {
     const response = await axiosInstance.get(`/promotions/${type}`);
     return response.data;
   } catch (error) {
-    throw error;
+    return null;
   }
 };
 

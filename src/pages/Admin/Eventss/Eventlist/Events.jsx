@@ -1,19 +1,19 @@
-import { Box, Grid, Stack, Typography } from '@mui/material'
+import { Box, Grid, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { StyledButton } from "../../../../ui/StyledButton.jsx";
 import StyledSearchbar from "../../../../ui/StyledSearchbar.jsx";
 import { ReactComponent as FilterIcon } from "../../../../assets/icons/FilterIcon.svg";
-import StyledTable from '../../../../ui/StyledTable.jsx';
+import StyledTable from "../../../../ui/StyledTable.jsx";
 import { eventColumns } from "../../../../assets/json/TableData.js";
-import {getEvents,deleteEventById} from "../../../../api/events-api.js";
+import { getEvents, deleteEventById } from "../../../../api/events-api.js";
 
 export default function Events() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);
   const [tableData, setTableData] = useState([]);
-
+  const [isChange, setIsChange] = useState(false);
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -22,30 +22,36 @@ export default function Events() {
     setFilterOpen(false);
   };
 
-  const timeFormatter =(time) => {
+  const timeFormatter = (time) => {
     const date = new Date(time);
-    const formattedTime =  date.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: true
+    const formattedTime = date.toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
     });
     return formattedTime;
-  }
+  };
 
- const handleDelete = async (eventId) =>{
-  console.log('inside',eventId)
-  const response = await deleteEventById(eventId);
- } 
-
+  const handleDelete = async () => {
+    if (selectedRows.length > 0) {
+      await Promise.all(selectedRows?.map((id) => deleteEventById(id)));
+      setIsChange(!isChange);
+      setSelectedRows([]);
+    }
+  };
+  const handleRowDelete = async (id) => {
+    await deleteEventById(id);
+    setIsChange(!isChange);
+  };
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         const response = await getEvents();
-        const formattedData = response.data.map(event => ({
+        const formattedData = response.data.map((event) => ({
           ...event,
           date: new Date(event.date).toDateString(),
           time: timeFormatter(event.time),
-          activate: event.activate ? 'active' : 'inactive' 
+          activate: event.activate ? "active" : "inactive",
         }));
         setTableData(formattedData);
       } catch (error) {
@@ -54,7 +60,7 @@ export default function Events() {
     };
 
     fetchEvents();
-  }, []);
+  }, [isChange]);
   const handleSelectionChange = (newSelectedIds) => {
     setSelectedRows(newSelectedIds);
   };
@@ -105,6 +111,7 @@ export default function Events() {
             onModify={handleEdit}
             onView={handleView}
             onDelete={handleDelete}
+            onDeleteRow={handleRowDelete}
           />{" "}
         </Box>
       </>

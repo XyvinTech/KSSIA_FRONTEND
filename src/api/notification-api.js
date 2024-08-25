@@ -6,7 +6,7 @@ export const getNotification = async () => {
     const response = await axiosInstance.get("/notification/in-app");
     return response.data;
   } catch (error) {
-    throw error;
+    return null;
   }
 };
 

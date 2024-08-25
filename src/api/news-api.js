@@ -6,7 +6,7 @@ export const getNews = async () => {
     const response = await axiosInstance.get("/news");
     return response.data;
   } catch (error) {
-    throw error;
+    return null;
   }
 };
 

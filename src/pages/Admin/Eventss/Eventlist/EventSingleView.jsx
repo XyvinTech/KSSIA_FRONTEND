@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyledButton } from "../../../../ui/StyledButton";
 import { Box, Grid, Tab, Tabs, Typography } from "@mui/material";
 import SpeakerTable from "../../../../components/Event/SpeakerTable";
@@ -8,13 +8,22 @@ import EventCard from "../../../../components/Event/EventCard";
 import imag from "../../../../assets/images/Event.png";
 import Postpone from "../../../../components/Event/Postpone";
 import CancelEvent from "../../../../components/Event/CancelEvent";
+import { useParams } from "react-router-dom";
+import { useEventStore } from "../../../../store/event-store";
 const EventSingleView = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [postponeOpen, setPostponeOpen] = useState(false);
   const [cancelOpen, setCancelOpen] = useState(false);
+  const { events, fetchEventById } = useEventStore();
+  const [isChange, setIsChange] = useState(false);
+  const { id } = useParams();
+
   const handleChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
+  useEffect(() => {
+    fetchEventById(id);
+  }, [isChange]);
   const handlePostpone = () => {
     setPostponeOpen(true);
   };
@@ -27,11 +36,10 @@ const EventSingleView = () => {
   const handleCloseCancel = () => {
     setCancelOpen(false);
   };
-  const data = {
-    date: "27 July 2024, 12:00 pm",
-    address: "123,cross ,Lorel ipsumLorel ipsum,567788",
-    img: imag,
+  const handleIsChange = () => {
+    setIsChange(!isChange);
   };
+
   return (
     <>
       {" "}
@@ -69,7 +77,7 @@ const EventSingleView = () => {
       <Box padding="30px" marginBottom={4}>
         <Grid container alignItems="center" spacing={4}>
           <Grid item md={6}>
-            <EventCard user={data} />
+            <EventCard user={events} />
           </Grid>
           <Grid item md={4}>
             <OrganizerCard />
@@ -112,7 +120,7 @@ const EventSingleView = () => {
       <Box padding="30px" paddingTop={0} marginBottom={4}>
         {selectedTab === 0 && (
           <Grid>
-            <SpeakerTable />
+            <SpeakerTable data={events?.speakers} />
           </Grid>
         )}{" "}
         {selectedTab === 1 && (
@@ -124,12 +132,13 @@ const EventSingleView = () => {
       <Postpone
         open={postponeOpen}
         onClose={handleClosePostpone}
-        onChange={handleChange}
+        onChange={handleIsChange}
+        data={events}
       />
       <CancelEvent
         open={cancelOpen}
         onClose={handleCloseCancel}
-        onChange={handleChange}
+        onChange={handleIsChange}
       />
     </>
   );

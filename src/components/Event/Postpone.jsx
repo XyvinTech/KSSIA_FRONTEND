@@ -6,16 +6,34 @@ import {
   DialogTitle,
   Box,
 } from "@mui/material";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { StyledButton } from "../../ui/StyledButton";
 import { ReactComponent as CloseIcon } from "../../assets/icons/CloseIcon.svg";
 
 import { StyledCalender } from "../../ui/StyledCalender";
 import { StyledTime } from "../../ui/StyledTime";
+import { useEventStore } from "../../store/event-store";
+import { useEffect } from "react";
 
-const Postpone = ({ open, onClose, onChange }) => {
-  const { handleSubmit } = useForm();
-  const onSubmit = async () => {
+const Postpone = ({ open, onClose, onChange, data }) => {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm();
+  const { postpone } = useEventStore();
+  useEffect(() => {
+    if (data) {
+      setValue("date", data.date);
+      setValue("time", data.time);
+    }
+  }, [data, setValue]);
+  const onSubmit = async (updateData) => {
+    const formData = new FormData();
+    formData.append("date", updateData.date);
+    formData.append("time", updateData.time);
+    await postpone(data?._id, formData);
     onChange();
     onClose();
   };
@@ -62,11 +80,44 @@ const Postpone = ({ open, onClose, onChange }) => {
               <Typography variant="h6" color={"#333333"}>
                 New Date
               </Typography>
-              <StyledCalender placeholder={"Select Date from Calendar"} />
+              <Controller
+                name="date"
+                control={control}
+                defaultValue={""}
+                rules={{ required: " Date is required" }}
+                render={({ field }) => (
+                  <>
+                    <StyledCalender
+                      {...field}
+                      placeholder={"Select Date from Calendar"}
+                    />
+                    {errors.date && (
+                      <span style={{ color: "red" }}>
+                        {errors.date.message}
+                      </span>
+                    )}
+                  </>
+                )}
+              />
               <Typography variant="h6" color={"#333333"}>
                 Time
               </Typography>
-              <StyledTime placeholder={"Add Time"} />{" "}
+              <Controller
+                name="time"
+                control={control}
+                defaultValue=""
+                rules={{ required: "Time is required" }}
+                render={({ field }) => (
+                  <>
+                    <StyledTime placeholder={"Add Time"} {...field} />{" "}
+                    {errors.time && (
+                      <span style={{ color: "red" }}>
+                        {errors.time.message}
+                      </span>
+                    )}{" "}
+                  </>
+                )}
+              />
             </Stack>
           </DialogContent>
           <Stack

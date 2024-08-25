@@ -42,12 +42,26 @@ export default function AddPaymentdetails() {
       setValue("time", payment.time || "");
       setValue("amount", payment.amount || "");
       setValue("mode_of_payment", payment.mode_of_payment || "");
-      setValue("category", payment.category || "");
-      setValue("status", payment.status || "");
+      const selectedCategory = category.find(
+        (item) => item.value === payment.category
+      );
+      setValue("category", selectedCategory || "");
+      const selectedStatus = status.find(
+        (item) => item.value === payment.status
+      );
+      setValue("status", selectedStatus || "");
       setValue("remarks", payment.remarks || "");
     }
   }, [payment, isUpdate, setValue]);
 
+  const category = [
+    { value: "membership", label: "Membership renewal" },
+    { value: "app", label: "App renewal" },
+  ];
+  const status = [
+    { value: "pending", label: "Pending" },
+    { value: "accepted", label: "Complete" },
+  ];
   const option =
     users && Array.isArray(users)
       ? users.map((user) => ({
@@ -62,8 +76,8 @@ export default function AddPaymentdetails() {
     formData.append("time", data.time);
     formData.append("amount", data.amount);
     formData.append("mode_of_payment", data.mode_of_payment);
-    formData.append("category", data.category);
-    formData.append("status", data.status);
+    formData.append("category", data.category.value);
+    formData.append("status", data.status.value);
     formData.append("remarks", data.remarks);
     formData.append("file", data.file);
     if (isUpdate && paymentId) {
@@ -253,8 +267,9 @@ export default function AddPaymentdetails() {
               rules={{ required: "Payment Category is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput
-                    placeholder="Enter the payment category"
+                  <StyledSelectField
+                    placeholder=" payment category"
+                    options={category}
                     {...field}
                   />
                   {errors.category && (
@@ -282,8 +297,9 @@ export default function AddPaymentdetails() {
               rules={{ required: "Status of payment is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput
-                    placeholder="Enter the Status of payment "
+                  <StyledSelectField
+                    placeholder="Status"
+                    options={status}
                     {...field}
                   />
                   {errors.status && (

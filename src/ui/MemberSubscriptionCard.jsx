@@ -3,10 +3,11 @@ import { Typography, Stack, Grid, Box, Divider } from "@mui/material";
 import { StyledButton } from "./StyledButton";
 import RenewForm from "../components/Members/RenewForm";
 import SuspendProfile from "../components/SuspendProfile";
+import { usePaymentStore } from "../store/payment-store";
 
-export default function MemberSubscriptionCard() {
+export default function MemberSubscriptionCard({ payment,onChange }) {
   const [renew, setRenew] = useState(false);
-
+  const { patchPayments } = usePaymentStore();
   const [suspend, setSuspend] = useState(false);
   const handleRenew = () => {
     setRenew(true);
@@ -19,6 +20,11 @@ export default function MemberSubscriptionCard() {
   };
   const handleCloseSuspend = () => {
     setSuspend(false);
+  };
+  const handleSuspendMembership = async () => {
+    const updateData = { status: "rejected" };
+    await patchPayments(payment?._id, updateData);
+    onChange();
   };
   return (
     <Grid
@@ -55,7 +61,7 @@ export default function MemberSubscriptionCard() {
               border: "1px solid #2E7D32",
             }}
           >
-            Active
+            {payment?.status}
           </Typography>
         </Stack>
         <Divider />
@@ -69,7 +75,7 @@ export default function MemberSubscriptionCard() {
             Last Renewed date
           </Typography>
           <Typography variant="h6" color="#2C2829">
-            12th July 2025
+            {payment?.date}
           </Typography>
         </Stack>
         <Divider />{" "}
@@ -83,7 +89,7 @@ export default function MemberSubscriptionCard() {
             Amount paid
           </Typography>
           <Typography variant="h6" color="#2C2829">
-            ₹2000
+            ₹{payment?.amount}
           </Typography>
         </Stack>
         <Divider />
@@ -97,7 +103,7 @@ export default function MemberSubscriptionCard() {
             Expiry date
           </Typography>
           <Typography variant="h6" color="#2C2829">
-            12th July 2026
+            {payment?.renewal}
           </Typography>
         </Stack>
         <Divider />
@@ -120,7 +126,11 @@ export default function MemberSubscriptionCard() {
               />
             </Stack>{" "}
             <RenewForm open={renew} onClose={handleCloseRenew} />
-            <SuspendProfile open={suspend} onClose={handleCloseSuspend} />
+            <SuspendProfile
+              open={suspend}
+              onClose={handleCloseSuspend}
+              onChange={handleSuspendMembership}
+            />
           </Grid>
         </Grid>
       </Grid>

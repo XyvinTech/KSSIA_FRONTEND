@@ -14,7 +14,7 @@ import { useState } from "react";
 import RejectionEntryForm from "./Members/RejectionEntryForm";
 import { usePaymentStore } from "../store/payment-store";
 
-const MemberShipRenewal = ({ open, onClose, data }) => {
+const MemberShipRenewal = ({ open, onClose, data, onChange }) => {
   const { patchPayments } = usePaymentStore();
   const [rejectOpen, setRejectOpen] = useState(false);
   const handleCloseReject = (id) => {
@@ -24,6 +24,7 @@ const MemberShipRenewal = ({ open, onClose, data }) => {
   const onSubmit = async () => {
     const updateData = { status: "accepted" };
     await patchPayments(data?._id, updateData);
+    onChange();
     onClose();
   };
   const handleClear = (event) => {
@@ -31,7 +32,10 @@ const MemberShipRenewal = ({ open, onClose, data }) => {
     setRejectOpen(true);
     onClose();
   };
-
+  const handleChange = () => {
+    setRejectOpen(false);
+    onChange();
+  };
   return (
     <>
       <Dialog
@@ -183,7 +187,12 @@ const MemberShipRenewal = ({ open, onClose, data }) => {
           </Stack>
         </form>
       </Dialog>
-      <RejectionEntryForm open={rejectOpen} onClose={handleCloseReject} data={data}  />
+      <RejectionEntryForm
+        open={rejectOpen}
+        onClose={handleCloseReject}
+        data={data}
+        onChange={handleChange}
+      />
     </>
   );
 };
