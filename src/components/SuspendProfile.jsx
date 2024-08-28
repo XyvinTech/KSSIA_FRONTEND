@@ -1,11 +1,14 @@
 import { Typography, Dialog, DialogContent, Stack } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { StyledButton } from "../ui/StyledButton";
+import { useMemberStore } from "../store/member-store";
 
-const SuspendProfile = ({ open, onClose, onChange }) => {
+const SuspendProfile = ({ open, onClose, onChange, id }) => {
   const { handleSubmit } = useForm();
 
+  const { suspend } = useMemberStore();
   const onSubmit = async () => {
+    await suspend(id);
     onChange();
     onClose();
   };
@@ -42,7 +45,12 @@ const SuspendProfile = ({ open, onClose, onChange }) => {
             </Typography>
           </Stack>
         </DialogContent>
-        <Stack direction={"row"} spacing={2} paddingBottom={2} justifyContent={"end"}>
+        <Stack
+          direction={"row"}
+          spacing={2}
+          paddingBottom={2}
+          justifyContent={"end"}
+        >
           <StyledButton
             variant="secondary"
             name="Cancel"

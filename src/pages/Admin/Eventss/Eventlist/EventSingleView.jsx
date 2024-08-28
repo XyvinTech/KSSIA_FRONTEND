@@ -139,6 +139,7 @@ const EventSingleView = () => {
         open={cancelOpen}
         onClose={handleCloseCancel}
         onChange={handleIsChange}
+        id={events?._id}
       />
     </>
   );

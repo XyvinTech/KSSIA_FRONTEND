@@ -2,14 +2,26 @@ import React, { useState } from "react";
 import { Typography, Stack, Grid, Box, Divider } from "@mui/material";
 import { StyledButton } from "./StyledButton";
 import RenewForm from "../components/Members/RenewForm";
+import moment from "moment";
+import ChangeSubscription from "../components/Members/ChangeSubscription";
 
-export default function AppSubscriptionCard() {
+export default function AppSubscriptionCard({ payment, onChange }) {
   const [renew, setRenew] = useState(false);
+  const [sub, setSub] = useState(false);
   const handleRenew = () => {
     setRenew(true);
   };
   const handleCloseRenew = () => {
     setRenew(false);
+  };
+  const handleSubscription = () => {
+    setSub(true);
+  };
+  const handleCloseSubscription = () => {
+    setSub(false);
+  };
+  const formatDate = (date) => {
+    return moment(date).format("DD-MM-YYYY");
   };
   return (
     <Grid
@@ -59,7 +71,7 @@ export default function AppSubscriptionCard() {
             Last Renewed date
           </Typography>
           <Typography variant="h6" color="#2C2829">
-            12th July 2025
+            {formatDate(payment?.date)}
           </Typography>
         </Stack>
         <Divider />{" "}
@@ -73,7 +85,7 @@ export default function AppSubscriptionCard() {
             Amount paid
           </Typography>
           <Typography variant="h6" color="#2C2829">
-            ₹2000
+            ₹{payment?.amount}
           </Typography>
         </Stack>
         <Divider />
@@ -87,7 +99,7 @@ export default function AppSubscriptionCard() {
             Expiry date
           </Typography>
           <Typography variant="h6" color="#2C2829">
-            12th July 2026
+            {formatDate(payment?.renewal)}
           </Typography>
         </Stack>
         <Divider />
@@ -96,11 +108,23 @@ export default function AppSubscriptionCard() {
       <Grid item xs={12}>
         <Grid container justifyContent="flex-end">
           <Grid item xs={7}>
-            <Stack direction="row" spacing={2} justifyContent="flex-end">
-              <StyledButton name="Change Subscription" variant="third"onClick={handleRenew} />
-              <StyledButton name="Renew" variant="primary"onClick={handleRenew} />
-            </Stack>
-            <RenewForm open={renew} onClose={handleCloseRenew} />
+            {" "}
+            {payment?.status === "pending" && (
+              <Stack direction="row" spacing={2} justifyContent="flex-end">
+                <StyledButton
+                  name="Change Subscription"
+                  variant="third"
+                  onClick={handleSubscription}
+                />
+                <StyledButton
+                  name="Renew"
+                  variant="primary"
+                  onClick={handleRenew}
+                />
+              </Stack>
+            )}
+            <RenewForm open={renew} onClose={handleCloseRenew} data={payment} onChange={onChange} />
+            <ChangeSubscription open={sub} onClose={handleCloseSubscription} data={payment}  onChange={onChange}/>
           </Grid>
         </Grid>
       </Grid>

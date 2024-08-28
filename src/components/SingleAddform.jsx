@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import { Box, Typography, Grid, Stack } from "@mui/material";
-
-import { StyledEventUpload } from "../ui/StyledEventUpload";
 import { StyledButton } from "../ui/StyledButton";
 import { StyledMultilineTextField } from "../ui/StyledMultilineTextField ";
 import StyledInput from "../ui/StyledInput";
 import { Controller, useForm } from "react-hook-form";
 import StyledSelectField from "../ui/StyledSelectField";
 import CONSTANTS from "../constants";
-import { createMember } from "../api/members-api";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import axiosInstance from "../api/axios-interceptor";
+import { useMemberStore } from "../store/member-store";
+import { useEffect } from "react";
 export default function SingleAddform() {
   const navigate = useNavigate();
 
@@ -19,49 +18,123 @@ export default function SingleAddform() {
     control,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm();
   const [isChecked, setIsChecked] = useState(false);
+  const location = useLocation();
+  const { memberId, isUpdate } = location.state || {};
   const [additionalPhones, setAdditionalPhones] = useState([]);
   const [addMoreDisabled, setAddMoreDisabled] = useState(false);
+  const { addMembers, fetchUserById, member, editUser } = useMemberStore();
+  useEffect(() => {
+    if (isUpdate && memberId) {
+      fetchUserById(memberId);
+    }
+  }, [memberId, isUpdate, fetchUserById]);
 
+  useEffect(() => {
+    if (member && isUpdate) {
+      setValue("first_name", member?.name?.first_name);
+      setValue("middle_name", member?.name?.middle_name);
+      setValue("last_name", member?.name?.last_name);
+      setValue("membership_id", member?.membership_id);
+      setValue("blood_group", member?.blood_group);
+      setValue("designation", member?.designation);
+      setValue("email", member?.email);
+      setValue("company_name", member?.company_name);
+      setValue("address", member?.address);
+      setValue("bio", member?.bio);
+      setValue("company_email", member?.company_email);
+      setValue("phone_number", member?.phone_numbers?.personal);
+      setValue("landline", member?.phone_numbers?.landline);
+      if (Array.isArray(member?.websites)) {
+        const websiteUrls = member.websites.map((site) => site.url);
+        setValue("websites", websiteUrls);
+      }
+      setValue(
+        "company_phone_number",
+        member?.phone_numbers?.company_phone_number
+      );
+      setValue("whatsapp_number", member?.phone_numbers?.whatsapp_number);
+      setValue(
+        "whatsapp_business_number",
+        member?.phone_numbers?.whatsapp_business_number
+      );
+
+      const selectedBusinessCategory = business.find(
+        (item) => item.value === member.business_category
+      );
+      setValue("business_category", selectedBusinessCategory || "");
+      const selectedSubCategory = sub.find(
+        (item) => item.value === member.sub_category
+      );
+
+      setValue("sub_category", selectedSubCategory || "");
+      const selectedStatus = status.find(
+        (item) => item.value === member.status
+      );
+      
+      setValue("status", selectedStatus || "");
+      if (member?.phone_numbers?.whatsapp_number) {
+        setAdditionalPhones([
+          { name: "WhatsApp Number", key: "whatsapp_number" },
+        ]);
+      }
+      if (member?.phone_numbers?.whatsapp_business_number) {
+        setAdditionalPhones((prev) => [
+          ...prev,
+          { name: "WhatsApp Business Number", key: "whatsapp_business_number" },
+        ]);
+      }
+    }
+  }, [member, isUpdate, setValue]);
   const onSubmit = async (data) => {
-    const formData = new FormData();
-    formData.append(
-      "name",
-      JSON.stringify({
+    const memberData = {
+      name: {
         first_name: data.first_name,
         middle_name: data.middle_name,
         last_name: data.last_name,
-      })
-    );
+      },
+      websites: Array.isArray(data.websites)
+        ? data.websites.map((url) => ({ url }))
+        : data.websites
+        ? [{ url: data.websites }]
+        : [],
+      phone_numbers: {
+        personal: data.phone_number ? Number(data.phone_number) : undefined,
+        landline: data.landline ? Number(data.landline) : undefined,
+        company_phone_number: data.company_phone_number
+          ? Number(data.company_phone_number)
+          : undefined,
+        whatsapp_number: data.whatsapp_number
+          ? Number(data.whatsapp_number)
+          : undefined,
+        whatsapp_business_number: data.whatsapp_business_number
+          ? Number(data.whatsapp_business_number)
+          : undefined,
+      },
 
-    const phoneNumbers = {
-      personal: data.phone_number,
-      landline: data.landline,
-      company_phone_number: data.company_phone_number,
-      whatsapp_number: data.whatsapp_number,
-      whatsapp_business_number: data.whatsapp_business_number,
+      blood_group: data.blood_group,
+      designation: data.designation,
+      email: data.email,
+      company_name: data.company_name,
+      address: data.address,
+      bio: data.bio,
+      company_email: data.company_email,
+      business_category: data.business_category.value,
+      status: data.status.value,
+      sub_category: data.sub_category.value,
     };
-    formData.append("phone_numbers", JSON.stringify(phoneNumbers));
-    formData.append("membership_id", data.membership_id);
-    formData.append("blood_group", data.blood_group);
-    formData.append("designation", data.designation);
-    formData.append("email", data.email);
-    formData.append("company_name", data.company_name);
-    formData.append("address", data.address);
-    formData.append("bio", data.bio);
-    formData.append("company_email", data.company_email);
-    formData.append("business_category", data.business_category.value);
-    formData.append("sub_category", data.sub_category.value);
-    try {
-      const resp = await axiosInstance.post(CONSTANTS.MEMBERS_API, formData);
-      if (resp.status === 201) {
-        navigate("/members");
-      }
-    } catch (error) {
-      console.log(error);
+    if (!isUpdate) {
+      memberData.membership_id = data.membership_id;
     }
+    if (isUpdate && memberId) {
+      await editUser(memberId, memberData);
+    } else {
+      await addMembers(memberData);
+    }
+    navigate("/members");
   };
 
   const addPhoneNumber = () => {
@@ -85,10 +158,15 @@ export default function SingleAddform() {
     });
   };
 
-  const option = [
-    { value: "option1", label: "Option 1" },
-    { value: "option2", label: "Option 2" },
-    { value: "option3", label: "Option 3" },
+  const business = [{ value: "IT Services", label: "IT Services" }];
+  const sub = [
+    { value: "Software Development", label: "Software Development" },
+  ];
+  const status = [
+    { value: "active", label: "active" },
+    { value: "inactive", label: "inactive" },
+    { value: "suspended", label: "suspended" },
+    { value: "notice", label: "notice" },
   ];
   return (
     <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"12px"}>
@@ -226,30 +304,7 @@ export default function SingleAddform() {
               )}
             />
           </Grid>
-          <Grid item xs={6}>
-            <Typography
-              sx={{ marginBottom: 1 }}
-              variant="h6"
-              fontWeight={500}
-              color={"#333333"}
-            >
-              Photo
-            </Typography>
-            <Controller
-              name="profile_picture"
-              control={control}
-              defaultValue=""
-              rules={{ required: "Image is required" }}
-              render={({ field: { onChange } }) => (
-                <>
-                  <StyledEventUpload label="Upload Photo" onChange={onChange} />
-                  {errors.photo && (
-                    <span style={{ color: "red" }}>{errors.photo.message}</span>
-                  )}
-                </>
-              )}
-            />
-          </Grid>
+
           <Grid item xs={12}>
             <Typography
               sx={{ marginBottom: 1 }}
@@ -263,11 +318,11 @@ export default function SingleAddform() {
               name="bio"
               control={control}
               defaultValue=""
-              render={({ field: { onChange } }) => (
+              render={({ field }) => (
                 <>
                   <StyledMultilineTextField
                     label="Add Description"
-                    onChange={onChange}
+                    {...field}
                   />
                   {errors.bio && (
                     <span style={{ color: "red" }}>{errors.bio.message}</span>
@@ -572,7 +627,7 @@ export default function SingleAddform() {
                 <>
                   <StyledSelectField
                     placeholder="Select business category"
-                    options={option}
+                    options={business}
                     {...field}
                   />
                   {errors.businesscategory && (
@@ -602,7 +657,7 @@ export default function SingleAddform() {
                 <>
                   <StyledSelectField
                     placeholder="Select subcategory"
-                    options={option}
+                    options={sub}
                     {...field}
                   />
                   {errors.subcategory && (
@@ -632,7 +687,7 @@ export default function SingleAddform() {
                 <>
                   <StyledSelectField
                     placeholder="Select status"
-                    options={option}
+                    options={status}
                     {...field}
                   />
                   {errors.status && (

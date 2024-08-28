@@ -40,7 +40,7 @@ const MembersSinglepage = () => {
       setUserData(response.data.data);
     }
     init();
-  }, [id]);
+  }, [id,isChange]);
   const handleIsChange = () => {
     setIsChange(!isChange);
   };
@@ -58,7 +58,6 @@ const MembersSinglepage = () => {
   useEffect(() => {
     fetchPaymentByUser(id);
   }, [isChange]);
-  console.log(payments);
   return (
     <>
       <Box
@@ -124,9 +123,15 @@ const MembersSinglepage = () => {
             <Stack direction={"column"} spacing={3}>
               {payments && payments.length > 0 && payments[0].category ? (
                 payments[0].category === "app" ? (
-                  <AppSubscriptionCard />
+                  <AppSubscriptionCard
+                    payment={payments[0]}
+                    onChange={handleIsChange}
+                  />
                 ) : (
-                  <MemberSubscriptionCard payment={payments[0]}onChange={handleIsChange} />
+                  <MemberSubscriptionCard
+                    payment={payments[0]}
+                    onChange={handleIsChange}
+                  />
                 )
               ) : (
                 <Typography variant="h6" textAlign="center">
@@ -137,10 +142,14 @@ const MembersSinglepage = () => {
           </Grid>
         )}
 
-        {selectedTab === 3 && <Grid>{/* <MembersProducts id ={id}/> */}</Grid>}
+        {selectedTab === 3 && (
+          <Grid>
+            <MembersProducts id={id} />
+          </Grid>
+        )}
         {selectedTab === 4 && (
           <Grid>
-            <MembersRequirements />
+            <MembersRequirements id={id} />
           </Grid>
         )}
         {selectedTab === 5 && (

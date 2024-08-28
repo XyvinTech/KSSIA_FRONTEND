@@ -1,9 +1,6 @@
 import { Box, Grid, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-
 import { ReactComponent as FilterIcon } from "../assets/icons/FilterIcon.svg";
-
-import { userColumns, userData } from "../assets/json/TableData";
 import { StyledButton } from "../ui/StyledButton";
 import StyledSearchbar from "../ui/StyledSearchbar";
 import StyledTable from "../ui/StyledTable";
@@ -12,21 +9,20 @@ import { useMemberStore } from "../store/member-store";
 
 export default function MembersPayments({ id }) {
   const [filterOpen, setFilterOpen] = useState(false);
-  
-  const { fetchPaymentByUser,payments } = useMemberStore();
+
+  const { fetchPaymentByUser, payments } = useMemberStore();
   const [isChange, setIsChange] = useState(false);
   const [rejectOpen, setRejectOpen] = useState(false);
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
   const userColumns = [
-    { title: "Payment Date ", field: "date", padding: "none" },  
+    { title: "Payment Date ", field: "date", padding: "none" },
     { title: "Category", field: "category" },
     { title: "Time", field: "time" },
     { title: "Expiry", field: "renewal" },
     { title: "Amount", field: "amount" },
-    { title: "Payment Status", field: "status" }
-
+    { title: "Payment Status", field: "status" },
   ];
   const handleCloseFilter = () => {
     setFilterOpen(false);
@@ -37,7 +33,6 @@ export default function MembersPayments({ id }) {
   const handleChange = () => {
     setIsChange(!isChange);
   };
- 
 
   const handleCloseReject = (id) => {
     setRejectOpen(false);
@@ -85,12 +80,7 @@ export default function MembersPayments({ id }) {
           p={1}
           border={"1px solid rgba(0, 0, 0, 0.12)"}
         >
-          <StyledTable
-            columns={userColumns}
-            data={payments}
-         menu
-            payment
-          />{" "}
+          <StyledTable columns={userColumns} data={payments} menu payment />{" "}
           <RejectionEntryForm
             open={rejectOpen}
             onClose={handleCloseReject}

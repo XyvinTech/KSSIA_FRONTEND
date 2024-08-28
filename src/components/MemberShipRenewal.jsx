@@ -202,7 +202,6 @@ const MemberShipRenewal = ({ open, onClose, data, onChange }) => {
       </Dialog>
       <RejectionEntryForm
         open={rejectOpen}
-        a
         onClose={handleCloseReject}
         data={data}
         onChange={handleChange}

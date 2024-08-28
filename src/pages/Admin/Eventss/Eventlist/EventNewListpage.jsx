@@ -4,10 +4,6 @@ import { eventColumns, userData } from "../../../../assets/json/TableData";
 import Events from "./Events";
 import AddEvent from "../../../../components/AddEvent";
 
-
-
-
-
 const EventNewListpage = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [selectedRows, setSelectedRows] = useState([]);
@@ -17,14 +13,12 @@ const EventNewListpage = () => {
     console.log("Selected items:", newSelectedIds);
   };
 
-  
   const handleChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
-  
+
   return (
     <>
-      
       <Tabs
         value={selectedTab}
         onChange={handleChange}
@@ -44,7 +38,7 @@ const EventNewListpage = () => {
           },
           "& .MuiTab-root": {
             textTransform: "none",
-            fontSize:'16px', 
+            fontSize: "16px",
             fontWeight: 600,
           },
           "& .Mui-selected": {
@@ -57,15 +51,14 @@ const EventNewListpage = () => {
       </Tabs>
       <Box padding="30px" marginBottom={4}>
         {selectedTab === 0 && (
-             <Grid spacing={2}>
-             <Events/>
-           </Grid>
+          <Grid spacing={2}>
+            <Events />
+          </Grid>
         )}
         {selectedTab === 1 && (
           <Grid container>
             <Grid item md={8}>
-            <AddEvent 
-            />
+              <AddEvent />
             </Grid>
           </Grid>
         )}

@@ -75,37 +75,43 @@ const UserCard2 = ({ company }) => {
             >
               {company?.sub_category}
             </Typography>
-          </Stack>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <PhoneIcon />
-            <Typography variant="h6" color={"#2C2829"}>
-              {company?.phone_numbers?.personal}
-            </Typography>
-          </Stack>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <BusinessIcon />
-            <Typography variant="h6" color={"#2C2829"}>
-              {company?.phone_numbers?.whatsapp_business_number}
-            </Typography>
-          </Stack>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <WhatsappIcon />
-            <Typography variant="h6" color={"#2C2829"}>
-              {company?.phone_numbers?.whatsapp_number}
-            </Typography>
-          </Stack>
+          </Stack>{" "}
+          {company?.phone_numbers?.company_phone_number && (
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <PhoneIcon />
+              <Typography variant="h6" color={"#2C2829"}>
+                {company?.phone_numbers?.company_phone_number}
+              </Typography>
+            </Stack>
+          )}
+          {company?.phone_numbers?.whatsapp_business_number && (
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <BusinessIcon />
+              <Typography variant="h6" color={"#2C2829"}>
+                {company?.phone_numbers?.whatsapp_business_number}
+              </Typography>
+            </Stack>
+          )}{" "}
+          {company?.phone_numbers?.whatsapp_number && (
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <WhatsappIcon />
+              <Typography variant="h6" color={"#2C2829"}>
+                {company?.phone_numbers?.whatsapp_number}
+              </Typography>
+            </Stack>
+          )}
           <Stack direction="row" alignItems="center" spacing={1}>
             <EmailIcon />
             <Typography variant="h6" color={"#2C2829"}>
               {company?.company_email}
             </Typography>
           </Stack>
-          <Stack direction="row" alignItems="flex-start" spacing={1}>
+          {/* <Stack direction="row" alignItems="flex-start" spacing={1}>
             <LocationIcon />
             <Typography variant="h6" color={"#2C2829"}>
               {company?.bio}
             </Typography>
-          </Stack>{" "}
+          </Stack>{" "} */}
         </Stack>
       </Grid>
     </Grid>

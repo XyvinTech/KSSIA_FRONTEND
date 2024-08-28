@@ -22,8 +22,6 @@ export default function Events() {
     setFilterOpen(false);
   };
 
- 
-
   const handleDelete = async () => {
     if (selectedRows.length > 0) {
       await Promise.all(selectedRows?.map((id) => deleteEventById(id)));

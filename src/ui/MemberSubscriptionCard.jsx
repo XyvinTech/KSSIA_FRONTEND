@@ -6,7 +6,7 @@ import SuspendProfile from "../components/SuspendProfile";
 import { usePaymentStore } from "../store/payment-store";
 import moment from "moment";
 
-export default function MemberSubscriptionCard({ payment,onChange }) {
+export default function MemberSubscriptionCard({ payment, onChange }) {
   const [renew, setRenew] = useState(false);
   const { patchPayments } = usePaymentStore();
   const [suspend, setSuspend] = useState(false);
@@ -30,6 +30,7 @@ export default function MemberSubscriptionCard({ payment,onChange }) {
   const formatDate = (date) => {
     return moment(date).format("DD-MM-YYYY");
   };
+  console.log(payment?.renewal);
   return (
     <Grid
       container
@@ -79,7 +80,7 @@ export default function MemberSubscriptionCard({ payment,onChange }) {
             Last Renewed date
           </Typography>
           <Typography variant="h6" color="#2C2829">
-          {formatDate(payment?.date)}
+            {formatDate(payment?.date)}
           </Typography>
         </Stack>
         <Divider />{" "}
@@ -107,7 +108,7 @@ export default function MemberSubscriptionCard({ payment,onChange }) {
             Expiry date
           </Typography>
           <Typography variant="h6" color="#2C2829">
-          {formatDate(payment?.renewal)}
+            {formatDate(payment?.renewal)}
           </Typography>
         </Stack>
         <Divider />
@@ -116,20 +117,21 @@ export default function MemberSubscriptionCard({ payment,onChange }) {
       <Grid item xs={12}>
         <Grid container justifyContent="flex-end">
           <Grid item xs={6}>
-            <Stack direction="row" spacing={2} justifyContent="flex-end">
-              <StyledButton
-                name="Suspend"
-                variant="third"
-                onClick={handleSuspend}
-              />
-
-              <StyledButton
-                name="Renew"
-                variant="primary"
-                onClick={handleRenew}
-              />
-            </Stack>{" "}
-            <RenewForm open={renew} onClose={handleCloseRenew} />
+            {payment?.status === "pending" && (
+              <Stack direction="row" spacing={2} justifyContent="flex-end">
+                <StyledButton
+                  name="Suspend"
+                  variant="third"
+                  onClick={handleSuspend}
+                />
+                <StyledButton
+                  name="Renew"
+                  variant="primary"
+                  onClick={handleRenew}
+                />
+              </Stack>
+            )}
+            <RenewForm open={renew} onClose={handleCloseRenew} data={payment} onChange={onChange}/>
             <SuspendProfile
               open={suspend}
               onClose={handleCloseSuspend}

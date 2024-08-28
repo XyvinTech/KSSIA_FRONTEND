@@ -11,7 +11,6 @@ import axiosInstance from "../api/axios-interceptor";
 import CONSTANTS from "../constants";
 
 export default function MembersProducts({id}) {
-  const [selectedRows, setSelectedRows] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);
   const [products,setProducts] = useState([])
   useEffect(()=>{
@@ -33,14 +32,7 @@ export default function MembersProducts({id}) {
   const handleCloseFilter = () => {
     setFilterOpen(false);
   };
-  const handleSelectionChange = (newSelectedIds) => {
-    setSelectedRows(newSelectedIds);
-    console.log("Selected items:", newSelectedIds);
-  };
 
-  const handleView = (id) => {
-    console.log("View item:", id);
-  };
   return (
     <>
       {" "}
@@ -92,8 +84,7 @@ export default function MembersProducts({id}) {
             <StyledTable
               columns={productColums}
               data={products}
-              onSelectionChange={handleSelectionChange}
-              onView={handleView}
+             menu
             />{" "}
           </Box>
         </>

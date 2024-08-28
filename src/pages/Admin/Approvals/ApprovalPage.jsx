@@ -1,23 +1,39 @@
 import { Box, Grid, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import StyledSearchbar from "../../../ui/StyledSearchbar";
 import { ReactComponent as FilterIcon } from "../../../assets/icons/FilterIcon.svg";
 import StyledTable from "../../../ui/StyledTable";
-import { userColumns, userData } from "../../../assets/json/TableData";
 import RejectionEntryForm from "../../../components/Members/RejectionEntryForm";
 import RequirementDetail from "../../../components/RequirementDetail";
+import { useApprovalStore } from "../../../store/approval-store";
+import ApproveReject from "../../../components/ApproveReject";
 export default function ApprovalPage() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);
   const [rejectOpen, setRejectOpen] = useState(false);
   const [approveOpen, setApproveOpen] = useState(false);
+  const [isChange, setIsChange] = useState(false);
+  const { approvals, fetchApproval, fetchApprovalById, approval } =
+    useApprovalStore();
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
-
+  useEffect(() => {
+    fetchApproval();
+  }, [isChange]);
+  const handleChange = () => {
+    setIsChange(!isChange);
+  };
+  const userColumns = [
+    { title: "date", field: "createdAt", padding: "none" },
+    { title: "image", field: "image" },
+    { title: "description", field: "content" },
+    ,
+    { title: "Status", field: "status" },
+  ];
   const handleCloseFilter = () => {
     setFilterOpen(false);
   };
@@ -25,18 +41,21 @@ export default function ApprovalPage() {
     setSelectedRows(newSelectedIds);
     console.log("Selected items:", newSelectedIds);
   };
-  const handleApprove = () => {
+  const handleApprove = async (id) => {
+    await fetchApprovalById(id);
     setApproveOpen(true);
   };
   const handleCloseApprove = () => {
     setApproveOpen(false);
   };
-  const handleReject = (id) => {
+  const handleReject =async (id) => {
+    await fetchApprovalById(id);
     setRejectOpen(true);
   };
   const handleCloseReject = (id) => {
     setRejectOpen(false);
   };
+
   return (
     <>
       {" "}
@@ -89,16 +108,23 @@ export default function ApprovalPage() {
           >
             <StyledTable
               columns={userColumns}
-              data={userData}
+              data={approvals}
               onSelectionChange={handleSelectionChange}
               onModify={handleApprove}
               payment
               onAction={handleReject}
             />{" "}
-            <RejectionEntryForm open={rejectOpen} onClose={handleCloseReject} />
+            <ApproveReject
+              open={rejectOpen}
+              onClose={handleCloseReject}
+              data={approval}
+              onChange={handleChange}
+            />
             <RequirementDetail
               open={approveOpen}
               onClose={handleCloseApprove}
+              data={approval}
+              onChange={handleChange}
             />
           </Box>
         </>

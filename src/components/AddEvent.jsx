@@ -41,63 +41,46 @@ export default function AddEvent({ eventId }) {
     { value: "option2", label: "Option 2" },
     { value: "option3", label: "Option 3" },
   ];
-  const removeIdFields = (obj) => {
-    if (Array.isArray(obj)) {
-      return obj.map(removeIdFields);
-    }
-    if (typeof obj === "object" && obj !== null) {
-      const { _id, createdAt, updatedAt, __v, ...rest } = obj;
-      return Object.keys(rest).reduce((acc, key) => {
-        acc[key] = removeIdFields(rest[key]);
-        return acc;
-      }, {});
-    }
-    return obj;
-  };
 
   const onSubmit = async (data) => {
-    console.log(data);
-    try {
-      const cleanedData = removeIdFields(data);
-      const formData = {
-        ...cleanedData,
-        speakers: removeIdFields(speakers),
-      };
+    const formData = new FormData();
 
-      if (eventId) {
-        await updateEventById(eventId, formData);
-      } else {
-        await createEvent(formData);
-        console.log(formData);
-        // reset({
-        //   type: '',
-        //   name: '',
-        //   image: '',
-        //   date: '',
-        //   time: '',
-        //   platform: '',
-        //   meeting_link: '',
-        //   organiser_name: '',
-        //   organiser_company_name: '',
-        //   guest_image: '',
-        //   organiser_role: '',
-        //   activate: false,
-        // });
-        // setSpeakers([{ speaker_name: "", speaker_designation: "", speaker_image: "", speaker_role: "" }]);
+    formData.append("type", data.type);
+    formData.append("name", data.name);
+    formData.append("image", data.image); 
+    formData.append("date", data.date);
+    formData.append("time", data.time);
+    formData.append("platform", data.platform);
+    formData.append("meeting_link", data.meeting_link);
+    formData.append("organiser_name", data.organiser_name);
+    formData.append("organiser_company_name", data.organiser_company_name);
+    formData.append("guest_image", data.guest_image);
+    formData.append("organiser_role", data.organiser_role);
+    formData.append("activate", data.activate);
+
+    speakers.forEach((speaker, index) => {
+      formData.append(`speakers[${index}].speaker_name`, speaker.speaker_name);
+      formData.append(
+        `speakers[${index}].speaker_designation`,
+        speaker.speaker_designation
+      );
+      formData.append(`speakers[${index}].speaker_role`, speaker.speaker_role);
+      if (speaker.speaker_image) {
+        formData.append(
+          `speakers[${index}].speaker_image`,
+          speaker.speaker_image
+        );
       }
-    } catch (error) {
-      console.error("Error submitting form:", error);
+    });
+    if (eventId) {
+      await updateEventById(eventId, formData);
+    } else {
+      await createEvent(formData);
+      console.log(formData);
     }
   };
   const addSpeaker = () => {
-    setSpeakers([
-      ...speakers,
-      {
-        speaker_name: "",
-        speaker_designation: "",
-        speaker_role: "",
-      },
-    ]);
+    setSpeakers([...speakers, { speaker_name: "", speaker_designation: "", speaker_role: "" ,speaker_image: "" }]);
   };
   useEffect(() => {
     if (eventId) {
@@ -494,7 +477,7 @@ export default function AddEvent({ eventId }) {
               )}
             /> */}
                 <StyledInput
-                  placeholder="Enter speaker name"
+                  placeholder="Speaker Name"
                   value={speaker.speaker_name}
                   onChange={(e) =>
                     handleSpeakerChange(index, "speaker_name", e.target.value)
@@ -545,32 +528,15 @@ export default function AddEvent({ eventId }) {
                 >
                   Upload image
                 </Typography>
-                {/* <Controller
-              name="speaker_image"
-              control={control}
-              defaultValue=""
-              // rules={{ required: "Image is required" }}
-              render={({ field: { onChange,value } }) => (
-                <>
-                  <StyledEventUpload
-                  label="Upload Chief guest image here"
-                  onChange={(e) => {
-                        handleSpeakerChange(index, "speaker_image", e);
-                  }}
-                  value={speaker.speaker_image}
-                  />
-                  {errors.speaker_image && (
-                    <span style={{ color: "red" }}>{errors.speaker_image.message}</span>
-                  )}
-                </>
-              )}
-            />  */}
                 <StyledEventUpload
-                  label="Upload Chief guest image here"
-                  onChange={(e) => {
-                    handleSpeakerChange(index, "speaker_image", e);
-                  }}
-                  value={speaker.speaker_image}
+                  label="Upload speaker image"
+                  onChange={(e) =>
+                    handleSpeakerChange(
+                      index,
+                      "speaker_image",
+                      e.target.files[0]
+                    )
+                  }
                 />
               </Grid>
               <Grid item xs={6}>

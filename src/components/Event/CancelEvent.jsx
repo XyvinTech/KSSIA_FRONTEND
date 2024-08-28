@@ -1,11 +1,13 @@
 import { Typography, Dialog, DialogContent, Stack } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { StyledButton } from "../../ui/StyledButton";
+import { useEventStore } from "../../store/event-store";
 
-const CancelEvent = ({ open, onClose, onChange }) => {
+const CancelEvent = ({ open, onClose, onChange ,id}) => {
   const { handleSubmit } = useForm();
-
+  const { cancel } = useEventStore();
   const onSubmit = async () => {
+    await cancel(id);
     onChange();
     onClose();
   };

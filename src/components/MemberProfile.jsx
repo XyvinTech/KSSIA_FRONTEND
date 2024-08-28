@@ -103,21 +103,23 @@ const MemberProfile = ({ data }) => {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      {website?.name}
+                      {website?.url}
                     </a>
                   </Typography>
                 </Box>
               </Grid>
             ))}
           </>
+        )}{" "}
+        {data?.products && data?.products?.length > 0 && (
+          <Grid item md={12}>
+            <Typography variant="h5" color="#2C2829" mt={1}>
+              Products
+            </Typography>
+          </Grid>
         )}
-        <Grid item md={12}>
-          <Typography variant="h5" color="#2C2829" mt={1}>
-            Products
-          </Typography>
-        </Grid>{" "}
-        {products?.map((product) => (
-          <Grid item md={2} xs={12} key={product?.id}>
+        {data?.products?.map((product) => (
+          <Grid item md={2} xs={12} key={product?._id}>
             <ProductCard product={product} />
           </Grid>
         ))}

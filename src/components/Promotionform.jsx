@@ -48,7 +48,7 @@ export default function Promotionform({ isUpdate }) {
       setValue("startDate", promotions.startDate);
       setValue("endDate", promotions.endDate);
       setValue("title", promotions.notice_title || "");
-      // setValue("title", promotions.video_title || "");
+      setValue("file", promotions.banner_image_url || "");
       setValue("description", promotions.notice_description || "");
       setValue("link", promotions.notice_link || "");
       setValue("yt_link", promotions.yt_link || "");
@@ -71,8 +71,8 @@ export default function Promotionform({ isUpdate }) {
 
     if (type === "banner") {
       formData.append("type", "banner");
-      if (data?.file) {
-        formData.append("file", data?.file);
+      if (!isUpdate || (isUpdate && data.file instanceof File)) {
+        formData.append("file", data.file);
       }
     }
     if (type === "poster") {

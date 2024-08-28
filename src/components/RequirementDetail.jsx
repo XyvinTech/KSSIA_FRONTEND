@@ -10,11 +10,15 @@ import {
 import { useForm } from "react-hook-form";
 import { StyledButton } from "../ui/StyledButton";
 import { ReactComponent as CloseIcon } from "../assets/icons/CloseIcon.svg";
-import img from '../assets/images/view.png';
+import img from "../assets/images/view.png";
+import { useApprovalStore } from "../store/approval-store";
 
-const RequirementDetail = ({ open, onClose, onChange }) => {
+const RequirementDetail = ({ open, onClose, onChange, data }) => {
   const { handleSubmit } = useForm();
+  const { patchApprovals } = useApprovalStore();
   const onSubmit = async () => {
+    const updateData = { status: "approved" };
+    await patchApprovals(data?._id, updateData);
     onChange();
     onClose();
   };
@@ -60,7 +64,7 @@ const RequirementDetail = ({ open, onClose, onChange }) => {
             direction={"row"}
             justifyContent={"center"}
           >
-            <img src={img} width={'417px'} height={'262px'}/>
+            <img src={data?.image} width={"417px"} height={"262px"} />
           </Stack>{" "}
           <Divider />
           <Stack spacing={2} padding={2} justifyContent={"space-between"}>
@@ -68,8 +72,7 @@ const RequirementDetail = ({ open, onClose, onChange }) => {
               Description
             </Typography>
             <Typography variant="h6" color={"#4A4647"}>
-              Lorem ipsum dolor sit amet consectetur. Sit egestas vitae ac
-              donec. Mauris dolor amet non mauris amet ac.
+              {data?.content}
             </Typography>
           </Stack>{" "}
           <Divider />

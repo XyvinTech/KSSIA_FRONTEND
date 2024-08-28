@@ -56,7 +56,10 @@ export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
     formData.append("category", data.category.value);
     formData.append("title", data.title);
     formData.append("content", data.content);
-    formData.append("image", data.image);
+    if (!isUpdate || (isUpdate && data.file instanceof File)) {
+      formData.append("image", data.image);
+    }
+
     if (isUpdate && id) {
       await updateNews(id, formData);
       navigate(`/news`);

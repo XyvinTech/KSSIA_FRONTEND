@@ -17,6 +17,7 @@ export default function MembersPage() {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [isChange, setIsChange] = useState(false);
   const [userData, setUserData] = useState([]);
+  const [userId, setUserId] = useState(null);
   const userColumns = [
     { title: "Name", field: "full_name", padding: "none" },
     { title: "Member ID", field: "membership_id" },
@@ -45,7 +46,8 @@ export default function MembersPage() {
   const handleCloseFilter = () => {
     setFilterOpen(false);
   };
-  const handleSuspend = () => {
+  const handleSuspend = (id) => {
+    setUserId(id) 
     setSuspendOpen(true);
   };
   const handleCloseSuspend = () => {
@@ -61,8 +63,13 @@ export default function MembersPage() {
     setIsChange(!isChange);
   };
   const handleView = (id) => {
-    console.log("View item:", id);
     navigate(`/members/member/${id}`);
+  };
+  const handleEdit = (id) => {
+
+    navigate(`/members/addmember`, {
+      state: { memberId:id, isUpdate: true },
+    });
   };
   const handleDelete = async (id) => {
     const resp = await axiosInstance.delete(`${CONSTANTS.MEMBERS_API}/${id}`);
@@ -77,6 +84,7 @@ export default function MembersPage() {
   const handleView2 = (id) => {
     navigate(`/members/addmember`);
   };
+
   return (
     <>
       {" "}
@@ -148,6 +156,7 @@ export default function MembersPage() {
               data={userData}
               onView={handleView}
               member
+              onModify={handleEdit}
               onAction={handleSuspend}
               onDelete={handleDelete}
             />{" "}
@@ -156,6 +165,7 @@ export default function MembersPage() {
             open={suspendOpen}
             onClose={handleCloseSuspend}
             onChange={handleChange}
+            id={userId}
           />
           <DeleteProfile
             open={deleteOpen}

@@ -80,7 +80,10 @@ export default function AddPaymentdetails() {
     formData.append("category", data.category.value);
     formData.append("status", data.status.value);
     formData.append("remarks", data.remarks);
-    formData.append("file", data.file);
+    if (!isUpdate || (isUpdate && data.file instanceof File)) {
+      formData.append("file", data.file);
+    }
+
     if (isUpdate && paymentId) {
       await updatePayment(paymentId, formData);
     } else {

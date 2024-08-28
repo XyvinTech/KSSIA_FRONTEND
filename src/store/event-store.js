@@ -19,8 +19,8 @@ const useEventStore = create((set) => ({
   postpone: async (id, data) => {
     await postponeEvent(id, data);
   },
-  cancel: async (id, data) => {
-    await cancelEvent(id, data);
+  cancel: async (id) => {
+    await cancelEvent(id);
   },
 }));
 

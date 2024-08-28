@@ -7,7 +7,7 @@ import {
   Box,
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import moment from "moment";
 import { StyledButton } from "../../ui/StyledButton";
 import StyledSelectField from "../../ui/StyledSelectField";
@@ -15,15 +15,24 @@ import { ReactComponent as CloseIcon } from "../../assets/icons/CloseIcon.svg";
 import { StyledCalender } from "../../ui/StyledCalender";
 import { usePaymentStore } from "../../store/payment-store";
 
-const RenewForm = ({ open, onClose, onChange, data }) => {
+const ChangeSubscription = ({ open, onClose, onChange, data }) => {
   const { handleSubmit, control, setValue } = useForm();
   const { updatePayment } = usePaymentStore();
   const [timeMetric, setTimeMetric] = useState(null);
-
-  const onSubmit = async () => {
+  useEffect(() => {
+    if (data) {
+      setValue("category", {
+        value: data.category,
+        label:
+          data.category === "membership" ? "Membership renewal" : "App renewal",
+      });
+      setValue("expiryDate", moment(data.renewal).format("YYYY-MM-DD"));
+    }
+  }, [data, setValue]);
+  const onSubmit = async (formData) => {
     const dataToSend = new FormData();
     dataToSend.append("year_count", timeMetric);
-    dataToSend.append("category", data.category);
+    dataToSend.append("category", formData.category.value);
     dataToSend.append("member", data.member);
     dataToSend.append("date", data.date);
     dataToSend.append("time", data.time);
@@ -45,13 +54,10 @@ const RenewForm = ({ open, onClose, onChange, data }) => {
     setTimeMetric(value);
 
     if (value) {
-      // Calculate days to add based on the selected value
       const daysToAdd = value * 365;
       const newExpiryDate = moment(data?.renewal)
-        .add(daysToAdd, "days") // Add the calculated number of days
+        .add(daysToAdd, "days")
         .format("YYYY-MM-DD");
-
-      // Log the calculated expiry date
       console.log(
         "Data Renewal Date:",
         moment(data?.renewal).format("YYYY-MM-DD")
@@ -61,7 +67,10 @@ const RenewForm = ({ open, onClose, onChange, data }) => {
       setValue("expiryDate", newExpiryDate);
     }
   };
-
+  const category = [
+    { value: "membership", label: "Membership renewal" },
+    { value: "app", label: "App renewal" },
+  ];
   const option = [
     { value: 1, label: "1 Year" },
     { value: 2, label: "2 Years" },
@@ -84,7 +93,7 @@ const RenewForm = ({ open, onClose, onChange, data }) => {
             alignItems="center"
           >
             <Typography variant="h3" color={"#4F4F4F"}>
-              Renew
+              Change subscription
             </Typography>
             <Typography
               onClick={(event) => handleClear(event)}
@@ -99,6 +108,24 @@ const RenewForm = ({ open, onClose, onChange, data }) => {
           sx={{ height: "auto", width: "430px", backgroundColor: "#FFF" }}
         >
           <Stack spacing={2} paddingTop={2}>
+            <Typography variant="h6" color={"#333333"}>
+              Time metric
+            </Typography>
+            <Controller
+              name="category"
+              control={control}
+              defaultValue=""
+              rules={{ required: "Payment Category is required" }}
+              render={({ field }) => (
+                <>
+                  <StyledSelectField
+                    placeholder=" payment category"
+                    options={category}
+                    {...field}
+                  />
+                </>
+              )}
+            />
             <Typography variant="h6" color={"#333333"}>
               Time metric
             </Typography>
@@ -135,4 +162,4 @@ const RenewForm = ({ open, onClose, onChange, data }) => {
   );
 };
 
-export default RenewForm;
+export default ChangeSubscription;

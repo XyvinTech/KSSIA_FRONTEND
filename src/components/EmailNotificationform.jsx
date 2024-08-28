@@ -40,10 +40,10 @@ export default function EmailNotificationform({ setSelectedTab }) {
     formData.append("subject", data?.subject);
     formData.append("content", data?.content);
     formData.append("link_url", data?.link_url);
-    // formData.append("file", data.file_url);
-    // if (data?.media_url) {
-    //   formData.append("media_url", data.media_url);
-    // }
+    formData.append("file", data.file_url);
+    if (data?.media_url) {
+      formData.append("media_url", data.media_url);
+    }
     for (let [key, value] of formData.entries()) {
       console.log(`${key}: ${value}`);
     }
@@ -140,7 +140,7 @@ export default function EmailNotificationform({ setSelectedTab }) {
               )}
             />
           </Grid>
-          {/* <Grid item xs={12}>
+          <Grid item xs={12}>
             <Typography
               sx={{ marginBottom: 1 }}
               variant="h6"
@@ -170,7 +170,7 @@ export default function EmailNotificationform({ setSelectedTab }) {
                 </>
               )}
             />
-          </Grid> */}
+          </Grid>
           <Grid item xs={12}>
             <Typography
               sx={{ marginBottom: 1 }}

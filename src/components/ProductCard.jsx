@@ -1,7 +1,6 @@
 
 
 import { Box, Typography } from "@mui/material";
-import image from "../assets/images/Card1.png";
 const ProductCard = ({ product }) => {
   return (
     <Box
@@ -12,7 +11,7 @@ const ProductCard = ({ product }) => {
     >
       <Box
         component="img"
-        src={image}
+        src={product?.image}
         sx={{
           borderTopLeftRadius: "12px",
           borderTopRightRadius: "12px",
@@ -25,7 +24,7 @@ const ProductCard = ({ product }) => {
           color={"rgba(51, 51, 51, 1)"}
           sx={{ marginBottom: "10px" }}
         >
-          {product.title}
+          {product?.name}
         </Typography>
         <Typography
           variant="h5"
@@ -38,16 +37,16 @@ const ProductCard = ({ product }) => {
             color={"rgba(51, 51, 51, 1)"}
             sx={{ textDecoration: "line-through", marginRight: "8px" }}
           >
-            {product.originalPrice}
+            ₹{product?.price}
           </Typography>
-          {product.discountedPrice}
+          ₹{product?.offer_price}
         </Typography>
         <Typography
           sx={{ marginBottom: "10px" }}
           color={"#6D6D6D"}
           variant="h7"
         >
-          {product.moq}
+        MOQ: {product?.moq}
         </Typography>
       </Box>
     </Box>
