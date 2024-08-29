@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import {
   createMember,
+  deleteUser,
   getPaymentByUserId,
   getUserById,
   suspendUser,
@@ -26,6 +27,9 @@ const useMemberStore = create((set) => ({
   },
   suspend: async (id) => {
     await suspendUser(id);
+  },
+  deleteUsers: async (id) => {
+    await deleteUser(id);
   },
 }));
 

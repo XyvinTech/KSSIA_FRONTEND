@@ -9,7 +9,7 @@ import {
 
 const useNewsStore = create((set) => ({
   news: [],
-
+  singleNews: [],
   fetchNews: async () => {
     const allData = await getNews();
     set({ news: allData?.data || [] });
@@ -22,10 +22,8 @@ const useNewsStore = create((set) => ({
   },
   fetchNewsById: async (id) => {
     const allData = await getNewsById(id);
-   
-    set({ news: allData?.data  });
-   
 
+    set({ singleNews: allData?.data });
   },
   deleteNews: async (id) => {
     await deleteNews(id);

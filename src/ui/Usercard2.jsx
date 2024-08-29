@@ -18,7 +18,7 @@ const UserCard2 = ({ company }) => {
     >
       <Grid item xs={12} display="flex" alignItems="center">
         <img
-          src={officer}
+          src={company?.company_logo}
           alt="img"
           width={"50px"}
           height={"50px"}
@@ -84,15 +84,16 @@ const UserCard2 = ({ company }) => {
               </Typography>
             </Stack>
           )}
-          {company?.phone_numbers?.whatsapp_business_number && (
-            <Stack direction="row" alignItems="center" spacing={1}>
-              <BusinessIcon />
-              <Typography variant="h6" color={"#2C2829"}>
-                {company?.phone_numbers?.whatsapp_business_number}
-              </Typography>
-            </Stack>
-          )}{" "}
-          {company?.phone_numbers?.whatsapp_number && (
+          {company?.phone_numbers?.whatsapp_business_number !== 0 &&
+            company?.phone_numbers?.whatsapp_business_number && (
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <BusinessIcon />
+                <Typography variant="h6" color={"#2C2829"}>
+                  {company.phone_numbers.whatsapp_business_number}
+                </Typography>
+              </Stack>
+            )}
+          {company?.phone_numbers?.whatsapp_number !== 0 && company?.phone_numbers?.whatsapp_number && (
             <Stack direction="row" alignItems="center" spacing={1}>
               <WhatsappIcon />
               <Typography variant="h6" color={"#2C2829"}>
@@ -106,12 +107,12 @@ const UserCard2 = ({ company }) => {
               {company?.company_email}
             </Typography>
           </Stack>
-          {/* <Stack direction="row" alignItems="flex-start" spacing={1}>
+          <Stack direction="row" alignItems="flex-start" spacing={1}>
             <LocationIcon />
             <Typography variant="h6" color={"#2C2829"}>
-              {company?.bio}
+              {company?.company_address}
             </Typography>
-          </Stack>{" "} */}
+          </Stack>{" "}
         </Stack>
       </Grid>
     </Grid>

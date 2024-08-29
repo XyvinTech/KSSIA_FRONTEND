@@ -349,7 +349,7 @@ const StyledTable = ({
                             <MenuItem onClick={handleModify}>Edit</MenuItem>
                             <MenuItem onClick={handleAction}>Suspend</MenuItem>
                             <MenuItem
-                              onClick={handleDelete}
+                             onClick={() => handleRowDelete(row._id)}
                               style={{ color: "red" }}
                             >
                               Delete

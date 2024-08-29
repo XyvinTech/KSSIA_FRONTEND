@@ -10,15 +10,32 @@ import {
 import { useForm } from "react-hook-form";
 import { StyledButton } from "../ui/StyledButton";
 import { ReactComponent as CloseIcon } from "../assets/icons/CloseIcon.svg";
-import img from "../assets/images/view.png";
-import { useNavigate } from "react-router-dom";
 
-const NewsPreview = ({ open, onClose, onChange }) => {
+import { useNewsStore } from "../store/newsStore";
+
+const NewsPreview = ({ open, onClose, onChange, data, onEdit }) => {
   const { handleSubmit } = useForm();
-  const navigate = useNavigate();
+  const { updateNews } = useNewsStore();
+
   const onSubmit = async () => {
-    onChange();
-    onClose();
+    try {
+      const newPublishedStatus = !data.published;
+
+      const formData = new FormData();
+
+      formData.append("published", newPublishedStatus);
+      formData.append("category", data.category);
+      formData.append("title", data.title);
+      formData.append("content", data.content);
+      
+
+      await updateNews(data._id, formData);
+
+      onChange();
+      onClose();
+    } catch (error) {
+      console.error("Failed to update news", error);
+    }
   };
 
   const handleClear = (event) => {
@@ -27,7 +44,7 @@ const NewsPreview = ({ open, onClose, onChange }) => {
   };
   const handleEdit = (event) => {
     event.preventDefault();
-    navigate(`/news/edit`);
+    onEdit();
     onClose();
   };
 
@@ -55,19 +72,15 @@ const NewsPreview = ({ open, onClose, onChange }) => {
         <Divider />
         <DialogContent sx={{ height: "auto", width: "500px", padding: 0 }}>
           <Stack spacing={2} padding={2} justifyContent={"center"}>
-            <img src={img} width={"461px"} height={"262px"} />
+            <img src={data?.image} width={"461px"} height={"262px"} />
             <Typography variant="h5" color={"#2C2829"}>
-              Kerala's Manufacturing Sector Surges in 2024
+              {data?.title}
             </Typography>
             <Typography variant="h6" color={"#4A4647"}>
-              Kerala's Manufacturing Sector Sees 15% Growth in Q2 2024, Driven
-              by Innovations in Green Technology
+              {data?.category}
             </Typography>
             <Typography variant="h6" color={"#4A4647"}>
-              Lorem ipsum dolor sit amet consectetur. Elit in neque iaculis
-              malesuada malesuada eleifend arcu quam adipiscing. Condimentum
-              semper mi nibh quam. Semper viverra donec vulputate hendrerit.
-              Lectus vitae duis ipsum ut cursus dolor.
+              {data?.content}
             </Typography>
           </Stack>{" "}
         </DialogContent>
@@ -77,7 +90,11 @@ const NewsPreview = ({ open, onClose, onChange }) => {
             name="Edit"
             onClick={(event) => handleEdit(event)}
           />
-          <StyledButton variant="primary" name="Publish" type="submit" />
+          <StyledButton
+            variant="primary"
+            name={data?.published ? "Unpublish" : "Publish"}
+            type="submit"
+          />
         </Stack>
       </form>
     </Dialog>

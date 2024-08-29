@@ -11,6 +11,7 @@ import { ReactComponent as WebsiteIcon } from "../assets/icons/WebsiteIcon.svg";
 import ProductCard from "./ProductCard";
 import CertificateCard from "./CertificateCard";
 import AwardCard from "./AwardCard";
+import Video from "./Video";
 
 const MemberProfile = ({ data }) => {
   const renderSocialIcon = (platform) => {
@@ -121,6 +122,18 @@ const MemberProfile = ({ data }) => {
         {data?.products?.map((product) => (
           <Grid item md={2} xs={12} key={product?._id}>
             <ProductCard product={product} />
+          </Grid>
+        ))}
+        {data?.video && data?.video?.length > 0 && (
+          <Grid item md={12}>
+            <Typography variant="h5" color="#2C2829" mt={1}>
+              video
+            </Typography>
+          </Grid>
+        )}
+        {data?.video?.map((videoItem, index) => (
+          <Grid item md={4} xs={12} key={index}>
+            <Video url={videoItem.url} />
           </Grid>
         ))}
         {data?.certificates && data?.certificates?.length > 0 && (

@@ -10,13 +10,17 @@ import axiosInstance from "../../../api/axios-interceptor";
 import CONSTANTS from "../../../constants";
 import SuspendProfile from "../../../components/SuspendProfile";
 import DeleteProfile from "../../../components/DeleteProfile";
+import { useMemberStore } from "../../../store/member-store";
 export default function MembersPage() {
   const navigate = useNavigate();
   const [filterOpen, setFilterOpen] = useState(false);
   const [suspendOpen, setSuspendOpen] = useState(false);
+  const [selectedRows, setSelectedRows] = useState([]);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [isChange, setIsChange] = useState(false);
   const [userData, setUserData] = useState([]);
+
+  const { deleteUsers } = useMemberStore();
   const [userId, setUserId] = useState(null);
   const userColumns = [
     { title: "Name", field: "full_name", padding: "none" },
@@ -28,6 +32,9 @@ export default function MembersPage() {
     // { title: "Rating", field: "rating" },
     // { title: "Membership Status", field: "status" },
   ];
+  const handleSelectionChange = (newSelectedIds) => {
+    setSelectedRows(newSelectedIds);
+  };
   useEffect(() => {
     async function fetchUserData() {
       const response = await axiosInstance.get(CONSTANTS.MEMBERS_API);
@@ -38,7 +45,7 @@ export default function MembersPage() {
       setUserData(response.data.data);
     }
     fetchUserData();
-  }, []);
+  }, [isChange]);
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -47,7 +54,7 @@ export default function MembersPage() {
     setFilterOpen(false);
   };
   const handleSuspend = (id) => {
-    setUserId(id) 
+    setUserId(id);
     setSuspendOpen(true);
   };
   const handleCloseSuspend = () => {
@@ -66,20 +73,21 @@ export default function MembersPage() {
     navigate(`/members/member/${id}`);
   };
   const handleEdit = (id) => {
-
     navigate(`/members/addmember`, {
-      state: { memberId:id, isUpdate: true },
+      state: { memberId: id, isUpdate: true },
     });
   };
-  const handleDelete = async (id) => {
-    const resp = await axiosInstance.delete(`${CONSTANTS.MEMBERS_API}/${id}`);
-    if (resp.status != 200) {
-      // handle error
-      return;
+
+  const handleDelete = async () => {
+    if (selectedRows.length > 0) {
+      await Promise.all(selectedRows?.map((id) => deleteUsers(id)));
+      setIsChange(!isChange);
+      setSelectedRows([]);
     }
-    setUserData((userDatas) => {
-      return userDatas.filter((userData) => userData.id != id);
-    });
+  };
+  const handleRowDelete = async (id) => {
+    await deleteUsers(id);
+    setIsChange(!isChange);
   };
   const handleView2 = (id) => {
     navigate(`/members/addmember`);
@@ -156,7 +164,9 @@ export default function MembersPage() {
               data={userData}
               onView={handleView}
               member
+              onSelectionChange={handleSelectionChange}
               onModify={handleEdit}
+              onDeleteRow={handleRowDelete}
               onAction={handleSuspend}
               onDelete={handleDelete}
             />{" "}

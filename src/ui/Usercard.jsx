@@ -16,7 +16,7 @@ const UserCard = ({ user }) => {
       minHeight={"420px"}
       position="relative"
     >
-      <Grid item md={4} xs={12} justifyContent={"center"} alignItems={"center"}>
+      <Grid item md={6} xs={12} >
         <img
           src={user?.profile_picture}
           alt="img"
@@ -25,7 +25,7 @@ const UserCard = ({ user }) => {
           style={{ borderRadius: "12px" }}
         />
       </Grid>
-      <Grid item md={6} xs={12} justifyContent={"center"} alignItems={"center"}>
+      <Grid item md={5} xs={12} justifyContent={"center"} alignItems={"center"}>
         <Stack spacing={"10px"}>
           <Typography
             variant="h8"
@@ -63,7 +63,7 @@ const UserCard = ({ user }) => {
       </Grid>
       <Grid
         item
-        md={2}
+        md={1}
         xs={12}
         display={"flex"}
         alignItems={"flex-start"}

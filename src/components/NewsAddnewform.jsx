@@ -28,27 +28,30 @@ export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
 
   const navigate = useNavigate();
   const { id } = useParams();
-  const { news, fetchNewsById, addNewses, updateNews } = useNewsStore();
+  const { singleNews, fetchNewsById, addNewses, updateNews } = useNewsStore();
 
   useEffect(() => {
     if (isUpdate && id) {
       fetchNewsById(id);
     }
   }, [id, isUpdate, fetchNewsById]);
-
+  const handleClear = (event) => {
+    event.preventDefault();
+    navigate("/news");
+  };
   useEffect(() => {
-    if (news && isUpdate) {
-      setValue("category", { value: news.category, label: news.category });
-      setValue("title", news.title);
-      setValue("content", news.content);
-      setValue("image", news.image);
+    if (singleNews && isUpdate) {
+      setValue("category", { value: singleNews.category, label: singleNews.category });
+      setValue("title", singleNews.title);
+      setValue("content", singleNews.content);
+      setValue("image",singleNews.image);
     }
-  }, [news, isUpdate, setValue]);
+  }, [singleNews, isUpdate, setValue]);
 
   const option = [
-    { value: "businesses", label: "businesses" },
-    { value: "option2", label: "Option 2" },
-    { value: "option3", label: "Option 3" },
+    { value: "Business", label: "Business" },
+    { value: "Market", label: "Market" },
+    { value: "Economy", label: "Economy" },
   ];
 
   const onSubmit = async (data) => {
@@ -184,17 +187,17 @@ export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
             />
           </Grid>
           <Grid item xs={6}></Grid>
-          <Grid item xs={6} display={'flex'} justifyContent={'end'}>
+          <Grid item xs={6} display={"flex"} justifyContent={"end"}>
             <Stack direction={"row"} spacing={2}>
               <StyledButton
                 name="Preview"
                 variant="secondary"
-                style={{ width: "auto" }}
+                onClick={(event) => handleClear(event)}
               >
                 Preview
               </StyledButton>
               <StyledButton
-                name="Publish"
+                name={isUpdate ? "Update" : "Publish"}
                 variant="primary"
                 type="submit"
                 style={{ width: "auto" }}

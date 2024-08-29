@@ -15,7 +15,7 @@ export default function NewsAllpage() {
   const [filterOpen, setFilterOpen] = useState(false);
   const [isChange, setIsChange] = useState(false);
 
-  const { news, fetchNews, deleteNews } = useNewsStore();
+  const { singleNews,news, fetchNews, deleteNews, fetchNewsById } = useNewsStore();
   const [previewOpen, setPreviewOpen] = useState(false);
   const handleOpenFilter = () => {
     setFilterOpen(true);
@@ -47,7 +47,8 @@ export default function NewsAllpage() {
   const handleEdit = (id) => {
     navigate(`/news/edit/${id}`);
   };
-  const handlePreview = () => {
+  const handlePreview = async (id) => {
+    await fetchNewsById(id);
     setPreviewOpen(true);
   };
   const handleClosePreview = () => {
@@ -56,6 +57,9 @@ export default function NewsAllpage() {
   useEffect(() => {
     fetchNews();
   }, [isChange]);
+  const handleChange = () => {
+    setIsChange(!isChange);
+  }
   const userColumns = [
     { title: "Category", field: "category", padding: "none" },
 
@@ -148,7 +152,7 @@ export default function NewsAllpage() {
           onDelete={handleDelete}
           onDeleteRow={handleRowDelete}
         />{" "}
-        <NewsPreview open={previewOpen} onClose={handleClosePreview} />
+        <NewsPreview open={previewOpen} onClose={handleClosePreview} onChange={handleChange}  onEdit={() => handleEdit(singleNews._id)} data={singleNews} />
       </Box>
     </>
   );
