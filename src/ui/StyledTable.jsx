@@ -245,9 +245,13 @@ const StyledTable = ({
                       sx={{ cursor: "pointer" }}
                       onClick={() => handleRowClick(row._id)}
                     >
-                      {["renewal", "paymentdate", "date","createdAt","startDate"].includes(
-                        column.field
-                      ) ? (
+                      {[
+                        "renewal",
+                        "paymentdate",
+                        "date",
+                        "createdAt",
+                        "startDate",
+                      ].includes(column.field) ? (
                         formatIndianDate(row[column.field])
                       ) : ["starttime", "endtime", "time"].includes(
                           column.field
@@ -281,7 +285,7 @@ const StyledTable = ({
                               color: "#fff",
                             }}
                           >
-                          {row[column.field] === true ||
+                            {row[column.field] === true ||
                             row[column.field] === "activated"
                               ? "active"
                               : row[column.field] === false ||
@@ -307,15 +311,17 @@ const StyledTable = ({
                           <ViewIcon />
                         </IconButton>
                       )}{" "}
-                      {!menu && (
-                        <IconButton
-                          aria-controls="simple-menu"
-                          aria-haspopup="true"
-                          onClick={(event) => handleMenuOpen(event, row._id)}
-                        >
-                          <MoreVertIcon />
-                        </IconButton>
-                      )}
+                      {!menu &&
+                        row.status !== "rejected" &&
+                        row.status !== "approved" && (
+                          <IconButton
+                            aria-controls="simple-menu"
+                            aria-haspopup="true"
+                            onClick={(event) => handleMenuOpen(event, row._id)}
+                          >
+                            <MoreVertIcon />
+                          </IconButton>
+                        )}
                       <Menu
                         id="row-menu"
                         anchorEl={anchorEl}
@@ -350,10 +356,14 @@ const StyledTable = ({
                             </MenuItem>
                           </>
                         ) : payment ? (
-                          <>
-                            <MenuItem onClick={handleModify}>Approve</MenuItem>
-                            <MenuItem onClick={handleAction}>Reject</MenuItem>
-                          </>
+                          row.status === "pending" ? (
+                            <>
+                              <MenuItem onClick={handleModify}>
+                                Approve
+                              </MenuItem>
+                              <MenuItem onClick={handleAction}>Reject</MenuItem>
+                            </>
+                          ) : null
                         ) : (
                           <>
                             {" "}

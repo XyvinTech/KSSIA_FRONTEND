@@ -37,6 +37,10 @@ export default function Promotionform({ isUpdate }) {
     { value: "poster", label: "Poster" },
     { value: "notice", label: "Notice" },
   ];
+  const handleClear = (event) => {
+    event.preventDefault();
+    navigate("/promotions");
+  };
   useEffect(() => {
     if (isUpdate && id) {
       fetchPromotionById(value, id);
@@ -47,14 +51,22 @@ export default function Promotionform({ isUpdate }) {
       setValue("type", { value: promotions.type, label: promotions.type });
       setValue("startDate", promotions.startDate);
       setValue("endDate", promotions.endDate);
-      setValue("title", promotions.notice_title || "");
-      setValue("file", promotions.banner_image_url || "");
-      setValue("description", promotions.notice_description || "");
-      setValue("link", promotions.notice_link || "");
-      setValue("yt_link", promotions.yt_link || "");
+  
+      if (promotions.type === "notice") {
+        setValue("title", promotions.notice_title || "");
+        setValue("description", promotions.notice_description || "");
+        setValue("link", promotions.notice_link || "");
+      } else if (promotions.type === "video") {
+        setValue("title", promotions.video_title || "");
+        setValue("yt_link", promotions.yt_link || "");
+      } else if (promotions.type === "banner" || promotions.type === "poster") {
+        setValue("file", promotions.banner_image_url || promotions.poster_image_url || "");
+      }
+  
       setType(promotions.type);
     }
   }, [isUpdate, promotions, setValue]);
+  
   const onSubmit = async (data) => {
     setSubmitting(true);
     const formData = new FormData();
@@ -77,8 +89,8 @@ export default function Promotionform({ isUpdate }) {
     }
     if (type === "poster") {
       formData.append("type", "poster");
-      if (data?.file) {
-        formData.append("file", data?.file);
+      if (!isUpdate || (isUpdate && data.file instanceof File)) {
+        formData.append("file", data.file);
       }
     }
 
@@ -346,6 +358,7 @@ export default function Promotionform({ isUpdate }) {
                 name="Preview"
                 variant="secondary"
                 disabled={submitting}
+                onClick={(event) => handleClear(event)}
               >
                 Preview
               </StyledButton>

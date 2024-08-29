@@ -122,6 +122,7 @@ const ApproveReject = ({ open, onClose, data, onChange }) => {
         open={reject}
         onClose={handleCloseReject}
         data={previewData}
+        onChange={onSubmit}
       />
     </>
   );

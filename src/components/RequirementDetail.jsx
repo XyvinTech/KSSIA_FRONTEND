@@ -13,7 +13,7 @@ import { ReactComponent as CloseIcon } from "../assets/icons/CloseIcon.svg";
 import img from "../assets/images/view.png";
 import { useApprovalStore } from "../store/approval-store";
 
-const RequirementDetail = ({ open, onClose, onChange, data }) => {
+const RequirementDetail = ({ open, onClose, onChange, data,onDeny }) => {
   const { handleSubmit } = useForm();
   const { patchApprovals } = useApprovalStore();
   const onSubmit = async () => {
@@ -25,6 +25,7 @@ const RequirementDetail = ({ open, onClose, onChange, data }) => {
 
   const handleClear = (event) => {
     event.preventDefault();
+    onDeny(data._id); 
     onClose();
   };
 

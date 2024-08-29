@@ -125,6 +125,7 @@ export default function ApprovalPage() {
               onClose={handleCloseApprove}
               data={approval}
               onChange={handleChange}
+              onDeny={handleReject}
             />
           </Box>
         </>

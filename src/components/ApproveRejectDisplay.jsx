@@ -10,7 +10,7 @@ import {
 import { StyledButton } from "../ui/StyledButton";
 import { ReactComponent as CloseIcon } from "../assets/icons/CloseIcon.svg";
 
-const ApproveRejectDisplay = ({ open, onClose, data }) => {
+const ApproveRejectDisplay = ({ open, onClose, data ,onChange}) => {
   const handleClear = (event) => {
     event.preventDefault();
     onClose();
@@ -18,6 +18,8 @@ const ApproveRejectDisplay = ({ open, onClose, data }) => {
 
     const handleSubmit = (event) => {
     event.preventDefault();
+    onChange();
+    onClose();
    
   };
   return (
@@ -104,7 +106,7 @@ const ApproveRejectDisplay = ({ open, onClose, data }) => {
       </DialogContent>
       <Stack direction={"row"} spacing={2} padding={2} justifyContent={"end"}>
         <StyledButton variant="secondary" name="Cancel" onClick={handleClear} />
-        <StyledButton variant="primary" name="Send"onClick={handleSubmi} />
+        <StyledButton variant="primary" name="Send"onClick={handleSubmit} />
       </Stack>
     </Dialog>
   );
