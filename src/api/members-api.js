@@ -18,6 +18,16 @@ export const getPaymentByUserId = async (id) => {
     return null;
   }
 };
+export const getSubscriptionsByUserId = async (id) => {
+  try {
+    const response = await axiosInstance.get(
+      `/payments/user/${id}/subscriptions`
+    );
+    return response.data;
+  } catch (error) {
+    return null;
+  }
+};
 export const getUserById = async (id) => {
   try {
     const response = await axiosInstance.get(`/admin/users/${id}`);
@@ -47,9 +57,9 @@ export const suspendUser = async (id) => {
 export const deleteUser = async (id) => {
   try {
     const response = await axiosInstance.delete(`/admin/users/${id}`);
-    toast.success(response.data.message);
+
     return response.data;
   } catch (error) {
-    toast.error(error.response.data.message);
+    console.error(error.response.data.message);
   }
 };

@@ -23,7 +23,7 @@ export const addPromotion = async (data) => {
     toast.error(error.response.data.message);
   }
 };
-export const getPromotionById = async (type,id) => {
+export const getPromotionById = async (type, id) => {
   try {
     const response = await axiosInstance.get(`/promotions/${type}/${id}`);
     return response.data;
@@ -34,10 +34,10 @@ export const getPromotionById = async (type,id) => {
 export const deletePromotion = async (id) => {
   try {
     const response = await axiosInstance.delete(`/promotions/${id}`);
-    toast.success(response.data.message);
+
     return response.data;
   } catch (error) {
-    toast.error(error.response.data.message);
+    console.error(error.response.data.message);
   }
 };
 export const editPromotion = async (id, data) => {

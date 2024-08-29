@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid, Stack, Typography, Box } from "@mui/material";
-import { ReactComponent as EmailIcon } from "../../assets/icons/EmailIcon.svg";
+import { ReactComponent as EmailIcon } from "../../assets/icons/CalendarIcon.svg";
 import { ReactComponent as PhoneIcon } from "../../assets/icons/PhoneIcon.svg";
 import { ReactComponent as StarIcon } from "../../assets/icons/StarIcon.svg";
 import { ReactComponent as LocationIcon } from "../../assets/icons/LocationIcon.svg";
@@ -8,7 +8,7 @@ import moment from "moment";
 
 const EventCard = ({ user }) => {
   const formatDate = (date) => {
-    return moment(date).format("DD-MM-YYYY");
+    return date ? moment(date).format("DD-MM-YYYY") : "-";
   };
   return (
     <Grid
@@ -32,7 +32,7 @@ const EventCard = ({ user }) => {
       <Grid item md={6} xs={12} justifyContent={"center"} alignItems={"center"}>
         <Stack spacing={"10px"}>
           <Typography variant="h7" color={"#EB5860"}>
-            Upcoming Event
+          {user?.status} Event
           </Typography>
 
           <Typography
@@ -51,7 +51,7 @@ const EventCard = ({ user }) => {
           <Stack direction="row" alignItems="center" spacing={1}>
             <EmailIcon />
             <Typography variant="h6" color={"#2C2829"}>
-            {formatDate(user?.date)}
+            {formatDate(user?.startDate)}-{formatDate(user?.endDate)}
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="flex-start" spacing={1}>

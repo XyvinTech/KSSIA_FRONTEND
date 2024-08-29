@@ -40,13 +40,11 @@ export default function EmailNotificationform({ setSelectedTab }) {
     formData.append("subject", data?.subject);
     formData.append("content", data?.content);
     formData.append("link_url", data?.link_url);
-    formData.append("file", data.file_url);
+    // formData.append("file", data.file_url);
     if (data?.media_url) {
       formData.append("media_url", data.media_url);
     }
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
+    
     await addEmailNotifications(formData);
     reset();
     setSelectedTab(2);
@@ -171,36 +169,7 @@ export default function EmailNotificationform({ setSelectedTab }) {
               )}
             />
           </Grid>
-          <Grid item xs={12}>
-            <Typography
-              sx={{ marginBottom: 1 }}
-              variant="h6"
-              fontWeight={500}
-              color={"#333333"}
-            >
-              Upload File
-            </Typography>
-            <Controller
-              name="file_url"
-              control={control}
-              defaultValue=""
-              rules={{ required: "File  is required" }}
-              render={({ field }) => (
-                <>
-                  <DropZoneforForm
-          onChange={(selectedFile) => {
-            field.onChange(selectedFile); // Pass the file object
-          }}
-        />
-                  {errors.file_url && (
-                    <span style={{ color: "red" }}>
-                      {errors.file_url.message}
-                    </span>
-                  )}
-                </>
-              )}
-            />
-          </Grid>
+     
           <Grid item xs={12}>
             <Typography
               sx={{ marginBottom: 1 }}

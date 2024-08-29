@@ -8,6 +8,7 @@ import StyledTable from "../../../ui/StyledTable";
 import RejectionEntryForm from "../../../components/Members/RejectionEntryForm";
 import MemberShipRenewal from "../../../components/MemberShipRenewal";
 import { usePaymentStore } from "../../../store/payment-store";
+import { toast } from "react-toastify";
 export default function PaymentPage() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
@@ -19,7 +20,7 @@ export default function PaymentPage() {
   const { payments, fetchPayment, deletePayments, fetchPaymentById, payment } =
     usePaymentStore();
   const userColumns = [
-    { title: "Member name", field: "name", padding: "none" },
+    { title: "Member name", field: "full_name", padding: "none" },
     { title: "Date", field: "date" },
     { title: "time", field: "time" },
     { title: "category", field: "category" },
@@ -47,12 +48,14 @@ export default function PaymentPage() {
   const handleDelete = async () => {
     if (selectedRows.length > 0) {
       await Promise.all(selectedRows?.map((id) => deletePayments(id)));
+      toast.success('Payments deleted successfully');
       setIsChange(!isChange);
       setSelectedRows([]);
     }
   };
   const handleRowDelete = async (id) => {
     await deletePayments(id);
+    toast.success('Payment deleted successfully');
     setIsChange(!isChange);
   };
   const handleView2 = (id) => {

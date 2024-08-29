@@ -27,7 +27,7 @@ const MembersSinglepage = () => {
   const [userData, setUserData] = useState({});
   const [isChange, setIsChange] = useState(false);
   const { id } = useParams();
-  const { fetchPaymentByUser, payments } = useMemberStore();
+  const {fetchsubscriptionByUser, payments } = useMemberStore();
   useEffect(() => {
     async function init() {
       const response = await axiosInstance.get(
@@ -40,7 +40,7 @@ const MembersSinglepage = () => {
       setUserData(response.data.data);
     }
     init();
-  }, [id,isChange]);
+  }, [id, isChange]);
   const handleIsChange = () => {
     setIsChange(!isChange);
   };
@@ -56,7 +56,7 @@ const MembersSinglepage = () => {
     setSelectedTab(newValue);
   };
   useEffect(() => {
-    fetchPaymentByUser(id);
+    fetchsubscriptionByUser(id);
   }, [isChange]);
   return (
     <>

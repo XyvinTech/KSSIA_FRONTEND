@@ -37,10 +37,9 @@ export const getEventById = async (id) => {
 export const deleteEventById = async (id) => {
   try {
     const response = await axiosInstance.delete(`/events/${id}`);
-    toast.success(response.data.message);
+
     return response.data;
   } catch (error) {
-    toast.error(error.response.data.message);
     console.error("Error caught:", error);
   }
 };
@@ -60,9 +59,9 @@ export const updateEventById = async (id, data) => {
   }
 };
 
-export const postponeEvent = async (id,data) => {
+export const postponeEvent = async (id, data) => {
   try {
-    const response = await axiosInstance.put(`/events/${id}/postpond`,data);
+    const response = await axiosInstance.put(`/events/${id}/postpond`, data);
     toast.success(response.data.message);
     return response.data;
   } catch (error) {

@@ -25,10 +25,13 @@ const Postpone = ({ open, onClose, onChange, data }) => {
   const { postpone } = useEventStore();
   useEffect(() => {
     if (data) {
-      setValue("date", data.date);
-      setValue("time", data.time);
+      setValue("startDate", data.startDate);
+      setValue("startTime", data.startTime);
+      setValue("endDate", data.endDate);
+      setValue("endTime", data.endTime);
     }
   }, [data, setValue]);
+ 
   const onSubmit = async (updateData) => {
     const formData = new FormData();
     formData.append("date", updateData.date);
@@ -78,41 +81,92 @@ const Postpone = ({ open, onClose, onChange, data }) => {
             {" "}
             <Stack spacing={2} paddingTop={2}>
               <Typography variant="h6" color={"#333333"}>
-                New Date
+                Start Date
               </Typography>
               <Controller
-                name="date"
+                name="startDate"
                 control={control}
                 defaultValue={""}
                 rules={{ required: " Date is required" }}
                 render={({ field }) => (
                   <>
                     <StyledCalender
+                      label="Select Date from Calender"
                       {...field}
-                      placeholder={"Select Date from Calendar"}
+                      value={field.value}
                     />
-                    {errors.date && (
+                    {errors.startDate && (
                       <span style={{ color: "red" }}>
-                        {errors.date.message}
+                        {errors.startDate.message}
                       </span>
                     )}
                   </>
                 )}
               />
               <Typography variant="h6" color={"#333333"}>
-                Time
+                Start Time
               </Typography>
               <Controller
-                name="time"
+                name="startTime"
                 control={control}
                 defaultValue=""
                 rules={{ required: "Time is required" }}
                 render={({ field }) => (
                   <>
-                    <StyledTime placeholder={"Add Time"} {...field} />{" "}
-                    {errors.time && (
+                    <StyledTime
+                      label="Select Time"
+                      {...field}
+                      value={field.value}
+                    />
+                    {errors.startTime && (
                       <span style={{ color: "red" }}>
-                        {errors.time.message}
+                        {errors.startTime.message}
+                      </span>
+                    )}{" "}
+                  </>
+                )}
+              />
+              <Typography variant="h6" color={"#333333"}>
+                End Date
+              </Typography>
+              <Controller
+                name="endDate"
+                control={control}
+                defaultValue={""}
+                rules={{ required: " Date is required" }}
+                render={({ field }) => (
+                  <>
+                    <StyledCalender
+                      label="Select Date from Calender"
+                      {...field}
+                      value={field.value}
+                    />
+                    {errors.endDate && (
+                      <span style={{ color: "red" }}>
+                        {errors.endDate.message}
+                      </span>
+                    )}
+                  </>
+                )}
+              />
+              <Typography variant="h6" color={"#333333"}>
+                End Time
+              </Typography>
+              <Controller
+                name="endTime"
+                control={control}
+                defaultValue=""
+                rules={{ required: "Time is required" }}
+                render={({ field }) => (
+                  <>
+                    <StyledTime
+                      label="Select Time"
+                      {...field}
+                      value={field.value}
+                    />
+                    {errors.endTime && (
+                      <span style={{ color: "red" }}>
+                        {errors.endTime.message}
                       </span>
                     )}{" "}
                   </>

@@ -95,7 +95,7 @@ export default function Promotionform({ isUpdate }) {
     }
 
     if (type === "video") {
-      formData.append("type", "video");
+      // formData.append("type", "video");
       formData.append("yt_link", data?.yt_link);
       formData.append("video_title", data?.title);
       if (data?.upload_video) {
@@ -178,7 +178,7 @@ export default function Promotionform({ isUpdate }) {
           )}
           {type === "video" && (
             <>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <Typography
                   sx={{ marginBottom: 1 }}
                   variant="h6"
@@ -200,7 +200,7 @@ export default function Promotionform({ isUpdate }) {
                     </>
                   )}
                 />
-              </Grid>
+              </Grid> */}
               <Grid item xs={12}>
                 <Typography
                   sx={{ marginBottom: 1 }}

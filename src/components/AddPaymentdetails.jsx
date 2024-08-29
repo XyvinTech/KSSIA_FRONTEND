@@ -49,6 +49,15 @@ export default function AddPaymentdetails() {
       const selectedStatus = status.find(
         (item) => item.value === payment.status
       );
+      const sellerUser = users.find(
+        (user) => user?._id === payment.member?._id
+      );
+      if (sellerUser) {
+        setValue("member", {
+          value: sellerUser._id,
+          label: `${sellerUser.name.first_name} ${sellerUser.name.middle_name} ${sellerUser.name.last_name}`,
+        });
+      }
       setValue("status", selectedStatus || "");
       setValue("remarks", payment.remarks || "");
       setValue("file", payment.invoice_url || "");

@@ -7,6 +7,7 @@ import { ReactComponent as FilterIcon } from "../../../../assets/icons/FilterIco
 import StyledTable from "../../../../ui/StyledTable.jsx";
 import { eventColumns } from "../../../../assets/json/TableData.js";
 import { getEvents, deleteEventById } from "../../../../api/events-api.js";
+import { toast } from "react-toastify";
 
 export default function Events() {
   const navigate = useNavigate();
@@ -25,12 +26,14 @@ export default function Events() {
   const handleDelete = async () => {
     if (selectedRows.length > 0) {
       await Promise.all(selectedRows?.map((id) => deleteEventById(id)));
+      toast.success("Deleted successfully");
       setIsChange(!isChange);
       setSelectedRows([]);
     }
   };
   const handleRowDelete = async (id) => {
     await deleteEventById(id);
+    toast.success("Deleted successfully");
     setIsChange(!isChange);
   };
   useEffect(() => {

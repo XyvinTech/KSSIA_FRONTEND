@@ -34,10 +34,10 @@ export const getPaymentById = async (id) => {
 export const deletePayment = async (id) => {
   try {
     const response = await axiosInstance.delete(`/payments/${id}`);
-    toast.success(response.data.message);
+    
     return response.data;
   } catch (error) {
-    toast.error(error.response.data.message);
+  console.error(error.response.data.message);
   }
 };
 export const editPayment = async (id, data) => {
@@ -49,13 +49,25 @@ export const editPayment = async (id, data) => {
     toast.error(error.response.data.message);
   }
 };
+export const editSubscription = async (id, data) => {
+  try {
+    const response = await axiosInstance.put(
+      `/payments/${id}/subscription`,
+      data
+    );
+    toast.success(response.data.message);
+    return response.data;
+  } catch (error) {
+    toast.error(error.response.data.message);
+  }
+};
 export const patchPayment = async (id, data) => {
-    try {
-      const response = await axiosInstance.patch(`/payments/${id}/status`, data);
-      toast.success(response.data.message);
-      return response.data;
-    } catch (error) {
-      toast.error(error.response?.data?.message || "An error occurred");
-      throw error;
-    }
-  };
+  try {
+    const response = await axiosInstance.patch(`/payments/${id}/status`, data);
+    toast.success(response.data.message);
+    return response.data;
+  } catch (error) {
+    toast.error(error.response?.data?.message || "An error occurred");
+    throw error;
+  }
+};

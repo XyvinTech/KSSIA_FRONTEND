@@ -53,24 +53,28 @@ const EventSingleView = () => {
         <Grid container alignItems="center">
           <Grid item xs={6}>
             <Typography variant="h4" color={"#4A4647"}>
-              Events / Event Name
+              Events /{events?.name}
             </Typography>
           </Grid>
           <Grid item xs={6} container justifyContent="flex-end" spacing={2}>
-            <Grid item>
-              <StyledButton
-                name="Cancel"
-                variant="secondary"
-                onClick={handleCancel}
-              />
-            </Grid>
-            <Grid item>
-              <StyledButton
-                name="Postpone"
-                variant="primary"
-                onClick={handlePostpone}
-              />
-            </Grid>
+            {events?.status !== "cancelled" && (
+              <>
+                <Grid item>
+                  <StyledButton
+                    name="Cancel"
+                    variant="secondary"
+                    onClick={handleCancel}
+                  />
+                </Grid>
+                <Grid item>
+                  <StyledButton
+                    name="Postpone"
+                    variant="primary"
+                    onClick={handlePostpone}
+                  />
+                </Grid>
+              </>
+            )}
           </Grid>
         </Grid>
       </Box>{" "}
@@ -80,7 +84,7 @@ const EventSingleView = () => {
             <EventCard user={events} />
           </Grid>
           <Grid item md={4}>
-            <OrganizerCard />
+            <OrganizerCard data={events} />
           </Grid>
         </Grid>
       </Box>

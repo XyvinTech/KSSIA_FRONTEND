@@ -1,7 +1,7 @@
 import { Grid, Stack, Typography } from "@mui/material";
 import React from "react";
 import img from "../../assets/images/Zydex.png";
-const OrganizerCard = () => {
+const OrganizerCard = ({data}) => {
   return (
     <Grid
       container
@@ -14,17 +14,16 @@ const OrganizerCard = () => {
     >
       <Stack justifyContent={'center'} spacing={2}>
         <Typography variant="h7" color={"#2C2829"}>
-          Organiser
+        {data?.organiser_name}
         </Typography>
-        <img src={img} width={"113px"} height={"24px"} />
+        <Typography variant="h6" color={"#2C2829"}>
+        {data?.organiser_company_name}
+        </Typography>
         <Typography variant="h7" color={"#2C2829"}>
           Description
         </Typography>
         <Typography variant="h7" color={"#2C2829"}>
-          Lorem ipsum dolor sit amet consectetur. Ut vitae amet congue augue
-          rhoncus eget vel quis ornare. Nullam erat eget tristique imperdiet.
-          Malesuada vestibulum pretium at adipiscing platea egestas varius. Nibh
-          euismod ultrices dui ultricies ultricies .
+        {data?.description}
         </Typography>
       </Stack>{" "}
     </Grid>

@@ -6,6 +6,7 @@ import StyledTable from "./StyledTable";
 import { userColumns, userData } from "../assets/json/TableData";
 import { usePromotionStore } from "../store/promotionStore";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function StyledVideoTable() {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ export default function StyledVideoTable() {
   const handleDelete = async () => {
     if (selectedRows.length > 0) {
       await Promise.all(selectedRows?.map((id) => deletePromotions(id)));
+      toast.success('Deleted successfully');
       setIsChange(!isChange);
       setSelectedRows([]);
     }
@@ -35,6 +37,7 @@ export default function StyledVideoTable() {
   };
   const handleRowDelete = async (id) => {
     await deletePromotions(id);
+    toast.success('Deleted successfully');
     setIsChange(!isChange);
   };
   useEffect(() => {

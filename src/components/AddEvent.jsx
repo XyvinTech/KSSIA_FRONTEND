@@ -14,8 +14,9 @@ import {
   getEventById,
   updateEventById,
 } from "/src/api/events-api.js";
+import { StyledMultilineTextField } from "../ui/StyledMultilineTextField .jsx";
 
-export default function AddEvent({ eventId }) {
+export default function AddEvent({ eventId, setSelectedTab }) {
   const {
     control,
     handleSubmit,
@@ -23,25 +24,28 @@ export default function AddEvent({ eventId }) {
     formState: { errors },
   } = useForm();
   const [isChecked, setIsChecked] = useState(false);
-  const [additionalPhones, setAdditionalPhones] = useState([]);
-  const [dateValue, setDate] = useState("");
+  const handleClear = (event) => {
+    event.preventDefault();
+    setSelectedTab(0);
+    reset();
+    setSpeakerImages([]);
+  };
+  const [speakerImages, setSpeakerImages] = useState([]);
   const [speakers, setSpeakers] = useState([
     {
       speaker_name: "",
       speaker_designation: "",
       speaker_role: "",
+      speaker_image: "",
     },
   ]);
   const handleSwitchChange = (e) => {
     setIsChecked(e.target.checked);
   };
 
-  const option = [
-    { value: "option1", label: "Option 1" },
-    { value: "option2", label: "Option 2" },
-    { value: "option3", label: "Option 3" },
-  ];
+  const option = [{ value: "online", label: "online" }];
 
+  const types = [{ value: "Conference", label: "Conference" }];
   const onSubmit = async (data) => {
     const formData = new FormData();
     formData.append("organiser_name", data.organiser_name);
@@ -55,15 +59,20 @@ export default function AddEvent({ eventId }) {
     formData.append("platform", data.platform);
     formData.append("activate", data.activate);
     formData.append("speakers", JSON.stringify(data.speakers));
-    formData.append("type", "webinar");
+    formData.append("type", data.type);
+    formData.append("image", data.image);
+    formData.append("description", data.description);
+    formData.append("guest_image", data.guest_image);
     formData.append("description", data.description);
     formData.append("meeting_link", data.meeting_link);
-
+    speakerImages.forEach((image, index) => {
+      formData.append(`speaker_images`, image);
+    });
     if (eventId) {
       await updateEventById(eventId, formData);
     } else {
       await createEvent(formData);
-      console.log(formData);
+      setSelectedTab(0);
     }
   };
 
@@ -74,7 +83,6 @@ export default function AddEvent({ eventId }) {
         speaker_name: "",
         speaker_designation: "",
         speaker_role: "",
-        speaker_image: "",
       },
     ]);
   };
@@ -101,22 +109,28 @@ export default function AddEvent({ eventId }) {
   }, [eventId, reset]);
 
   const handleSpeakerChange = (index, field, value) => {
-    const updatedSpeakers = [...speakers];
-    updatedSpeakers[index] = {
-      ...updatedSpeakers[index],
-      [field]: value,
-    };
-    setSpeakers(updatedSpeakers);
+    setSpeakers((prevSpeakers) => {
+      const updatedSpeakers = [...prevSpeakers];
+      updatedSpeakers[index] = {
+        ...updatedSpeakers[index],
+        [field]: value,
+      };
+      return updatedSpeakers;
+    });
+  };
+  const handleSpeakerImageChange = (index, file) => {
+    const newSpeakerImages = [...speakerImages];
+    newSpeakerImages[index] = file;
+    setSpeakerImages(newSpeakerImages);
   };
 
   const removeSpeaker = (index) => {
     const newSpeakers = speakers.filter((_, i) => i !== index);
+    const newSpeakerImages = speakerImages.filter((_, i) => i !== index);
     setSpeakers(newSpeakers);
+    setSpeakerImages(newSpeakerImages);
   };
 
-  const addPhoneNumber = () => {
-    setAdditionalPhones([...additionalPhones, ""]);
-  };
   return (
     <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"12px"}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -139,9 +153,9 @@ export default function AddEvent({ eventId }) {
                 <>
                   <StyledSelectField
                     placeholder="Enter Event Type"
-                    options={option}
+                    options={types}
                     {...field}
-                    value={option.find((opt) => opt.value === field.value)}
+                    value={types.find((opt) => opt.value === field.value)}
                     onChange={(selectedOption) =>
                       field.onChange(selectedOption.value)
                     }
@@ -498,22 +512,42 @@ export default function AddEvent({ eventId }) {
                 </>
               )}
             />
+          </Grid>{" "}
+          <Grid item xs={12}>
+            <Typography
+              sx={{ marginBottom: 1 }}
+              variant="h6"
+              fontWeight={500}
+              color={"#333333"}
+            >
+              Description
+            </Typography>
+            <Controller
+              name="description"
+              control={control}
+              defaultValue=""
+              rules={{ required: "Description  is required" }}
+              render={({ field }) => (
+                <>
+                  <StyledMultilineTextField
+                    placeholder={"Enter description"}
+                    {...field}
+                  />
+                  {errors.description && (
+                    <span style={{ color: "red" }}>
+                      {errors.description.message}
+                    </span>
+                  )}
+                </>
+              )}
+            />
           </Grid>
           <Grid item xs={6}></Grid>
           <Grid item xs={6}></Grid>
-          {/* <Grid item xs={6} style={{ textAlign: 'right' }} >
-            <Delete/>
-          </Grid> */}
-
           {speakers.map((speaker, index) => (
             <React.Fragment key={index}>
               <Grid item xs={12}>
-                <Typography
-                  sx={{ marginBottom: 1 }}
-                  variant="h6"
-                  fontWeight={500}
-                  color={"#333333"}
-                >
+                <Typography variant="h6" fontWeight={500} color={"#333333"}>
                   Speaker {index + 1}
                 </Typography>
               </Grid>
@@ -523,20 +557,7 @@ export default function AddEvent({ eventId }) {
                   control={control}
                   defaultValue={speaker.speaker_name}
                   render={({ field }) => (
-                    <>
-                      <StyledInput
-                        placeholder="Speaker Name"
-                        {...field}
-                        value={speaker.speaker_name}
-                        onChange={(e) =>
-                          handleSpeakerChange(
-                            index,
-                            "speaker_name",
-                            e.target.value
-                          )
-                        }
-                      />
-                    </>
+                    <StyledInput placeholder="Speaker Name" {...field} />
                   )}
                 />
               </Grid>
@@ -546,20 +567,7 @@ export default function AddEvent({ eventId }) {
                   control={control}
                   defaultValue={speaker.speaker_designation}
                   render={({ field }) => (
-                    <>
-                      <StyledInput
-                        placeholder="Speaker Designation"
-                        {...field}
-                        value={speaker.speaker_designation}
-                        onChange={(e) =>
-                          handleSpeakerChange(
-                            index,
-                            "speaker_designation",
-                            e.target.value
-                          )
-                        }
-                      />
-                    </>
+                    <StyledInput placeholder="Speaker Designation" {...field} />
                   )}
                 />
               </Grid>
@@ -569,24 +577,31 @@ export default function AddEvent({ eventId }) {
                   control={control}
                   defaultValue={speaker.speaker_role}
                   render={({ field }) => (
+                    <StyledInput placeholder="Speaker Role" {...field} />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <Controller
+                  name={`speaker_images[${index}]`}
+                  control={control}
+                  defaultValue={speaker.speaker_image}
+                  render={({ field: { onChange, value } }) => (
                     <>
-                      <StyledInput
-                        placeholder="Speaker Role"
-                        {...field}
-                        value={speaker.speaker_role}
-                        onChange={(e) =>
-                          handleSpeakerChange(
-                            index,
-                            "speaker_role",
-                            e.target.value
-                          )
-                        }
+                      <StyledEventUpload
+                        label="Upload Speaker Image here"
+                        onChange={(file) => {
+                          handleSpeakerImageChange(index, file);
+                          onChange(file);
+                        }}
+                        value={value}
                       />
                     </>
                   )}
                 />
-              </Grid>
-              <Grid item xs={6} style={{ textAlign: "right" }}>
+              </Grid>{" "}
+              <Grid item xs={6}></Grid>
+              <Grid item xs={6} display={"flex"} justifyContent={"end"}>
                 <Delete onClick={() => removeSpeaker(index)} />
               </Grid>
             </React.Fragment>
@@ -636,24 +651,23 @@ export default function AddEvent({ eventId }) {
               )}
             />
           </Grid>
-
           <Grid item xs={6}></Grid>
           <Grid item xs={6}>
             {" "}
-            <Stack direction={"row"} spacing={2}>
+            <Stack
+              direction={"row"}
+              spacing={2}
+              display={"flex"}
+              justifyContent={"flex-end"}
+            >
               <StyledButton
                 name="Cancel"
                 variant="secondary"
-                style={{ width: "auto" }}
+                onClick={(event) => handleClear(event)}
               >
                 Cancel
               </StyledButton>
-              <StyledButton
-                name="Save"
-                variant="primary"
-                type="submit"
-                style={{ width: "auto" }}
-              >
+              <StyledButton name="Save" variant="primary" type="submit">
                 Save
               </StyledButton>
             </Stack>

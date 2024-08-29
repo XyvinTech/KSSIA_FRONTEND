@@ -3,9 +3,9 @@ import { react, useEffect, useState } from "react";
 import StyledSearchbar from "./StyledSearchbar";
 import { ReactComponent as FilterIcon } from "../assets/icons/FilterIcon.svg";
 import StyledTable from "./StyledTable";
-import { userColumns, userData } from "../assets/json/TableData";
 import { usePromotionStore } from "../store/promotionStore";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function StyledBannerTables() {
   const [filterOpen, setFilterOpen] = useState(false);
@@ -26,12 +26,14 @@ export default function StyledBannerTables() {
   const handleDelete = async () => {
     if (selectedRows.length > 0) {
       await Promise.all(selectedRows?.map((id) => deletePromotions(id)));
+      toast.success('Deleted successfully');
       setIsChange(!isChange);
       setSelectedRows([]);
     }
   };
   const handleRowDelete = async (id) => {
     await deletePromotions(id);
+    toast.success('Deleted successfully');
     setIsChange(!isChange);
   };
   const handleEdit = (id) => {

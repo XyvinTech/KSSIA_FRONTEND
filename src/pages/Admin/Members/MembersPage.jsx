@@ -11,6 +11,7 @@ import CONSTANTS from "../../../constants";
 import SuspendProfile from "../../../components/SuspendProfile";
 import DeleteProfile from "../../../components/DeleteProfile";
 import { useMemberStore } from "../../../store/member-store";
+import { toast } from "react-toastify";
 export default function MembersPage() {
   const navigate = useNavigate();
   const [filterOpen, setFilterOpen] = useState(false);
@@ -81,12 +82,14 @@ export default function MembersPage() {
   const handleDelete = async () => {
     if (selectedRows.length > 0) {
       await Promise.all(selectedRows?.map((id) => deleteUsers(id)));
+      toast.success('Deleted successfully');
       setIsChange(!isChange);
       setSelectedRows([]);
     }
   };
   const handleRowDelete = async (id) => {
     await deleteUsers(id);
+    toast.success('Deleted successfully');
     setIsChange(!isChange);
   };
   const handleView2 = (id) => {

@@ -17,20 +17,13 @@ import { usePaymentStore } from "../../store/payment-store";
 
 const RenewForm = ({ open, onClose, onChange, data }) => {
   const { handleSubmit, control, setValue } = useForm();
-  const { updatePayment } = usePaymentStore();
+  const { changePayment } = usePaymentStore();
   const [timeMetric, setTimeMetric] = useState(null);
 
   const onSubmit = async () => {
     const dataToSend = new FormData();
     dataToSend.append("year_count", timeMetric);
-    dataToSend.append("category", data.category);
-    dataToSend.append("member", data.member);
-    dataToSend.append("date", data.date);
-    dataToSend.append("time", data.time);
-    dataToSend.append("amount", data.amount);
-    dataToSend.append("mode_of_payment", data.mode_of_payment);
-    dataToSend.append("status", data.status);
-    updatePayment(data?._id, dataToSend);
+    changePayment(data?._id, dataToSend);
     onChange();
     onClose();
   };

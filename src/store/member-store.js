@@ -3,6 +3,7 @@ import {
   createMember,
   deleteUser,
   getPaymentByUserId,
+  getSubscriptionsByUserId,
   getUserById,
   suspendUser,
   updateUser,
@@ -18,6 +19,12 @@ const useMemberStore = create((set) => ({
     const allData = await getPaymentByUserId(id);
     set({ payments: allData?.data || [] });
   },
+  
+  fetchsubscriptionByUser: async (id) => {
+    const allData = await getSubscriptionsByUserId(id);
+    set({ payments: allData?.data || [] });
+  },
+
   fetchUserById: async (id) => {
     const allData = await getUserById(id);
     set({ member: allData?.data || [] });

@@ -42,7 +42,7 @@ const MemberShipRenewal = ({ open, onClose, data, onChange }) => {
     onChange();
   };
   const formatDate = (date) => {
-    return moment(date).format("DD-MM-YYYY");
+    return date ? moment(date).format("DD-MM-YYYY") : "-";
   };
   const formatTime = (time) => {
     return moment(time).format("h:mm A");

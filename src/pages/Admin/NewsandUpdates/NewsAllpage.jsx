@@ -7,6 +7,7 @@ import StyledSearchbar from "../../../ui/StyledSearchbar.jsx";
 import { useNavigate } from "react-router-dom";
 import NewsPreview from "../../../components/NewsPreview.jsx";
 import { useNewsStore } from "../../../store/newsStore.js";
+import { toast } from "react-toastify";
 
 export default function NewsAllpage() {
   const navigate = useNavigate();
@@ -35,12 +36,14 @@ export default function NewsAllpage() {
   const handleDelete = async () => {
     if (selectedRows.length > 0) {
       await Promise.all(selectedRows?.map((id) => deleteNews(id)));
+      toast.success('Deleted successfully');
       setIsChange(!isChange);
       setSelectedRows([]);
     }
   };
   const handleRowDelete = async (id) => {
     await deleteNews(id);
+    toast.success('Deleted successfully');
     setIsChange(!isChange);
   };
 

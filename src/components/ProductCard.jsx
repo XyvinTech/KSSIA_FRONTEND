@@ -15,7 +15,7 @@ const ProductCard = ({ product }) => {
         sx={{
           borderTopLeftRadius: "12px",
           borderTopRightRadius: "12px",
-          width: "185px",
+          width: "185px",  height: "185px",
         }}
       />
       <Box borderRadius={"12px"} bgcolor={"white"} padding={"10px"}>

@@ -43,9 +43,9 @@ export const addNews = async (data) => {
 export const deleteNews = async (id) => {
   try {
     const response = await axiosInstance.delete(`/news/${id}`);
-    toast.success(response.data.message);
+    
     return response.data;
   } catch (error) {
-    toast.error(error.response.data.message);
+    console.error(error.response.data.message);
   }
 };

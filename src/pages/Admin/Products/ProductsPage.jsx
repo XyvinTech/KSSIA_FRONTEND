@@ -10,6 +10,7 @@ import axiosInstance from "../../../api/axios-interceptor";
 import CONSTANTS from "../../../constants";
 import RemoveProduct from "../../../components/Removeproduct";
 import { useProductsStore } from "../../../store/productStore";
+import { toast } from "react-toastify";
 export default function MembersPage() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
@@ -54,6 +55,7 @@ export default function MembersPage() {
   };
   const handleRemove = async () => {
     await deleteProducts(productId);
+    toast.success('Deleted successfully');
     setIsChange(!isChange);
   };
   const handleCloseDelete = () => {
@@ -62,6 +64,7 @@ export default function MembersPage() {
   const handleDelete = async () => {
     if (selectedRows.length > 0) {
       await Promise.all(selectedRows?.map((id) => deleteProducts(id)));
+      toast.success('Deleted successfully');
       setIsChange(!isChange);
       setSelectedRows([]);
     }

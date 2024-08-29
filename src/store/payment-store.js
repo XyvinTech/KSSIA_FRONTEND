@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { addPayment, deletePayment, editPayment, getPayment, getPaymentById, patchPayment } from "../api/payment-api";
+import { addPayment, deletePayment, editPayment, editSubscription, getPayment, getPaymentById, patchPayment } from "../api/payment-api";
 
 
 const usePaymentStore = create((set) => ({
@@ -21,6 +21,9 @@ payment: [],
   },
   updatePayment: async (id, data) => {
     await editPayment(id, data);
+  },
+  changePayment: async (id, data) => {
+    await editSubscription(id, data);
   },
   patchPayments: async (id, data) => {
     await patchPayment(id, data);

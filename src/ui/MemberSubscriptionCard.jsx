@@ -13,6 +13,7 @@ export default function MemberSubscriptionCard({ payment, onChange }) {
   const handleRenew = () => {
     setRenew(true);
   };
+ 
   const handleCloseRenew = () => {
     setRenew(false);
   };
@@ -28,9 +29,11 @@ export default function MemberSubscriptionCard({ payment, onChange }) {
     onChange();
   };
   const formatDate = (date) => {
-    return moment(date).format("DD-MM-YYYY");
+    return date ? moment(date).format("DD-MM-YYYY") : "-";
   };
-  console.log(payment?.renewal);
+  const handleChange = () => {
+    onChange();
+  };
   return (
     <Grid
       container
@@ -131,11 +134,11 @@ export default function MemberSubscriptionCard({ payment, onChange }) {
                 />
               </Stack>
             )}
-            <RenewForm open={renew} onClose={handleCloseRenew} data={payment} onChange={onChange}/>
+            <RenewForm open={renew} onClose={handleCloseRenew} data={payment} onChange={handleChange} />
             <SuspendProfile
               open={suspend}
               onClose={handleCloseSuspend}
-              onChange={handleSuspendMembership}
+              onChange={handleSuspendMembership}id={payment?._id}
             />
           </Grid>
         </Grid>

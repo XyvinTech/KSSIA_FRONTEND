@@ -5,7 +5,7 @@ import RenewForm from "../components/Members/RenewForm";
 import moment from "moment";
 import ChangeSubscription from "../components/Members/ChangeSubscription";
 
-export default function AppSubscriptionCard({ payment, onChange }) {
+export default function AppSubscriptionCard({ payment,onChange }) {
   const [renew, setRenew] = useState(false);
   const [sub, setSub] = useState(false);
   const handleRenew = () => {
@@ -20,9 +20,13 @@ export default function AppSubscriptionCard({ payment, onChange }) {
   const handleCloseSubscription = () => {
     setSub(false);
   };
+const handleChange = () => {
+  onChange();
+}
   const formatDate = (date) => {
-    return moment(date).format("DD-MM-YYYY");
+    return date ? moment(date).format("DD-MM-YYYY") : "-";
   };
+
   return (
     <Grid
       container
@@ -123,8 +127,18 @@ export default function AppSubscriptionCard({ payment, onChange }) {
                 />
               </Stack>
             )}
-            <RenewForm open={renew} onClose={handleCloseRenew} data={payment} onChange={onChange} />
-            <ChangeSubscription open={sub} onClose={handleCloseSubscription} data={payment}  onChange={onChange}/>
+            <RenewForm
+              open={renew}
+              onClose={handleCloseRenew}
+              data={payment}
+              onChange={handleChange}
+            />
+            <ChangeSubscription
+              open={sub}
+              onClose={handleCloseSubscription}
+              data={payment}
+              onChange={handleChange}
+            />
           </Grid>
         </Grid>
       </Grid>

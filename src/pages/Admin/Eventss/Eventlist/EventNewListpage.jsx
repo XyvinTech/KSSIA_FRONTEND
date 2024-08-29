@@ -58,7 +58,7 @@ const EventNewListpage = () => {
         {selectedTab === 1 && (
           <Grid container>
             <Grid item md={8}>
-              <AddEvent />
+              <AddEvent setSelectedTab={setSelectedTab}  />
             </Grid>
           </Grid>
         )}
