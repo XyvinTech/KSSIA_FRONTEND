@@ -138,7 +138,7 @@ export default function MemberSubscriptionCard({ payment, onChange }) {
             <SuspendProfile
               open={suspend}
               onClose={handleCloseSuspend}
-              onChange={handleSuspendMembership}id={payment?._id}
+              onChange={handleSuspendMembership}
             />
           </Grid>
         </Grid>
