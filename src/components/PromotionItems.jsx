@@ -63,7 +63,7 @@ const PromotionItems = () => {
         <Tab label="Notice" />
       </Tabs>
       <Divider/>
-      <Box padding="30px" marginBottom={4}>
+      <Box padding="15px" marginBottom={4}>
         {selectedTab === 0 && (
              <Grid>
              <StyledBannerTables/>

@@ -206,7 +206,7 @@ const AdminLayout = (props) => {
           gap: "5px",
           padding: 0,
           "&::-webkit-scrollbar": {
-            width: "6px",
+            width: "0px",
           },
           "&::-webkit-scrollbar-track": {
             backgroundColor: "#f1f1f1",
@@ -262,10 +262,10 @@ const AdminLayout = (props) => {
                               ? "#F7F7F7"
                               : "transparent",
                           "&:hover": {
-                            color: "#004797",
-                            backgroundColor: "#E7EBF9",
+                            color: "#2C2829",
+                            backgroundColor: "#F7F7F7",
                           },
-                          "&:hover .MuiListItemIcon-root": { color: "#004797" },
+                          "&:hover .MuiListItemIcon-root": { color: "#2C2829" },
                         }}
                       >
                         <ListItemIcon

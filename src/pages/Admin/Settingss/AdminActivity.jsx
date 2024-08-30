@@ -32,7 +32,15 @@ export default function AdminActivity() {
       <>
         <Grid container alignItems="center">
           <Grid item xs={6}></Grid>
-          <Grid item xs={6} container  display={'flex'} alignItems={'center'} justifyContent="flex-end" spacing={2}>
+          <Grid
+            item
+            xs={6}
+            container
+            display={"flex"}
+            alignItems={"center"}
+            justifyContent="flex-end"
+            spacing={2}
+          >
             <Grid item>
               <StyledSearchbar />
             </Grid>
@@ -60,7 +68,7 @@ export default function AdminActivity() {
           </Grid>
         </Grid>
 
-        <Grid marginTop={4}>
+        <Grid marginTop={"15px"}>
           {" "}
           <Box
             borderRadius={"16px"}

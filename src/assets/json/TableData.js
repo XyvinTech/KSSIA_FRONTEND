@@ -49,7 +49,7 @@ export const userColumns = [
     { title: "Time", field: "time" },
     { title: "Duration", field: "time" },
     { title: "Organizer Name", field: "organiser_name" },
-    { title: "activate", field: "activate" },
+    { title: "Activate", field: "activate" },
     { title: "Type", field: "type" },
     { title: "Mode", field: "platform" },
     { title: "RSVP", field: "rsvp" }

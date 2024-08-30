@@ -103,12 +103,12 @@ export default function MembersPage() {
           </Grid>
         </Grid>
       </Box>
-      <Box padding="30px" marginBottom={4}>
+      <Box padding="15px" marginBottom={4}>
         <>
           <Stack
             direction={"row"}
             justifyContent={"end"}
-            paddingBottom={3}
+            paddingBottom={'15px'}
             alignItems={"center"}
           >
             <Stack direction={"row"} spacing={2}>

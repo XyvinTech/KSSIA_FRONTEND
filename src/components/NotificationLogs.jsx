@@ -20,11 +20,11 @@ export default function NotificationLogs() {
     fetchNotification();
   }, []);
   const userColumns = [
-    { title: "DATE", field: "createdAt", padding: "none" },
+    { title: "Date", field: "createdAt", padding: "none" },
 
-    { title: "type", field: "type" },
-    { title: "subject", field: "subject" },
-    { title: "content", field: "content" },
+    { title: "Type", field: "type" },
+    { title: "Subject", field: "subject" },
+    { title: "Content", field: "content" },
   ];
   return (
     <>
@@ -32,7 +32,7 @@ export default function NotificationLogs() {
         <Stack
           direction={"row"}
           justifyContent={"end"}
-          paddingBottom={3}
+          paddingBottom={'15px'}
           alignItems={"center"}
         >
           <Stack direction={"row"} spacing={2}>

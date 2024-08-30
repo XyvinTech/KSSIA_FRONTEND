@@ -22,11 +22,11 @@ export default function PaymentPage() {
   const userColumns = [
     { title: "Member name", field: "full_name", padding: "none" },
     { title: "Date", field: "date" },
-    { title: "time", field: "time" },
-    { title: "category", field: "category" },
-    { title: "amount", field: "amount" },
-    { title: "mode_of_payment", field: "mode_of_payment" },
-    { title: "status", field: "status" },
+    { title: "Time", field: "time" },
+    { title: "Category", field: "category" },
+    { title: "Amount", field: "amount" },
+    { title: "Mode of payment", field: "mode_of_payment" },
+    { title: "Status", field: "status" },
   ];
   const handleOpenFilter = () => {
     setFilterOpen(true);
@@ -107,12 +107,12 @@ export default function PaymentPage() {
           </Grid>
         </Grid>
       </Box>
-      <Box padding="30px" marginBottom={4}>
+      <Box padding="15px" marginBottom={4}>
         <>
           <Stack
             direction={"row"}
             justifyContent={"end"}
-            paddingBottom={3}
+            paddingBottom={'15px'}
             alignItems={"center"}
           >
             <Stack direction={"row"} spacing={2}>

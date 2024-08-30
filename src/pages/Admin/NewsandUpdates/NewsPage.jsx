@@ -53,7 +53,7 @@ const Newspage = () => {
         <Tab label="All" />
         <Tab label="Add new" />
       </Tabs>
-      <Box padding="30px" marginBottom={4}>
+      <Box padding="15px" marginBottom={4}>
         {selectedTab === 0 && (
           <Grid container>
             <Grid item md={12}>

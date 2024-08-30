@@ -28,9 +28,9 @@ export default function ApprovalPage() {
     setIsChange(!isChange);
   };
   const userColumns = [
-    { title: "date", field: "createdAt", padding: "none" },
-    { title: "image", field: "image" },
-    { title: "description", field: "content" },
+    { title: "Date", field: "createdAt", padding: "none" },
+    { title: "Image", field: "image" },
+    { title: "Description", field: "content" },
     ,
     { title: "Status", field: "status" },
   ];
@@ -60,7 +60,7 @@ export default function ApprovalPage() {
     <>
       {" "}
       <Box
-        padding={"20px"}
+        padding={"10px"}
         bgcolor={"#FFFFFF"}
         height={"70px"}
         display={"flex"}
@@ -74,12 +74,12 @@ export default function ApprovalPage() {
           </Grid>
         </Grid>
       </Box>
-      <Box padding="30px" marginBottom={4}>
+      <Box padding="15px" marginBottom={4}>
         <>
           <Stack
             direction={"row"}
             justifyContent={"end"}
-            paddingBottom={3}
+            paddingBottom={'15px'}
             alignItems={"center"}
           >
             <Stack direction={"row"} spacing={2}>

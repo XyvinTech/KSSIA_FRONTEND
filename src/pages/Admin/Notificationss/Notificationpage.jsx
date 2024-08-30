@@ -57,7 +57,7 @@ const Notificationpage = () => {
         <Tab label="In-app Notifications" />
         <Tab label="Notification logs" />
       </Tabs>
-      <Box padding="30px" marginBottom={4}>
+      <Box padding="15px" marginBottom={4}>
         {selectedTab === 0 && (
             <Grid container>
             <Grid item md={7}>

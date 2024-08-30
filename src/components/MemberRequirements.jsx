@@ -3,8 +3,6 @@ import React, { useEffect, useState } from "react";
 
 import { ReactComponent as FilterIcon } from "../assets/icons/FilterIcon.svg";
 
-import { userColumns, userData } from "../assets/json/TableData";
-import { StyledButton } from "../ui/StyledButton";
 import StyledSearchbar from "../ui/StyledSearchbar";
 import StyledTable from "../ui/StyledTable";
 import { useApprovalStore } from "../store/approval-store";
@@ -36,7 +34,7 @@ export default function MembersRequirements({ id }) {
         <Stack
           direction={"row"}
           justifyContent={"end"}
-          paddingBottom={3}
+          paddingBottom={'15px'}
           alignItems={"center"}
         >
           <Stack direction={"row"} spacing={2}>

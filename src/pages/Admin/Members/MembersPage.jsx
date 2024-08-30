@@ -29,9 +29,6 @@ export default function MembersPage() {
     { title: "Company Name", field: "company_name" },
     { title: "Designation", field: "designation" },
     { title: "Phone Number", field: "mobile" },
-    // { title: "Subscription", field: "status" },
-    // { title: "Rating", field: "rating" },
-    // { title: "Membership Status", field: "status" },
   ];
   const handleSelectionChange = (newSelectedIds) => {
     setSelectedRows(newSelectedIds);
@@ -130,12 +127,12 @@ export default function MembersPage() {
           </Grid>
         </Grid>
       </Box>
-      <Box padding="30px" marginBottom={4}>
+      <Box padding="15px" marginBottom={4}>
         <>
           <Stack
             direction={"row"}
             justifyContent={"end"}
-            paddingBottom={3}
+            paddingBottom={'15px'}
             alignItems={"center"}
           >
             <Stack direction={"row"} spacing={2}>
@@ -159,6 +156,7 @@ export default function MembersPage() {
           <Box
             borderRadius={"16px"}
             bgcolor={"white"}
+
             p={1}
             border={"1px solid rgba(0, 0, 0, 0.12)"}
           >

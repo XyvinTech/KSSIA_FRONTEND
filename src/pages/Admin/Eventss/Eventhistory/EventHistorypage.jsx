@@ -1,15 +1,14 @@
 import { Box, Grid, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { ReactComponent as FilterIcon } from "../../../../assets/icons/FilterIcon.svg";
-import StyledTable from '../../../../ui/StyledTable.jsx';
+import StyledTable from "../../../../ui/StyledTable.jsx";
 import { eventColumns, userData } from "../../../../assets/json/TableData";
-import { StyledButton } from '../../../../ui/StyledButton';
-import StyledSearchbar from '../../../../ui/StyledSearchbar';
+import { StyledButton } from "../../../../ui/StyledButton";
+import StyledSearchbar from "../../../../ui/StyledSearchbar";
+import { useEventStore } from "../../../../store/event-store.js";
 export default function EventHistorypage() {
-  const navigate = useNavigate();
-  const [selectedRows, setSelectedRows] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);
 
   const handleOpenFilter = () => {
@@ -19,17 +18,10 @@ export default function EventHistorypage() {
   const handleCloseFilter = () => {
     setFilterOpen(false);
   };
-  const handleSelectionChange = (newSelectedIds) => {
-    setSelectedRows(newSelectedIds);
-    console.log("Selected items:", newSelectedIds);
-  };
-  const handleView = (id) => {
-    console.log("View item:", id);
-    navigate(`/members/member/${id}`);
-  };
-  const handleView2 = (id) => {
-    navigate(`/members/addmember`);
-  };
+  const { eventHistory, events } = useEventStore();
+  useEffect(() => {
+    eventHistory();
+  }, []);
   return (
     <>
       {" "}
@@ -55,12 +47,12 @@ export default function EventHistorypage() {
           </Grid>
         </Grid>
       </Box>
-      <Box padding="30px" marginBottom={4}>
+      <Box padding="15px" marginBottom={4}>
         <>
           <Stack
             direction={"row"}
             justifyContent={"end"}
-            paddingBottom={3}
+            paddingBottom={'15px'}
             alignItems={"center"}
           >
             <Stack direction={"row"} spacing={2}>
@@ -87,12 +79,7 @@ export default function EventHistorypage() {
             p={1}
             border={"1px solid rgba(0, 0, 0, 0.12)"}
           >
-            <StyledTable
-              columns={eventColumns}
-              data={[]}
-              onSelectionChange={handleSelectionChange}
-              onView={handleView}
-            />{" "}
+            <StyledTable columns={eventColumns} data={events} />{" "}
           </Box>
         </>
       </Box>

@@ -23,11 +23,10 @@ import { useMemberStore } from "../../../store/member-store";
 
 const MembersSinglepage = () => {
   const [selectedTab, setSelectedTab] = useState(0);
-  const [selectedRows, setSelectedRows] = useState([]);
   const [userData, setUserData] = useState({});
   const [isChange, setIsChange] = useState(false);
   const { id } = useParams();
-  const {fetchsubscriptionByUser, payments } = useMemberStore();
+  const { fetchsubscriptionByUser, payments } = useMemberStore();
   useEffect(() => {
     async function init() {
       const response = await axiosInstance.get(
@@ -44,14 +43,7 @@ const MembersSinglepage = () => {
   const handleIsChange = () => {
     setIsChange(!isChange);
   };
-  const handleSelectionChange = (newSelectedIds) => {
-    setSelectedRows(newSelectedIds);
-    console.log("Selected items:", newSelectedIds);
-  };
 
-  const handleView = (id) => {
-    console.log("View item:", id);
-  };
   const handleChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
@@ -68,7 +60,7 @@ const MembersSinglepage = () => {
         alignItems={"center"}
       >
         <Typography variant="h4" color={"#4A4647"}>
-          {/* Members list / {userData.name} */}
+          Members list / {userData?.full_name}
         </Typography>
       </Box>{" "}
       <Divider />
@@ -107,7 +99,7 @@ const MembersSinglepage = () => {
         <Tab label="Requirements" />
         <Tab label="Analytics" />
       </Tabs>
-      <Box padding="30px" marginBottom={4}>
+      <Box padding="15px" marginBottom={4}>
         {selectedTab === 0 && (
           <Grid spacing={2}>
             <MemberProfile data={userData} />
@@ -121,7 +113,7 @@ const MembersSinglepage = () => {
         {selectedTab === 2 && (
           <Grid container>
             <Stack direction={"column"} spacing={3}>
-              {payments && payments.length > 0 && payments[0].category ? (
+              {payments && payments?.length > 0 && payments[0]?.category ? (
                 payments[0].category === "app" ? (
                   <AppSubscriptionCard
                     payment={payments[0]}

@@ -67,15 +67,15 @@ export default function NewsAllpage() {
     { title: "Category", field: "category", padding: "none" },
 
     { title: "Title", field: "title" },
-    { title: "content", field: "content" },
-    { title: "image", field: "image" },
+    { title: "Content", field: "content" },
+    { title: "Image", field: "image" },
   ];
   return (
     <>
       <Stack
         direction={"row"}
         justifyContent={"end"}
-        paddingBottom={3}
+        paddingBottom={'15PX'}
         alignItems={"center"}
         marginRight={2}
       >
@@ -108,7 +108,7 @@ export default function NewsAllpage() {
       <Stack
         direction={"row"}
         justifyContent={"space-between"}
-        paddingBottom={3}
+        paddingBottom={"15px"}
         alignItems={"center"}
       >
         <Stack direction={"row"} spacing={2}>

@@ -1,8 +1,5 @@
 import { createTheme } from "@mui/material/styles";
 
-const globalStyles = `
-  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&display=swap');
-`;
 
 const theme = createTheme({
   palette: {},
@@ -63,16 +60,7 @@ const theme = createTheme({
       fontFamily: "Roboto, sans-serif",
     },
   },
-  components: {
-    MuiCssBaseline: {
-      styleOverrides: `
-        ${globalStyles}
-        body {
-          font-family: 'Roboto', sans-serif;
-        }
-      `,
-    },
-  },
+
 });
 
 export default theme;

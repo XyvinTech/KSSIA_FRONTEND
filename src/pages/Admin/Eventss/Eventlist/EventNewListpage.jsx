@@ -1,17 +1,10 @@
 import { Box, Grid, Stack, Tab, Tabs, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { eventColumns, userData } from "../../../../assets/json/TableData";
 import Events from "./Events";
 import AddEvent from "../../../../components/AddEvent";
 
 const EventNewListpage = () => {
   const [selectedTab, setSelectedTab] = useState(0);
-  const [selectedRows, setSelectedRows] = useState([]);
-
-  const handleSelectionChange = (newSelectedIds) => {
-    setSelectedRows(newSelectedIds);
-    console.log("Selected items:", newSelectedIds);
-  };
 
   const handleChange = (event, newValue) => {
     setSelectedTab(newValue);
@@ -49,7 +42,7 @@ const EventNewListpage = () => {
         <Tab label="Events" />
         <Tab label="Add Events" />
       </Tabs>
-      <Box padding="30px" marginBottom={4}>
+      <Box padding="15px" marginBottom={4}>
         {selectedTab === 0 && (
           <Grid spacing={2}>
             <Events />
@@ -57,8 +50,8 @@ const EventNewListpage = () => {
         )}
         {selectedTab === 1 && (
           <Grid container>
-            <Grid item md={8}>
-              <AddEvent setSelectedTab={setSelectedTab}  />
+            <Grid item md={9}>
+              <AddEvent setSelectedTab={setSelectedTab} />
             </Grid>
           </Grid>
         )}
