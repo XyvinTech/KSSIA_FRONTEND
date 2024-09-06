@@ -74,7 +74,7 @@ export default function SingleAddform() {
       const selectedStatus = status.find(
         (item) => item.value === member.status
       );
-      
+
       setValue("status", selectedStatus || "");
       if (member?.phone_numbers?.whatsapp_number) {
         setAdditionalPhones([
@@ -699,24 +699,20 @@ export default function SingleAddform() {
               )}
             />
           </Grid>
-
-          <Grid item xs={6}></Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} display={"flex"} justifyContent={"flex-end"}>
             {" "}
             <Stack direction={"row"} spacing={2}>
               <StyledButton
                 name="Cancel"
                 variant="secondary"
-                style={{ width: "auto" }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  reset();
+                }}
               >
                 Cancel
               </StyledButton>
-              <StyledButton
-                name="Save"
-                variant="primary"
-                type="submit"
-                style={{ width: "auto" }}
-              >
+              <StyledButton name="Save" variant="primary" type="submit">
                 Save
               </StyledButton>
             </Stack>

@@ -148,6 +148,8 @@ const StyledTable = ({
         return "#BFBABA";
       case "rejected":
         return "#ff4d4f";
+      case "approved":
+        return "#52c41a";
       default:
         return "default";
     }

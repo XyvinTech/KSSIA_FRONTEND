@@ -18,7 +18,7 @@ const RsvpTable = () => {
       <Stack
         direction={"row"}
         justifyContent={"end"}
-        paddingBottom={3}
+        paddingBottom={'15px'}
         alignItems={"center"}
       >
         <Stack direction={"row"} spacing={2}>

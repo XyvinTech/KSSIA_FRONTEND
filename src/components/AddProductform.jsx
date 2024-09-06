@@ -71,7 +71,9 @@ export default function Addproductform() {
     formData.append("offer_price", data?.offer_price);
     formData.append("price", data?.price);
     formData.append("units", data?.units);
-    formData.append("image", data?.image);
+    if (!isUpdate || (isUpdate && data.file instanceof File)) {
+      formData.append("image", data.image);
+    }
     formData.append("name", data?.productname);
     if (isUpdate && productId) {
       await updateProduct(productId, formData);

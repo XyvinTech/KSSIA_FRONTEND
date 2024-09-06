@@ -4,9 +4,8 @@ import { StyledButton } from "../ui/StyledButton";
 import { useMemberStore } from "../store/member-store";
 import { useParams } from "react-router-dom";
 
-const SuspendProfile = ({ open, onClose, onChange }) => {
-  const { handleSubmit } = useForm();
-  const { id } = useParams(); 
+const SuspendProfile = ({ open, onClose, onChange,id }) => {
+  const { handleSubmit } = useForm(); 
   const { suspend } = useMemberStore();
   const onSubmit = async () => {
     await suspend(id);
