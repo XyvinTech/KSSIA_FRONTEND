@@ -7,7 +7,7 @@ export const createMember = async (memberData) => {
     toast.success(response.data.message);
     return response.data;
   } catch (error) {
-    toast.error(error.response.data.message);
+    throw error.response.data;
   }
 };
 export const getPaymentByUserId = async (id) => {
@@ -42,7 +42,7 @@ export const updateUser = async (id, data) => {
     toast.success(response.data.message);
     return response.data;
   } catch (error) {
-    toast.error(error.response.data.message);
+    throw error.response.data;
   }
 };
 export const suspendUser = async (id) => {

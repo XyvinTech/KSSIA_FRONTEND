@@ -8,7 +8,7 @@ import {
 
 const useProductsStore = create((set) => ({
   products: [],
-
+  loadings: false,
   addProducts: async (data) => {
     await addProduct(data);
   },
@@ -16,8 +16,10 @@ const useProductsStore = create((set) => ({
     await deleteProduct(id);
   },
   fetchProductById: async (id) => {
+    set({ loadings: true });
     const allData = await getProductById(id);
     set({ products: allData?.data || [] });
+    set({ loadings: false });
   },
   updateProduct: async (id, data) => {
     await editProduct(id, data);

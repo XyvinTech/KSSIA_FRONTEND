@@ -12,6 +12,7 @@ import {
 const useMemberStore = create((set) => ({
   payments: [],
   member: [],
+  loadings: false,
   addMembers: async (data) => {
     await createMember(data);
   },
@@ -19,15 +20,17 @@ const useMemberStore = create((set) => ({
     const allData = await getPaymentByUserId(id);
     set({ payments: allData?.data || [] });
   },
-  
+
   fetchsubscriptionByUser: async (id) => {
     const allData = await getSubscriptionsByUserId(id);
     set({ payments: allData?.data || [] });
   },
 
   fetchUserById: async (id) => {
+    set({ loadings: true });
     const allData = await getUserById(id);
     set({ member: allData?.data || [] });
+    set({ loadings: false });
   },
   editUser: async (id, data) => {
     await updateUser(id, data);

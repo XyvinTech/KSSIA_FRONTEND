@@ -9,10 +9,12 @@ import {
 
 const useEventStore = create((set) => ({
   events: [],
-
+  loadings: false,
   fetchEventById: async (id) => {
+    set({ loadings: true });
     const allData = await getEventById(id);
     set({ events: allData?.data || [] });
+    set({ loadings: false });
   },
   updateEvent: async (id, data) => {
     await updateEventById(id, data);

@@ -1,11 +1,7 @@
 import { Box, Grid, Stack, Tab, Tabs, Typography } from "@mui/material";
 import React, { useState } from "react";
-import SingleAddform from "../../../components/SingleAddform.jsx"
+import SingleAddform from "../../../components/SingleAddform.jsx";
 import BulkAddform from "../../../components/BulkAddform";
-
-
-
-
 
 const AddnewMemberSinglepage = () => {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -16,20 +12,27 @@ const AddnewMemberSinglepage = () => {
     console.log("Selected items:", newSelectedIds);
   };
 
-  
   const handleChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
-  
+
   return (
     <>
-      <Box padding={"10px"}height={'70px'}display={'flex'}alignItems={'center'}bgcolor={"#FFFFFF"}>
-      <Grid container alignItems="center">
-      <Grid item xs={6} spacing={2}>
-        <Typography variant="h4" color={"#4A4647"}>
-          Members List / Add new Member
-        </Typography></Grid>  </Grid>
-      </Box>{" "}  
+      <Box
+        padding={"10px"}
+        height={"70px"}
+        display={"flex"}
+        alignItems={"center"}
+        bgcolor={"#FFFFFF"}
+      >
+        <Grid container alignItems="center">
+          <Grid item xs={6} spacing={2}>
+            <Typography variant="h4" color={"#4A4647"}>
+              Members List / Add new Member
+            </Typography>
+          </Grid>{" "}
+        </Grid>
+      </Box>{" "}
       <Tabs
         value={selectedTab}
         onChange={handleChange}
@@ -49,7 +52,7 @@ const AddnewMemberSinglepage = () => {
           },
           "& .MuiTab-root": {
             textTransform: "none",
-            fontSize:'16px', 
+            fontSize: "16px",
             fontWeight: 600,
           },
           "& .Mui-selected": {
@@ -60,16 +63,18 @@ const AddnewMemberSinglepage = () => {
         <Tab label="Single Add" />
         <Tab label="Bulk Add" />
       </Tabs>
-      <Box padding="30px" marginBottom={4}>
+      <Box padding="15px" marginBottom={4}>
         {selectedTab === 0 && (
-             <Grid spacing={2}>
-             <SingleAddform/>
-           </Grid>
+          <Grid container spacing={2}>
+            <Grid item md={8}>
+              <SingleAddform />
+            </Grid>
+          </Grid>
         )}
         {selectedTab === 1 && (
           <Grid container>
             <Grid item md={6}>
-            <BulkAddform/>
+              <BulkAddform />
             </Grid>
           </Grid>
         )}

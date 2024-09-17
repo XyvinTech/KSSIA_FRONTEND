@@ -33,7 +33,6 @@ const MembersSinglepage = () => {
         `${CONSTANTS.MEMBERS_API}/${id}`
       );
       if (response.status != 200) {
-        // handle error
         return;
       }
       setUserData(response.data.data);
