@@ -20,8 +20,9 @@ export default function MembersPage() {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [isChange, setIsChange] = useState(false);
   const [userData, setUserData] = useState([]);
-
+  const [total, setTotal] = useState(0);
   const { deleteUsers } = useMemberStore();
+  const [pageNo, setPageNo] = useState(1);
   const [userId, setUserId] = useState(null);
   const userColumns = [
     { title: "Name", field: "full_name", padding: "none" },
@@ -41,6 +42,7 @@ export default function MembersPage() {
         return;
       }
       setUserData(response.data.data);
+      setTotal(response.data.totalCount);
     }
     fetchUserData();
   }, [isChange]);
@@ -170,8 +172,11 @@ export default function MembersPage() {
             <StyledTable
               columns={userColumns}
               data={userData}
+              totalCount={total}
               onView={handleView}
               member
+              pageNo={pageNo}
+              setPageNo={setPageNo}
               onSelectionChange={handleSelectionChange}
               onModify={handleEdit}
               onDeleteRow={handleRowDelete}

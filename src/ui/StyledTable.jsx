@@ -66,6 +66,9 @@ const StyledTable = ({
   menu,
   data,
   news,
+  pageNo,
+  setPageNo,
+  totalCount,
   onDeleteRow,
   dashboard,
   member,
@@ -137,6 +140,12 @@ const StyledTable = ({
 
     return () => clearTimeout(timer);
   }, []);
+  const pageInc = () => {
+    setPageNo((prev) => prev + 1);
+  };
+  const pageDec = () => {
+    setPageNo((prev) => prev - 1);
+  };
   const isSelected = (id) => selectedIds.includes(id);
 
   const getStatusVariant = (status) => {
@@ -351,7 +360,7 @@ const StyledTable = ({
                             <MenuItem onClick={handleModify}>Edit</MenuItem>
                             <MenuItem onClick={handleAction}>Suspend</MenuItem>
                             <MenuItem
-                             onClick={() => handleRowDelete(row._id)}
+                              onClick={() => handleRowDelete(row._id)}
                               style={{ color: "red" }}
                             >
                               Delete
@@ -419,10 +428,10 @@ const StyledTable = ({
               <Box display="flex" alignItems="center">
                 <TablePagination
                   component="div"
-                  count={data ? data.length : 0}
                   rowsPerPage={10}
-                  page={0}
-                  onPageChange={() => {}}
+                  labelDisplayedRows={({ from, to }) =>
+                    `${pageNo}-${Math.ceil(totalCount / 10)} of ${totalCount}`
+                  }
                   ActionsComponent={({ onPageChange }) => (
                     <Stack
                       direction="row"
@@ -430,8 +439,30 @@ const StyledTable = ({
                       alignItems="center"
                       marginLeft={2}
                     >
-                      <LeftIcon />
-                      <RightIcon />
+                      {" "}
+                      <Box
+                        onClick={pageDec}
+                        sx={{
+                          cursor: pageNo > 1 ? "pointer" : "not-allowed",
+                          opacity: pageNo > 1 ? 1 : 0.5,
+                        }}
+                      >
+                        <LeftIcon />{" "}
+                      </Box>
+                      <Box
+                        onClick={pageInc}
+                        sx={{
+                          cursor:
+                            pageNo < Math.ceil(totalCount / 10)
+                              ? "pointer"
+                              : "not-allowed",
+                          opacity:
+                            pageNo < Math.ceil(totalCount / 10) ? 1 : 0.5,
+                        }}
+                      >
+                        {" "}
+                        <RightIcon />{" "}
+                      </Box>
                     </Stack>
                   )}
                 />

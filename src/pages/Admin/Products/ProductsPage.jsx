@@ -20,6 +20,8 @@ export default function MembersPage() {
   const [productData, setProductData] = useState([]);
   const [productId, setProductId] = useState(null);
   const { deleteProducts } = useProductsStore();
+  const [pageNo, setPageNo] = useState(1);
+  const [total, setTotal] = useState(0);
   useEffect(() => {
     async function init() {
       const response = await axiosInstance.get(CONSTANTS.PRODUCTS_API);
@@ -28,6 +30,7 @@ export default function MembersPage() {
         return;
       }
       setProductData(response.data.data);
+      setTotal(response.data.totalCount);
     }
     init();
   }, [isChange]);
@@ -152,6 +155,9 @@ export default function MembersPage() {
               onDeleteRow={handleRowDelete}
               onDelete={handleDelete}
               onModify={handleEdit}
+              totalCount={total}
+              pageNo={pageNo}
+              setPageNo={setPageNo}
             />{" "}
             <RemoveProduct
               open={removeOpen}
