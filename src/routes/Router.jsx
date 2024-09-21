@@ -27,6 +27,7 @@ import NewsAddnewform from "../components/NewsAddnewform.jsx";
 import EditNews from "../pages/Admin/NewsandUpdates/EditNews.jsx";
 import EventSingleView from "../pages/Admin/Eventss/Eventlist/EventSingleView.jsx";
 import EditPromotion from "../pages/Admin/Promotions/EditPromotion.jsx";
+import { PrivateRoute } from "./privateRouter.jsx";
 
 const router = createBrowserRouter([
   {
@@ -36,185 +37,231 @@ const router = createBrowserRouter([
   {
     path: "/dashboard",
     element: (
-      <AdminLayout>
-        <DashboardPage />
-      </AdminLayout>
+      <PrivateRoute>
+        <AdminLayout>
+          <DashboardPage />
+        </AdminLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/members",
     element: (
-      <AdminLayout>
-        <MembersPage />
-      </AdminLayout>
+      <PrivateRoute>
+        <AdminLayout>
+          <MembersPage />
+        </AdminLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/members/member/:id",
     element: (
-      <AdminLayout>
-        <MembersSinglepage />
-      </AdminLayout>
+      <PrivateRoute>
+        <AdminLayout>
+          <MembersSinglepage />
+        </AdminLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/members/addmember",
     element: (
-      <AdminLayout>
-        <AddnewMemberSinglepage />
-      </AdminLayout>
+      <PrivateRoute>
+        <AdminLayout>
+          <AddnewMemberSinglepage />
+        </AdminLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/products",
     element: (
-      <AdminLayout>
-        <ProductsPage />
-      </AdminLayout>
+      <PrivateRoute>
+        <AdminLayout>
+          <ProductsPage />
+        </AdminLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/products/addproduct",
     element: (
-      <AdminLayout>
-        <AddProductSinglepage />
-      </AdminLayout>
+      <PrivateRoute>
+        <AdminLayout>
+          <AddProductSinglepage />
+        </AdminLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/events/eventhistory",
     element: (
-      <AdminLayout>
-        <EventHistorypage />
-      </AdminLayout>
+      <PrivateRoute>
+        <AdminLayout>
+          <EventHistorypage />
+        </AdminLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/events/eventlist",
     element: (
-      <AdminLayout>
-        <EventNewListpage />
-      </AdminLayout>
+      <PrivateRoute>
+        <AdminLayout>
+          <EventNewListpage />
+        </AdminLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/events/:id",
     element: (
-      <AdminLayout>
-        <EventSingleView />
-      </AdminLayout>
+      <PrivateRoute>
+        <AdminLayout>
+          <EventSingleView />
+        </AdminLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/events/eventlist/:id",
     element: (
-      <AdminLayout>
-        <EditEventpage />
-      </AdminLayout>
+      <PrivateRoute>
+        <AdminLayout>
+          <EditEventpage />
+        </AdminLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/payments",
     element: (
-      <AdminLayout>
-        <PaymentPage />
-      </AdminLayout>
+      <PrivateRoute>
+        <AdminLayout>
+          <PaymentPage />
+        </AdminLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/payments/addpaymentdetails",
     element: (
-      <AdminLayout>
-        <AddpaymentsinglePage />
-      </AdminLayout>
+      <PrivateRoute>
+        <AdminLayout>
+          <AddpaymentsinglePage />
+        </AdminLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/approvals",
     element: (
-      <AdminLayout>
-        <ApprovalPage />
-      </AdminLayout>
+      <PrivateRoute>
+        <AdminLayout>
+          <ApprovalPage />
+        </AdminLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/promotions",
     element: (
-      <AdminLayout>
-        <Promotionpage />
-      </AdminLayout>
+      <PrivateRoute>
+        <AdminLayout>
+          <Promotionpage />
+        </AdminLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/promotions/createpromotion",
     element: (
-      <AdminLayout>
-        <CreatepromotionSinglepage />
-      </AdminLayout>
+      <PrivateRoute>
+        <AdminLayout>
+          <CreatepromotionSinglepage />
+        </AdminLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/promotion/edit/:id",
     element: (
-      <AdminLayout>
-        <EditPromotion />
-      </AdminLayout>
+      <PrivateRoute>
+        <AdminLayout>
+          <EditPromotion />
+        </AdminLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/Notifications",
     element: (
-      <AdminLayout>
-        <Notificationpage />
-      </AdminLayout>
+      <PrivateRoute>
+        <AdminLayout>
+          <Notificationpage />
+        </AdminLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/News",
     element: (
-      <AdminLayout>
-        <Newspage />
-      </AdminLayout>
+      <PrivateRoute>
+        <AdminLayout>
+          <Newspage />
+        </AdminLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/news/edit/:id",
     element: (
-      <AdminLayout>
-        <EditNews />
-      </AdminLayout>
+      <PrivateRoute>
+        <AdminLayout>
+          <EditNews />
+        </AdminLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/settings",
     element: (
-      <AdminLayout>
-        <SettingsPage />
-      </AdminLayout>
+      <PrivateRoute>
+        <AdminLayout>
+          <SettingsPage />
+        </AdminLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/settings/addnewadmin",
     element: (
-      <AdminLayout>
-        <AddnewadminSinglepage />
-      </AdminLayout>
+      <PrivateRoute>
+        <AdminLayout>
+          <AddnewadminSinglepage />
+        </AdminLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/settings/addrole",
     element: (
-      <AdminLayout>
-        <AddnewroleSinglepage />
-      </AdminLayout>
+      <PrivateRoute>
+        <AdminLayout>
+          <AddnewroleSinglepage />
+        </AdminLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/Logout",
     element: (
-      <AdminLayout>
-        <LogoutPage />
-      </AdminLayout>
+      <PrivateRoute>
+        <AdminLayout>
+          <LogoutPage />
+        </AdminLayout>
+      </PrivateRoute>
     ),
   },
 
