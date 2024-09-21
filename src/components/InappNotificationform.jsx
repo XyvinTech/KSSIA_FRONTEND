@@ -10,6 +10,8 @@ import StyledSelectField from "../ui/StyledSelectField";
 import DropZoneforForm from "../ui/DropzoneforForm";
 import { useNotificationStore } from "../store/notificationStore";
 import { useDropDownStore } from "../store/dropDownStore";
+import { toast } from "react-toastify";
+import { set } from "date-fns";
 
 export default function InappNotificationform({ setSelectedTab }) {
   const {
@@ -21,6 +23,7 @@ export default function InappNotificationform({ setSelectedTab }) {
 
   const { addAppNotifications } = useNotificationStore();
   const { users, fetchUsers } = useDropDownStore();
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -32,25 +35,29 @@ export default function InappNotificationform({ setSelectedTab }) {
         }))
       : [];
   const onSubmit = async (data) => {
-    const formData = new FormData();
+    try {
+      setLoading(true);
+      const formData = new FormData();
+      const userIds = data.to.map((user) => user.value);
+      userIds.forEach((id) => {
+        formData.append("to", id);
+      });
+      formData.append("subject", data?.subject);
+      formData.append("content", data?.content);
+      formData.append("link_url", data?.link_url);
 
-    const userIds = data.to.map((user) => user.value);
-    userIds.forEach((id) => {
-      formData.append("to", id);
-    });
-    formData.append("subject", data?.subject);
-    formData.append("content", data?.content);
-    formData.append("link_url", data?.link_url);
+      if (data?.file) {
+        formData.append("file_url", data.file);
+      }
 
-    if (data?.file) {
-      formData.append("file_url", data.file); 
+      await addAppNotifications(formData);
+      reset();
+      setSelectedTab(2);
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
-    // for (let [key, value] of formData.entries()) {
-    //   console.log(`${key}: ${value}`);
-    // }
-    await addAppNotifications(formData);
-    reset(); 
-    setSelectedTab(2);
   };
 
   return (
@@ -211,7 +218,7 @@ export default function InappNotificationform({ setSelectedTab }) {
                 Cancel
               </StyledButton>
               <StyledButton
-                name="Save"
+                name={loading ? "Saving..." : "Save"}
                 variant="primary"
                 type="submit"
                 style={{ width: "auto" }}

@@ -77,17 +77,25 @@ export default function MembersPage() {
   };
 
   const handleDelete = async () => {
-    if (selectedRows.length > 0) {
-      await Promise.all(selectedRows?.map((id) => deleteUsers(id)));
-      toast.success('Deleted successfully');
-      setIsChange(!isChange);
-      setSelectedRows([]);
+    try {
+      if (selectedRows.length > 0) {
+        await Promise.all(selectedRows?.map((id) => deleteUsers(id)));
+        toast.success("Deleted successfully");
+        setIsChange(!isChange);
+        setSelectedRows([]);
+      }
+    } catch (error) {
+      console.error(error.message);
     }
   };
   const handleRowDelete = async (id) => {
-    await deleteUsers(id);
-    toast.success('Deleted successfully');
-    setIsChange(!isChange);
+    try {
+      await deleteUsers(id);
+      toast.success("Deleted successfully");
+      setIsChange(!isChange);
+    } catch (error) {
+      console.error(error.message);
+    }
   };
   const handleView2 = (id) => {
     navigate(`/members/addmember`);
@@ -132,7 +140,7 @@ export default function MembersPage() {
           <Stack
             direction={"row"}
             justifyContent={"end"}
-            paddingBottom={'15px'}
+            paddingBottom={"15px"}
             alignItems={"center"}
           >
             <Stack direction={"row"} spacing={2}>
@@ -156,7 +164,6 @@ export default function MembersPage() {
           <Box
             borderRadius={"16px"}
             bgcolor={"white"}
-
             p={1}
             border={"1px solid rgba(0, 0, 0, 0.12)"}
           >

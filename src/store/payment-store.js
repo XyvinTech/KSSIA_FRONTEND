@@ -1,10 +1,18 @@
 import { create } from "zustand";
-import { addPayment, deletePayment, editPayment, editSubscription, getPayment, getPaymentById, patchPayment } from "../api/payment-api";
-
+import {
+  addPayment,
+  deletePayment,
+  editPayment,
+  editSubscription,
+  getPayment,
+  getPaymentById,
+  patchPayment,
+} from "../api/payment-api";
 
 const usePaymentStore = create((set) => ({
   payments: [],
-payment: [],
+  payment: [],
+  loadings: false,
   fetchPayment: async () => {
     const allData = await getPayment();
     set({ payments: allData?.data || [] });
@@ -16,8 +24,10 @@ payment: [],
     await deletePayment(id);
   },
   fetchPaymentById: async (id) => {
+    set({ loadings: true });
     const allData = await getPaymentById(id);
     set({ payment: allData?.data || [] });
+    set({ loadings: false });
   },
   updatePayment: async (id, data) => {
     await editPayment(id, data);

@@ -10,6 +10,7 @@ import StyledSelectField from "../ui/StyledSelectField";
 import DropZoneforForm from "../ui/DropzoneforForm";
 import { useNotificationStore } from "../store/notificationStore";
 import { useDropDownStore } from "../store/dropDownStore";
+import { toast } from "react-toastify";
 
 export default function EmailNotificationform({ setSelectedTab }) {
   const {
@@ -20,6 +21,7 @@ export default function EmailNotificationform({ setSelectedTab }) {
   } = useForm();
   const { users, fetchUsers } = useDropDownStore();
   const { addEmailNotifications } = useNotificationStore();
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -31,23 +33,29 @@ export default function EmailNotificationform({ setSelectedTab }) {
         }))
       : [];
   const onSubmit = async (data) => {
-    const formData = new FormData();
+    try {
+      setLoading(true);
+      const formData = new FormData();
+      const userIds = data.to.map((user) => user.value);
+      userIds.forEach((id) => {
+        formData.append("to", id);
+      });
+      formData.append("subject", data?.subject);
+      formData.append("content", data?.content);
+      formData.append("link_url", data?.link_url);
+      // formData.append("file", data.file_url);
+      if (data?.media_url) {
+        formData.append("media_url", data.media_url);
+      }
 
-    const userIds = data.to.map((user) => user.value);
-    userIds.forEach((id) => {
-      formData.append("to", id);
-    });
-    formData.append("subject", data?.subject);
-    formData.append("content", data?.content);
-    formData.append("link_url", data?.link_url);
-    // formData.append("file", data.file_url);
-    if (data?.media_url) {
-      formData.append("media_url", data.media_url);
+      await addEmailNotifications(formData);
+      reset();
+      setSelectedTab(2);
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
-    
-    await addEmailNotifications(formData);
-    reset();
-    setSelectedTab(2);
   };
 
   return (
@@ -169,7 +177,7 @@ export default function EmailNotificationform({ setSelectedTab }) {
               )}
             />
           </Grid>
-     
+
           <Grid item xs={12}>
             <Typography
               sx={{ marginBottom: 1 }}
@@ -204,7 +212,7 @@ export default function EmailNotificationform({ setSelectedTab }) {
               <StyledButton name="Cancel" variant="secondary">
                 Cancel
               </StyledButton>
-              <StyledButton name="Save" variant="primary" type="submit">
+              <StyledButton name={loading ? "Saving..." : "Save"} variant="primary" type="submit">
                 Save
               </StyledButton>
             </Stack>

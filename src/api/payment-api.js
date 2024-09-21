@@ -20,7 +20,7 @@ export const addPayment = async (data) => {
     toast.success(response.data.message);
     return response.data;
   } catch (error) {
-    toast.error(error.response.data.message);
+    throw error.response.data;
   }
 };
 export const getPaymentById = async (id) => {
@@ -46,7 +46,7 @@ export const editPayment = async (id, data) => {
     toast.success(response.data.message);
     return response.data;
   } catch (error) {
-    toast.error(error.response.data.message);
+    throw error.response.data;
   }
 };
 export const editSubscription = async (id, data) => {
@@ -58,7 +58,7 @@ export const editSubscription = async (id, data) => {
     toast.success(response.data.message);
     return response.data;
   } catch (error) {
-    toast.error(error.response.data.message);
+    throw error.response.data;
   }
 };
 export const patchPayment = async (id, data) => {

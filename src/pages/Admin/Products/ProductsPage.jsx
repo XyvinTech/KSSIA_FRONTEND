@@ -47,26 +47,36 @@ export default function MembersPage() {
     navigate(`/products/addproduct`);
   };
   const handleEdit = (id) => {
-    navigate(`/products/addproduct`, { state: { productId: id, isUpdate: true } });
+    navigate(`/products/addproduct`, {
+      state: { productId: id, isUpdate: true },
+    });
   };
   const handleRowDelete = async (id) => {
     setProductId(id);
     setRemoveOpen(true);
   };
   const handleRemove = async () => {
-    await deleteProducts(productId);
-    toast.success('Deleted successfully');
-    setIsChange(!isChange);
+    try {
+      await deleteProducts(productId);
+      toast.success("Deleted successfully");
+      setIsChange(!isChange);
+    } catch (error) {
+      console.error(error.message);
+    }
   };
   const handleCloseDelete = () => {
     setRemoveOpen(false);
   };
   const handleDelete = async () => {
-    if (selectedRows.length > 0) {
-      await Promise.all(selectedRows?.map((id) => deleteProducts(id)));
-      toast.success('Deleted successfully');
-      setIsChange(!isChange);
-      setSelectedRows([]);
+    try {
+      if (selectedRows.length > 0) {
+        await Promise.all(selectedRows?.map((id) => deleteProducts(id)));
+        toast.success("Deleted successfully");
+        setIsChange(!isChange);
+        setSelectedRows([]);
+      }
+    } catch (error) {
+      console.error(error.message);
     }
   };
   return (
@@ -108,7 +118,7 @@ export default function MembersPage() {
           <Stack
             direction={"row"}
             justifyContent={"end"}
-            paddingBottom={'15px'}
+            paddingBottom={"15px"}
             alignItems={"center"}
           >
             <Stack direction={"row"} spacing={2}>

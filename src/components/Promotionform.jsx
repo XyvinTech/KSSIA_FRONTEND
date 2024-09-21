@@ -9,6 +9,7 @@ import StyledInput from "../ui/StyledInput.jsx";
 import { StyledMultilineTextField } from "../ui/StyledMultilineTextField .jsx";
 import { usePromotionStore } from "../store/promotionStore.js";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function Promotionform({ isUpdate }) {
   const {
@@ -51,7 +52,7 @@ export default function Promotionform({ isUpdate }) {
       setValue("type", { value: promotions.type, label: promotions.type });
       setValue("startDate", promotions.startDate);
       setValue("endDate", promotions.endDate);
-  
+
       if (promotions.type === "notice") {
         setValue("title", promotions.notice_title || "");
         setValue("description", promotions.notice_description || "");
@@ -60,54 +61,60 @@ export default function Promotionform({ isUpdate }) {
         setValue("title", promotions.video_title || "");
         setValue("yt_link", promotions.yt_link || "");
       } else if (promotions.type === "banner" || promotions.type === "poster") {
-        setValue("file", promotions.banner_image_url || promotions.poster_image_url || "");
+        setValue(
+          "file",
+          promotions.banner_image_url || promotions.poster_image_url || ""
+        );
       }
-  
+
       setType(promotions.type);
     }
   }, [isUpdate, promotions, setValue]);
-  
+
   const onSubmit = async (data) => {
-    setSubmitting(true);
-    const formData = new FormData();
-
-    formData.append("startDate", data?.startDate);
-    formData.append("endDate", data?.endDate);
-
-    if (type === "notice") {
-      formData.append("type", "notice");
-      formData.append("notice_title", data?.title);
-      formData.append("notice_description", data?.description);
-      formData.append("notice_link", data?.link);
-    }
-
-    if (type === "banner") {
-      formData.append("type", "banner");
-      if (!isUpdate || (isUpdate && data.file instanceof File)) {
-        formData.append("file", data.file);
+    try {
+      setSubmitting(true);
+      const formData = new FormData();
+      formData.append("startDate", data?.startDate);
+      formData.append("endDate", data?.endDate);
+      if (type === "notice") {
+        formData.append("type", "notice");
+        formData.append("notice_title", data?.title);
+        formData.append("notice_description", data?.description);
+        formData.append("notice_link", data?.link);
       }
-    }
-    if (type === "poster") {
-      formData.append("type", "poster");
-      if (!isUpdate || (isUpdate && data.file instanceof File)) {
-        formData.append("file", data.file);
-      }
-    }
 
-    if (type === "video") {
-      // formData.append("type", "video");
-      formData.append("yt_link", data?.yt_link);
-      formData.append("video_title", data?.title);
-      if (data?.upload_video) {
-        formData.append("file", data?.upload_video);
+      if (type === "banner") {
+        formData.append("type", "banner");
+        if (!isUpdate || (isUpdate && data.file instanceof File)) {
+          formData.append("file", data.file);
+        }
       }
-    }
-    if (isUpdate && id) {
-      await updatePromotion(id, formData);
-      navigate(`/promotions`);
-    } else {
-      await addPromotions(formData);
-      navigate(`/promotions`);
+      if (type === "poster") {
+        formData.append("type", "poster");
+        if (!isUpdate || (isUpdate && data.file instanceof File)) {
+          formData.append("file", data.file);
+        }
+      }
+
+      if (type === "video") {
+        // formData.append("type", "video");
+        formData.append("yt_link", data?.yt_link);
+        formData.append("video_title", data?.title);
+        if (data?.upload_video) {
+          formData.append("file", data?.upload_video);
+        }
+      }
+      if (isUpdate && id) {
+        await updatePromotion(id, formData);
+        navigate(`/promotions`);
+      } else {
+        await addPromotions(formData);
+        navigate(`/promotions`);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
       setSubmitting(false);
     }
   };
@@ -363,7 +370,7 @@ export default function Promotionform({ isUpdate }) {
                 Preview
               </StyledButton>
               <StyledButton
-                name="Publish"
+                name={submitting ? "Publishing..." : "Publish"}
                 variant="primary"
                 type="submit"
                 disabled={submitting}

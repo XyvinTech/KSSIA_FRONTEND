@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Grid, Stack } from "@mui/material";
+import { Box, Typography, Grid, Stack, Skeleton } from "@mui/material";
 
 import { StyledEventUpload } from "../ui/StyledEventUpload";
 import { StyledButton } from "../ui/StyledButton";
@@ -12,6 +12,7 @@ import { StyledTime } from "../ui/StyledTime.jsx";
 import { useDropDownStore } from "../store/dropDownStore.js";
 import { usePaymentStore } from "../store/payment-store.js";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function AddPaymentdetails() {
   const {
@@ -23,8 +24,9 @@ export default function AddPaymentdetails() {
   } = useForm();
   const location = useLocation();
   const { paymentId, isUpdate } = location.state || {};
-  const { addPayments, fetchPaymentById, updatePayment, payment } =
+  const { addPayments, fetchPaymentById, updatePayment, payment, loadings } =
     usePaymentStore();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { users, fetchUsers } = useDropDownStore();
   useEffect(() => {
@@ -80,61 +82,79 @@ export default function AddPaymentdetails() {
         }))
       : [];
   const onSubmit = async (data) => {
-    const formData = new FormData();
-    formData.append("member", data.member.value);
-    formData.append("date", data.date);
-    formData.append("time", data.time);
-    formData.append("amount", data.amount);
-    formData.append("mode_of_payment", data.mode_of_payment);
-    formData.append("category", data.category.value);
-    formData.append("status", data.status.value);
-    formData.append("remarks", data.remarks);
-    if (!isUpdate || (isUpdate && data.file instanceof File)) {
-      formData.append("file", data.file);
-    }
+    try {
+      setLoading(true);
+      const formData = new FormData();
+      formData.append("member", data.member.value);
+      formData.append("date", data.date);
+      formData.append("time", data.time);
+      formData.append("amount", data.amount);
+      formData.append("mode_of_payment", data.mode_of_payment);
+      formData.append("category", data.category.value);
+      formData.append("status", data.status.value);
+      formData.append("remarks", data.remarks);
+      if (!isUpdate || (isUpdate && data.file instanceof File)) {
+        formData.append("file", data.file);
+      }
 
-    if (isUpdate && paymentId) {
-      await updatePayment(paymentId, formData);
-    } else {
-      await addPayments(formData);
+      if (isUpdate && paymentId) {
+        await updatePayment(paymentId, formData);
+      } else {
+        await addPayments(formData);
+      }
+      navigate(`/payments`);
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
-    navigate(`/payments`);
   };
+
   return (
-    <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"12px"}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Grid container spacing={4}>
-          <Grid item xs={6}>
-            <Typography
-              sx={{ marginBottom: 1 }}
-              variant="h6"
-              fontWeight={500}
-              color={"#333333"}
-            >
-              Name of the member
-            </Typography>
-            <Controller
-              name="member"
-              control={control}
-              defaultValue=""
-              rules={{ required: "Member name is required" }}
-              render={({ field }) => (
-                <>
-                  <StyledSelectField
-                    placeholder="Enter member name"
-                    options={option}
-                    {...field}
+    <>
+      {loadings ? (
+        <Skeleton
+          variant="rectangular"
+          width={"100%"}
+          height={"800px"}
+          sx={{ bgcolor: "white" }}
+        />
+      ) : (
+        <>
+          <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"12px"}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Grid container spacing={4}>
+                <Grid item xs={6}>
+                  <Typography
+                    sx={{ marginBottom: 1 }}
+                    variant="h6"
+                    fontWeight={500}
+                    color={"#333333"}
+                  >
+                    Name of the member
+                  </Typography>
+                  <Controller
+                    name="member"
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: "Member name is required" }}
+                    render={({ field }) => (
+                      <>
+                        <StyledSelectField
+                          placeholder="Enter member name"
+                          options={option}
+                          {...field}
+                        />
+                        {errors.member && (
+                          <span style={{ color: "red" }}>
+                            {errors.member.message}
+                          </span>
+                        )}
+                      </>
+                    )}
                   />
-                  {errors.member && (
-                    <span style={{ color: "red" }}>
-                      {errors.member.message}
-                    </span>
-                  )}
-                </>
-              )}
-            />
-          </Grid>
-          {/* <Grid item xs={6}>
+                </Grid>
+                {/* <Grid item xs={6}>
             <Typography
               sx={{ marginBottom: 1 }}
               variant="h6"
@@ -158,250 +178,260 @@ export default function AddPaymentdetails() {
               )}
             />
           </Grid> */}
-          <Grid item xs={6}>
-            <Typography
-              sx={{ marginBottom: 1 }}
-              variant="h6"
-              fontWeight={500}
-              color={"#333333"}
-            >
-              Date
-            </Typography>
-            <Controller
-              name="date"
-              control={control}
-              defaultValue=""
-              rules={{ required: " Date is required" }}
-              render={({ field }) => (
-                <>
-                  <StyledCalender
-                    label="Select Date from Calender"
-                    {...field}
+                <Grid item xs={6}>
+                  <Typography
+                    sx={{ marginBottom: 1 }}
+                    variant="h6"
+                    fontWeight={500}
+                    color={"#333333"}
+                  >
+                    Date
+                  </Typography>
+                  <Controller
+                    name="date"
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: " Date is required" }}
+                    render={({ field }) => (
+                      <>
+                        <StyledCalender
+                          label="Select Date from Calender"
+                          {...field}
+                        />
+                        {errors.date && (
+                          <span style={{ color: "red" }}>
+                            {errors.date.message}
+                          </span>
+                        )}
+                      </>
+                    )}
                   />
-                  {errors.date && (
-                    <span style={{ color: "red" }}>{errors.date.message}</span>
-                  )}
-                </>
-              )}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <Typography
-              sx={{ marginBottom: 1 }}
-              variant="h6"
-              fontWeight={500}
-              color={"#333333"}
-            >
-              Time
-            </Typography>
-            <Controller
-              name="time"
-              control={control}
-              defaultValue=""
-              rules={{ required: "Time is required" }}
-              render={({ field }) => (
-                <>
-                  <StyledTime label="Select Time" {...field} />
-                  {errors.time && (
-                    <span style={{ color: "red" }}>{errors.time.message}</span>
-                  )}{" "}
-                </>
-              )}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <Typography
-              sx={{ marginBottom: 1 }}
-              variant="h6"
-              fontWeight={500}
-              color={"#333333"}
-            >
-              Amount
-            </Typography>
-            <Controller
-              name="amount"
-              control={control}
-              defaultValue=""
-              rules={{ required: "Amount is required" }}
-              render={({ field }) => (
-                <>
-                  <StyledInput placeholder="Enter the payment " {...field} />
-                  {errors.amount && (
-                    <span style={{ color: "red" }}>
-                      {errors.amount.message}
-                    </span>
-                  )}
-                </>
-              )}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <Typography
-              sx={{ marginBottom: 1 }}
-              variant="h6"
-              fontWeight={500}
-              color={"#333333"}
-            >
-              Mode of Payment
-            </Typography>
-            <Controller
-              name="mode_of_payment"
-              control={control}
-              defaultValue=""
-              rules={{ required: "Mode of payment is required" }}
-              render={({ field }) => (
-                <>
-                  <StyledInput
-                    placeholder="Enter the mode of payment "
-                    {...field}
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography
+                    sx={{ marginBottom: 1 }}
+                    variant="h6"
+                    fontWeight={500}
+                    color={"#333333"}
+                  >
+                    Time
+                  </Typography>
+                  <Controller
+                    name="time"
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: "Time is required" }}
+                    render={({ field }) => (
+                      <>
+                        <StyledTime label="Select Time" {...field} />
+                        {errors.time && (
+                          <span style={{ color: "red" }}>
+                            {errors.time.message}
+                          </span>
+                        )}{" "}
+                      </>
+                    )}
                   />
-                  {errors.mode_of_payment && (
-                    <span style={{ color: "red" }}>
-                      {errors.mode_of_payment.message}
-                    </span>
-                  )}
-                </>
-              )}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <Typography
-              sx={{ marginBottom: 1 }}
-              variant="h6"
-              fontWeight={500}
-              color={"#333333"}
-            >
-              Category
-            </Typography>
-            <Controller
-              name="category"
-              control={control}
-              defaultValue=""
-              rules={{ required: "Payment Category is required" }}
-              render={({ field }) => (
-                <>
-                  <StyledSelectField
-                    placeholder=" payment category"
-                    options={category}
-                    {...field}
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography
+                    sx={{ marginBottom: 1 }}
+                    variant="h6"
+                    fontWeight={500}
+                    color={"#333333"}
+                  >
+                    Amount
+                  </Typography>
+                  <Controller
+                    name="amount"
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: "Amount is required" }}
+                    render={({ field }) => (
+                      <>
+                        <StyledInput
+                          placeholder="Enter the payment "
+                          {...field}
+                        />
+                        {errors.amount && (
+                          <span style={{ color: "red" }}>
+                            {errors.amount.message}
+                          </span>
+                        )}
+                      </>
+                    )}
                   />
-                  {errors.category && (
-                    <span style={{ color: "red" }}>
-                      {errors.category.message}
-                    </span>
-                  )}
-                </>
-              )}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <Typography
-              sx={{ marginBottom: 1 }}
-              variant="h6"
-              fontWeight={500}
-              color={"#333333"}
-            >
-              Status
-            </Typography>
-            <Controller
-              name="status"
-              control={control}
-              defaultValue=""
-              rules={{ required: "Status of payment is required" }}
-              render={({ field }) => (
-                <>
-                  <StyledSelectField
-                    placeholder="Status"
-                    options={status}
-                    {...field}
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography
+                    sx={{ marginBottom: 1 }}
+                    variant="h6"
+                    fontWeight={500}
+                    color={"#333333"}
+                  >
+                    Mode of Payment
+                  </Typography>
+                  <Controller
+                    name="mode_of_payment"
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: "Mode of payment is required" }}
+                    render={({ field }) => (
+                      <>
+                        <StyledInput
+                          placeholder="Enter the mode of payment "
+                          {...field}
+                        />
+                        {errors.mode_of_payment && (
+                          <span style={{ color: "red" }}>
+                            {errors.mode_of_payment.message}
+                          </span>
+                        )}
+                      </>
+                    )}
                   />
-                  {errors.status && (
-                    <span style={{ color: "red" }}>
-                      {errors.status.message}
-                    </span>
-                  )}
-                </>
-              )}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <Typography
-              sx={{ marginBottom: 1 }}
-              variant="h6"
-              fontWeight={500}
-              color={"#333333"}
-            >
-              Upload invoice
-            </Typography>
-            <Controller
-              name="file"
-              control={control}
-              defaultValue=""
-              rules={{ required: "Invoice image is required" }}
-              render={({ field }) => (
-                <>
-                  <StyledEventUpload
-                    label="Upload Product Image"
-                    onChange={field.onChange}
-                    value={field.value}
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography
+                    sx={{ marginBottom: 1 }}
+                    variant="h6"
+                    fontWeight={500}
+                    color={"#333333"}
+                  >
+                    Category
+                  </Typography>
+                  <Controller
+                    name="category"
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: "Payment Category is required" }}
+                    render={({ field }) => (
+                      <>
+                        <StyledSelectField
+                          placeholder=" payment category"
+                          options={category}
+                          {...field}
+                        />
+                        {errors.category && (
+                          <span style={{ color: "red" }}>
+                            {errors.category.message}
+                          </span>
+                        )}
+                      </>
+                    )}
                   />
-                  {errors.file && (
-                    <span style={{ color: "red" }}>{errors.file.message}</span>
-                  )}
-                </>
-              )}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <Typography
-              sx={{ marginBottom: 1 }}
-              variant="h6"
-              fontWeight={500}
-              color={"#333333"}
-            >
-              Remarks
-            </Typography>
-            <Controller
-              name="remarks"
-              control={control}
-              defaultValue=""
-              rules={{ required: "Remarks is required" }}
-              render={({ field }) => (
-                <>
-                  <StyledInput placeholder="Add any Remarks " {...field} />
-                  {errors.remarks && (
-                    <span style={{ color: "red" }}>
-                      {errors.remarks.message}
-                    </span>
-                  )}
-                </>
-              )}
-            />
-          </Grid>
-
-          <Grid item xs={6}></Grid>
-          <Grid item xs={6}>
-            {" "}
-            <Stack direction={"row"} spacing={2}>
-              <StyledButton
-                name="Cancel"
-                variant="secondary"
-                style={{ width: "auto" }}
-              >
-                Cancel
-              </StyledButton>
-              <StyledButton
-                name="Save"
-                variant="primary"
-                type="submit"
-                style={{ width: "auto" }}
-              >
-                Save
-              </StyledButton>
-            </Stack>
-          </Grid>
-        </Grid>
-      </form>
-    </Box>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography
+                    sx={{ marginBottom: 1 }}
+                    variant="h6"
+                    fontWeight={500}
+                    color={"#333333"}
+                  >
+                    Status
+                  </Typography>
+                  <Controller
+                    name="status"
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: "Status of payment is required" }}
+                    render={({ field }) => (
+                      <>
+                        <StyledSelectField
+                          placeholder="Status"
+                          options={status}
+                          {...field}
+                        />
+                        {errors.status && (
+                          <span style={{ color: "red" }}>
+                            {errors.status.message}
+                          </span>
+                        )}
+                      </>
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography
+                    sx={{ marginBottom: 1 }}
+                    variant="h6"
+                    fontWeight={500}
+                    color={"#333333"}
+                  >
+                    Upload invoice
+                  </Typography>
+                  <Controller
+                    name="file"
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: "Invoice image is required" }}
+                    render={({ field }) => (
+                      <>
+                        <StyledEventUpload
+                          label="Upload Product Image"
+                          onChange={field.onChange}
+                          value={field.value}
+                        />
+                        {errors.file && (
+                          <span style={{ color: "red" }}>
+                            {errors.file.message}
+                          </span>
+                        )}
+                      </>
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography
+                    sx={{ marginBottom: 1 }}
+                    variant="h6"
+                    fontWeight={500}
+                    color={"#333333"}
+                  >
+                    Remarks
+                  </Typography>
+                  <Controller
+                    name="remarks"
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: "Remarks is required" }}
+                    render={({ field }) => (
+                      <>
+                        <StyledInput
+                          placeholder="Add any Remarks "
+                          {...field}
+                        />
+                        {errors.remarks && (
+                          <span style={{ color: "red" }}>
+                            {errors.remarks.message}
+                          </span>
+                        )}
+                      </>
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={12} display={"flex"} justifyContent={"flex-end"}>
+                  {" "}
+                  <Stack direction={"row"} spacing={2}>
+                    <StyledButton
+                      name="Cancel"
+                      variant="secondary"
+                      style={{ width: "auto" }}
+                    >
+                      Cancel
+                    </StyledButton>
+                    <StyledButton
+                      name={loading ? "Saving..." : "Save"}
+                      variant="primary"
+                      type="submit"
+                    />
+                  </Stack>
+                </Grid>
+              </Grid>
+            </form>
+          </Box>
+        </>
+      )}
+    </>
   );
 }

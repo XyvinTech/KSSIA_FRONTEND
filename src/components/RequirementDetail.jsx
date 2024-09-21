@@ -16,10 +16,14 @@ const RequirementDetail = ({ open, onClose, onChange, data, onDeny }) => {
   const { handleSubmit } = useForm();
   const { patchApprovals } = useApprovalStore();
   const onSubmit = async () => {
-    const updateData = { status: "approved" };
-    await patchApprovals(data?._id, updateData);
-    onChange();
-    onClose();
+    try {
+      const updateData = { status: "approved" };
+      await patchApprovals(data?._id, updateData);
+      onChange();
+      onClose();
+    } catch (error) {
+      console.error(error.message);
+    }
   };
 
   const handleClear = (event) => {

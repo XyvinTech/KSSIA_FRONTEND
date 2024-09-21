@@ -27,11 +27,13 @@ export const getApproval = async () => {
 };
 export const patchApproval = async (id, data) => {
   try {
-    const response = await axiosInstance.patch(`/requirements/${id}/status`, data);
+    const response = await axiosInstance.patch(
+      `/requirements/${id}/status`,
+      data
+    );
     toast.success(response.data.message);
     return response.data;
   } catch (error) {
-    toast.error(error.response?.data?.message || "An error occurred");
-    throw error;
+    throw error.response.data;
   }
 };

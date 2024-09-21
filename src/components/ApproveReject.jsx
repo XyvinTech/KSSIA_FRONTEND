@@ -27,13 +27,17 @@ const ApproveReject = ({ open, onClose, data, onChange }) => {
   const [previewData, setPreviewData] = useState(null);
 
   const onSubmit = async (formData) => {
-    const updateData = {
-      reason: formData?.reason,
-      status: "rejected",
-    };
-    await patchApprovals(data?._id, updateData);
-    onChange();
-    onClose();
+    try {
+      const updateData = {
+        reason: formData?.reason,
+        status: "rejected",
+      };
+      await patchApprovals(data?._id, updateData);
+      onChange();
+      onClose();
+    } catch (error) {
+      console.error(error.message);
+    }
   };
 
   const handleReject = (event) => {
@@ -46,7 +50,6 @@ const ApproveReject = ({ open, onClose, data, onChange }) => {
     setReject(false);
     setPreviewData(null);
   };
-  console.log(data);
   return (
     <>
       <Dialog

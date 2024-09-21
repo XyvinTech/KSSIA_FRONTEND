@@ -23,12 +23,12 @@ export default function Addproductform() {
     setValue,
     formState: { errors },
   } = useForm();
-  const [additionalPhones, setAdditionalPhones] = useState([]);
 
   const { addProducts, fetchProductById, updateProduct, products, loadings } =
     useProductsStore();
-    
+  const [loading, setLoading] = useState(false);
   const { users, fetchUsers } = useDropDownStore();
+
   const location = useLocation();
   const { productId, isUpdate } = location.state || {};
   useEffect(() => {
@@ -68,6 +68,7 @@ export default function Addproductform() {
 
   const onSubmit = async (data) => {
     try {
+      setLoading(true);
       const formData = new FormData();
       formData.append("seller_id", data?.seller_id.value);
       formData.append("description", data?.description);
@@ -86,13 +87,11 @@ export default function Addproductform() {
       navigate(`/products`);
     } catch (error) {
       toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
-      
-  
-  const addPhoneNumber = () => {
-    setAdditionalPhones([...additionalPhones, ""]);
-  };
+
   return (
     <>
       {loadings ? (
@@ -317,10 +316,9 @@ export default function Addproductform() {
                       Cancel
                     </StyledButton>
                     <StyledButton
-                      name="Save"
+                      name={loading ? "Saving..." : "Save"}
                       variant="primary"
                       type="submit"
-                      style={{ width: "auto" }}
                     >
                       Save
                     </StyledButton>

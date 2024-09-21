@@ -20,7 +20,7 @@ export const deleteProduct = async (id) => {
 
     return response.data;
   } catch (error) {
-    console.error(error.response.data.message);
+    throw error.response.data;
   }
 };
 export const getProductById = async (id) => {
