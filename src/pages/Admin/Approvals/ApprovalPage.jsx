@@ -16,7 +16,8 @@ export default function ApprovalPage() {
   const [rejectOpen, setRejectOpen] = useState(false);
   const [approveOpen, setApproveOpen] = useState(false);
   const [isChange, setIsChange] = useState(false);
-  const { approvals, fetchApproval, fetchApprovalById, approval } =
+  const [pageNo, setPageNo] = useState(1);
+  const { approvals, fetchApproval, fetchApprovalById, totalCount, approval } =
     useApprovalStore();
   const handleOpenFilter = () => {
     setFilterOpen(true);
@@ -48,7 +49,7 @@ export default function ApprovalPage() {
   const handleCloseApprove = () => {
     setApproveOpen(false);
   };
-  const handleReject =async (id) => {
+  const handleReject = async (id) => {
     await fetchApprovalById(id);
     setRejectOpen(true);
   };
@@ -79,7 +80,7 @@ export default function ApprovalPage() {
           <Stack
             direction={"row"}
             justifyContent={"end"}
-            paddingBottom={'15px'}
+            paddingBottom={"15px"}
             alignItems={"center"}
           >
             <Stack direction={"row"} spacing={2}>
@@ -113,6 +114,9 @@ export default function ApprovalPage() {
               onModify={handleApprove}
               payment
               onAction={handleReject}
+              totalCount={totalCount}
+              pageNo={pageNo}
+              setPageNo={setPageNo}
             />{" "}
             <ApproveReject
               open={rejectOpen}

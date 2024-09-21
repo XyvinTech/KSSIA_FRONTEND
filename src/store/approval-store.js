@@ -9,9 +9,11 @@ import {
 const useApprovalStore = create((set) => ({
   approvals: [],
   approval: [],
+  totalCount: 0,
   fetchApproval: async () => {
     const allData = await getApproval();
     set({ approvals: allData?.data || [] });
+    set({ totalCount: allData?.totalCount || 0 });
   },
   fetchApprovalByUser: async (id) => {
     const allData = await getApprovalById(id);

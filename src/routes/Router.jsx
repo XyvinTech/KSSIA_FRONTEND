@@ -28,6 +28,7 @@ import EditNews from "../pages/Admin/NewsandUpdates/EditNews.jsx";
 import EventSingleView from "../pages/Admin/Eventss/Eventlist/EventSingleView.jsx";
 import EditPromotion from "../pages/Admin/Promotions/EditPromotion.jsx";
 import { PrivateRoute } from "./privateRouter.jsx";
+import QRPage from "../pages/QRPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -266,8 +267,8 @@ const router = createBrowserRouter([
   },
 
   {
-    path: "/app",
-    element: <App />,
+    path: "/user",
+    element: <QRPage />,
   },
 ]);
 

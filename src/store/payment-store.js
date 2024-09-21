@@ -13,9 +13,11 @@ const usePaymentStore = create((set) => ({
   payments: [],
   payment: [],
   loadings: false,
+  totalCount: 0,
   fetchPayment: async () => {
     const allData = await getPayment();
     set({ payments: allData?.data || [] });
+    set({ totalCount: allData?.totalCount || 0 });
   },
   addPayments: async (data) => {
     await addPayment(data);

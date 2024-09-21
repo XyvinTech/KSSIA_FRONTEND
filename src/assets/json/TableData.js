@@ -52,7 +52,7 @@ export const userColumns = [
     { title: "Activate", field: "activate" },
     { title: "Type", field: "type" },
     { title: "Mode", field: "platform" },
-    { title: "RSVP", field: "rsvp" }
+    // { title: "RSVP", field: "rsvp" }
 
   ];
   

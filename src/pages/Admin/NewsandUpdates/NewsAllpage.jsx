@@ -14,9 +14,11 @@ export default function NewsAllpage() {
   const [selectedTab, setSelectedTab] = useState("All");
   const [selectedRows, setSelectedRows] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);
+  const [pageNo, setPageNo] = useState(1);
   const [isChange, setIsChange] = useState(false);
 
-  const { singleNews,news, fetchNews, deleteNews, fetchNewsById } = useNewsStore();
+  const { singleNews, news, fetchNews, deleteNews, totalCount, fetchNewsById } =
+    useNewsStore();
   const [previewOpen, setPreviewOpen] = useState(false);
   const handleOpenFilter = () => {
     setFilterOpen(true);
@@ -36,14 +38,14 @@ export default function NewsAllpage() {
   const handleDelete = async () => {
     if (selectedRows.length > 0) {
       await Promise.all(selectedRows?.map((id) => deleteNews(id)));
-      toast.success('Deleted successfully');
+      toast.success("Deleted successfully");
       setIsChange(!isChange);
       setSelectedRows([]);
     }
   };
   const handleRowDelete = async (id) => {
     await deleteNews(id);
-    toast.success('Deleted successfully');
+    toast.success("Deleted successfully");
     setIsChange(!isChange);
   };
 
@@ -62,7 +64,7 @@ export default function NewsAllpage() {
   }, [isChange]);
   const handleChange = () => {
     setIsChange(!isChange);
-  }
+  };
   const userColumns = [
     { title: "Category", field: "category", padding: "none" },
 
@@ -75,7 +77,7 @@ export default function NewsAllpage() {
       <Stack
         direction={"row"}
         justifyContent={"end"}
-        paddingBottom={'15PX'}
+        paddingBottom={"15PX"}
         alignItems={"center"}
         marginRight={2}
       >
@@ -152,10 +154,19 @@ export default function NewsAllpage() {
           onSelectionChange={handleSelectionChange}
           onModify={handleEdit}
           onAction={handlePreview}
+          totalCount={totalCount}
+          pageNo={pageNo}
+          setPageNo={setPageNo}
           onDelete={handleDelete}
           onDeleteRow={handleRowDelete}
         />{" "}
-        <NewsPreview open={previewOpen} onClose={handleClosePreview} onChange={handleChange}  onEdit={() => handleEdit(singleNews._id)} data={singleNews} />
+        <NewsPreview
+          open={previewOpen}
+          onClose={handleClosePreview}
+          onChange={handleChange}
+          onEdit={() => handleEdit(singleNews._id)}
+          data={singleNews}
+        />
       </Box>
     </>
   );

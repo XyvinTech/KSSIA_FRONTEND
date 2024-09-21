@@ -10,9 +10,11 @@ import {
 const useNewsStore = create((set) => ({
   news: [],
   singleNews: [],
+  totalCount: 0,
   fetchNews: async () => {
     const allData = await getNews();
     set({ news: allData?.data || [] });
+    set({ totalCount: allData?.totalCount || 0 });
   },
   addNewses: async (data) => {
     await addNews(data);

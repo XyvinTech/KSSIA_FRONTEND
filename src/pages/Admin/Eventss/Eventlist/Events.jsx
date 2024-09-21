@@ -14,6 +14,8 @@ export default function Events() {
   const [selectedRows, setSelectedRows] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);
   const [tableData, setTableData] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [pageNo, setPageNo] = useState(1);
   const [isChange, setIsChange] = useState(false);
   const handleOpenFilter = () => {
     setFilterOpen(true);
@@ -47,6 +49,7 @@ export default function Events() {
         //   activate: event.activate ? "active" : "inactive",
         // }));
         setTableData(response.data);
+        setTotal(response.totalCount);
       } catch (error) {
         console.error("Error fetching events:", error);
       }
@@ -70,7 +73,7 @@ export default function Events() {
         <Stack
           direction={"row"}
           justifyContent={"end"}
-          paddingBottom={'15px'}
+          paddingBottom={"15px"}
           alignItems={"center"}
         >
           <Stack direction={"row"} spacing={2}>
@@ -104,6 +107,9 @@ export default function Events() {
             onModify={handleEdit}
             onView={handleView}
             onDelete={handleDelete}
+            totalCount={total}
+            pageNo={pageNo}
+            setPageNo={setPageNo}
             onDeleteRow={handleRowDelete}
           />{" "}
         </Box>

@@ -14,10 +14,10 @@ export default function PaymentPage() {
   const [selectedRows, setSelectedRows] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);
   const [approveOpen, setApproveOpen] = useState(false);
-
+  const [pageNo, setPageNo] = useState(1);
   const [isChange, setIsChange] = useState(false);
 
-  const { payments, fetchPayment, deletePayments, fetchPaymentById, payment } =
+  const { payments, fetchPayment, deletePayments, fetchPaymentById, totalCount, payment } =
     usePaymentStore();
   const userColumns = [
     { title: "Member name", field: "full_name", padding: "none" },
@@ -48,14 +48,14 @@ export default function PaymentPage() {
   const handleDelete = async () => {
     if (selectedRows.length > 0) {
       await Promise.all(selectedRows?.map((id) => deletePayments(id)));
-      toast.success('Payments deleted successfully');
+      toast.success("Payments deleted successfully");
       setIsChange(!isChange);
       setSelectedRows([]);
     }
   };
   const handleRowDelete = async (id) => {
     await deletePayments(id);
-    toast.success('Payment deleted successfully');
+    toast.success("Payment deleted successfully");
     setIsChange(!isChange);
   };
   const handleView2 = (id) => {
@@ -112,7 +112,7 @@ export default function PaymentPage() {
           <Stack
             direction={"row"}
             justifyContent={"end"}
-            paddingBottom={'15px'}
+            paddingBottom={"15px"}
             alignItems={"center"}
           >
             <Stack direction={"row"} spacing={2}>
@@ -146,6 +146,9 @@ export default function PaymentPage() {
               onView={handleApprove}
               onDelete={handleDelete}
               onModify={handleEdit}
+              totalCount={totalCount}
+              pageNo={pageNo}
+              setPageNo={setPageNo}
               onDeleteRow={handleRowDelete}
             />{" "}
             <MemberShipRenewal
