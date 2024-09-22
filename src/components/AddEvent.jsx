@@ -15,6 +15,7 @@ import {
   updateEventById,
 } from "/src/api/events-api.js";
 import { StyledMultilineTextField } from "../ui/StyledMultilineTextField .jsx";
+import { useNavigate } from "react-router-dom";
 
 export default function AddEvent({ eventId, setSelectedTab }) {
   const {
@@ -24,6 +25,7 @@ export default function AddEvent({ eventId, setSelectedTab }) {
     formState: { errors },
   } = useForm();
   const [isChecked, setIsChecked] = useState(false);
+  const navigate = useNavigate();
   const handleClear = (event) => {
     event.preventDefault();
     setSelectedTab(0);
@@ -61,7 +63,6 @@ export default function AddEvent({ eventId, setSelectedTab }) {
     formData.append("speakers", JSON.stringify(data.speakers));
     formData.append("type", data.type);
     formData.append("image", data.image);
-    formData.append("description", data.description);
     formData.append("guest_image", data.guest_image);
     formData.append("description", data.description);
     formData.append("meeting_link", data.meeting_link);
@@ -70,6 +71,7 @@ export default function AddEvent({ eventId, setSelectedTab }) {
     });
     if (eventId) {
       await updateEventById(eventId, formData);
+      navigate(`/events/eventlist`);
     } else {
       await createEvent(formData);
       setSelectedTab(0);
@@ -581,25 +583,46 @@ export default function AddEvent({ eventId, setSelectedTab }) {
                   )}
                 />
               </Grid>
-              <Grid item xs={6}>
-                <Controller
-                  name={`speaker_images[${index}]`}
-                  control={control}
-                  defaultValue={speaker.speaker_image}
-                  render={({ field: { onChange, value } }) => (
-                    <>
+              {eventId ? (
+                <Grid item xs={6}>
+                  <Controller
+                    name={`speakers[${index}].speaker_image`}
+                    control={control}
+                    defaultValue={speaker.speaker_image || ""}
+                    render={({ field: { onChange, value } }) => (
                       <StyledEventUpload
                         label="Upload Speaker Image here"
                         onChange={(file) => {
-                          handleSpeakerImageChange(index, file);
-                          onChange(file);
+                          handleSpeakerImageChange(index, file); // Update external handler if needed
+                          onChange(file); // Update form state
                         }}
-                        value={value}
+                        value={value} // Ensure the image URL or file is correctly passed as the value
                       />
-                    </>
-                  )}
-                />
-              </Grid>{" "}
+                    )}
+                  />
+                </Grid>
+              ) : (
+                <Grid item xs={6}>
+                  <Controller
+                    name={`speaker_images[${index}]`}
+                    control={control}
+                    defaultValue={speaker.speaker_image}
+                    render={({ field: { onChange, value } }) => (
+                      <>
+                        <StyledEventUpload
+                          label="Upload Speaker Image here"
+                          onChange={(file) => {
+                            handleSpeakerImageChange(index, file);
+                            onChange(file);
+                          }}
+                          value={value}
+                        />
+                      </>
+                    )}
+                  />
+                </Grid>
+              )}
+
               <Grid item xs={6}></Grid>
               <Grid item xs={6} display={"flex"} justifyContent={"end"}>
                 <Delete onClick={() => removeSpeaker(index)} />
