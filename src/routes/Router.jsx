@@ -267,7 +267,7 @@ const router = createBrowserRouter([
   },
 
   {
-    path: "/user",
+    path: "/user/:id",
     element: <QRPage />,
   },
 ]);

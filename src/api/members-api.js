@@ -63,3 +63,11 @@ export const deleteUser = async (id) => {
     console.error(error.response.data.message);
   }
 };
+export const getSingleUser = async (id) => {
+  try {
+    const response = await axiosInstance.get(`/user/qr/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

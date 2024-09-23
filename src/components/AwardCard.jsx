@@ -2,12 +2,12 @@ import React from "react";
 
 import image from "../assets/images/award.png";
 import { Box, Typography } from "@mui/material";
-const AwardCard = ({ award }) => {
+const AwardCard = ({ award,ismobile }) => {
   return (
     <Box
       borderRadius={"8px"}
       bgcolor={"white"}
-      width={"302px"}
+      width={ismobile ? "198px" : "302px"}
       border={"1px solid rgba(0, 0, 0, 0.12)"}
     >
       <Box
@@ -16,8 +16,8 @@ const AwardCard = ({ award }) => {
         sx={{
           borderTopLeftRadius: "12px",
           borderTopRightRadius: "12px",
-          width: "302px",
-          height: "168px",
+          width: ismobile ? "198px" : "302px",
+          height: ismobile ? "131px" : "168px",
         }}
       />
       <Box borderRadius={"8px"} bgcolor={"white"} padding={"10px"}>

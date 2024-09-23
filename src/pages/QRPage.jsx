@@ -13,6 +13,9 @@ import { StyledButton } from "../ui/StyledButton";
 import Video from "../components/Video";
 import CertificateCard from "../components/CertificateCard";
 import AwardCard from "../components/AwardCard";
+import { getSingleUser } from "../api/members-api";
+import ProductCard from "../components/ProductCard";
+import StyledReview from "../ui/StyledReview";
 
 const QRPage = () => {
   const [userData, setUserData] = useState(null);
@@ -32,13 +35,14 @@ const QRPage = () => {
 
     fetchData();
   }, []);
+
   const handleSaveContact = () => {
     const vCardData = `
 BEGIN:VCARD
 VERSION:3.0
-FN:${userData?.name?.first} ${userData?.name?.last}
-ORG:${userData?.company?.name}
-TEL:${userData?.phone}
+FN:${userData?.name?.first_name} ${userData?.name?.last_name}
+ORG:${userData?.company_name}
+TEL:${userData?.phone_numbers?.personal}
 EMAIL:${userData?.email}
 ADR:${userData?.address}
 END:VCARD
@@ -47,7 +51,7 @@ END:VCARD
     const blob = new Blob([vCardData], { type: "text/vcard" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = `${userData?.name?.first}_${userData?.name?.last}.vcf`;
+    link.download = `${userData?.name?.first_name}_${userData?.name?.last_name}.vcf`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -83,31 +87,14 @@ END:VCARD
             >
               <Stack justifyContent={"center"} alignItems={"center"}>
                 <img
-                  src={userData?.image}
+                  src={userData?.profile_picture}
                   alt="image"
                   width={"130px"}
                   height={"139px"}
                 />
                 <Typography variant="h3" color="textTertiary" mt={1} mb={1}>
-                  {userData?.name?.first} {userData?.name?.last}
-                </Typography>
-                <Typography
-                  variant="h8"
-                  color="textTertiary"
-                  mt={1}
-                  mb={1}
-                  fontWeight={600}
-                >
-                  {userData?.college?.collegeName}
-                </Typography>
-                <Typography
-                  variant="h8"
-                  color="textTertiary"
-                  mt={1}
-                  mb={1}
-                  fontWeight={600}
-                >
-                  {userData?.batch}
+                  {userData?.name?.first_name} {userData?.name?.middle_name}{" "}
+                  {userData?.name?.last_name}
                 </Typography>
               </Stack>
               <Typography variant="h5" color="textTertiary" mt={1} mb={1}>
@@ -116,7 +103,9 @@ END:VCARD
               <Stack spacing={2} mb={4} mt={4}>
                 <Stack direction="row" alignItems="center" spacing={1}>
                   <AppPhoneIcon />
-                  <Typography variant="h7">{userData?.phone}</Typography>
+                  <Typography variant="h7">
+                    {userData?.phone_numbers?.personal}
+                  </Typography>
                 </Stack>
                 <Stack direction="row" alignItems="center" spacing={1}>
                   <AppEmailIcon />
@@ -135,7 +124,7 @@ END:VCARD
               </Typography>
               <Stack direction={"row"} spacing={2} mb={4}>
                 <a
-                  href={`https://wa.me/${userData?.company?.phone}`}
+                  href={`https://wa.me/${userData?.phone_numbers?.personal}`}
                   target="_blank"
                   style={{ textDecoration: "none" }}
                   rel="noopener noreferrer"
@@ -148,15 +137,33 @@ END:VCARD
                   onClick={handleSaveContact}
                 />
               </Stack>
-              {userData?.social && userData?.social?.length > 0 && (
+              {userData?.reviews && userData?.reviews?.length > 0 && (
+                <>
+                  <Typography
+                    variant="h5"
+                    color="textTertiary"
+                    mt={1}
+                    mb={1}
+                    pt={2}
+                  >
+                    Certificates
+                  </Typography>
+                  {userData?.reviews?.map((data, index) => (
+                    <Stack key={index} direction={"row"}spacing={1}>
+                      <StyledReview review={data} />
+                    </Stack>
+                  ))}{" "}
+                </>
+              )}{" "}
+              {userData?.social_media && userData?.social_media?.length > 0 && (
                 <>
                   {" "}
-                  <Typography variant="h5" color="textTertiary" mt={1} mb={1}>
+                  <Typography variant="h5" color="textTertiary" mt={2} mb={1}>
                     Social Media
                   </Typography>
                   <Stack spacing={2}>
                     {" "}
-                    {userData?.social?.map((media, index) => (
+                    {userData?.social_media?.map((media, index) => (
                       <Box
                         display="flex"
                         alignItems="center"
@@ -165,7 +172,7 @@ END:VCARD
                         borderRadius={"12px"}
                         p={2}
                       >
-                        {renderSocialIcon(media?.name)}
+                        {renderSocialIcon(media?.platform)}
                         <Typography
                           variant="h5"
                           color="#6D6D6D"
@@ -173,11 +180,11 @@ END:VCARD
                           ml={1}
                         >
                           <a
-                            href={media?.link}
+                            href={media?.url}
                             target="_blank"
                             rel="noopener noreferrer"
                           >
-                            {media?.link}
+                            {media?.url}
                           </a>
                         </Typography>
                       </Box>
@@ -224,7 +231,7 @@ END:VCARD
                   ))}{" "}
                 </>
               )}{" "}
-              {userData?.videos && userData?.videos?.length > 0 && (
+              {userData?.video && userData?.video?.length > 0 && (
                 <Typography
                   variant="h5"
                   color="textTertiary"
@@ -235,8 +242,24 @@ END:VCARD
                   Video title
                 </Typography>
               )}
-              {userData?.videos?.map((videoItem, index) => (
-                <Video url={videoItem.link} />
+              {userData?.video?.map((videoItem, index) => (
+                <Video url={videoItem.url} />
+              ))}{" "}
+              {userData?.products && userData?.products?.length > 0 && (
+                <Typography
+                  variant="h5"
+                  color="textTertiary"
+                  mt={1}
+                  mb={1}
+                  pt={2}
+                >
+                  Products
+                </Typography>
+              )}
+              {userData?.products?.map((product) => (
+                <Grid item md={2} xs={12} key={product?._id}>
+                  <ProductCard product={product} />
+                </Grid>
               ))}{" "}
               {userData?.certificates && userData?.certificates?.length > 0 && (
                 <>

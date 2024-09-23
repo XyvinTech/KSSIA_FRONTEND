@@ -1,13 +1,7 @@
 import { Box, Grid, Stack, Typography } from '@mui/material'
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-import StyledSearchbar from '../../../ui/StyledSearchbar';
-import { ReactComponent as FilterIcon } from "../../../assets/icons/FilterIcon.svg";
-import StyledTable from '../../../ui/StyledTable';
-import { userColumns, userData } from "../../../assets/json/TableData";
-import Addproductform from '../../../components/AddProductform';
-import Addnewrole from '../../../components/Addnewrole';
+import AddRole from '../../../components/AddRole';
 export default function AddnewroleSinglepage() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
@@ -38,9 +32,9 @@ export default function AddnewroleSinglepage() {
         </Grid>
       </Grid>
     </Box>
-   <Grid container item xs={12} padding={5}>
+   <Grid container item xs={12} padding={'15px'}>
     <Grid item xs={7}>
-      <Addnewrole/>
+      <AddRole/>
     </Grid>
    </Grid>
     </>
