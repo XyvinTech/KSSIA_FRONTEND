@@ -20,8 +20,7 @@ export const createEvent = async (eventData) => {
     toast.success(response.data.message);
     return response.data;
   } catch (error) {
-    toast.error(error.response.data.message);
-    console.error("Error caught:", error);
+    throw error.response.data;
   }
 };
 
@@ -54,8 +53,7 @@ export const updateEventById = async (id, data) => {
     toast.success(response.data.message);
     return response.data;
   } catch (error) {
-    toast.error(error.response.data.message);
-    console.error("Error caught:", error);
+    throw error.response.data;
   }
 };
 
@@ -81,7 +79,7 @@ export const cancelEvent = async (id) => {
 };
 export const getEventHistory = async () => {
   try {
-    const response = await axiosInstance.get("/events/history");
+    const response = await axiosInstance.get("/events/get/history");
     return response.data;
   } catch (error) {
     console.error("Error caught:", error);

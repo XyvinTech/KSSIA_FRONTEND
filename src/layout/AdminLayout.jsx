@@ -43,6 +43,7 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import NewspaperOutlinedIcon from "@mui/icons-material/NewspaperOutlined";
 import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 import ListOutlinedIcon from "@mui/icons-material/ListOutlined";
+import { useAdminStore } from "../store/adminStore";
 const drawerWidth = 250;
 const subNavigation = [
   { name: "Dashboard", to: "/dashboard", icon: <GridViewIcon /> },
@@ -79,6 +80,12 @@ const subNavigation = [
 
 const SimpleDialog = ({ open, onClose }) => {
   const navigate = useNavigate();
+  const { singleAdmin, fetchAdminById } = useAdminStore();
+  useEffect(() => {
+    fetchAdminById();
+  }, []);
+  console.log("singleAdmin:", singleAdmin);
+
   return (
     <Dialog
       open={open}
@@ -121,6 +128,7 @@ const AdminLayout = (props) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const theme = useTheme();
+  const {singleAdmin}=useAdminStore()
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const location = useLocation();
   const handleDrawerClose = () => {
@@ -169,7 +177,7 @@ const AdminLayout = (props) => {
           display: "flex",
           flexDirection: "column",
           alignItems: "flex-start",
-          
+
           gap: "10px",
         }}
       >

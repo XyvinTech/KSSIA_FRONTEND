@@ -16,6 +16,7 @@ import {
 } from "/src/api/events-api.js";
 import { StyledMultilineTextField } from "../ui/StyledMultilineTextField .jsx";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function AddEvent({ eventId, setSelectedTab }) {
   const {
@@ -25,6 +26,7 @@ export default function AddEvent({ eventId, setSelectedTab }) {
     formState: { errors },
   } = useForm();
   const [isChecked, setIsChecked] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const handleClear = (event) => {
     event.preventDefault();
@@ -38,7 +40,6 @@ export default function AddEvent({ eventId, setSelectedTab }) {
       speaker_name: "",
       speaker_designation: "",
       speaker_role: "",
-      speaker_image: "",
     },
   ]);
   const handleSwitchChange = (e) => {
@@ -49,32 +50,39 @@ export default function AddEvent({ eventId, setSelectedTab }) {
 
   const types = [{ value: "Conference", label: "Conference" }];
   const onSubmit = async (data) => {
-    const formData = new FormData();
-    formData.append("organiser_name", data.organiser_name);
-    formData.append("organiser_company_name", data.organiser_company_name);
-    formData.append("endTime", data.endTime);
-    formData.append("endDate", data.endDate);
-    formData.append("name", data.name);
-    formData.append("organiser_role", data.organiser_role);
-    formData.append("startTime", data.startTime);
-    formData.append("startDate", data.startDate);
-    formData.append("platform", data.platform);
-    formData.append("activate", data.activate);
-    formData.append("speakers", JSON.stringify(data.speakers));
-    formData.append("type", data.type);
-    formData.append("image", data.image);
-    formData.append("guest_image", data.guest_image);
-    formData.append("description", data.description);
-    formData.append("meeting_link", data.meeting_link);
-    speakerImages.forEach((image, index) => {
-      formData.append(`speaker_images`, image);
-    });
-    if (eventId) {
-      await updateEventById(eventId, formData);
-      navigate(`/events/eventlist`);
-    } else {
-      await createEvent(formData);
-      setSelectedTab(0);
+    try {
+      setLoading(true);
+      const formData = new FormData();
+      formData.append("organiser_name", data.organiser_name);
+      formData.append("organiser_company_name", data.organiser_company_name);
+      formData.append("endTime", data.endTime);
+      formData.append("endDate", data.endDate);
+      formData.append("name", data.name);
+      formData.append("organiser_role", data.organiser_role);
+      formData.append("startTime", data.startTime);
+      formData.append("startDate", data.startDate);
+      formData.append("platform", data.platform);
+      formData.append("activate", data.activate);
+      formData.append("speakers", JSON.stringify(data.speakers));
+      formData.append("type", data.type);
+      formData.append("image", data.image);
+      formData.append("guest_image", data.guest_image);
+      formData.append("description", data.description);
+      formData.append("meeting_link", data.meeting_link);
+      speakerImages.forEach((image, index) => {
+        formData.append(`speaker_images`, image);
+      });
+      if (eventId) {
+        await updateEventById(eventId, formData);
+        navigate(`/events/eventlist`);
+      } else {
+        await createEvent(formData);
+        setSelectedTab(0);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -593,10 +601,10 @@ export default function AddEvent({ eventId, setSelectedTab }) {
                       <StyledEventUpload
                         label="Upload Speaker Image here"
                         onChange={(file) => {
-                          handleSpeakerImageChange(index, file); // Update external handler if needed
-                          onChange(file); // Update form state
+                          handleSpeakerImageChange(index, file);
+                          onChange(file);
                         }}
-                        value={value} // Ensure the image URL or file is correctly passed as the value
+                        value={value}
                       />
                     )}
                   />
@@ -690,7 +698,11 @@ export default function AddEvent({ eventId, setSelectedTab }) {
               >
                 Cancel
               </StyledButton>
-              <StyledButton name="Save" variant="primary" type="submit">
+              <StyledButton
+                name={loading ? "Saving..." : "Save"}
+                variant="primary"
+                type="submit"
+              >
                 Save
               </StyledButton>
             </Stack>
