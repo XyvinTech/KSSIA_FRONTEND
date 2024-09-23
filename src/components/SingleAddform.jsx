@@ -113,16 +113,16 @@ export default function SingleAddform() {
           ? [{ url: data.websites }]
           : [],
         phone_numbers: {
-          personal: data.phone_number ? Number(data.phone_number) : undefined,
-          landline: data.landline ? Number(data.landline) : undefined,
+          personal: data.phone_number ? data.phone_number: undefined,
+          landline: data.landline ? data.landline : undefined,
           company_phone_number: data.company_phone_number
-            ? Number(data.company_phone_number)
+            ? data.company_phone_number
             : undefined,
           whatsapp_number: data.whatsapp_number
-            ? Number(data.whatsapp_number)
+            ? data.whatsapp_number
             : undefined,
           whatsapp_business_number: data.whatsapp_business_number
-            ? Number(data.whatsapp_business_number)
+            ? data.whatsapp_business_number
             : undefined,
         },
         blood_group: data.blood_group,
@@ -135,7 +135,6 @@ export default function SingleAddform() {
         business_category: data.business_category.value,
         status: data.status.value,
         sub_category: data.sub_category.value,
-        membership_id: data.membership_id,
       };
 
       if (!isUpdate) {
