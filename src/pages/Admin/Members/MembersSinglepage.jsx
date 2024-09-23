@@ -19,14 +19,14 @@ import MemberProfile from "../../../components/MemberProfile";
 import axiosInstance from "../../../api/axios-interceptor";
 import CONSTANTS from "../../../constants";
 import { useParams } from "react-router-dom";
-import { useMemberStore } from "../../../store/member-store";
+import { usePaymentStore } from "../../../store/payment-store";
 
 const MembersSinglepage = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [userData, setUserData] = useState({});
   const [isChange, setIsChange] = useState(false);
   const { id } = useParams();
-  const { fetchsubscriptionByUser, payments } = useMemberStore();
+  const { fetchsubscriptionByUser, payment } = usePaymentStore();
   useEffect(() => {
     async function init() {
       const response = await axiosInstance.get(
@@ -49,6 +49,8 @@ const MembersSinglepage = () => {
   useEffect(() => {
     fetchsubscriptionByUser(id);
   }, [isChange]);
+  console.log("payment", payment, isChange);
+
   return (
     <>
       <Box
@@ -112,15 +114,15 @@ const MembersSinglepage = () => {
         {selectedTab === 2 && (
           <Grid container>
             <Stack direction={"column"} spacing={3}>
-              {payments && payments?.length > 0 && payments[0]?.category ? (
-                payments[0].category === "app" ? (
+              {payment && payment?.length > 0 && payment[0]?.category ? (
+                payment[0].category === "app" ? (
                   <AppSubscriptionCard
-                    payment={payments[0]}
+                    payment={payment[0]}
                     onChange={handleIsChange}
                   />
                 ) : (
                   <MemberSubscriptionCard
-                    payment={payments[0]}
+                    payment={payment[0]}
                     onChange={handleIsChange}
                   />
                 )

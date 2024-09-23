@@ -8,6 +8,7 @@ import {
   getPaymentById,
   patchPayment,
 } from "../api/payment-api";
+import { getSubscriptionsByUserId } from "../api/members-api";
 
 const usePaymentStore = create((set) => ({
   payments: [],
@@ -31,11 +32,16 @@ const usePaymentStore = create((set) => ({
     set({ payment: allData?.data || [] });
     set({ loadings: false });
   },
+  fetchsubscriptionByUser: async (id) => {
+    const allData = await getSubscriptionsByUserId(id);
+    set({ payment: allData?.data || [] });
+  },
+
   updatePayment: async (id, data) => {
     await editPayment(id, data);
   },
   changePayment: async (id, data) => {
-    await editSubscription(id, data);
+   await editSubscription(id, data);
   },
   patchPayments: async (id, data) => {
     await patchPayment(id, data);

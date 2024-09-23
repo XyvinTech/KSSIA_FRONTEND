@@ -26,6 +26,7 @@ const handleChange = () => {
   const formatDate = (date) => {
     return date ? moment(date).format("DD-MM-YYYY") : "-";
   };
+console.log("payment",payment);
 
   return (
     <Grid

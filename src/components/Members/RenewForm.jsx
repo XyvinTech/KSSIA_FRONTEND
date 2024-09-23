@@ -21,11 +21,15 @@ const RenewForm = ({ open, onClose, onChange, data }) => {
   const [timeMetric, setTimeMetric] = useState(null);
 
   const onSubmit = async () => {
-    const dataToSend = new FormData();
-    dataToSend.append("year_count", timeMetric);
-    changePayment(data?._id, dataToSend);
-    onChange();
-    onClose();
+    try {
+      const dataToSend = new FormData();
+      dataToSend.append("year_count", timeMetric);
+      changePayment(data?._id, dataToSend);
+      onChange();
+      onClose();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleClear = (event) => {
