@@ -29,6 +29,7 @@ import EventSingleView from "../pages/Admin/Eventss/Eventlist/EventSingleView.js
 import EditPromotion from "../pages/Admin/Promotions/EditPromotion.jsx";
 import { PrivateRoute } from "./privateRouter.jsx";
 import QRPage from "../pages/QRPage.jsx";
+import Report from "../pages/Report.jsx";
 
 const router = createBrowserRouter([
   {
@@ -251,6 +252,16 @@ const router = createBrowserRouter([
       <PrivateRoute>
         <AdminLayout>
           <AddnewroleSinglepage />
+        </AdminLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/reports",
+    element: (
+      <PrivateRoute>
+        <AdminLayout>
+          <Report />
         </AdminLayout>
       </PrivateRoute>
     ),

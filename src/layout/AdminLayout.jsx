@@ -73,6 +73,7 @@ const subNavigation = [
     to: "/notifications",
     icon: <NotificationsOutlinedIcon />,
   },
+  { name: "Reports", to: "/reports", icon: <GavelOutlinedIcon /> },
   { name: "News and Updates", to: "/news", icon: <NewspaperOutlinedIcon /> },
   { name: "Settings", to: "/settings", icon: <SettingsOutlinedIcon /> },
   { name: "Logout", to: "/logout", icon: <LogoutOutlinedIcon /> },
@@ -128,7 +129,7 @@ const AdminLayout = (props) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const theme = useTheme();
-  const {singleAdmin}=useAdminStore()
+  const { singleAdmin } = useAdminStore();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const location = useLocation();
   const handleDrawerClose = () => {

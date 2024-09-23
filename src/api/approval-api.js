@@ -19,7 +19,7 @@ export const getSingleApproval = async (id) => {
 };
 export const getApproval = async () => {
   try {
-    const response = await axiosInstance.get(`/requirements`);
+    const response = await axiosInstance.get(`/requirements/admin`);
     return response.data;
   } catch (error) {
     return null;
