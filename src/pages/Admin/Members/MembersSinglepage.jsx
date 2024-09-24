@@ -26,7 +26,7 @@ const MembersSinglepage = () => {
   const [userData, setUserData] = useState({});
   const [isChange, setIsChange] = useState(false);
   const { id } = useParams();
-  const { fetchsubscriptionByUser, payment } = usePaymentStore();
+  const { fetchsubscriptionByUser, cards, refreshMember } = usePaymentStore();
   useEffect(() => {
     async function init() {
       const response = await axiosInstance.get(
@@ -48,8 +48,9 @@ const MembersSinglepage = () => {
   };
   useEffect(() => {
     fetchsubscriptionByUser(id);
-  }, [isChange]);
-  console.log("payment", payment, isChange);
+    console.log("fetching");
+  }, [refreshMember]);
+  console.log("refreshMember", refreshMember);
 
   return (
     <>
@@ -114,18 +115,20 @@ const MembersSinglepage = () => {
         {selectedTab === 2 && (
           <Grid container>
             <Stack direction={"column"} spacing={3}>
-              {payment && payment?.length > 0 && payment[0]?.category ? (
-                payment[0].category === "app" ? (
-                  <AppSubscriptionCard
-                    payment={payment[0]}
-                    onChange={handleIsChange}
-                  />
-                ) : (
-                  <MemberSubscriptionCard
-                    payment={payment[0]}
-                    onChange={handleIsChange}
-                  />
-                )
+              {cards && cards?.length > 0 ? (
+                <>
+                  {cards.some((p) => p.category === "app") && (
+                    <AppSubscriptionCard
+                      payment={cards.find((p) => p.category === "app")}
+                    />
+                  )}
+                  {cards.some((p) => p.category === "membership") && (
+                    <MemberSubscriptionCard
+                      payment={cards.find((p) => p.category === "membership")}
+                      onChange={handleIsChange}
+                    />
+                  )}
+                </>
               ) : (
                 <Typography variant="h6" textAlign="center">
                   No Subscription

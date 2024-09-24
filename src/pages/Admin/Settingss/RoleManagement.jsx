@@ -57,10 +57,7 @@ export default function RoleManagement() {
     setSelectedRows(newSelectedIds);
     console.log("Selected items:", newSelectedIds);
   };
-  const handleView = (id) => {
-    console.log("View item:", id);
-    navigate(`/events/eventlist/:id`);
-  };
+
   const handleView2 = (id) => {
     navigate(`/settings/addrole`);
   };
@@ -127,7 +124,7 @@ export default function RoleManagement() {
               columns={roleColumns}
               data={roles}
               onSelectionChange={handleSelectionChange}
-              onView={handleView}
+            
               onModify={handleEdit}
               totalCount={totalCount}
               pageNo={pageNo}

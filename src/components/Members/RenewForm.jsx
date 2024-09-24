@@ -15,17 +15,17 @@ import { ReactComponent as CloseIcon } from "../../assets/icons/CloseIcon.svg";
 import { StyledCalender } from "../../ui/StyledCalender";
 import { usePaymentStore } from "../../store/payment-store";
 
-const RenewForm = ({ open, onClose, onChange, data }) => {
+const RenewForm = ({ open, onClose, data }) => {
   const { handleSubmit, control, setValue } = useForm();
-  const { changePayment } = usePaymentStore();
+  const { changePayment, setRefreshMember } = usePaymentStore();
   const [timeMetric, setTimeMetric] = useState(null);
 
   const onSubmit = async () => {
     try {
       const dataToSend = new FormData();
       dataToSend.append("year_count", timeMetric);
-      changePayment(data?._id, dataToSend);
-      onChange();
+      await changePayment(data?._id, dataToSend);
+      setRefreshMember();
       onClose();
     } catch (error) {
       console.log(error);

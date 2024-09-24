@@ -5,6 +5,7 @@ import RenewForm from "../components/Members/RenewForm";
 import SuspendProfile from "../components/SuspendProfile";
 import { usePaymentStore } from "../store/payment-store";
 import moment from "moment";
+import SuspendPayment from "../components/SuspendPayment";
 
 export default function MemberSubscriptionCard({ payment, onChange }) {
   const [renew, setRenew] = useState(false);
@@ -135,7 +136,7 @@ export default function MemberSubscriptionCard({ payment, onChange }) {
               </Stack>
             )}
             <RenewForm open={renew} onClose={handleCloseRenew} data={payment} onChange={handleChange} />
-            <SuspendProfile
+            <SuspendPayment
               open={suspend}
               onClose={handleCloseSuspend}
               onChange={handleSuspendMembership}

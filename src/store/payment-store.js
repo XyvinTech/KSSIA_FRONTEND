@@ -12,9 +12,10 @@ import { getSubscriptionsByUserId } from "../api/members-api";
 
 const usePaymentStore = create((set) => ({
   payments: [],
-  payment: [],
+  payment: [],cards : [],
   loadings: false,
   totalCount: 0,
+  refreshMember: false,
   fetchPayment: async () => {
     const allData = await getPayment();
     set({ payments: allData?.data || [] });
@@ -32,10 +33,7 @@ const usePaymentStore = create((set) => ({
     set({ payment: allData?.data || [] });
     set({ loadings: false });
   },
-  fetchsubscriptionByUser: async (id) => {
-    const allData = await getSubscriptionsByUserId(id);
-    set({ payment: allData?.data || [] });
-  },
+ 
 
   updatePayment: async (id, data) => {
     await editPayment(id, data);
@@ -43,9 +41,15 @@ const usePaymentStore = create((set) => ({
   changePayment: async (id, data) => {
    await editSubscription(id, data);
   },
+  fetchsubscriptionByUser: async (id) => {
+    const allData = await getSubscriptionsByUserId(id);
+    set({ cards: allData?.data || [] });
+  },
   patchPayments: async (id, data) => {
     await patchPayment(id, data);
   },
+  setRefreshMember: () =>
+    set((state) => ({ refreshMember: !state.refreshMember })),
 }));
 
 export { usePaymentStore };

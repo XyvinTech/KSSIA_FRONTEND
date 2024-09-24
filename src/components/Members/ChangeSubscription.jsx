@@ -15,9 +15,9 @@ import { ReactComponent as CloseIcon } from "../../assets/icons/CloseIcon.svg";
 import { StyledCalender } from "../../ui/StyledCalender";
 import { usePaymentStore } from "../../store/payment-store";
 
-const ChangeSubscription = ({ open, onClose, onChange, data }) => {
+const ChangeSubscription = ({ open, onClose, data }) => {
   const { handleSubmit, control, setValue } = useForm();
-  const { updatePayment } = usePaymentStore();
+  const { updatePayment, setRefreshMember } = usePaymentStore();
   const [timeMetric, setTimeMetric] = useState(null);
   useEffect(() => {
     if (data) {
@@ -39,8 +39,8 @@ const ChangeSubscription = ({ open, onClose, onChange, data }) => {
     dataToSend.append("amount", data.amount);
     dataToSend.append("mode_of_payment", data.mode_of_payment);
     dataToSend.append("status", data.status);
-    updatePayment(data?._id, dataToSend);
-    onChange();
+    await updatePayment(data?._id, dataToSend);
+    setRefreshMember();
     onClose();
   };
 
