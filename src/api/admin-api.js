@@ -22,3 +22,11 @@ export const getAdminById = async () => {
     console.log(error.response.data.message);
   }
 };
+export const getAllAdmin = async () => {
+  try {
+    const response = await axiosInstance.get(`/auth`);
+    return response.data;
+  } catch (error) {
+    return null;
+  }
+};

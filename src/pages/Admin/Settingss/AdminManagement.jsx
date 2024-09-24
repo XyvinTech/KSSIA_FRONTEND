@@ -6,11 +6,12 @@ import StyledSearchbar from "../../../ui/StyledSearchbar.jsx";
 import { ReactComponent as FilterIcon } from "../../../assets/icons/FilterIcon.svg";
 import StyledTable from "../../../ui/StyledTable.jsx";
 import { userColumns, userData } from "../../../assets/json/TableData";
+import { useAdminStore } from "../../../store/adminStore.js";
 export default function AdminManagement() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);
-
+  const { fetchAdmins, totalCount, admins } = useAdminStore();
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -35,7 +36,15 @@ export default function AdminManagement() {
       <>
         <Grid container alignItems="center">
           <Grid item xs={6}></Grid>
-          <Grid item xs={6} container display={'flex'} alignItems={'center'} justifyContent="flex-end" spacing={2}>
+          <Grid
+            item
+            xs={6}
+            container
+            display={"flex"}
+            alignItems={"center"}
+            justifyContent="flex-end"
+            spacing={2}
+          >
             <Grid item>
               <StyledSearchbar />
             </Grid>

@@ -52,6 +52,7 @@ export default function AddEvent({ eventId, setSelectedTab }) {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
+  
       const formData = new FormData();
       formData.append("organiser_name", data.organiser_name);
       formData.append("organiser_company_name", data.organiser_company_name);
@@ -63,15 +64,36 @@ export default function AddEvent({ eventId, setSelectedTab }) {
       formData.append("startDate", data.startDate);
       formData.append("platform", data.platform);
       formData.append("activate", data.activate);
-      formData.append("speakers", JSON.stringify(data.speakers));
       formData.append("type", data.type);
       formData.append("image", data.image);
       formData.append("guest_image", data.guest_image);
       formData.append("description", data.description);
       formData.append("meeting_link", data.meeting_link);
-      speakerImages.forEach((image, index) => {
-        formData.append(`speaker_images`, image);
+  
+      // Handle speakers: Keep existing image if no new image is provided
+      const speakersWithRetainedImages = data.speakers.map((speaker, index) => {
+        // Check if a new image has been uploaded for this speaker
+        if (speakerImages[index]) {
+          // If new image exists, exclude the old image field and upload the new image
+          const { speaker_image, ...rest } = speaker;
+          return rest;
+        } else {
+          // If no new image, keep the old image
+          return speaker;
+        }
       });
+  
+      // Append speakers (without new images) to formData as JSON
+      formData.append("speakers", JSON.stringify(speakersWithRetainedImages));
+  
+      // Append new speaker images separately if they exist
+      speakerImages.forEach((image, index) => {
+        if (image) {
+          formData.append(`speaker_images`, image); // Append only new images
+        }
+      });
+  
+      // Update or create event
       if (eventId) {
         await updateEventById(eventId, formData);
         navigate(`/events/eventlist`);
@@ -85,6 +107,7 @@ export default function AddEvent({ eventId, setSelectedTab }) {
       setLoading(false);
     }
   };
+  
 
   const addSpeaker = () => {
     setSpeakers([
@@ -102,21 +125,33 @@ export default function AddEvent({ eventId, setSelectedTab }) {
         try {
           const response = await getEventById(eventId);
           const eventData = response.data;
-          const updatedEventData = {
+  
+          // Extract speaker images from the event's speaker data
+          const speakerImagesFromAPI = (eventData.speakers || []).map(
+            (speaker) => speaker.speaker_image // Assuming `speaker_image` is the field name
+          );
+  
+          // Set the speakers and speaker images in the state
+          setSpeakers(eventData.speakers || []);
+          setSpeakerImages(speakerImagesFromAPI);
+  
+          // Set form fields including other event data
+          reset({
             ...eventData,
-          };
-
-          reset(updatedEventData);
-          setSpeakers(updatedEventData.speakers || []);
-          setIsChecked(updatedEventData.activate || false);
+            speakers: eventData.speakers || [], // Pre-fill speakers
+            activate: eventData.activate || false, // Pre-fill switch state
+          });
+  
+          setIsChecked(eventData.activate || false); // Set initial checked state for switch
         } catch (error) {
           console.error("Error fetching event data:", error);
         }
       };
-
+  
       fetchEventData();
     }
   }, [eventId, reset]);
+  
 
   const handleSpeakerChange = (index, field, value) => {
     setSpeakers((prevSpeakers) => {

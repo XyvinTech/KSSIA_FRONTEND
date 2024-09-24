@@ -1,14 +1,16 @@
 import { create } from "zustand";
-import { getAdminById } from "../api/admin-api";
+import { getAdminById, getAllAdmin } from "../api/admin-api";
 
 const useAdminStore = create((set) => ({
   singleAdmin: [],
-
+  admins: [],
   fetchAdminById: async () => {
     const response = await getAdminById();
-    console.log("response admin:", response);
-    
     set({ singleAdmin: response.data || [] });
+  },
+  fetchAdmins: async () => {
+    const response = await getAllAdmin();
+    set({ admins: response.data || [] });
   },
 }));
 
