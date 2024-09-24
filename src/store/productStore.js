@@ -4,6 +4,7 @@ import {
   deleteProduct,
   editProduct,
   getProductById,
+  patchProduct,
 } from "../api/product-api";
 
 const useProductsStore = create((set) => ({
@@ -23,6 +24,9 @@ const useProductsStore = create((set) => ({
   },
   updateProduct: async (id, data) => {
     await editProduct(id, data);
+  },
+  patchProducts: async (id, data) => {
+    await patchProduct(id, data);
   },
 }));
 

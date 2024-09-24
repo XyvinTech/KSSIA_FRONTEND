@@ -10,17 +10,16 @@ import {
 import { StyledButton } from "../ui/StyledButton";
 import { ReactComponent as CloseIcon } from "../assets/icons/CloseIcon.svg";
 
-const ApproveRejectDisplay = ({ open, onClose, data ,onChange}) => {
+const ApproveRejectDisplay = ({ open, onClose, data, onChange }) => {
   const handleClear = (event) => {
     event.preventDefault();
     onClose();
   };
 
-    const handleSubmit = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     onChange();
     onClose();
-   
   };
   return (
     <Dialog
@@ -55,23 +54,25 @@ const ApproveRejectDisplay = ({ open, onClose, data ,onChange}) => {
             Member Name
           </Typography>
           <Typography variant="h6" color={"#4A4647"}>
-            {data?.name || "Prabodhan Fitzgerald"}
+            {data?.name}
           </Typography>
         </Stack>
         <Divider />
-        <Stack
-          spacing={2}
-          padding={2}
-          direction={"row"}
-          justifyContent={"space-between"}
-        >
-          <Typography variant="h7" color={"#2C2829"} fontWeight={700}>
-            Category
-          </Typography>
-          <Typography variant="h6" color={"#4A4647"}>
-            {data?.category}
-          </Typography>
-        </Stack>
+        {data?.category && (
+          <Stack
+            spacing={2}
+            padding={2}
+            direction={"row"}
+            justifyContent={"space-between"}
+          >
+            <Typography variant="h7" color={"#2C2829"} fontWeight={700}>
+              Category
+            </Typography>
+            <Typography variant="h6" color={"#4A4647"}>
+              {data?.category}
+            </Typography>
+          </Stack>
+        )}
         <Divider />
         <Stack
           spacing={2}
@@ -100,13 +101,13 @@ const ApproveRejectDisplay = ({ open, onClose, data ,onChange}) => {
             Reason for Rejection
           </Typography>
           <Typography variant="h6" color={"#4A4647"}>
-            {data?.reason || "Lorem ipsum dolor sit amet consectetur."}
+            {data?.reason }
           </Typography>
         </Stack>
       </DialogContent>
       <Stack direction={"row"} spacing={2} padding={2} justifyContent={"end"}>
         <StyledButton variant="secondary" name="Cancel" onClick={handleClear} />
-        <StyledButton variant="primary" name="Send"onClick={handleSubmit} />
+        <StyledButton variant="primary" name="Send" onClick={handleSubmit} />
       </Stack>
     </Dialog>
   );

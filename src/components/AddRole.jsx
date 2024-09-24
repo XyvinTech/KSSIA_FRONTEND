@@ -33,8 +33,6 @@ const CircleButton = styled.span`
     background-color: rgba(255, 0, 0, 0.1);
   }
 `;
-
-// List of permissions
 const permissionsList = [
   { id: "roleManagement", name: "Role Management" },
   { id: "adminManagement", name: "Admin Management" },

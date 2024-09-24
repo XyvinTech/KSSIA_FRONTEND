@@ -13,8 +13,8 @@ export const userColumns = [
     {title:"Product Name",field:"name"},
     {title:"Product Image",field:"image"},
     {title:"Seller Price",field:"price"},
-    {title:"Product Description",field:"description"},
     {title:"Date",field:"createdAt"},
+    {title:"Status",field:"status"},
   ]
   
   export const userData = [

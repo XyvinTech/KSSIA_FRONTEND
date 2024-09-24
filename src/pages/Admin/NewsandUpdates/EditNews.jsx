@@ -21,7 +21,7 @@ const EditNews = () => {
           </Grid>{" "}
         </Grid>
       </Box>
-      <Box padding="30px" marginBottom={4}>
+      <Box padding="15px" marginBottom={4}>
         <Grid container>
           <Grid item md={6}>
             <NewsAddnewform  isUpdate={isUpdate}/>

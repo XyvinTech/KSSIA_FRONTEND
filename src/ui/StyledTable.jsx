@@ -72,6 +72,8 @@ const StyledTable = ({
   onDeleteRow,
   dashboard,
   member,
+  product,
+  onApprove,
   payment,
 }) => {
   const [selectedIds, setSelectedIds] = useState([]);
@@ -125,6 +127,10 @@ const StyledTable = ({
     onModify(rowId);
     handleMenuClose();
   };
+  const handleApprove = () => {
+    onApprove(rowId);
+    handleMenuClose();
+  };
 
   const handleRowClick = (id) => {
     onView(id);
@@ -132,10 +138,8 @@ const StyledTable = ({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate data fetching
-
     const timer = setTimeout(() => {
-      setLoading(false); // Set loading to false once data is fetched
+      setLoading(false);
     }, 1000);
 
     return () => clearTimeout(timer);
@@ -375,6 +379,18 @@ const StyledTable = ({
                               <MenuItem onClick={handleAction}>Reject</MenuItem>
                             </>
                           ) : null
+                        ) : product ? (
+                          <>
+                            <MenuItem onClick={handleModify}>Edit</MenuItem>
+                            <MenuItem
+                              onClick={() => handleRowDelete(row._id)}
+                              style={{ color: "red" }}
+                            >
+                              Remove
+                            </MenuItem>
+                            <MenuItem onClick={handleApprove}>Approve</MenuItem>
+                            <MenuItem onClick={handleAction}>Reject</MenuItem>
+                          </>
                         ) : (
                           <>
                             {" "}

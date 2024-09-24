@@ -11,6 +11,8 @@ import CONSTANTS from "../../../constants";
 import RemoveProduct from "../../../components/Removeproduct";
 import { useProductsStore } from "../../../store/productStore";
 import { toast } from "react-toastify";
+import ProductReject from "../../../components/ProductReject";
+import ProductDetail from "../../../components/ProductDetail";
 export default function MembersPage() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
@@ -19,7 +21,9 @@ export default function MembersPage() {
   const [removeOpen, setRemoveOpen] = useState(false);
   const [productData, setProductData] = useState([]);
   const [productId, setProductId] = useState(null);
-  const { deleteProducts } = useProductsStore();
+  const [rejectOpen, setRejectOpen] = useState(false);
+  const [approveOpen, setApproveOpen] = useState(false);
+  const { deleteProducts, fetchProductById, products } = useProductsStore();
   const [pageNo, setPageNo] = useState(1);
   const [total, setTotal] = useState(0);
   useEffect(() => {
@@ -34,13 +38,28 @@ export default function MembersPage() {
     }
     init();
   }, [isChange]);
-
+  const handleApprove = async (id) => {
+    await fetchProductById(id);
+    setApproveOpen(true);
+  };
+  const handleCloseApprove = () => {
+    setApproveOpen(false);
+  };
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
-
+  const handleCloseReject = (id) => {
+    setRejectOpen(false);
+  };
+  const handleChange = () => {
+    setIsChange(!isChange);
+  };
   const handleCloseFilter = () => {
     setFilterOpen(false);
+  };
+  const handleReject = async (id) => {
+    await fetchProductById(id);
+    setRejectOpen(true);
   };
   const handleSelectionChange = (newSelectedIds) => {
     setSelectedRows(newSelectedIds);
@@ -154,15 +173,31 @@ export default function MembersPage() {
               onSelectionChange={handleSelectionChange}
               onDeleteRow={handleRowDelete}
               onDelete={handleDelete}
+              onApprove={handleApprove}
+              onAction={handleReject}
               onModify={handleEdit}
               totalCount={total}
               pageNo={pageNo}
+              product
               setPageNo={setPageNo}
             />{" "}
             <RemoveProduct
               open={removeOpen}
               onClose={handleCloseDelete}
               onChange={handleRemove}
+            />
+            <ProductReject
+              open={rejectOpen}
+              onClose={handleCloseReject}
+              data={products}
+              onChange={handleChange}
+            />
+            <ProductDetail
+              open={approveOpen}
+              onClose={handleCloseApprove}
+              data={products}
+              onChange={handleChange}
+              onDeny={handleReject}
             />
           </Box>
         </>

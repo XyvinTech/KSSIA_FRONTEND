@@ -11,14 +11,15 @@ import { useForm } from "react-hook-form";
 import { StyledButton } from "../ui/StyledButton";
 import { ReactComponent as CloseIcon } from "../assets/icons/CloseIcon.svg";
 import { useApprovalStore } from "../store/approval-store";
+import { useProductsStore } from "../store/productStore";
 
-const RequirementDetail = ({ open, onClose, onChange, data, onDeny }) => {
+const ProductDetail = ({ open, onClose, onChange, data, onDeny }) => {
   const { handleSubmit } = useForm();
-  const { patchApprovals } = useApprovalStore();
+  const { patchProducts } = useProductsStore();
   const onSubmit = async () => {
     try {
-      const updateData = { status: "approved" };
-      await patchApprovals(data?._id, updateData);
+      const updateData = { status: "accepted" };
+      await patchProducts(data?._id, updateData);
       onChange();
       onClose();
     } catch (error) {
@@ -53,7 +54,7 @@ const RequirementDetail = ({ open, onClose, onChange, data, onDeny }) => {
             alignItems="center"
           >
             <Typography variant="h3" color={"#4F4F4F"}>
-              Requirement detail
+              Product detail
             </Typography>
             <Typography
               onClick={(event) => handleClose(event)}
@@ -80,7 +81,7 @@ const RequirementDetail = ({ open, onClose, onChange, data, onDeny }) => {
               Description
             </Typography>
             <Typography variant="h6" color={"#4A4647"}>
-              {data?.content}
+              {data?.description}
             </Typography>
           </Stack>{" "}
           <Divider />
@@ -98,4 +99,4 @@ const RequirementDetail = ({ open, onClose, onChange, data, onDeny }) => {
   );
 };
 
-export default RequirementDetail;
+export default ProductDetail;

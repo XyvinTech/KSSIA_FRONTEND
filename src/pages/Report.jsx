@@ -22,10 +22,11 @@ export default function Report() {
 
   const userColumns = [
     { title: "Date", field: "createdAt", padding: "none" },
-    { title: "Image", field: "image" },
+    { title: "Report By", field: "reportBy" },
+    { title: "Type", field: "reportType" },
     { title: "Description", field: "content" },
-    ,
-    { title: "Status", field: "status" },
+    
+    
   ];
   const handleCloseFilter = () => {
     setFilterOpen(false);

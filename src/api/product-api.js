@@ -40,3 +40,15 @@ export const editProduct = async (id, data) => {
     throw error.response.data;
   }
 };
+export const patchProduct = async (id, data) => {
+  try {
+    const response = await axiosInstance.patch(
+      `/products/${id}/status`,
+      data
+    );
+    toast.success(response.data.message);
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
