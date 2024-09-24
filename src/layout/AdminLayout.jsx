@@ -85,7 +85,6 @@ const SimpleDialog = ({ open, onClose }) => {
   useEffect(() => {
     fetchAdminById();
   }, []);
-  console.log("singleAdmin:", singleAdmin);
 
   return (
     <Dialog
@@ -112,10 +111,10 @@ const SimpleDialog = ({ open, onClose }) => {
           />
           <Box>
             <Typography variant="h6" color="#292D32" paddingBottom={1}>
-              Alex meian
+             {singleAdmin?.name}
             </Typography>
             <Typography variant="h7" color="rgba(41, 45, 50, 0.44)">
-              Admin
+            {singleAdmin?.email}
             </Typography>
           </Box>
         </Stack>
@@ -382,14 +381,14 @@ const AdminLayout = (props) => {
                 />
                 <Box sx={{ marginLeft: "10px" }}>
                   <Typography variant="h6" color={"#292D32"} display="block">
-                    Alex Meian
+                  {singleAdmin?.name}
                   </Typography>
                   <Typography
                     variant="h7"
                     color={"rgba(41, 45, 50, 0.44)"}
                     display="block"
                   >
-                    Admin
+                   {singleAdmin?.email}
                   </Typography>
                 </Box>
               </Box>
