@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import StyledSearchbar from "../../../ui/StyledSearchbar";
 import { ReactComponent as FilterIcon } from "../../../assets/icons/FilterIcon.svg";
 import StyledTable from "../../../ui/StyledTable";
-import RejectionEntryForm from "../../../components/Members/RejectionEntryForm";
 import RequirementDetail from "../../../components/RequirementDetail";
 import { useApprovalStore } from "../../../store/approval-store";
 import ApproveReject from "../../../components/ApproveReject";
@@ -40,7 +39,6 @@ export default function ApprovalPage() {
   };
   const handleSelectionChange = (newSelectedIds) => {
     setSelectedRows(newSelectedIds);
-    console.log("Selected items:", newSelectedIds);
   };
   const handleApprove = async (id) => {
     await fetchApprovalById(id);

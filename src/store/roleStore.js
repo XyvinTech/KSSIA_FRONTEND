@@ -10,12 +10,14 @@ import {
 const useRoleStore = create((set) => ({
   roles: [],
   singleRole: [],
+  totalCount: 0,
   addRole: async (data) => {
     await createRole(data);
   },
   getRoles: async () => {
     const response = await fetchRole();
     set({ roles: response.data || [] });
+    set({ totalCount: response?.totalCount || 0 });
   },
 
   getRoleById: async (id) => {

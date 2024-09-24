@@ -1,15 +1,22 @@
 import { Box, Grid, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { StyledButton } from "../../../ui/StyledButton.jsx";
 import StyledSearchbar from "../../../ui/StyledSearchbar.jsx";
 import { ReactComponent as FilterIcon } from "../../../assets/icons/FilterIcon.svg";
 import StyledTable from "../../../ui/StyledTable.jsx";
 import { userColumns, userData } from "../../../assets/json/TableData";
+import { useRoleStore } from "../../../store/roleStore.js";
 export default function RoleManagement() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);
+  const [isChange, setIsChange] = useState(false);
+  const [pageNo, setPageNo] = useState(1);
+  const { roles, getRoles, totalCount } = useRoleStore();
+  useEffect(() => {
+    getRoles();
+  }, [isChange]);
 
   const handleOpenFilter = () => {
     setFilterOpen(true);
@@ -35,7 +42,15 @@ export default function RoleManagement() {
       <>
         <Grid container alignItems="center">
           <Grid item xs={6}></Grid>
-          <Grid item xs={6} container display={'flex'} alignItems={'center'} justifyContent="flex-end" spacing={2}>
+          <Grid
+            item
+            xs={6}
+            container
+            display={"flex"}
+            alignItems={"center"}
+            justifyContent="flex-end"
+            spacing={2}
+          >
             <Grid item>
               <StyledSearchbar />
             </Grid>
@@ -77,9 +92,12 @@ export default function RoleManagement() {
           >
             <StyledTable
               columns={userColumns}
-              data={userData}
+              data={roles}
               onSelectionChange={handleSelectionChange}
               onView={handleView}
+              totalCount={totalCount}
+              pageNo={pageNo}
+              setPageNo={setPageNo}
             />{" "}
           </Box>
         </Grid>

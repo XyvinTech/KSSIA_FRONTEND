@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import StyledInput from "../ui/StyledInput";
+import { useRoleStore } from "../store/roleStore";
 
 const CircleButton = styled.span`
   display: inline-block;
@@ -55,6 +56,7 @@ const AddRole = () => {
   const [permissions, setPermissions] = useState([]);
   const [loading, setLoading] = useState(false);
   const location = useLocation();
+  const { addRole } = useRoleStore();
   const { roleId, isUpdate } = location.state || {};
   const onSubmit = async (data) => {
     try {
@@ -63,11 +65,11 @@ const AddRole = () => {
         ...data,
         permissions,
       };
-      //   if (isUpdate) {
-      //     await updateRole(roleId, roleData);
-      //   } else {
-      //     await addRole(roleData);
-      //   }
+      // if (isUpdate) {
+      //   await updateRole(roleId, roleData);
+      // } else {
+      await addRole(roleData);
+      // }
       reset();
       setPermissions([]);
       navigate("/settings");

@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import axiosInstance from "./axiosintercepter";
+import axiosInstance from "./axios-interceptor";
 
 export const createRole = async (data) => {
   try {
