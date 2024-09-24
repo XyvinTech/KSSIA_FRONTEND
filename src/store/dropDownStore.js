@@ -1,12 +1,17 @@
 import { create } from "zustand";
 import { getUsers } from "../api/dropDown-api";
+import { fetchRole } from "../api/role-api";
 
 const useDropDownStore = create((set) => ({
   users: [],
-
+  roles: [],
   fetchUsers: async () => {
     const allData = await getUsers();
     set({ users: allData?.data || [] });
+  },
+  fetchRoles: async () => {
+    const allData = await fetchRole();
+    set({ roles: allData?.data || [] });
   },
 }));
 

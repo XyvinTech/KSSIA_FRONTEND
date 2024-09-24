@@ -24,9 +24,35 @@ export const getAdminById = async () => {
 };
 export const getAllAdmin = async () => {
   try {
-    const response = await axiosInstance.get(`/auth`);
+    const response = await axiosInstance.get(`/auth/all`);
     return response.data;
   } catch (error) {
     return null;
+  }
+};
+export const createAdmin = async (data) => {
+  try {
+    const response = await axiosInstance.post(`/auth`, data);
+    toast.success(response.data.message);
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+export const getSingleAdmin = async (id) => {
+  try {
+    const response = await axiosInstance.get(`/auth/admin/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+export const editAdmin = async (id, data) => {
+  try {
+    const response = await axiosInstance.put(`/auth/${id}`, data);
+    toast.success(response.data.message);
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
   }
 };

@@ -1,38 +1,82 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Grid, Stack } from "@mui/material";
-import StyledSwitch from "../ui/StyledSwitch.jsx";
 
 import { StyledButton } from "../ui/StyledButton";
 
 import StyledInput from "../ui/StyledInput";
 import { Controller, useForm } from "react-hook-form";
 import StyledSelectField from "../ui/StyledSelectField";
+import { useDropDownStore } from "../store/dropDownStore.js";
+import { useAdminStore } from "../store/adminStore.js";
+import { toast } from "react-toastify";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function SingleaddAdminform() {
   const {
     control,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm();
-  const [isChecked, setIsChecked] = useState(false);
-  const [additionalPhones, setAdditionalPhones] = useState([]);
+  const location = useLocation();
+  const { fetchRoles, roles } = useDropDownStore();
+  const { adminId, isUpdate } = location.state || {};
+  const { addAdmin, fetchSingleAdmin, admin, updateAdmin } = useAdminStore();
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  useEffect(() => {
+    fetchRoles();
+  }, []);
+  useEffect(() => {
+    if (isUpdate && adminId) {
+      fetchSingleAdmin(adminId);
+    }
+  }, [adminId, isUpdate]);
+  useEffect(() => {
+    if (admin && isUpdate) {
+      setValue("name", admin.name);
+      setValue("email", admin.email);
+      const role = roles.find((r) => r?._id === admin.role);
+      if (role) {
+        setValue("role", {
+          value: role._id,
+          label: role.roleName,
+        });
+      }
+    }
+  }, [admin, isUpdate, setValue]);
+  const option =
+    roles && Array.isArray(roles)
+      ? roles.map((r) => ({
+          value: r._id,
+          label: r.roleName,
+        }))
+      : [];
 
-  const handleSwitchChange = (e) => {
-    setIsChecked(e.target.checked);
-  };
-  const option = [
-    { value: "option1", label: "Option 1" },
-    { value: "option2", label: "Option 2" },
-    { value: "option3", label: "Option 3" },
-  ];
-  const onSubmit = (data) => {
-    console.log("Form data:", data);
+  const onSubmit = async (data) => {
+    try {
+      setLoading(true);
+      const formData = {
+        name: data.name,
+        role: data.role.value,
+        email: data.email,
+        password: "string@123",
+      };
+      if (isUpdate && adminId) {
+        await updateAdmin(adminId, formData);
+      } else {
+        await addAdmin(formData);
+      }
+      navigate("/settings");
+      reset();
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const addPhoneNumber = () => {
-    setAdditionalPhones([...additionalPhones, ""]);
-  };
   return (
     <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"12px"}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -47,43 +91,15 @@ export default function SingleaddAdminform() {
               Name of the Person
             </Typography>
             <Controller
-              name="person"
+              name="name"
               control={control}
               defaultValue=""
-              rules={{ required: "Person name is required" }}
+              rules={{ required: "Name is required" }}
               render={({ field }) => (
                 <>
                   <StyledInput placeholder="Enter person name" {...field} />
-                  {errors.person && (
-                    <span style={{ color: "red" }}>
-                      {errors.person.message}
-                    </span>
-                  )}
-                </>
-              )}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <Typography
-              sx={{ marginBottom: 1 }}
-              variant="h6"
-              fontWeight={500}
-              color={"#333333"}
-            >
-              Designation
-            </Typography>
-            <Controller
-              name="designation"
-              control={control}
-              defaultValue=""
-              rules={{ required: "Designation is required" }}
-              render={({ field }) => (
-                <>
-                  <StyledInput placeholder="Enter the Designation" {...field} />
-                  {errors.designation && (
-                    <span style={{ color: "red" }}>
-                      {errors.designation.message}
-                    </span>
+                  {errors.name && (
+                    <span style={{ color: "red" }}>{errors.name.message}</span>
                   )}
                 </>
               )}
@@ -128,83 +144,21 @@ export default function SingleaddAdminform() {
               Email ID
             </Typography>
             <Controller
-              name="desc"
+              name="email"
               control={control}
               defaultValue=""
               rules={{ required: "Email ID is required" }}
               render={({ field }) => (
                 <>
                   <StyledInput placeholder="Enter the email ID" {...field} />
-                  {errors.desc && (
-                    <span style={{ color: "red" }}>{errors.desc.message}</span>
+                  {errors.email && (
+                    <span style={{ color: "red" }}>{errors.email.message}</span>
                   )}
                 </>
               )}
             />
           </Grid>
-          <Grid item xs={6}>
-            <Typography
-              sx={{ marginBottom: 1 }}
-              variant="h6"
-              fontWeight={500}
-              color={"#333333"}
-            >
-              Phone number
-            </Typography>
-            <Controller
-              name="actual"
-              control={control}
-              defaultValue=""
-              rules={{ required: "Phone number  is required" }}
-              render={({ field }) => (
-                <>
-                  <StyledInput placeholder="ENter phone number" {...field} />
-                  {errors.actual && (
-                    <span style={{ color: "red" }}>
-                      {errors.actual.message}
-                    </span>
-                  )}
-                </>
-              )}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <Typography
-              sx={{ marginBottom: 1 }}
-              variant="h6"
-              fontWeight={500}
-              color={"#333333"}
-            >
-              Activate
-            </Typography>
-          </Grid>
-          <Grid item xs={6} style={{ textAlign: "right" }}>
-            <Controller
-              name="activate"
-              control={control}
-              defaultValue={false}
-              rules={{ required: "Activate is required" }}
-              render={({ field }) => (
-                <>
-                  <StyledSwitch
-                    checked={field.value}
-                    onChange={(e) => {
-                      field.onChange(e.target.checked);
-                      handleSwitchChange(e);
-                    }}
-                  />{" "}
-                  {errors.activate && (
-                    <span style={{ color: "red" }}>
-                      {errors.activate.message}
-                    </span>
-                  )}{" "}
-                </>
-              )}
-            />
-          </Grid>
-
-          <Grid item xs={6}></Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} display={"flex"} justifyContent={"flex-end"}>
             {" "}
             <Stack direction={"row"} spacing={2}>
               <StyledButton
@@ -215,13 +169,11 @@ export default function SingleaddAdminform() {
                 Cancel
               </StyledButton>
               <StyledButton
-                name="Save"
+                name={loading ? "Saving..." : "Save"}
                 variant="primary"
                 type="submit"
                 style={{ width: "auto" }}
-              >
-                Save
-              </StyledButton>
+              />
             </Stack>
           </Grid>
         </Grid>

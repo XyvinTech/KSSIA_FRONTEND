@@ -59,7 +59,7 @@ const AddnewadminSinglepage = () => {
         <Tab label="Single Add" />
         <Tab label="Bulk Add" />
       </Tabs>
-      <Box padding="30px" marginBottom={4}>
+      <Box padding="15px" marginBottom={4}>
         {selectedTab === 0 && (
              <Grid spacing={2}>
              <SingleaddAdminform/>

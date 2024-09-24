@@ -1,21 +1,48 @@
 import { Box, Grid, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { StyledButton } from "../../../ui/StyledButton.jsx";
 import StyledSearchbar from "../../../ui/StyledSearchbar.jsx";
 import { ReactComponent as FilterIcon } from "../../../assets/icons/FilterIcon.svg";
 import StyledTable from "../../../ui/StyledTable.jsx";
-import { userColumns, userData } from "../../../assets/json/TableData";
 import { useAdminStore } from "../../../store/adminStore.js";
+import { toast } from "react-toastify";
 export default function AdminManagement() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);
+  const [isChange, setIsChange] = useState(false);
+  const [pageNo, setPageNo] = useState(1);
   const { fetchAdmins, totalCount, admins } = useAdminStore();
+  const userColumns = [
+    { title: "Name", field: "name", padding: "none" },
+    { title: "Email", field: "email" },
+    { title: "Created At", field: "createdAt" },
+  ];
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
-
+  const handleDelete = async () => {
+    // if (selectedRows.length > 0) {
+    //   try {
+    //     await Promise.all(selectedRows?.map((id) => deleteRoles(id)));
+    //     toast.success("Deleted successfully");
+    //     setIsChange(!isChange);
+    //     setSelectedRows([]);
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // }
+  };
+  const handleRowDelete = async (id) => {
+    // try {
+    //   await deleteRoles(id);
+    //   toast.success("Deleted successfully");
+    //   setIsChange(!isChange);
+    // } catch (error) {
+    //   console.log(error);
+    // }
+  };
   const handleCloseFilter = () => {
     setFilterOpen(false);
   };
@@ -23,9 +50,13 @@ export default function AdminManagement() {
     setSelectedRows(newSelectedIds);
     console.log("Selected items:", newSelectedIds);
   };
-  const handleView = (id) => {
-    console.log("View item:", id);
-    navigate(`/events/eventlist/:id`);
+  useEffect(() => {
+    fetchAdmins();
+  }, [isChange]);
+  const handleEdit = (id) => {
+    navigate(`/settings/addnewadmin`, {
+      state: { adminId: id, isUpdate: true },
+    });
   };
   const handleView2 = (id) => {
     navigate(`/settings/addnewadmin`);
@@ -85,9 +116,14 @@ export default function AdminManagement() {
           >
             <StyledTable
               columns={userColumns}
-              data={userData}
+              data={admins}
+              onModify={handleEdit}
+              totalCount={totalCount}
+              pageNo={pageNo}
+              setPageNo={setPageNo}
+              onDelete={handleDelete}
+              onDeleteRow={handleRowDelete}
               onSelectionChange={handleSelectionChange}
-              onView={handleView}
             />{" "}
           </Box>
         </Grid>
