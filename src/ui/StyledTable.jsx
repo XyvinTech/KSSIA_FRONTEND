@@ -158,13 +158,15 @@ const StyledTable = ({
     }
     switch (status) {
       case "pending":
-        return "#BFBABA";
+        return "#BFBABA"; 
+      case "accepted":
+        return "#1890ff"; 
       case "rejected":
         return "#ff4d4f";
       case "approved":
-        return "#52c41a";
+        return "#52c41a"; 
       default:
-        return "default";
+        return "default";  
     }
   };
   const formatIndianDate = (date) => {
@@ -328,6 +330,7 @@ const StyledTable = ({
                       )}{" "}
                       {!menu &&
                         row.status !== "rejected" &&
+                        row.status !== "accepted" &&
                         row.status !== "approved" && (
                           <IconButton
                             aria-controls="simple-menu"
