@@ -6,19 +6,41 @@ import StyledSearchbar from "../../../ui/StyledSearchbar.jsx";
 import { ReactComponent as FilterIcon } from "../../../assets/icons/FilterIcon.svg";
 import StyledTable from "../../../ui/StyledTable.jsx";
 import { useRoleStore } from "../../../store/roleStore.js";
+import { toast } from "react-toastify";
 export default function RoleManagement() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);
   const [isChange, setIsChange] = useState(false);
   const [pageNo, setPageNo] = useState(1);
-  const { roles, getRoles, totalCount } = useRoleStore();
+  const { roles, getRoles, totalCount ,deleteRoles} = useRoleStore();
   useEffect(() => {
     getRoles();
   }, [isChange]);
 
   const handleOpenFilter = () => {
     setFilterOpen(true);
+  };
+  const handleDelete = async () => {
+    if (selectedRows.length > 0) {
+      try {
+        await Promise.all(selectedRows?.map((id) => deleteRoles(id)));
+        toast.success("Deleted successfully");
+        setIsChange(!isChange);
+        setSelectedRows([]);
+      } catch (error) {
+        console.log(error);
+      }
+    } 
+  };
+  const handleRowDelete = async (id) => {
+    try {
+      await deleteRoles(id);
+      toast.success("Deleted successfully");
+      setIsChange(!isChange);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleCloseFilter = () => {
@@ -41,6 +63,11 @@ export default function RoleManagement() {
   };
   const handleView2 = (id) => {
     navigate(`/settings/addrole`);
+  };
+  const handleEdit = (id) => {
+    navigate(`/settings/addrole`, {
+      state: { roleId: id, isUpdate: true },
+    });
   };
   return (
     <>
@@ -101,9 +128,12 @@ export default function RoleManagement() {
               data={roles}
               onSelectionChange={handleSelectionChange}
               onView={handleView}
+              onModify={handleEdit}
               totalCount={totalCount}
               pageNo={pageNo}
               setPageNo={setPageNo}
+              onDelete={handleDelete}
+              onDeleteRow={handleRowDelete}
             />{" "}
           </Box>
         </Grid>

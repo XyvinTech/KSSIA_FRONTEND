@@ -56,7 +56,7 @@ const AddRole = () => {
   const [permissions, setPermissions] = useState([]);
   const [loading, setLoading] = useState(false);
   const location = useLocation();
-  const { addRole } = useRoleStore();
+  const { addRole,updateRole,getRoleById,singleRole } = useRoleStore();
   const { roleId, isUpdate } = location.state || {};
   const onSubmit = async (data) => {
     try {
@@ -65,11 +65,11 @@ const AddRole = () => {
         ...data,
         permissions,
       };
-      // if (isUpdate) {
-      //   await updateRole(roleId, roleData);
-      // } else {
+      if (isUpdate) {
+        await updateRole(roleId, roleData);
+      } else {
       await addRole(roleData);
-      // }
+      }
       reset();
       setPermissions([]);
       navigate("/settings");
@@ -80,18 +80,18 @@ const AddRole = () => {
     }
   };
 
-  //   useEffect(() => {
-  //     if (isUpdate && roleId) {
-  //       getRoleById(roleId);
-  //     }
-  //   }, [roleId, isUpdate]);
-  //   useEffect(() => {
-  //     if (singleRole && isUpdate) {
-  //       setValue("roleName", singleRole.roleName);
-  //       setPermissions(singleRole.permissions);
-  //       setValue("description", singleRole.description);
-  //     }
-  //   }, [singleRole, isUpdate, setValue]);
+    useEffect(() => {
+      if (isUpdate && roleId) {
+        getRoleById(roleId);
+      }
+    }, [roleId, isUpdate]);
+    useEffect(() => {
+      if (singleRole && isUpdate) {
+        setValue("roleName", singleRole.roleName);
+        setPermissions(singleRole.permissions);
+        setValue("description", singleRole.description);
+      }
+    }, [singleRole, isUpdate, setValue]);
 
   const handlePermissionChange = (permissionId, type) => {
     const permissionKey = `${permissionId}_${type}`;
