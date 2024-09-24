@@ -5,7 +5,6 @@ import { StyledButton } from "../../../ui/StyledButton.jsx";
 import StyledSearchbar from "../../../ui/StyledSearchbar.jsx";
 import { ReactComponent as FilterIcon } from "../../../assets/icons/FilterIcon.svg";
 import StyledTable from "../../../ui/StyledTable.jsx";
-import { userColumns, userData } from "../../../assets/json/TableData";
 import { useRoleStore } from "../../../store/roleStore.js";
 export default function RoleManagement() {
   const navigate = useNavigate();
@@ -25,6 +24,13 @@ export default function RoleManagement() {
   const handleCloseFilter = () => {
     setFilterOpen(false);
   };
+  const roleColumns = [
+    { title: "Role Name", field: "roleName", padding: "none" },
+    { title: "Created on", field: "createdAt" },
+    { title: "Access ", field: "contact" },
+    { title: "Description", field: "description" },
+    { title: "Status", field: "status" },
+  ];
   const handleSelectionChange = (newSelectedIds) => {
     setSelectedRows(newSelectedIds);
     console.log("Selected items:", newSelectedIds);
@@ -91,7 +97,7 @@ export default function RoleManagement() {
             border={"1px solid rgba(0, 0, 0, 0.12)"}
           >
             <StyledTable
-              columns={userColumns}
+              columns={roleColumns}
               data={roles}
               onSelectionChange={handleSelectionChange}
               onView={handleView}

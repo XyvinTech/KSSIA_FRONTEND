@@ -50,7 +50,7 @@ export default function EditEventpage() {
       </Grid>
     </Box>
     <Grid container item xs={12}>
-      <Grid item xs={10} padding={5}>
+      <Grid item xs={10} padding={'15px'}>
        <AddEvent
         eventId = {id}
        />

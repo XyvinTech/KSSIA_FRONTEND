@@ -154,7 +154,7 @@ const StyledTable = ({
 
   const getStatusVariant = (status) => {
     if (typeof status === "boolean") {
-      return status ? "green" : "rejected";
+      return status ? "green" : "red";
     }
     switch (status) {
       case "pending":
