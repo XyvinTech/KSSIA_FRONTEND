@@ -46,7 +46,7 @@ export default function StyledPosterTable() {
   const userColumns = [
     { title: "Date", field: "startDate", padding: "none" },
 
-    { title: "Media", field: "banner_image_url" },
+    { title: "Media", field: "poster_image_url" },
   ];
   return (
     <>

@@ -56,3 +56,12 @@ export const editAdmin = async (id, data) => {
     throw error.response.data;
   }
 };
+export const deleteAdmin = async (id) => {
+  try {
+    const response = await axiosInstance.delete(`/auth/${id}`);
+
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};

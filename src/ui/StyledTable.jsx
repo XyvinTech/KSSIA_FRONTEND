@@ -276,6 +276,7 @@ const StyledTable = ({
                         formatTime(row[column.field])
                       ) : [
                           "banner_image_url",
+                          "poster_image_url",
                           "image",
                           "event image",
                           "speaker_image",

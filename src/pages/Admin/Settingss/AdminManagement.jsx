@@ -13,7 +13,7 @@ export default function AdminManagement() {
   const [filterOpen, setFilterOpen] = useState(false);
   const [isChange, setIsChange] = useState(false);
   const [pageNo, setPageNo] = useState(1);
-  const { fetchAdmins, totalCount, admins } = useAdminStore();
+  const { fetchAdmins, totalCount, admins,deleteAdmins } = useAdminStore();
   const userColumns = [
     { title: "Name", field: "name", padding: "none" },
     { title: "Email", field: "email" },
@@ -23,25 +23,25 @@ export default function AdminManagement() {
     setFilterOpen(true);
   };
   const handleDelete = async () => {
-    // if (selectedRows.length > 0) {
-    //   try {
-    //     await Promise.all(selectedRows?.map((id) => deleteRoles(id)));
-    //     toast.success("Deleted successfully");
-    //     setIsChange(!isChange);
-    //     setSelectedRows([]);
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // }
+    if (selectedRows.length > 0) {
+      try {
+        await Promise.all(selectedRows?.map((id) => deleteAdmins(id)));
+        toast.success("Deleted successfully");
+        setIsChange(!isChange);
+        setSelectedRows([]);
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
   const handleRowDelete = async (id) => {
-    // try {
-    //   await deleteRoles(id);
-    //   toast.success("Deleted successfully");
-    //   setIsChange(!isChange);
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    try {
+      await deleteAdmins(id);
+      toast.success("Deleted successfully");
+      setIsChange(!isChange);
+    } catch (error) {
+      console.log(error);
+    }
   };
   const handleCloseFilter = () => {
     setFilterOpen(false);
