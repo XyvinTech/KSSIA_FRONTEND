@@ -170,7 +170,7 @@ const SignIn = () => {
                     Username or OTP is incorrect
                   </Typography>
                 )}
-                <StyledButton name={loading ?   <CircularProgress/>: "Sign in" } variant="primary">
+                <StyledButton name={loading ?   <CircularProgress size={24} />: "Sign in" } variant="primary">
                   SignIn
                 </StyledButton>
               </Stack>

@@ -27,18 +27,58 @@ const BulkAddform = () => {
       const data = event.target.result;
 
       if (file.type === "text/csv") {
-        // Parse CSV file using PapaParse
         const parsedData = Papa.parse(data, { header: true });
         const filteredData = parsedData.data.filter((row) =>
           Object.values(row).some((value) => value !== null && value !== "")
         );
-        callback(filteredData);
+        const splitFullName = (fullName) => {
+          const titles = ["Mr.", "Mrs.", "Dr.", "Miss", "Ms."];
+          const nameParts = fullName
+            .split(" ")
+            .filter((part) => !titles.includes(part));
+
+          let firstName = "";
+          let middleName = "";
+          let lastName = "";
+
+          if (nameParts.length === 1) {
+            firstName = nameParts[0];
+          } else if (nameParts.length === 2) {
+            firstName = nameParts[0];
+            lastName = nameParts[1];
+          } else if (nameParts.length > 2) {
+            firstName = nameParts[0];
+            middleName = nameParts.slice(1, nameParts.length - 1).join(" ");
+            lastName = nameParts[nameParts.length - 1];
+          }
+
+          return {
+            first_name: firstName,
+            middle_name: middleName,
+            last_name: lastName,
+          };
+        };
+        const formatPhoneNumber = (phoneNumber) => {
+          if (phoneNumber.startsWith("+91")) {
+            return phoneNumber;
+          }
+          return `+91${phoneNumber}`;
+        };
+        const formattedData = filteredData.map((row) => ({
+          name: splitFullName(row["Name"]),
+          email: row["Email ID"] || "",
+          phone_numbers: {
+            personal: formatPhoneNumber(row["Mobile Number"] || ""),
+          },
+          designation: row["Designation"] || "",
+          membership_id: row["MemberShip ID"] || "",
+        }));
+        callback(formattedData);
       } else if (
         file.type === "application/vnd.ms-excel" ||
         file.type ===
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
       ) {
-        // Parse XLS/XLSX file using XLSX
         const workbook = XLSX.read(data, { type: "binary" });
         const firstSheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[firstSheetName];
@@ -46,7 +86,19 @@ const BulkAddform = () => {
         const filteredData = jsonData.filter((row) =>
           Object.values(row).some((value) => value !== null && value !== "")
         );
-        callback(filteredData);
+        const formattedData = filteredData.map((row) => ({
+          name: {
+            first_name: row["Name"].split(" ")[1] || "",
+            middle_name: "",
+            last_name: row["Name"].split(" ").slice(2).join(" ") || "",
+          },
+          email: row["Email ID"] || "",
+          phone_numbers: {
+            personal: row["Mobile Number"] || "",
+          },
+          designation: row["Designation"] || "",
+        }));
+        callback(formattedData);
       }
     };
 
