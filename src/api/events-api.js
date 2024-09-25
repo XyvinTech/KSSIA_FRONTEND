@@ -43,7 +43,7 @@ export const updateEventById = async (id, data) => {
   try {
     const response = await axiosInstance.put(`/events/${id}`, data, {
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "application/json",
       },
     });
     toast.success(response.data.message);
