@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import  { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Box, Stack, Grid, Button, styled } from '@mui/material';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
@@ -74,19 +74,26 @@ const Spacer = styled(Box)({
   height: '40px',
 });
 
-export default function DropZone() {
-  const [files, setFiles] = useState([]);
+export default function Dropzone({files = [], onFileUpload }) {
+ 
 
   const onDrop = useCallback((acceptedFiles) => {
-    const newFiles = acceptedFiles.map(file => ({
-      file,
-      preview: URL.createObjectURL(file)
-    }));
-    setFiles(prevFiles => [...prevFiles, ...newFiles]);
-  }, []);
+    if (acceptedFiles.length > 0) {
+      const newFile = acceptedFiles[0];
+      const newFileObj = {
+        file: newFile,
+        preview: URL.createObjectURL(newFile)
+      };
+     
+      onFileUpload(newFileObj); 
+    }
+  }, [onFileUpload]);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
-
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ 
+    onDrop,
+    accept: ['text/csv', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+    multiple: false
+  });
   const handleDownload = () => {
     if (files.length > 0) {
       const lastFile = files[files.length - 1].file;
@@ -113,8 +120,8 @@ export default function DropZone() {
           </IconBackground>
           <DropzoneText>
             {isDragActive
-              ? 'Drop the files here ...'
-              : 'Drop your file here to upload or select from storage'}
+              ? 'Drop the file here ...'
+              : 'Drop your CSV/XLS file here to upload or select from storage'}
           </DropzoneText>
         </StyledDropzone>
 

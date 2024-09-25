@@ -71,3 +71,14 @@ export const getSingleUser = async (id) => {
     throw error;
   }
 };
+export const addMembersBulk = async (data) => {
+  try {
+    console.log(data);
+
+    const response = await axiosInstance.post("/college/bulk", data);
+    toast.success(response.data.message);
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};

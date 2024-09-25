@@ -19,7 +19,10 @@ export default function Report() {
   useEffect(() => {
     fetchReport();
   }, []);
-
+  const formattedReports = reports.map(report => ({
+    ...report,
+    reportBy: `${report?.reportBy?.name?.first_name} ${report?.reportBy?.name?.middle_name ? report?.reportBy?.name?.middle_name + ' ' : ''}${report?.reportBy?.name?.last_name}`
+  }));
   const userColumns = [
     { title: "Date", field: "createdAt", padding: "none" },
     { title: "Report By", field: "reportBy" },
@@ -88,7 +91,7 @@ export default function Report() {
           >
             <StyledTable
               columns={userColumns}
-              data={reports}
+              data={formattedReports}
               onSelectionChange={handleSelectionChange}
               menu
               totalCount={totalCount}

@@ -138,7 +138,7 @@ const EventSingleView = () => {
             )}{" "}
             {selectedTab === 1 && (
               <Grid>
-                <RsvpTable />
+                <RsvpTable data={events?.rsvp} />
               </Grid>
             )}
           </Box>{" "}
