@@ -15,8 +15,10 @@ export default function RoleManagement() {
   const [pageNo, setPageNo] = useState(1);
   const { roles, getRoles, totalCount ,deleteRoles} = useRoleStore();
   useEffect(() => {
-    getRoles();
-  }, [isChange]);
+    let filter = {};
+    filter.pageNo = pageNo;
+    getRoles(filter);
+  }, [isChange, pageNo]);
 
   const handleOpenFilter = () => {
     setFilterOpen(true);

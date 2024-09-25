@@ -13,13 +13,15 @@ const useAdminStore = create((set) => ({
   admins: [],
   admin: [],
   loadings: false,
+  totalCount : 0,
   fetchAdminById: async () => {
     const response = await getAdminById();
     set({ singleAdmin: response.data || [] });
   },
-  fetchAdmins: async () => {
-    const response = await getAllAdmin();
+  fetchAdmins: async (filter) => {
+    const response = await getAllAdmin(filter);
     set({ admins: response.data || [] });
+    set ({ totalCount : response?.totalCount || 0 })
   },
   addAdmin: async (data) => {
     await createAdmin(data);

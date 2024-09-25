@@ -16,8 +16,8 @@ const usePaymentStore = create((set) => ({
   loadings: false,
   totalCount: 0,
   refreshMember: false,
-  fetchPayment: async () => {
-    const allData = await getPayment();
+  fetchPayment: async (filter) => {
+    const allData = await getPayment(filter);
     set({ payments: allData?.data || [] });
     set({ totalCount: allData?.totalCount || 0 });
   },

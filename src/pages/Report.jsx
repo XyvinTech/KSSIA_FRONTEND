@@ -17,8 +17,10 @@ export default function Report() {
     setFilterOpen(true);
   };
   useEffect(() => {
-    fetchReport();
-  }, []);
+    let filter = {};
+    filter.page = pageNo;
+    fetchReport(filter);
+  }, [pageNo]);
   const formattedReports = reports.map(report => ({
     ...report,
     reportBy: `${report?.reportBy?.name?.first_name} ${report?.reportBy?.name?.middle_name ? report?.reportBy?.name?.middle_name + ' ' : ''}${report?.reportBy?.name?.last_name}`

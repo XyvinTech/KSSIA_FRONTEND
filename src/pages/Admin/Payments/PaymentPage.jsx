@@ -39,8 +39,10 @@ export default function PaymentPage() {
     setIsChange(!isChange);
   };
   useEffect(() => {
-    fetchPayment();
-  }, [isChange]);
+    let filter = {};
+    filter.pageNo = pageNo;
+    fetchPayment(filter);
+  }, [isChange, pageNo]);
 
   const handleSelectionChange = (newSelectedIds) => {
     setSelectedRows(newSelectedIds);

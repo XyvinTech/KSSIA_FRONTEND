@@ -41,13 +41,10 @@ export default function Events() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await getEvents();
-        // const formattedData = response.data.map((event) => ({
-        //   ...event,
-        //   date: new Date(event.date).toDateString(),
-        //   time: timeFormatter(event.time),
-        //   activate: event.activate ? "active" : "inactive",
-        // }));
+        let filter = {};
+        filter.pageNo = pageNo;
+
+        const response = await getEvents(filter);
         setTableData(response.data);
         setTotal(response.totalCount);
       } catch (error) {
@@ -56,7 +53,7 @@ export default function Events() {
     };
 
     fetchEvents();
-  }, [isChange]);
+  }, [isChange, pageNo]);
   const handleSelectionChange = (newSelectedIds) => {
     setSelectedRows(newSelectedIds);
   };

@@ -3,10 +3,11 @@ import { getReport } from "../api/report-api";
 
 const useReportStore = create((set) => ({
   reports: [],
-
-  fetchReport: async (type) => {
-    const allData = await getReport(type);
+totalCount: 0,
+  fetchReport: async (filter) => {
+    const allData = await getReport(filter);
     set({ reports: allData?.data || [] });
+    set({ totalCount: allData?.totalCount || 0 });
   },
 }));
 

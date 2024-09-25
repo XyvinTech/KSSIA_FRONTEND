@@ -51,8 +51,10 @@ export default function AdminManagement() {
     console.log("Selected items:", newSelectedIds);
   };
   useEffect(() => {
-    fetchAdmins();
-  }, [isChange]);
+    let filter={};
+    filter.pageNo = pageNo;
+    fetchAdmins(filter);
+  }, [isChange,pageNo]);
   const handleEdit = (id) => {
     navigate(`/settings/addnewadmin`, {
       state: { adminId: id, isUpdate: true },

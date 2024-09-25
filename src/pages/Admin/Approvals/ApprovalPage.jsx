@@ -22,8 +22,10 @@ export default function ApprovalPage() {
     setFilterOpen(true);
   };
   useEffect(() => {
-    fetchApproval();
-  }, [isChange]);
+    let filter = {};
+    filter.pageNo = pageNo;
+    fetchApproval(filter);
+  }, [isChange,pageNo]);
   const handleChange = () => {
     setIsChange(!isChange);
   };

@@ -28,16 +28,27 @@ export default function MembersPage() {
   const [total, setTotal] = useState(0);
   useEffect(() => {
     async function init() {
-      const response = await axiosInstance.get(CONSTANTS.PRODUCTS_API);
-      if (response.status != 200) {
-        // handle return
-        return;
+      try {
+        let filter = {};
+        filter.pageNo = pageNo;  
+        const response = await axiosInstance.get(CONSTANTS.PRODUCTS_API, {
+          params: filter,
+        });
+  
+        if (response.status !== 200) {
+          return;
+        }
+  
+        setProductData(response.data.data);
+        setTotal(response.data.totalCount);
+      } catch (error) {
+        console.error("Error fetching product data:", error);
       }
-      setProductData(response.data.data);
-      setTotal(response.data.totalCount);
     }
+  
     init();
-  }, [isChange]);
+  }, [isChange, pageNo]); 
+  
   const handleApprove = async (id) => {
     await fetchProductById(id);
     setApproveOpen(true);

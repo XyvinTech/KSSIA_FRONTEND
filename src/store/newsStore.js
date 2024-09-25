@@ -11,8 +11,8 @@ const useNewsStore = create((set) => ({
   news: [],
   singleNews: [],
   totalCount: 0,
-  fetchNews: async () => {
-    const allData = await getNews();
+  fetchNews: async (filter) => {
+    const allData = await getNews(filter);
     set({ news: allData?.data || [] });
     set({ totalCount: allData?.totalCount || 0 });
   },

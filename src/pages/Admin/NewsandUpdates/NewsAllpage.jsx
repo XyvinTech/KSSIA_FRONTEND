@@ -60,8 +60,10 @@ export default function NewsAllpage() {
     setPreviewOpen(false);
   };
   useEffect(() => {
-    fetchNews();
-  }, [isChange]);
+    let filter = {}
+    filter.pageNo = pageNo
+    fetchNews(filter);
+  }, [isChange, pageNo]);
   const handleChange = () => {
     setIsChange(!isChange);
   };

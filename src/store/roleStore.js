@@ -14,8 +14,8 @@ const useRoleStore = create((set) => ({
   addRole: async (data) => {
     await createRole(data);
   },
-  getRoles: async () => {
-    const response = await fetchRole();
+  getRoles: async (filter) => {
+    const response = await fetchRole(filter);
     set({ roles: response.data || [] });
     set({ totalCount: response?.totalCount || 0 });
   },

@@ -1,9 +1,11 @@
 import { toast } from "react-toastify";
 import axiosInstance from "./axios-interceptor";
 
-export const getEvents = async () => {
+export const getEvents = async (filter) => {
   try {
-    const response = await axiosInstance.get("/events");
+    const response = await axiosInstance.get("/events", {
+      params: filter, 
+    });
     return response.data;
   } catch (error) {
     console.error("Error caught:", error);

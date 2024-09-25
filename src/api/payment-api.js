@@ -1,9 +1,11 @@
 import { toast } from "react-toastify";
 import axiosInstance from "./axios-interceptor";
 
-export const getPayment = async () => {
+export const getPayment = async (filter) => {
   try {
-    const response = await axiosInstance.get(`/payments`);
+    const response = await axiosInstance.get(`/payments`, {
+      params: filter, 
+    });
     return response.data;
   } catch (error) {
     return null;
