@@ -12,11 +12,7 @@ export const getEvents = async () => {
 
 export const createEvent = async (eventData) => {
   try {
-    const response = await axiosInstance.post("/events", eventData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const response = await axiosInstance.post("/events", eventData);
     toast.success(response.data.message);
     return response.data;
   } catch (error) {

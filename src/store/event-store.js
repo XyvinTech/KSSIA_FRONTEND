@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import {
   cancelEvent,
+  createEvent,
   getEventById,
   getEventHistory,
   postponeEvent,
@@ -15,6 +16,9 @@ const useEventStore = create((set) => ({
     const allData = await getEventById(id);
     set({ events: allData?.data || [] });
     set({ loadings: false });
+  },
+  addEvent: async (data) => {
+    await createEvent(data);
   },
   updateEvent: async (id, data) => {
     await updateEventById(id, data);
