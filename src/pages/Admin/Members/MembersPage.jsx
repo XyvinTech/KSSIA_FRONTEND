@@ -36,16 +36,29 @@ export default function MembersPage() {
   };
   useEffect(() => {
     async function fetchUserData() {
-      const response = await axiosInstance.get(CONSTANTS.MEMBERS_API);
-      if (response.status != 200) {
-        // handle error
-        return;
+      try {
+        let filter = {};
+        filter.pageNo = pageNo; 
+        const response = await axiosInstance.get(CONSTANTS.MEMBERS_API, {
+          params: filter, 
+        });
+  
+        if (response.status !== 200) {
+         
+          return;
+        }
+  
+        setUserData(response.data.data);
+        setTotal(response.data.totalCount);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+       
       }
-      setUserData(response.data.data);
-      setTotal(response.data.totalCount);
     }
+  
     fetchUserData();
-  }, [isChange]);
+  }, [isChange, pageNo]); 
+  
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
