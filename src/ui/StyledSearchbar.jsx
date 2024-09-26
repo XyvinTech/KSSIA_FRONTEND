@@ -5,7 +5,7 @@ const StyledSearchbar = () => {
   return (
     <TextField
       variant="outlined"
-      placeholder="Search Event"
+      placeholder="Search"
       sx={{
         width: "320px",
         
