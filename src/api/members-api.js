@@ -73,8 +73,6 @@ export const getSingleUser = async (id) => {
 };
 export const addMembersBulk = async (data) => {
   try {
-    console.log(data);
-
     const response = await axiosInstance.post("/admin/users/bulk", data);
     toast.success(response.data.message);
     return response.data;

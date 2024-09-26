@@ -28,6 +28,7 @@ export default function StyledNoticeTable() {
     setSelectedRows(newSelectedIds);
   };
   const handleDelete = async () => {
+    
     if (selectedRows.length > 0) {
       await Promise.all(selectedRows?.map((id) => deletePromotions(id)));
       toast.success('Deleted successfully');

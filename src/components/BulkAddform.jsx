@@ -69,6 +69,7 @@ const BulkAddform = () => {
           email: row["Email ID"] || "",
           phone_numbers: {
             personal: formatPhoneNumber(row["Mobile Number"] || ""),
+            whatsapp_number: formatPhoneNumber(row["WhatsApp Number"] || ""),
           },
           designation: row["Designation"] || "",
           membership_id: row["MemberShip ID"] || "",
@@ -95,8 +96,10 @@ const BulkAddform = () => {
           email: row["Email ID"] || "",
           phone_numbers: {
             personal: row["Mobile Number"] || "",
+            whatsapp_number: row["WhatsApp Number"] || "",
           },
           designation: row["Designation"] || "",
+          membership_id: row["MemberShip ID"] || "",
         }));
         callback(formattedData);
       }
@@ -110,31 +113,26 @@ const BulkAddform = () => {
   };
 
   const handleSave = async () => {
-    try {
-      setLoading(true);
-      if (files.length > 0) {
-        const file = files[0]?.file;
-        if (file) {
-          // Parse the file and handle the result
-          parseFile(file, async (parsedData) => {
-            if (parsedData && parsedData.length > 0) {
-              console.log("Parsed Data:", parsedData);
+    if (files.length > 0) {
+      const file = files[0]?.file;
+      if (file) {
+        parseFile(file, async (parsedData) => {
+          if (parsedData && parsedData.length > 0) {
+            try {
+              setLoading(true);
               await addMembersBulk(parsedData);
-              navigate("/members");
-            } else {
-              toast("Parsed data is empty or invalid.");
+            } catch (error) {
+              toast.error(error.message);
+            } finally {
+              setLoading(false);
             }
-          });
-        } else {
-          toast("No file found.");
-        }
+          }
+        });
       } else {
-        toast("No file uploaded yet!");
+        toast("No file found.");
       }
-    } catch (error) {
-      toast.error(error.message);
-    } finally {
-      setLoading(false);
+    } else {
+      toast("No file uploaded yet!");
     }
   };
 
@@ -150,12 +148,7 @@ const BulkAddform = () => {
           </ul>
         </Stack>
         <Divider sx={{ marginTop: 2, marginBottom: 2 }} />
-        <Stack
-          direction={"row"}
-          spacing={2}
-          width={"50%"}
-          justifyContent={"end"}
-        >
+        <Stack direction={"row"} spacing={2} justifyContent={"end"}>
           <StyledButton
             name="Cancel"
             variant="secondary"

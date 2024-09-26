@@ -7,12 +7,23 @@ import { ReactComponent as FilterIcon } from "../assets/icons/FilterIcon.svg";
 import { useApprovalStore } from "../store/approval-store";
 import StyledTable from "../ui/StyledTable";
 import { useReportStore } from "../store/reportStore";
+import { toast } from "react-toastify";
+import ReportPreview from "../components/ReportPreview";
 export default function Report() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);
+  const [isChange, setIsChange] = useState(false);
   const [pageNo, setPageNo] = useState(1);
-  const { reports, fetchReport, totalCount } = useReportStore();
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const {
+    reports,
+    fetchReport,
+    totalCount,
+    deleteReports,
+    report,
+    fetchReportById,
+  } = useReportStore();
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -20,27 +31,51 @@ export default function Report() {
     let filter = {};
     filter.page = pageNo;
     fetchReport(filter);
-  }, [pageNo]);
-  const formattedReports = reports.map(report => ({
+  }, [isChange, pageNo]);
+  const formattedReports = reports.map((report) => ({
     ...report,
-    reportBy: `${report?.reportBy?.name?.first_name} ${report?.reportBy?.name?.middle_name ? report?.reportBy?.name?.middle_name + ' ' : ''}${report?.reportBy?.name?.last_name}`
+    reportBy: `${report?.reportBy?.name?.first_name} ${
+      report?.reportBy?.name?.middle_name
+        ? report?.reportBy?.name?.middle_name + " "
+        : ""
+    }${report?.reportBy?.name?.last_name}`,
   }));
+  const handleDelete = async () => {
+    if (selectedRows.length > 0) {
+      await Promise.all(selectedRows?.map((id) => deleteReports(id)));
+      toast.success("Deleted successfully");
+      setIsChange(!isChange);
+      setSelectedRows([]);
+    }
+  };
+  const handleRowDelete = async (id) => {
+    await deleteReports(id);
+    toast.success("Deleted successfully");
+    setIsChange(!isChange);
+  };
   const userColumns = [
     { title: "Date", field: "createdAt", padding: "none" },
     { title: "Report By", field: "reportBy" },
     { title: "Type", field: "reportType" },
     { title: "Description", field: "content" },
-    
-    
   ];
   const handleCloseFilter = () => {
     setFilterOpen(false);
+  };
+  const handleChange = () => {
+    setIsChange(!isChange);
   };
   const handleSelectionChange = (newSelectedIds) => {
     setSelectedRows(newSelectedIds);
     console.log("Selected items:", newSelectedIds);
   };
-
+  const handlePreview = async (id) => {
+    await fetchReportById(id);
+    setPreviewOpen(true);
+  };
+  const handleClosePreview = () => {
+    setPreviewOpen(false);
+  };
   return (
     <>
       {" "}
@@ -95,11 +130,20 @@ export default function Report() {
               columns={userColumns}
               data={formattedReports}
               onSelectionChange={handleSelectionChange}
-              menu
+              report
+              onDelete={handleDelete}
+              onDeleteRow={handleRowDelete}
               totalCount={totalCount}
               pageNo={pageNo}
+              onAction={handlePreview}
               setPageNo={setPageNo}
             />{" "}
+            <ReportPreview
+              open={previewOpen}
+              onClose={handleClosePreview}
+              onChange={handleChange}
+              data={report}
+            />
           </Box>
         </>
       </Box>

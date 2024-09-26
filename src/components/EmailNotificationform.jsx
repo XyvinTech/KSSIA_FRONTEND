@@ -23,7 +23,9 @@ export default function EmailNotificationform({ setSelectedTab }) {
   const { addEmailNotifications } = useNotificationStore();
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    fetchUsers();
+    let filter = {};
+    filter.limit = "full";
+    fetchUsers(filter);
   }, []);
   const option =
     users && Array.isArray(users)
@@ -191,15 +193,10 @@ export default function EmailNotificationform({ setSelectedTab }) {
               name="link_url"
               control={control}
               defaultValue=""
-              rules={{ required: "Link is required" }}
               render={({ field }) => (
                 <>
                   <StyledInput placeholder="Paste link here" {...field} />
-                  {errors.link_url && (
-                    <span style={{ color: "red" }}>
-                      {errors.link_url.message}
-                    </span>
-                  )}
+                 
                 </>
               )}
             />

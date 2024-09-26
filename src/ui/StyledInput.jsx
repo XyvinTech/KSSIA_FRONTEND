@@ -50,7 +50,7 @@ const StyledInput = ({ placeholder, startIcon, endIcon, disabled,type,onChange,v
           },
           "& input::placeholder": {
             color: "#000000",
-            fontWeight: "500",
+            fontWeight: "400",
           },
         }}
       />

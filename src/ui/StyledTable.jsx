@@ -71,7 +71,7 @@ const StyledTable = ({
   totalCount,
   onDeleteRow,
   dashboard,
-  member,
+  member,report,
   product,
   onApprove,
   payment,
@@ -330,7 +330,7 @@ const StyledTable = ({
                         </IconButton>
                       )}{" "}
                       {!menu &&
-                        row.status !== "rejected" &&
+                        row.status !== "rejected" &&row.status !== "reported" &&
                         row.status !== "approved" && (
                           <IconButton
                             aria-controls="simple-menu"
@@ -351,6 +351,19 @@ const StyledTable = ({
                             <MenuItem onClick={handleModify}>Edit</MenuItem>
                             <MenuItem onClick={handleAction}>
                               Publish/Unpublish
+                            </MenuItem>
+                            <MenuItem
+                              onClick={() => handleRowDelete(row._id)}
+                              style={{ color: "red" }}
+                            >
+                              Remove
+                            </MenuItem>
+                          </>
+                        ) : report ? (
+                          <>
+                           
+                            <MenuItem onClick={handleAction}>
+                              Report
                             </MenuItem>
                             <MenuItem
                               onClick={() => handleRowDelete(row._id)}

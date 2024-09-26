@@ -32,7 +32,9 @@ export default function Addproductform() {
   const location = useLocation();
   const { productId, isUpdate } = location.state || {};
   useEffect(() => {
-    fetchUsers();
+    let filter={};
+    filter.limit = "full";
+    fetchUsers(filter);
   }, []);
   useEffect(() => {
     if (isUpdate && productId) {

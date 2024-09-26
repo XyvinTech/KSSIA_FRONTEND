@@ -30,7 +30,9 @@ export default function AddPaymentdetails() {
   const navigate = useNavigate();
   const { users, fetchUsers } = useDropDownStore();
   useEffect(() => {
-    fetchUsers();
+    let filter = {};
+    filter.limit = "full";
+    fetchUsers(filter);
   }, []);
   useEffect(() => {
     if (isUpdate && paymentId) {
