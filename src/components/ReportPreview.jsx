@@ -28,6 +28,26 @@ const ReportPreview = ({ open, onClose, onChange, data }) => {
       console.error(error.message);
     }
   };
+  const handleApproveProduct = async () => {
+    try {
+      const updateData = { status: "accepted" };
+      await patchProducts(data?.reportedElement?._id, updateData);
+      onChange();
+      onClose();
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+  const handleApproveRequirement = async () => {
+    try {
+      const updateData = { status: "approved" };
+      await patchApprovals(data?.reportedElement?._id, updateData);
+      onChange();
+      onClose();
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
   const handleRequirementSubmit = async () => {
     try {
       const updateData = { status: "reported" };
@@ -66,21 +86,20 @@ const ReportPreview = ({ open, onClose, onChange, data }) => {
       <DialogContent sx={{ padding: 3 }}>
         <Stack spacing={3}>
           {data?.reportType === "user" ? null : (
-           <Box
-           sx={{
-             borderRadius: "12px",
-             overflow: "hidden",
-             boxShadow: 3,
-             maxHeight: "180px",
-           }}
-         >
-           <img
-             src={data?.reportedElement?.image}
-             alt={data?.reportedElement?.name}
-             style={{ width: "100%", height: "180px", objectFit: "cover" }}
-           />
-         </Box>
-         
+            <Box
+              sx={{
+                borderRadius: "12px",
+                overflow: "hidden",
+                boxShadow: 3,
+                maxHeight: "180px",
+              }}
+            >
+              <img
+                src={data?.reportedElement?.image}
+                alt={data?.reportedElement?.name}
+                style={{ width: "100%", height: "180px", objectFit: "cover" }}
+              />
+            </Box>
           )}
 
           <Stack spacing={1}>
@@ -106,10 +125,10 @@ const ReportPreview = ({ open, onClose, onChange, data }) => {
                   Price: ₹{data?.reportedElement?.price} &nbsp; (Offer Price: ₹
                   {data?.reportedElement?.offer_price})
                 </Typography>
-                <Typography variant="body2" color={"#4A4647"}>
+                <Typography variant="h6" color={"#4A4647"}>
                   Units: {data?.reportedElement?.units}
                 </Typography>
-                <Typography variant="body2" color={"#4A4647"}>
+                <Typography variant="h6" color={"#4A4647"}>
                   Description: {data?.reportedElement?.description}
                 </Typography>{" "}
               </>
@@ -134,13 +153,13 @@ const ReportPreview = ({ open, onClose, onChange, data }) => {
                     {data?.reportBy?.name?.middle_name}{" "}
                     {data?.reportBy?.name?.last_name}
                   </Typography>
-                  <Typography variant="body2" color={"#4A4647"}>
+                  <Typography variant="h6" color={"#4A4647"}>
                     Company: {data?.reportBy?.company_name}
                   </Typography>
-                  <Typography variant="body2" color={"#4A4647"}>
+                  <Typography variant="h6" color={"#4A4647"}>
                     Phone: {data?.reportBy?.phone_numbers?.personal}
                   </Typography>
-                  <Typography variant="body2" color={"#4A4647"}>
+                  <Typography variant="h6" color={"#4A4647"}>
                     WhatsApp: {data?.reportBy?.phone_numbers?.whatsapp_number}
                   </Typography>
                 </Stack>
@@ -164,20 +183,36 @@ const ReportPreview = ({ open, onClose, onChange, data }) => {
       </DialogContent>
       {data?.reportType === "product" && (
         <Stack direction={"row"} spacing={2} padding={2} justifyContent={"end"}>
-          <StyledButton
-            variant="primary"
-            name={"Report"}
-            onClick={handleSubmit}
-          />
+          {data?.reportedElement?.status === "reported" ? (
+            <StyledButton
+              variant="primary"
+              name={"Publish"}
+              onClick={handleApproveProduct}
+            />
+          ) : (
+            <StyledButton
+              variant="primary"
+              name={"Report"}
+              onClick={handleSubmit}
+            />
+          )}
         </Stack>
       )}{" "}
       {data?.reportType === "requirement" && (
         <Stack direction={"row"} spacing={2} padding={2} justifyContent={"end"}>
-          <StyledButton
-            variant="primary"
-            name={"Report Requirement"}
-            onClick={handleRequirementSubmit}
-          />
+          {data?.reportedElement?.status === "reported" ? (
+            <StyledButton
+              variant="primary"
+              name={"Publish"}
+              onClick={handleApproveRequirement}
+            />
+          ) : (
+            <StyledButton
+              variant="primary"
+              name={"Report Requirement"}
+              onClick={handleRequirementSubmit}
+            />
+          )}
         </Stack>
       )}
     </Dialog>

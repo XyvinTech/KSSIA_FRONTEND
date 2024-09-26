@@ -206,7 +206,6 @@ const StyledTable = ({
           </TableHead>
           <TableBody>
             {loading ? (
-              // Display skeletons while loading
 
               Array.from(new Array(5)).map((_, index) => (
                 <StyledTableRow key={index}>

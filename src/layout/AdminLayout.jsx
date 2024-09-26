@@ -162,7 +162,7 @@ const AdminLayout = (props) => {
     <Box
       sx={{
         width: "250px",
-        height: "1024px",
+        height: "auto",
         display: "flex",
         flexDirection: "column",
         gap: "10px",
