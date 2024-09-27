@@ -45,6 +45,7 @@ export default function AddPaymentdetails() {
       setValue("date", payment.date || "");
       setValue("time", payment.time || "");
       setValue("amount", payment.amount || "");
+      setValue("plan", payment.plan || "");
       setValue("mode_of_payment", payment.mode_of_payment || "");
       const selectedCategory = category.find(
         (item) => item.value === payment.category
@@ -95,6 +96,7 @@ export default function AddPaymentdetails() {
       formData.append("category", data.category.value);
       formData.append("status", data.status.value);
       formData.append("remarks", data.remarks);
+      formData.append("plan", data.plan);
       if (!isUpdate || (isUpdate && data.file instanceof File)) {
         formData.append("file", data.file);
       }
@@ -406,6 +408,32 @@ export default function AddPaymentdetails() {
                         {errors.remarks && (
                           <span style={{ color: "red" }}>
                             {errors.remarks.message}
+                          </span>
+                        )}
+                      </>
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography
+                    sx={{ marginBottom: 1 }}
+                    variant="h6"
+                    fontWeight={500}
+                    color={"#333333"}
+                  >
+                    Plan
+                  </Typography>
+                  <Controller
+                    name="plan"
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: "Plan is required" }}
+                    render={({ field }) => (
+                      <>
+                        <StyledInput placeholder="Add plan " {...field} />
+                        {errors.plan && (
+                          <span style={{ color: "red" }}>
+                            {errors.plan.message}
                           </span>
                         )}
                       </>

@@ -1,18 +1,22 @@
 import { create } from "zustand";
-import { addAppNotification, addEmailNotification, getNotification } from "../api/notification-api";
+import { addAppNotification, addEmailNotification, deleteNotification, getNotification } from "../api/notification-api";
 
 const useNotificationStore = create((set) => ({
   notifications: [],
-
-  fetchNotification: async () => {
-    const allData = await getNotification();
+totalCount: 0,
+  fetchNotification: async (filter) => {
+    const allData = await getNotification(filter);
     set({ notifications: allData?.data || [] });
+    set({ totalCount: allData?.totalCount || 0 });
   },
   addAppNotifications: async (data) => {
     await addAppNotification(data);
   },
   addEmailNotifications: async (data) => {
     await addEmailNotification(data);
+  },
+  deleteNotifications: async (id) => {
+    await deleteNotification(id);
   },
 }));
 

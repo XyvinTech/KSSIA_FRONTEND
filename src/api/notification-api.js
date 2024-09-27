@@ -1,9 +1,11 @@
 import { toast } from "react-toastify";
 import axiosInstance from "./axios-interceptor";
 
-export const getNotification = async () => {
+export const getNotification = async (filter) => {
   try {
-    const response = await axiosInstance.get("/notification/in-app");
+    const response = await axiosInstance.get("/notification/in-app", {
+      params: filter,
+    });
     return response.data;
   } catch (error) {
     return null;
@@ -31,6 +33,15 @@ export const addEmailNotification = async (data) => {
       },
     });
     toast.success(response.data.message);
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+export const deleteNotification = async (id) => {
+  try {
+    const response = await axiosInstance.delete(`/notification/in-app/${id}`);
+
     return response.data;
   } catch (error) {
     throw error.response.data;
