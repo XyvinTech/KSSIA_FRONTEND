@@ -53,12 +53,12 @@ const DashboardPage = () => {
 
       <Grid>
         <Grid container spacing={1} item xs={12} >
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <Box padding={2}>
               <DashboardRevnue />
             </Box>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <Box padding={2}>
               <DashboardMembers />
             </Box>

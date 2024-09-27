@@ -4,7 +4,7 @@ import React from "react";
 const DashboardCard = ({ data }) => {
   return (
     <Stack
-      bgcolor={data?.bgcolor}height={'93px'}padding={2}
+      bgcolor={data?.bgcolor}height={'120px'}padding={2}
       borderRadius={'12px'} 
       sx={{
         justifyContent: 'start' 
