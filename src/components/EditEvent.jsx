@@ -96,6 +96,9 @@ export default function EditEvent({ eventId, setSelectedTab }) {
       formData.append("activate", data.activate);
       formData.append("type", data.type);
       formData.append("image", data.image);
+      if (type === "offline") {
+        formData.append("venue", data.venue);
+      }
       formData.append("guest_image", data.guest_image);
       formData.append("description", data.description);
       formData.append("meeting_link", data.meeting_link);
