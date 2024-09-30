@@ -98,7 +98,7 @@ export default function Promotionform({ isUpdate }) {
       }
 
       if (type === "video") {
-        // formData.append("type", "video");
+        formData.append("type", "video");
         formData.append("yt_link", data?.yt_link);
         formData.append("video_title", data?.title);
         if (data?.upload_video) {
