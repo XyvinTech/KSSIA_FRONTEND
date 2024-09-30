@@ -11,6 +11,7 @@ import {
 const useEventStore = create((set) => ({
   events: [],
   loadings: false,
+  totalCount: 0,
   fetchEventById: async (id) => {
     set({ loadings: true });
     const allData = await getEventById(id);
@@ -32,6 +33,7 @@ const useEventStore = create((set) => ({
   eventHistory: async () => {
     const allData = await getEventHistory();
     set({ events: allData?.data || [] });
+    set({ totalCount: allData?.totalCount || 0 });
   },
 }));
 

@@ -26,8 +26,12 @@ export default function AddEvent({ eventId, setSelectedTab }) {
     formState: { errors },
   } = useForm();
   const [isChecked, setIsChecked] = useState(false);
+  const [type, setType] = useState();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const handleTypeChange = (selectedOption) => {
+    setType(selectedOption.value);
+  };
   const handleClear = (event) => {
     event.preventDefault();
     setSelectedTab(0);
@@ -46,13 +50,16 @@ export default function AddEvent({ eventId, setSelectedTab }) {
     setIsChecked(e.target.checked);
   };
 
-  const option = [{ value: "online", label: "online" }];
+  const option = [{ value: "gmeet", label: "Gmeet" }];
 
-  const types = [{ value: "Conference", label: "Conference" }];
+  const types = [
+    { value: "online", label: "Online" },
+    { value: "offline", label: "Offline" },
+  ];
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-  
+
       const formData = new FormData();
       formData.append("organiser_name", data.organiser_name);
       formData.append("organiser_company_name", data.organiser_company_name);
@@ -64,12 +71,13 @@ export default function AddEvent({ eventId, setSelectedTab }) {
       formData.append("startDate", data.startDate);
       formData.append("platform", data.platform);
       formData.append("activate", data.activate);
-      formData.append("type", data.type);
+      formData.append("type", data.type.value);
       formData.append("image", data.image);
+      formData.append("venue", data.venue);
       formData.append("guest_image", data.guest_image);
       formData.append("description", data.description);
       formData.append("meeting_link", data.meeting_link);
-  
+
       // Handle speakers: Keep existing image if no new image is provided
       const speakersWithRetainedImages = data.speakers.map((speaker, index) => {
         // Check if a new image has been uploaded for this speaker
@@ -82,17 +90,17 @@ export default function AddEvent({ eventId, setSelectedTab }) {
           return speaker;
         }
       });
-  
+
       // Append speakers (without new images) to formData as JSON
       formData.append("speakers", JSON.stringify(speakersWithRetainedImages));
-  
+
       // Append new speaker images separately if they exist
       speakerImages.forEach((image, index) => {
         if (image) {
           formData.append(`speaker_images`, image); // Append only new images
         }
       });
-  
+
       // Update or create event
       if (eventId) {
         await updateEventById(eventId, formData);
@@ -107,7 +115,6 @@ export default function AddEvent({ eventId, setSelectedTab }) {
       setLoading(false);
     }
   };
-  
 
   const addSpeaker = () => {
     setSpeakers([
@@ -125,33 +132,32 @@ export default function AddEvent({ eventId, setSelectedTab }) {
         try {
           const response = await getEventById(eventId);
           const eventData = response.data;
-  
+
           // Extract speaker images from the event's speaker data
           const speakerImagesFromAPI = (eventData.speakers || []).map(
             (speaker) => speaker.speaker_image // Assuming `speaker_image` is the field name
           );
-  
+
           // Set the speakers and speaker images in the state
           setSpeakers(eventData.speakers || []);
           setSpeakerImages(speakerImagesFromAPI);
-  
+
           // Set form fields including other event data
           reset({
             ...eventData,
             speakers: eventData.speakers || [], // Pre-fill speakers
             activate: eventData.activate || false, // Pre-fill switch state
           });
-  
+
           setIsChecked(eventData.activate || false); // Set initial checked state for switch
         } catch (error) {
           console.error("Error fetching event data:", error);
         }
       };
-  
+
       fetchEventData();
     }
   }, [eventId, reset]);
-  
 
   const handleSpeakerChange = (index, field, value) => {
     setSpeakers((prevSpeakers) => {
@@ -201,9 +207,10 @@ export default function AddEvent({ eventId, setSelectedTab }) {
                     options={types}
                     {...field}
                     value={types.find((opt) => opt.value === field.value)}
-                    onChange={(selectedOption) =>
-                      field.onChange(selectedOption.value)
-                    }
+                    onChange={(e) => {
+                      field.onChange(e);
+                      handleTypeChange(e);
+                    }}
                   />
                   {errors.type && (
                     <span style={{ color: "red" }}>{errors.type.message}</span>
@@ -387,66 +394,84 @@ export default function AddEvent({ eventId, setSelectedTab }) {
               )}
             />
           </Grid>
-          <Grid item xs={6}>
-            <Typography
-              sx={{ marginBottom: 1 }}
-              variant="h6"
-              fontWeight={500}
-              color={"#333333"}
-            >
-              Virtual platform
-            </Typography>
-            <Controller
-              name="platform"
-              control={control}
-              defaultValue=""
-              rules={{ required: "Virtual platform is required" }}
-              render={({ field }) => (
-                <>
-                  <StyledSelectField
-                    placeholder="Select Virtual Platform"
-                    options={option}
-                    {...field}
-                    value={option.find((opt) => opt.value === field.value)}
-                    onChange={(selectedOption) =>
-                      field.onChange(selectedOption.value)
-                    }
-                  />
-                  {errors.platform && (
-                    <span style={{ color: "red" }}>
-                      {errors.platform.message}
-                    </span>
+          {type === "online" && (
+            <>
+              <Grid item xs={6}>
+                <Typography
+                  sx={{ marginBottom: 1 }}
+                  variant="h6"
+                  fontWeight={500}
+                  color={"#333333"}
+                >
+                  Virtual platform
+                </Typography>
+                <Controller
+                  name="platform"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <>
+                      <StyledSelectField
+                        placeholder="Select Virtual Platform"
+                        options={option}
+                        {...field}
+                        value={option.find((opt) => opt.value === field.value)}
+                        onChange={(selectedOption) =>
+                          field.onChange(selectedOption.value)
+                        }
+                      />
+                    </>
                   )}
-                </>
-              )}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <Typography
-              sx={{ marginBottom: 1 }}
-              variant="h6"
-              fontWeight={500}
-              color={"#333333"}
-            >
-              Add link
-            </Typography>
-            <Controller
-              name="meeting_link"
-              control={control}
-              defaultValue=""
-              rules={{ required: "Link  is required" }}
-              render={({ field }) => (
-                <>
-                  <StyledInput placeholder="Add Meeting Link here" {...field} />
-                  {errors.meeting_link && (
-                    <span style={{ color: "red" }}>
-                      {errors.meeting_link.message}
-                    </span>
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <Typography
+                  sx={{ marginBottom: 1 }}
+                  variant="h6"
+                  fontWeight={500}
+                  color={"#333333"}
+                >
+                  Add link
+                </Typography>
+                <Controller
+                  name="meeting_link"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <>
+                      <StyledInput
+                        placeholder="Add Meeting Link here"
+                        {...field}
+                      />
+                    </>
                   )}
-                </>
-              )}
-            />
-          </Grid>
+                />
+              </Grid>
+            </>
+          )}
+          {type === "offline" && (
+            <Grid item xs={6}>
+              <Typography
+                sx={{ marginBottom: 1 }}
+                variant="h6"
+                fontWeight={500}
+                color={"#333333"}
+              >
+                Venue
+              </Typography>
+              <Controller
+                name="venue"
+                control={control}
+                defaultValue=""
+                rules={{ required: "Venue  is required" }}
+                render={({ field }) => (
+                  <>
+                    <StyledInput placeholder="Add Venue here" {...field} />
+                  </>
+                )}
+              />
+            </Grid>
+          )}
           <Grid item xs={6}>
             <Typography
               sx={{ marginBottom: 1 }}

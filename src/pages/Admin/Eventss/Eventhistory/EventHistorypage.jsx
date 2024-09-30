@@ -10,7 +10,7 @@ import StyledSearchbar from "../../../../ui/StyledSearchbar";
 import { useEventStore } from "../../../../store/event-store.js";
 export default function EventHistorypage() {
   const [filterOpen, setFilterOpen] = useState(false);
-
+  const [pageNo, setPageNo] = useState(1);
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -18,10 +18,10 @@ export default function EventHistorypage() {
   const handleCloseFilter = () => {
     setFilterOpen(false);
   };
-  const { eventHistory, events } = useEventStore();
+  const { eventHistory, events,totalCount } = useEventStore();
   useEffect(() => {
     eventHistory();
-  }, []);
+  }, [pageNo]);
   return (
     <>
       {" "}
@@ -79,7 +79,8 @@ export default function EventHistorypage() {
             p={1}
             border={"1px solid rgba(0, 0, 0, 0.12)"}
           >
-            <StyledTable columns={eventColumns} data={events} />{" "}
+            <StyledTable columns={eventColumns} data={events}  pageNo={pageNo}
+              setPageNo={setPageNo} totalCount={totalCount}/>{" "}
           </Box>
         </>
       </Box>

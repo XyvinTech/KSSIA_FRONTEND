@@ -14,12 +14,14 @@ const useMemberStore = create((set) => ({
   member: [],
   loadings: false,
   payment: [],
+  totalCount: 0,
   addMembers: async (data) => {
     await createMember(data);
   },
   fetchPaymentByUser: async (id) => {
     const allData = await getPaymentByUserId(id);
     set({ payments: allData?.data || [] });
+    set({ totalCount: allData?.totalCount || 0 });
   },
 
   fetchUserById: async (id) => {

@@ -9,8 +9,8 @@ import { useMemberStore } from "../store/member-store";
 
 export default function MembersPayments({ id }) {
   const [filterOpen, setFilterOpen] = useState(false);
-
-  const { fetchPaymentByUser, payments } = useMemberStore();
+  const [pageNo, setPageNo] = useState(1);
+  const { fetchPaymentByUser, payments ,totalCount} = useMemberStore();
   const [isChange, setIsChange] = useState(false);
   const [rejectOpen, setRejectOpen] = useState(false);
   const handleOpenFilter = () => {
@@ -29,7 +29,7 @@ export default function MembersPayments({ id }) {
   };
   useEffect(() => {
     fetchPaymentByUser(id);
-  }, []);
+  }, [isChange,pageNo]);
   const handleChange = () => {
     setIsChange(!isChange);
   };
@@ -44,7 +44,7 @@ export default function MembersPayments({ id }) {
         <Stack
           direction={"row"}
           justifyContent={"end"}
-          paddingBottom={'15px'}
+          paddingBottom={"15px"}
           alignItems={"center"}
         >
           <Stack direction={"row"} spacing={2}>
@@ -80,7 +80,15 @@ export default function MembersPayments({ id }) {
           p={1}
           border={"1px solid rgba(0, 0, 0, 0.12)"}
         >
-          <StyledTable columns={userColumns} data={payments} menu payment />{" "}
+          <StyledTable
+            columns={userColumns}
+            data={payments}
+            menu
+            payment
+            totalCount={totalCount}
+            pageNo={pageNo}
+            setPageNo={setPageNo}
+          />{" "}
           <RejectionEntryForm
             open={rejectOpen}
             onClose={handleCloseReject}
