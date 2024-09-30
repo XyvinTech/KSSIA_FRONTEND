@@ -73,7 +73,10 @@ export default function AddEvent({ eventId, setSelectedTab }) {
       formData.append("activate", data.activate);
       formData.append("type", data.type.value);
       formData.append("image", data.image);
-      formData.append("venue", data.venue);
+      if (type === "offline") {
+        formData.append("venue", data.venue);
+      }
+
       formData.append("guest_image", data.guest_image);
       formData.append("description", data.description);
       formData.append("meeting_link", data.meeting_link);
