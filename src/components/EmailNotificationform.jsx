@@ -161,7 +161,7 @@ export default function EmailNotificationform({ setSelectedTab }) {
               name="media_url"
               control={control}
               defaultValue=""
-              rules={{ required: "File is required" }}
+              // rules={{ required: "File is required" }}
               render={({ field }) => (
                 <>
                   <StyledEventUpload
@@ -170,11 +170,11 @@ export default function EmailNotificationform({ setSelectedTab }) {
                       field.onChange(selectedFile);
                     }}
                   />
-                  {errors.media_url && (
+                  {/* {errors.media_url && (
                     <span style={{ color: "red" }}>
                       {errors.media_url.message}
                     </span>
-                  )}
+                  )} */}
                 </>
               )}
             />
@@ -196,7 +196,6 @@ export default function EmailNotificationform({ setSelectedTab }) {
               render={({ field }) => (
                 <>
                   <StyledInput placeholder="Paste link here" {...field} />
-                 
                 </>
               )}
             />
@@ -209,7 +208,11 @@ export default function EmailNotificationform({ setSelectedTab }) {
               <StyledButton name="Cancel" variant="secondary">
                 Cancel
               </StyledButton>
-              <StyledButton name={loading ? "Saving..." : "Save"} variant="primary" type="submit">
+              <StyledButton
+                name={loading ? "Saving..." : "Save"}
+                variant="primary"
+                type="submit"
+              >
                 Save
               </StyledButton>
             </Stack>

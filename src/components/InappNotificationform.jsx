@@ -163,7 +163,7 @@ export default function InappNotificationform({ setSelectedTab }) {
               name="file"
               control={control}
               defaultValue=""
-              rules={{ required: "File is required" }}
+              // rules={{ required: "File is required" }}
               render={({ field }) => (
                 <>
                   <StyledEventUpload
@@ -173,9 +173,9 @@ export default function InappNotificationform({ setSelectedTab }) {
                       field.onChange(selectedFile);
                     }}
                   />
-                  {errors.file && (
+                  {/* {errors.file && (
                     <span style={{ color: "red" }}>{errors.file.message}</span>
-                  )}
+                  )} */}
                 </>
               )}
             />
