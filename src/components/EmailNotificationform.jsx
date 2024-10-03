@@ -29,19 +29,27 @@ export default function EmailNotificationform({ setSelectedTab }) {
   }, []);
   const option =
     users && Array.isArray(users)
-      ? users.map((user) => ({
-          value: user._id,
-          label: `${user.name.first_name} ${user.name.middle_name} ${user.name.last_name}`,
-        }))
+      ? [
+          { value: "*", label: "All" },
+          ...users.map((user) => ({
+            value: user._id,
+            label: `${user.name.first_name} ${user.name.middle_name} ${user.name.last_name}`,
+          })),
+        ]
       : [];
   const onSubmit = async (data) => {
     try {
       setLoading(true);
       const formData = new FormData();
-      const userIds = data.to.map((user) => user.value);
-      userIds.forEach((id) => {
-        formData.append("to", id);
-      });
+      let userIds = data.to.map((user) => user.value);
+
+      if (userIds.includes("*")) {
+        formData.append("to", "*");
+      } else {
+        userIds.forEach((id) => {
+          formData.append("to", id);
+        });
+      }
       formData.append("subject", data?.subject);
       formData.append("content", data?.content);
       formData.append("link_url", data?.link_url);

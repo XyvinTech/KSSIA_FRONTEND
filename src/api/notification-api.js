@@ -11,7 +11,14 @@ export const getNotification = async (filter) => {
     return null;
   }
 };
-
+export const getSingleNotification = async (id) => {
+  try {
+    const response = await axiosInstance.get(`/notification/in-app/${id}`);
+    return response.data;
+  } catch (error) {
+    return null;
+  }
+};
 export const addAppNotification = async (data) => {
   try {
     const response = await axiosInstance.post("/notification/in-app", data, {

@@ -89,10 +89,10 @@ const EventSingleView = () => {
           </Box>{" "}
           <Box padding="30px" marginBottom={4}>
             <Grid container alignItems="center" spacing={4}>
-              <Grid item md={6}>
+              <Grid item md={6} xs={12}>
                 <EventCard user={events} />
               </Grid>
-              <Grid item md={4}>
+              <Grid item md={6}xs={12}>
                 <OrganizerCard data={events} />
               </Grid>
             </Grid>

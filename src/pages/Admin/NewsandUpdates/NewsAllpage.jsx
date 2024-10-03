@@ -1,4 +1,4 @@
-import { Box, Grid, Stack, Typography } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import StyledTable from "../../../ui/StyledTable.jsx";
 import { StyledButton } from "../../../ui/StyledButton.jsx";
@@ -60,8 +60,8 @@ export default function NewsAllpage() {
     setPreviewOpen(false);
   };
   useEffect(() => {
-    let filter = {}
-    filter.pageNo = pageNo
+    let filter = {};
+    filter.pageNo = pageNo;
     fetchNews(filter);
   }, [isChange, pageNo]);
   const handleChange = () => {

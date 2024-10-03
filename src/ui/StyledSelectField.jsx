@@ -18,7 +18,7 @@ const StyledSelectField = ({
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
-      height: "56px",
+      height: "auto",
       padding: "8px",
       border: "1px solid rgba(0, 0, 0, 0.2)",
       borderRadius: "4px",

@@ -14,17 +14,17 @@ import Video from "../components/Video";
 import CertificateCard from "../components/CertificateCard";
 import AwardCard from "../components/AwardCard";
 import { getSingleUser } from "../api/members-api";
-import ProductCard from "../components/ProductCard";
 import StyledReview from "../ui/StyledReview";
 
 const QRPage = () => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
+  const formattedId = id?.endsWith('/') ? id.slice(0, -1) : id;
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getSingleUser(id);
+        const response = await getSingleUser(formattedId);
         setUserData(response.data);
         setLoading(false);
       } catch (error) {
@@ -68,7 +68,6 @@ END:VCARD
         return null;
     }
   };
-
   return (
     <>
       {loading ? (
@@ -245,22 +244,18 @@ END:VCARD
               {userData?.video?.map((videoItem, index) => (
                 <Video url={videoItem.url} />
               ))}{" "}
-              {userData?.products && userData?.products?.length > 0 && (
-                <Typography
-                  variant="h5"
-                  color="textTertiary"
-                  mt={1}
-                  mb={1}
-                  pt={2}
-                >
-                  Products
-                </Typography>
-              )}
-              {userData?.products?.map((product) => (
+            {/* {userData?.products?.length > 0 && (
+            <>
+              <Typography variant="h5" color="textTertiary" mt={1} mb={1} pt={2}>
+                Products
+              </Typography>
+              {userData.products.map((product) => (
                 <Grid item md={2} xs={12} key={product?._id}>
                   <ProductCard product={product} />
                 </Grid>
-              ))}{" "}
+              ))}
+            </>
+          )} */}
               {userData?.certificates && userData?.certificates?.length > 0 && (
                 <>
                   <Typography

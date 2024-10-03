@@ -76,7 +76,6 @@ const subNavigation = [
   { name: "Reports", to: "/reports", icon: <GavelOutlinedIcon /> },
   { name: "News and Updates", to: "/news", icon: <NewspaperOutlinedIcon /> },
   { name: "Settings", to: "/settings", icon: <SettingsOutlinedIcon /> },
-  { name: "Logout", to: "/logout", icon: <LogoutOutlinedIcon /> },
 ];
 
 const SimpleDialog = ({ open, onClose }) => {
@@ -85,7 +84,10 @@ const SimpleDialog = ({ open, onClose }) => {
   useEffect(() => {
     fetchAdminById();
   }, []);
-
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
   return (
     <Dialog
       open={open}
@@ -111,12 +113,26 @@ const SimpleDialog = ({ open, onClose }) => {
           />
           <Box>
             <Typography variant="h6" color="#292D32" paddingBottom={1}>
-             {singleAdmin?.name}
+              {singleAdmin?.name}
             </Typography>
             <Typography variant="h7" color="rgba(41, 45, 50, 0.44)">
-            {singleAdmin?.email}
+              {singleAdmin?.email}
             </Typography>
           </Box>
+        </Stack>{" "}
+        <Divider />
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="center"
+          spacing={2}
+          onClick={handleLogout}
+          sx={{ cursor: "pointer" }}
+        >
+          <LogoutOutlinedIcon />
+          <Typography variant="h4" color="#000">
+            Logout
+          </Typography>
         </Stack>
       </Stack>
     </Dialog>
@@ -381,14 +397,14 @@ const AdminLayout = (props) => {
                 />
                 <Box sx={{ marginLeft: "10px" }}>
                   <Typography variant="h6" color={"#292D32"} display="block">
-                  {singleAdmin?.name}
+                    {singleAdmin?.name}
                   </Typography>
                   <Typography
                     variant="h7"
                     color={"rgba(41, 45, 50, 0.44)"}
                     display="block"
                   >
-                   {singleAdmin?.email}
+                    {singleAdmin?.email}
                   </Typography>
                 </Box>
               </Box>

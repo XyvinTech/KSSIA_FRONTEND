@@ -77,7 +77,6 @@ export default function AddEvent({ eventId, setSelectedTab }) {
         formData.append("venue", data.venue);
       }
 
-      formData.append("guest_image", data.guest_image);
       formData.append("description", data.description);
       formData.append("meeting_link", data.meeting_link);
 
@@ -530,7 +529,7 @@ export default function AddEvent({ eventId, setSelectedTab }) {
               )}
             />
           </Grid>
-          <Grid item xs={6}>
+          {/* <Grid item xs={6}>
             <Typography
               sx={{ marginBottom: 1 }}
               variant="h6"
@@ -559,7 +558,7 @@ export default function AddEvent({ eventId, setSelectedTab }) {
                 </>
               )}
             />
-          </Grid>
+          </Grid> */}
           <Grid item xs={6}>
             <Typography
               sx={{ marginBottom: 1 }}

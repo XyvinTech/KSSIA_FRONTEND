@@ -17,6 +17,7 @@ export default function MembersPage() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
   const [isChange, setIsChange] = useState(false);
+  const [search,setSearch] = useState("");  
   const [filterOpen, setFilterOpen] = useState(false);
   const [removeOpen, setRemoveOpen] = useState(false);
   const [productData, setProductData] = useState([]);
@@ -30,6 +31,7 @@ export default function MembersPage() {
     async function init() {
       try {
         let filter = {};
+        filter.search = search;
         filter.pageNo = pageNo;  
         const response = await axiosInstance.get(CONSTANTS.PRODUCTS_API, {
           params: filter,
@@ -47,7 +49,7 @@ export default function MembersPage() {
     }
   
     init();
-  }, [isChange, pageNo]); 
+  }, [isChange, pageNo,search]); 
   
   const handleApprove = async (id) => {
     await fetchProductById(id);
@@ -155,7 +157,7 @@ export default function MembersPage() {
             alignItems={"center"}
           >
             <Stack direction={"row"} spacing={2}>
-              <StyledSearchbar />
+              <StyledSearchbar  placeholder={"Search product"}  onchange={(e) => setSearch(e.target.value)} />
               <Box
                 bgcolor={"#FFFFFF"}
                 borderRadius={"50%"}

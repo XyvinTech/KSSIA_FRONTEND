@@ -6,18 +6,34 @@ import StyledTable from "../ui/StyledTable.jsx";
 import { userColumns, userData } from "../assets/json/TableData";
 import { useNotificationStore } from "../store/notificationStore.js";
 import { toast } from "react-toastify";
+import NotificationView from "./NotificationView.jsx";
 
 export default function NotificationLogs() {
   const [selectedRows, setSelectedRows] = useState([]);
   const [isChange, setIsChange] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
   const [pageNo, setPageNo] = useState(1);
-  const { notifications, fetchNotification, deleteNotifications,totalCount } =
-    useNotificationStore();
+  const {
+    notifications,
+    fetchNotification,
+    deleteNotifications,
+    totalCount,
+    notification,
+    fetchSingleNotification,
+  } = useNotificationStore();
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
-
+  const handleView = async (id) => {
+    console.log("View item Selected", id);
+    
+    await fetchSingleNotification(id);
+    setPreviewOpen(true);
+  };
+  const handleCloseView = () => {
+    setPreviewOpen(false);
+  };
   const handleCloseFilter = () => {
     setFilterOpen(false);
   };
@@ -42,7 +58,6 @@ export default function NotificationLogs() {
 
     { title: "Type", field: "type" },
     { title: "Subject", field: "subject" },
-    { title: "Content", field: "content" },
   ];
   return (
     <>
@@ -80,13 +95,20 @@ export default function NotificationLogs() {
           <StyledTable
             columns={userColumns}
             data={notifications}
-            menu
+            notification
             totalCount={totalCount}
             pageNo={pageNo}
+            onView={handleView}
+            onApprove={handleView}
             setPageNo={setPageNo}
             onSelectionChange={handleSelectionChange}
             onDelete={handleDelete}
           />{" "}
+          <NotificationView
+            open={previewOpen}
+            onClose={handleCloseView}
+            data={notification}
+          />
         </Box>
       </>
     </>

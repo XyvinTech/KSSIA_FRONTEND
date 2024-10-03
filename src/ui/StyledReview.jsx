@@ -13,7 +13,7 @@ const StyledReview = ({ review }) => {
         <Stack spacing={1}>
           <Stack direction="row" alignItems="center" spacing={1}>
             <Typography variant="h6" fontWeight={400} color={"#2C2829"}>
-              {review?.reviewer}
+              {review?.reviewer?.name?.first_name}  {review?.reviewer?.name?.middle_name}  {review?.reviewer?.name?.last_name}
             </Typography>
             <Rating name="read-only" value={review?.rating} readOnly />
             {/* <Box flexGrow={1} />

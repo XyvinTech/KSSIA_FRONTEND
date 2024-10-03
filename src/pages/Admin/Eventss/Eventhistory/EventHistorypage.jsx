@@ -38,13 +38,6 @@ export default function EventHistorypage() {
               Event history
             </Typography>
           </Grid>
-          <Grid item xs={6} container justifyContent="flex-end" spacing={2}>
-            <Grid item>
-              <StyledButton name="Download" variant="primary">
-                Download
-              </StyledButton>
-            </Grid>
-          </Grid>
         </Grid>
       </Box>
       <Box padding="15px" marginBottom={4}>

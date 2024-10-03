@@ -38,27 +38,25 @@ export default function MembersPage() {
     async function fetchUserData() {
       try {
         let filter = {};
-        filter.pageNo = pageNo; 
+        filter.pageNo = pageNo;
         const response = await axiosInstance.get(CONSTANTS.MEMBERS_API, {
-          params: filter, 
+          params: filter,
         });
-  
+
         if (response.status !== 200) {
-         
           return;
         }
-  
+
         setUserData(response.data.data);
         setTotal(response.data.totalCount);
       } catch (error) {
         console.error("Error fetching user data:", error);
-       
       }
     }
-  
+
     fetchUserData();
-  }, [isChange, pageNo]); 
-  
+  }, [isChange, pageNo]);
+
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -83,6 +81,9 @@ export default function MembersPage() {
     setIsChange(!isChange);
   };
   const handleView = (id) => {
+    navigate(`/members/member/${id}`);
+  };
+  const handleApprove = (id) => {
     navigate(`/members/member/${id}`);
   };
   const handleEdit = (id) => {
@@ -188,6 +189,7 @@ export default function MembersPage() {
               totalCount={total}
               onView={handleView}
               member
+              onApprove={handleApprove}
               pageNo={pageNo}
               setPageNo={setPageNo}
               onSelectionChange={handleSelectionChange}

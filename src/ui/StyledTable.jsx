@@ -65,13 +65,14 @@ const StyledTable = ({
   onAction,
   menu,
   data,
-  news,
+  news,notification,
   pageNo,
   setPageNo,
   totalCount,
   onDeleteRow,
   dashboard,
-  member,report,
+  member,
+  report,
   product,
   onApprove,
   payment,
@@ -109,6 +110,7 @@ const StyledTable = ({
   };
 
   const handleView = (rowId) => {
+    // console.log("View item Selected", rowId);
     onView(rowId);
     handleMenuClose();
   };
@@ -163,8 +165,8 @@ const StyledTable = ({
         return "#1890ff";
       case "rejected":
         return "#ff4d4f";
-        case "reported":
-          return "#ff4d4f";
+      case "reported":
+        return "#ff4d4f";
       case "approved":
         return "#52c41a";
       default:
@@ -206,7 +208,6 @@ const StyledTable = ({
           </TableHead>
           <TableBody>
             {loading ? (
-
               Array.from(new Array(5)).map((_, index) => (
                 <StyledTableRow key={index}>
                   <StyledTableCell padding="checkbox">
@@ -331,7 +332,8 @@ const StyledTable = ({
                         </IconButton>
                       )}{" "}
                       {!menu &&
-                        row.status !== "rejected" &&row.status !== "reported" &&
+                        row.status !== "rejected" &&
+                        row.status !== "reported" &&
                         row.status !== "approved" && (
                           <IconButton
                             aria-controls="simple-menu"
@@ -362,10 +364,7 @@ const StyledTable = ({
                           </>
                         ) : report ? (
                           <>
-                           
-                            <MenuItem onClick={handleAction}>
-                              Report
-                            </MenuItem>
+                            <MenuItem onClick={handleAction}>Report</MenuItem>
                             <MenuItem
                               onClick={() => handleRowDelete(row._id)}
                               style={{ color: "red" }}
@@ -375,7 +374,7 @@ const StyledTable = ({
                           </>
                         ) : member ? (
                           <>
-                            <MenuItem onClick={handleView}>
+                            <MenuItem onClick={handleApprove}>
                               View Details
                             </MenuItem>
                             <MenuItem onClick={handleModify}>Edit</MenuItem>
@@ -385,6 +384,12 @@ const StyledTable = ({
                               style={{ color: "red" }}
                             >
                               Delete
+                            </MenuItem>
+                          </>
+                        ): notification ? (
+                          <>
+                            <MenuItem onClick={handleApprove}>
+                              View Details
                             </MenuItem>
                           </>
                         ) : payment ? (
