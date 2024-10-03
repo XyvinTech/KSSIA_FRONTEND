@@ -17,7 +17,7 @@ export default function MembersPage() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
   const [isChange, setIsChange] = useState(false);
-  const [search,setSearch] = useState("");  
+  const [search, setSearch] = useState("");
   const [filterOpen, setFilterOpen] = useState(false);
   const [removeOpen, setRemoveOpen] = useState(false);
   const [productData, setProductData] = useState([]);
@@ -31,26 +31,28 @@ export default function MembersPage() {
     async function init() {
       try {
         let filter = {};
-        filter.search = search;
-        filter.pageNo = pageNo;  
+        if (search) {
+          filter.search = search;
+        }
+        filter.pageNo = pageNo;
         const response = await axiosInstance.get(CONSTANTS.PRODUCTS_API, {
           params: filter,
         });
-  
+
         if (response.status !== 200) {
           return;
         }
-  
+
         setProductData(response.data.data);
         setTotal(response.data.totalCount);
       } catch (error) {
         console.error("Error fetching product data:", error);
       }
     }
-  
+
     init();
-  }, [isChange, pageNo,search]); 
-  
+  }, [isChange, pageNo, search]);
+
   const handleApprove = async (id) => {
     await fetchProductById(id);
     setApproveOpen(true);
@@ -157,7 +159,10 @@ export default function MembersPage() {
             alignItems={"center"}
           >
             <Stack direction={"row"} spacing={2}>
-              <StyledSearchbar  placeholder={"Search product"}  onchange={(e) => setSearch(e.target.value)} />
+              <StyledSearchbar
+                placeholder={"Search product"}
+                onchange={(e) => setSearch(e.target.value)}
+              />
               <Box
                 bgcolor={"#FFFFFF"}
                 borderRadius={"50%"}
