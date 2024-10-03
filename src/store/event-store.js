@@ -30,8 +30,8 @@ const useEventStore = create((set) => ({
   cancel: async (id) => {
     await cancelEvent(id);
   },
-  eventHistory: async () => {
-    const allData = await getEventHistory();
+  eventHistory: async (filter) => {
+    const allData = await getEventHistory(filter);
     set({ events: allData?.data || [] });
     set({ totalCount: allData?.totalCount || 0 });
   },

@@ -12,13 +12,20 @@ import { toast } from "react-toastify";
 export default function PaymentPage() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
+  const [search, setSearch] = useState("");
   const [filterOpen, setFilterOpen] = useState(false);
   const [approveOpen, setApproveOpen] = useState(false);
   const [pageNo, setPageNo] = useState(1);
   const [isChange, setIsChange] = useState(false);
 
-  const { payments, fetchPayment, deletePayments, fetchPaymentById, totalCount, payment } =
-    usePaymentStore();
+  const {
+    payments,
+    fetchPayment,
+    deletePayments,
+    fetchPaymentById,
+    totalCount,
+    payment,
+  } = usePaymentStore();
   const userColumns = [
     { title: "Member name", field: "full_name", padding: "none" },
     { title: "Date", field: "date" },
@@ -40,9 +47,12 @@ export default function PaymentPage() {
   };
   useEffect(() => {
     let filter = {};
+    if (search) {
+      filter.search = search;
+    }
     filter.pageNo = pageNo;
     fetchPayment(filter);
-  }, [isChange, pageNo]);
+  }, [isChange, pageNo, search]);
 
   const handleSelectionChange = (newSelectedIds) => {
     setSelectedRows(newSelectedIds);
@@ -118,7 +128,10 @@ export default function PaymentPage() {
             alignItems={"center"}
           >
             <Stack direction={"row"} spacing={2}>
-              <StyledSearchbar />
+              <StyledSearchbar
+                placeholder={"Search payments"}
+                onchange={(e) => setSearch(e.target.value)}
+              />
               <Box
                 bgcolor={"#FFFFFF"}
                 borderRadius={"50%"}

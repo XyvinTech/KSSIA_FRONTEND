@@ -75,9 +75,11 @@ export const cancelEvent = async (id) => {
     console.error("Error caught:", error);
   }
 };
-export const getEventHistory = async () => {
+export const getEventHistory = async (filter) => {
   try {
-    const response = await axiosInstance.get("/events/get/history");
+    const response = await axiosInstance.get("/events/get/history", {
+      params: filter,
+    });
     return response.data;
   } catch (error) {
     console.error("Error caught:", error);

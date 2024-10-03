@@ -19,6 +19,7 @@ export default function MembersPage() {
   const [selectedRows, setSelectedRows] = useState([]);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [isChange, setIsChange] = useState(false);
+  const [search, setSearch] = useState("");
   const [userData, setUserData] = useState([]);
   const [total, setTotal] = useState(0);
   const { deleteUsers } = useMemberStore();
@@ -38,6 +39,9 @@ export default function MembersPage() {
     async function fetchUserData() {
       try {
         let filter = {};
+        if (search) {
+          filter.search = search;
+        }
         filter.pageNo = pageNo;
         const response = await axiosInstance.get(CONSTANTS.MEMBERS_API, {
           params: filter,
@@ -55,7 +59,7 @@ export default function MembersPage() {
     }
 
     fetchUserData();
-  }, [isChange, pageNo]);
+  }, [isChange, pageNo, search]);
 
   const handleOpenFilter = () => {
     setFilterOpen(true);
@@ -160,7 +164,10 @@ export default function MembersPage() {
             alignItems={"center"}
           >
             <Stack direction={"row"} spacing={2}>
-              <StyledSearchbar />
+              <StyledSearchbar
+                placeholder={"Search members"}
+                onchange={(e) => setSearch(e.target.value)}
+              />
               <Box
                 bgcolor={"#FFFFFF"}
                 borderRadius={"50%"}

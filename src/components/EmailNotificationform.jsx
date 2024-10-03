@@ -44,7 +44,9 @@ export default function EmailNotificationform({ setSelectedTab }) {
       let userIds = data.to.map((user) => user.value);
 
       if (userIds.includes("*")) {
-        formData.append("to", "*");
+        userIds.forEach((id) => {
+          formData.append("to", "*");
+        });
       } else {
         userIds.forEach((id) => {
           formData.append("to", id);

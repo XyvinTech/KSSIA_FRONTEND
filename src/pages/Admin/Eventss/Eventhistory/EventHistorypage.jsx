@@ -10,6 +10,7 @@ import StyledSearchbar from "../../../../ui/StyledSearchbar";
 import { useEventStore } from "../../../../store/event-store.js";
 export default function EventHistorypage() {
   const [filterOpen, setFilterOpen] = useState(false);
+  const [search, setSearch] = useState("");
   const [pageNo, setPageNo] = useState(1);
   const handleOpenFilter = () => {
     setFilterOpen(true);
@@ -20,8 +21,13 @@ export default function EventHistorypage() {
   };
   const { eventHistory, events,totalCount } = useEventStore();
   useEffect(() => {
-    eventHistory();
-  }, [pageNo]);
+    let filter = {};
+    if (search) {
+      filter.search = search;
+    }
+    filter.pageNo = pageNo;
+    eventHistory(filter);
+  }, [pageNo, search]);
   return (
     <>
       {" "}
@@ -49,7 +55,10 @@ export default function EventHistorypage() {
             alignItems={"center"}
           >
             <Stack direction={"row"} spacing={2}>
-              <StyledSearchbar />
+            <StyledSearchbar
+                placeholder={"Search events"}
+                onchange={(e) => setSearch(e.target.value)}
+              />
               <Box
                 bgcolor={"#FFFFFF"}
                 borderRadius={"50%"}

@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 
 export default function NewsAllpage() {
   const navigate = useNavigate();
+  const [search, setSearch] = useState("");
   const [selectedTab, setSelectedTab] = useState("All");
   const [selectedRows, setSelectedRows] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);
@@ -61,9 +62,12 @@ export default function NewsAllpage() {
   };
   useEffect(() => {
     let filter = {};
+    if (search) {
+      filter.search = search;
+    }
     filter.pageNo = pageNo;
     fetchNews(filter);
-  }, [isChange, pageNo]);
+  }, [isChange, pageNo, search]);
   const handleChange = () => {
     setIsChange(!isChange);
   };
@@ -71,7 +75,6 @@ export default function NewsAllpage() {
     { title: "Category", field: "category", padding: "none" },
 
     { title: "Title", field: "title" },
-    { title: "Content", field: "content" },
     { title: "Image", field: "image" },
   ];
   return (
@@ -84,7 +87,10 @@ export default function NewsAllpage() {
         marginRight={2}
       >
         <Stack direction={"row"} spacing={2}>
-          <StyledSearchbar />
+        <StyledSearchbar
+                placeholder={"Search news"}
+                onchange={(e) => setSearch(e.target.value)}
+              />
           <Box
             bgcolor={"#FFFFFF"}
             borderRadius={"50%"}

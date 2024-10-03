@@ -12,6 +12,7 @@ export default function ApprovalPage() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);
+  const [search, setSearch] = useState("");
   const [rejectOpen, setRejectOpen] = useState(false);
   const [approveOpen, setApproveOpen] = useState(false);
   const [isChange, setIsChange] = useState(false);
@@ -23,16 +24,18 @@ export default function ApprovalPage() {
   };
   useEffect(() => {
     let filter = {};
+    if (search) {
+      filter.search = search;
+    }
     filter.pageNo = pageNo;
     fetchApproval(filter);
-  }, [isChange,pageNo]);
+  }, [isChange, pageNo, search]);
   const handleChange = () => {
     setIsChange(!isChange);
   };
   const userColumns = [
     { title: "Date", field: "createdAt", padding: "none" },
     { title: "Image", field: "image" },
-    { title: "Description", field: "content" },
     ,
     { title: "Status", field: "status" },
   ];
@@ -84,7 +87,10 @@ export default function ApprovalPage() {
             alignItems={"center"}
           >
             <Stack direction={"row"} spacing={2}>
-              <StyledSearchbar />
+              <StyledSearchbar
+                placeholder={"Search requirement"}
+                onchange={(e) => setSearch(e.target.value)}
+              />
               <Box
                 bgcolor={"#FFFFFF"}
                 borderRadius={"50%"}

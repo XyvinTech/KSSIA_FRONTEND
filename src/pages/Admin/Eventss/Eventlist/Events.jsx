@@ -14,6 +14,7 @@ export default function Events() {
   const [selectedRows, setSelectedRows] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);
   const [tableData, setTableData] = useState([]);
+  const [search, setSearch] = useState("");
   const [total, setTotal] = useState(0);
   const [pageNo, setPageNo] = useState(1);
   const [isChange, setIsChange] = useState(false);
@@ -42,6 +43,9 @@ export default function Events() {
     const fetchEvents = async () => {
       try {
         let filter = {};
+        if (search) {
+          filter.search = search;
+        }
         filter.pageNo = pageNo;
 
         const response = await getEvents(filter);
@@ -53,7 +57,7 @@ export default function Events() {
     };
 
     fetchEvents();
-  }, [isChange, pageNo]);
+  }, [isChange, pageNo,search]);
   const handleSelectionChange = (newSelectedIds) => {
     setSelectedRows(newSelectedIds);
   };
@@ -74,7 +78,10 @@ export default function Events() {
           alignItems={"center"}
         >
           <Stack direction={"row"} spacing={2}>
-            <StyledSearchbar />
+          <StyledSearchbar
+                placeholder={"Search events"}
+                onchange={(e) => setSearch(e.target.value)}
+              />
             <Box
               bgcolor={"#FFFFFF"}
               borderRadius={"50%"}
