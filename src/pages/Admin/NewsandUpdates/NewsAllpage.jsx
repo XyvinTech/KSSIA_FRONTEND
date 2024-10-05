@@ -87,10 +87,10 @@ export default function NewsAllpage() {
         marginRight={2}
       >
         <Stack direction={"row"} spacing={2}>
-        <StyledSearchbar
-                placeholder={"Search news"}
-                onchange={(e) => setSearch(e.target.value)}
-              />
+          <StyledSearchbar
+            placeholder={"Search news"}
+            onchange={(e) => setSearch(e.target.value)}
+          />
           <Box
             bgcolor={"#FFFFFF"}
             borderRadius={"50%"}

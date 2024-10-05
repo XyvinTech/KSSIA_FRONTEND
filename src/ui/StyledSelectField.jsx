@@ -56,7 +56,7 @@ const StyledSelectField = ({
     }),
     placeholder: (provided) => ({
       ...provided,
-      color: "#79747E",
+      color: "rgba(0, 0, 0, 0.2)"
     }),
   };
 
