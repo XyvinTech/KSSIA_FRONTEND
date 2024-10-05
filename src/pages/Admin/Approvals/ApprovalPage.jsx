@@ -17,6 +17,7 @@ export default function ApprovalPage() {
   const [approveOpen, setApproveOpen] = useState(false);
   const [isChange, setIsChange] = useState(false);
   const [pageNo, setPageNo] = useState(1);
+  const [formattedApprovals, setFormattedApprovals] = useState([]);
   const { approvals, fetchApproval, fetchApprovalById, totalCount, approval } =
     useApprovalStore();
   const handleOpenFilter = () => {
@@ -33,7 +34,18 @@ export default function ApprovalPage() {
   const handleChange = () => {
     setIsChange(!isChange);
   };
+  useEffect(() => {
+    const transformedApprovals = approvals?.map((item) => ({
+      ...item,
+      full_name: `${item?.author?.name?.first_name} ${
+        item?.author?.name?.middle_name ? item?.author?.name?.middle_name + " " : ""
+      }${item?.author?.name?.last_name}`,
+    }));
+
+    setFormattedApprovals(transformedApprovals);
+  }, [approvals]);
   const userColumns = [
+    { title: "Name", field: "full_name" },
     { title: "Date", field: "createdAt", padding: "none" },
     { title: "Image", field: "image" },
     ,
@@ -115,7 +127,7 @@ export default function ApprovalPage() {
           >
             <StyledTable
               columns={userColumns}
-              data={approvals}
+              data={formattedApprovals}
               onSelectionChange={handleSelectionChange}
               onModify={handleApprove}
               payment
