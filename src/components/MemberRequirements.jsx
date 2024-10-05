@@ -9,7 +9,8 @@ import { useApprovalStore } from "../store/approval-store";
 
 export default function MembersRequirements({ id }) {
   const [filterOpen, setFilterOpen] = useState(false);
-  const {approvalByUser, fetchApprovalByUser } = useApprovalStore();
+  const [pageNo, setPageNo] = useState(1);
+  const {approvalByUser, fetchApprovalByUser ,totalCount} = useApprovalStore();
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -18,8 +19,10 @@ export default function MembersRequirements({ id }) {
     setFilterOpen(false);
   };
   useEffect(() => {
-    fetchApprovalByUser(id);
-  }, []);
+    let filter = {};
+    filter.pageNo = pageNo;
+    fetchApprovalByUser(id,filter);
+  }, [pageNo]);
   const userColumns = [
     { title: "date", field: "createdAt", padding: "none" },
     { title: "image", field: "image" },
@@ -64,7 +67,7 @@ export default function MembersRequirements({ id }) {
           p={1}
           border={"1px solid rgba(0, 0, 0, 0.12)"}
         >
-          <StyledTable columns={userColumns} data={approvalByUser} menu />{" "}
+          <StyledTable columns={userColumns} data={approvalByUser} pageNo={pageNo}  setPageNo={setPageNo} totalCount={totalCount} menu />{" "}
         </Box>
       </>
     </>

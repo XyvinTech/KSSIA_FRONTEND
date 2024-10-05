@@ -65,7 +65,8 @@ const StyledTable = ({
   onAction,
   menu,
   data,
-  news,notification,
+  news,
+  notification,
   pageNo,
   setPageNo,
   totalCount,
@@ -386,7 +387,7 @@ const StyledTable = ({
                               Delete
                             </MenuItem>
                           </>
-                        ): notification ? (
+                        ) : notification ? (
                           <>
                             <MenuItem onClick={handleApprove}>
                               View Details
@@ -433,80 +434,83 @@ const StyledTable = ({
             )}
           </TableBody>
         </Table>
-        <Divider />
-        {!dashboard && (
-          <Stack
-            // padding={2}
-            component="div"
-            direction={"row"}
-            justifyContent={
-              selectedIds.length > 0 ? "space-between" : "flex-end"
-            }
-            alignItems="center"
-          >
-            {selectedIds.length > 0 && (
-              <Stack direction="row" alignItems="center">
-                <Typography paddingRight={3}>
-                  {`${selectedIds.length} item${
-                    selectedIds.length > 1 ? "s" : ""
-                  } selected`}
-                </Typography>
-                <StyledButton
-                  variant="primary"
-                  name="Delete"
-                  onClick={() => handleDelete(selectedIds)}
-                />
-              </Stack>
-            )}
+        {!dashboard && totalCount > 0 && (
+          <>
+            {" "}
+            <Divider />
             <Stack
-              direction="row"
+              // padding={2}
+              component="div"
+              direction={"row"}
+              justifyContent={
+                selectedIds.length > 0 ? "space-between" : "flex-end"
+              }
               alignItems="center"
-              justifyContent="space-between"
             >
-              <Box display="flex" alignItems="center">
-                <TablePagination
-                  component="div"
-                  rowsPerPage={10}
-                  labelDisplayedRows={({ from, to }) =>
-                    `${pageNo}-${Math.ceil(totalCount / 10)} of ${totalCount}`
-                  }
-                  ActionsComponent={({ onPageChange }) => (
-                    <Stack
-                      direction="row"
-                      spacing={1}
-                      alignItems="center"
-                      marginLeft={2}
-                    >
-                      {" "}
-                      <Box
-                        onClick={pageDec}
-                        sx={{
-                          cursor: pageNo > 1 ? "pointer" : "not-allowed",
-                          opacity: pageNo > 1 ? 1 : 0.5,
-                        }}
-                      >
-                        <LeftIcon />{" "}
-                      </Box>
-                      <Box
-                        onClick={pageInc}
-                        sx={{
-                          cursor:
-                            pageNo < Math.ceil(totalCount / 10)
-                              ? "pointer"
-                              : "not-allowed",
-                          opacity:
-                            pageNo < Math.ceil(totalCount / 10) ? 1 : 0.5,
-                        }}
+              {selectedIds.length > 0 && (
+                <Stack direction="row" alignItems="center">
+                  <Typography paddingRight={3}>
+                    {`${selectedIds.length} item${
+                      selectedIds.length > 1 ? "s" : ""
+                    } selected`}
+                  </Typography>
+                  <StyledButton
+                    variant="primary"
+                    name="Delete"
+                    onClick={() => handleDelete(selectedIds)}
+                  />
+                </Stack>
+              )}
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <Box display="flex" alignItems="center">
+                  <TablePagination
+                    component="div"
+                    rowsPerPage={10}
+                    labelDisplayedRows={({ from, to }) =>
+                      `${pageNo}-${Math.ceil(totalCount / 10)} of ${totalCount}`
+                    }
+                    ActionsComponent={({ onPageChange }) => (
+                      <Stack
+                        direction="row"
+                        spacing={1}
+                        alignItems="center"
+                        marginLeft={2}
                       >
                         {" "}
-                        <RightIcon />{" "}
-                      </Box>
-                    </Stack>
-                  )}
-                />
-              </Box>
+                        <Box
+                          onClick={pageDec}
+                          sx={{
+                            cursor: pageNo > 1 ? "pointer" : "not-allowed",
+                            opacity: pageNo > 1 ? 1 : 0.5,
+                          }}
+                        >
+                          <LeftIcon />{" "}
+                        </Box>
+                        <Box
+                          onClick={pageInc}
+                          sx={{
+                            cursor:
+                              pageNo < Math.ceil(totalCount / 10)
+                                ? "pointer"
+                                : "not-allowed",
+                            opacity:
+                              pageNo < Math.ceil(totalCount / 10) ? 1 : 0.5,
+                          }}
+                        >
+                          {" "}
+                          <RightIcon />{" "}
+                        </Box>
+                      </Stack>
+                    )}
+                  />
+                </Box>
+              </Stack>
             </Stack>
-          </Stack>
+          </>
         )}
       </TableContainer>
     </Box>

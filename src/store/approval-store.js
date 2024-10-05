@@ -16,9 +16,10 @@ const useApprovalStore = create((set) => ({
     set({ approvals: allData?.data || [] });
     set({ totalCount: allData?.totalCount || 0 });
   },
-  fetchApprovalByUser: async (id) => {
-    const allData = await getApprovalById(id);
+  fetchApprovalByUser: async (id,filter) => {
+    const allData = await getApprovalById(id,filter);
     set({ approvalByUser: allData?.data || [] });
+    set({ totalCount: allData?.totalCount || 0 });
   },
   fetchApprovalById: async (id) => {
     const allData = await getSingleApproval(id);
