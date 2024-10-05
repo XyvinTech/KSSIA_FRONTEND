@@ -13,6 +13,7 @@ export default function AdminManagement() {
   const [filterOpen, setFilterOpen] = useState(false);
   const [isChange, setIsChange] = useState(false);
   const [pageNo, setPageNo] = useState(1);
+  const[ search,setSearch]=useState("")
   const { fetchAdmins, totalCount, admins,deleteAdmins } = useAdminStore();
   const userColumns = [
     { title: "Name", field: "name", padding: "none" },
@@ -53,8 +54,11 @@ export default function AdminManagement() {
   useEffect(() => {
     let filter={};
     filter.pageNo = pageNo;
+    if (search) {
+      filter.search = search;
+    }
     fetchAdmins(filter);
-  }, [isChange,pageNo]);
+  }, [isChange,pageNo,search]);
   const handleEdit = (id) => {
     navigate(`/settings/addnewadmin`, {
       state: { adminId: id, isUpdate: true },
@@ -79,7 +83,7 @@ export default function AdminManagement() {
             spacing={2}
           >
             <Grid item>
-              <StyledSearchbar />
+              <StyledSearchbar placeholder={"Search"} onChange={(e)=>setSearch(e.target.value)} />
             </Grid>
             <Grid item>
               <Box

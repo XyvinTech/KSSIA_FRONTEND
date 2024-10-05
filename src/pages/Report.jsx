@@ -15,6 +15,7 @@ export default function Report() {
   const [filterOpen, setFilterOpen] = useState(false);
   const [isChange, setIsChange] = useState(false);
   const [pageNo, setPageNo] = useState(1);
+  const [search, setSearch] = useState('');
   const [previewOpen, setPreviewOpen] = useState(false);
   const {
     reports,
@@ -30,8 +31,11 @@ export default function Report() {
   useEffect(() => {
     let filter = {};
     filter.page = pageNo;
+    if (search) {
+      filter.search = search;
+    }
     fetchReport(filter);
-  }, [isChange, pageNo]);
+  }, [isChange, pageNo,search]);
   const formattedReports = reports.map((report) => ({
     ...report,
     reportBy: `${report?.reportBy?.name?.first_name} ${
@@ -103,7 +107,7 @@ export default function Report() {
             alignItems={"center"}
           >
             <Stack direction={"row"} spacing={2}>
-              <StyledSearchbar />
+              <StyledSearchbar placeholder={"Search"}onchange={(e)=>{setSearch(e.target.value)}} />
               <Box
                 bgcolor={"#FFFFFF"}
                 borderRadius={"50%"}

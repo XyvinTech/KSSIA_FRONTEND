@@ -167,7 +167,7 @@ const SignIn = () => {
                 />
                 {error && (
                   <Typography color="error" variant="body2">
-                    Username or OTP is incorrect
+                    Username or Password is incorrect
                   </Typography>
                 )}
                 <StyledButton name={loading ?   <CircularProgress size={24} />: "Sign in" } variant="primary">
