@@ -12,8 +12,9 @@ export default function StyledVideoTable() {
   const navigate = useNavigate();
   const [filterOpen, setFilterOpen] = useState(false);
   const [isChange, setIsChange] = useState(false);
+  const[pageNo, setPageNo] = useState(1)
   const [selectedRows, setSelectedRows] = useState([]);
-  const { promotions, fetchPromotion, deletePromotions } = usePromotionStore();
+  const { promotions, fetchPromotion, deletePromotions, totalCount } = usePromotionStore();
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -41,12 +42,14 @@ export default function StyledVideoTable() {
     setIsChange(!isChange);
   };
   useEffect(() => {
-    fetchPromotion("video");
-  }, [isChange]);
+    let filter = { }
+    filter.pageNo = pageNo;
+    fetchPromotion("video",filter);
+  }, [isChange, pageNo]);
   const userColumns = [
     { title: "Date", field: "startDate", padding: "none" },
 
-    { title: "Media", field: "banner_image_url" },
+    { title: "Title", field: "video_title" },
   ];
   return (
     <>
@@ -72,6 +75,9 @@ export default function StyledVideoTable() {
             data={promotions}
             onSelectionChange={handleSelectionChange}
             onDelete={handleDelete}
+            totalCount={totalCount}
+            pageNo={pageNo}
+            setPageNo={setPageNo}
             onDeleteRow={handleRowDelete}
             onModify={handleEdit}
           />{" "}

@@ -8,11 +8,12 @@ import {
 } from "../api/promotion-api";
 
 const usePromotionStore = create((set) => ({
-  promotions: [],
+  promotions: [],totalCount:0,
 
-  fetchPromotion: async (type) => {
-    const allData = await getPromotion(type);
+  fetchPromotion: async (type,filter) => {
+    const allData = await getPromotion(type,filter);
     set({ promotions: allData?.data || [] });
+    set({ totalCount: allData?.totalCount || 0 });
   },
   addPromotions: async (data) => {
     await addPromotion(data);

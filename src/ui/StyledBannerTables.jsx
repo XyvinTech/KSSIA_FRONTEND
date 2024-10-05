@@ -12,7 +12,8 @@ export default function StyledBannerTables() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
   const [isChange, setIsChange] = useState(false);
-  const { promotions, fetchPromotion, deletePromotions } = usePromotionStore();
+  const[pageNo, setPageNo] = useState(1)
+  const { promotions, fetchPromotion, deletePromotions,totalCount } = usePromotionStore();
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -40,10 +41,13 @@ export default function StyledBannerTables() {
     navigate(`/promotion/edit/${id}`, { state: { value: "banner" } });
   };
   useEffect(() => {
-    fetchPromotion("banner");
-  }, [isChange]);
+    let filter = { }
+    filter.pageNo = pageNo;
+    fetchPromotion("banner",filter);
+  }, [isChange,pageNo]);
   const userColumns = [
-    { title: "Date", field: "startDate", padding: "none" },
+    { title: "Start Date", field: "startDate", padding: "none" },
+    { title: "End Date", field: "endDate", padding: "none" },
 
     { title: "Media", field: "banner_image_url" },
   ];
@@ -71,6 +75,9 @@ export default function StyledBannerTables() {
             data={promotions}
             onSelectionChange={handleSelectionChange}
             onDelete={handleDelete}
+            totalCount={totalCount}
+            pageNo={pageNo}
+            setPageNo={setPageNo}
             onDeleteRow={handleRowDelete}
             onModify={handleEdit}
           />{" "}

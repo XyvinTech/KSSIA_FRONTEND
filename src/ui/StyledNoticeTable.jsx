@@ -3,7 +3,6 @@ import { react, useEffect, useState } from "react";
 import StyledSearchbar from "./StyledSearchbar";
 import { ReactComponent as FilterIcon } from "../assets/icons/FilterIcon.svg";
 import StyledTable from "./StyledTable";
-import { userColumns, userData } from "../assets/json/TableData";
 import { usePromotionStore } from "../store/promotionStore";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -13,7 +12,8 @@ export default function StyledNoticeTable() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
   const [isChange, setIsChange] = useState(false);
-  const { promotions, fetchPromotion, deletePromotions } = usePromotionStore();
+  const [pageNo, setPageNo] = useState(1);
+  const { promotions, fetchPromotion, deletePromotions,totalCount } = usePromotionStore();
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -42,13 +42,14 @@ export default function StyledNoticeTable() {
     setIsChange(!isChange);
   };
   useEffect(() => {
-    fetchPromotion("notice");
-  }, [isChange]);
+    let filter = { }
+    filter.pageNo = pageNo;
+    fetchPromotion("notice",filter);
+  }, [isChange,pageNo]);
   const userColumns = [
     { title: "Date", field: "startDate", padding: "none" },
 
     { title: "Title", field: "notice_title" },
-    { title: "Description", field: "notice_description" },
     { title: "Link", field: "notice_link" },
   ];
   return (
@@ -75,6 +76,9 @@ export default function StyledNoticeTable() {
             data={promotions}
             onSelectionChange={handleSelectionChange}
             onDelete={handleDelete}
+            totalCount={totalCount}
+            pageNo={pageNo}
+            setPageNo={setPageNo}
             onDeleteRow={handleRowDelete}
             onModify={handleEdit}
           />{" "}

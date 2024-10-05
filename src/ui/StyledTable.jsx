@@ -270,7 +270,7 @@ const StyledTable = ({
                         "paymentdate",
                         "date",
                         "createdAt",
-                        "startDate",
+                        "startDate","endDate"
                       ].includes(column.field) ? (
                         formatIndianDate(row[column.field])
                       ) : ["starttime", "endtime", "time"].includes(
