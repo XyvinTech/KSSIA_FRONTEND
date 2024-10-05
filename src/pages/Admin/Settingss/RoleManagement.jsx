@@ -55,7 +55,6 @@ export default function RoleManagement() {
   const roleColumns = [
     { title: "Role Name", field: "roleName", padding: "none" },
     { title: "Created on", field: "createdAt" },
-    { title: "Access ", field: "contact" },
     { title: "Description", field: "description" },
     { title: "Status", field: "status" },
   ];
