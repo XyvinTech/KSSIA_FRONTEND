@@ -484,6 +484,7 @@ const StyledTable = ({
                         <Box
                           onClick={pageDec}
                           sx={{
+                            display:"flex",alignItems:"center",
                             cursor: pageNo > 1 ? "pointer" : "not-allowed",
                             opacity: pageNo > 1 ? 1 : 0.5,
                           }}
@@ -493,6 +494,7 @@ const StyledTable = ({
                         <Box
                           onClick={pageInc}
                           sx={{
+                            display:"flex",alignItems:"center",
                             cursor:
                               pageNo < Math.ceil(totalCount / 10)
                                 ? "pointer"
