@@ -10,6 +10,7 @@ const useApprovalStore = create((set) => ({
   approvals: [],
   approval: [],
   totalCount: 0,
+  approvalByUser: [],
   fetchApproval: async (filter) => {
     const allData = await getApproval(filter);
     set({ approvals: allData?.data || [] });
@@ -17,7 +18,7 @@ const useApprovalStore = create((set) => ({
   },
   fetchApprovalByUser: async (id) => {
     const allData = await getApprovalById(id);
-    set({ approvals: allData?.data || [] });
+    set({ approvalByUser: allData?.data || [] });
   },
   fetchApprovalById: async (id) => {
     const allData = await getSingleApproval(id);

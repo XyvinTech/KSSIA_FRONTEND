@@ -4,7 +4,7 @@ import { ReactComponent as EmailIcon } from "../assets/icons/EmailIcon.svg";
 import { ReactComponent as PhoneIcon } from "../assets/icons/PhoneIcon.svg";
 import { ReactComponent as StarIcon } from "../assets/icons/StarIcon.svg";
 import { ReactComponent as LocationIcon } from "../assets/icons/LocationIcon.svg";
-
+import image from "../assets/images/Group.png";
 const UserCard = ({ user }) => {
   return (
     <Grid
@@ -18,7 +18,7 @@ const UserCard = ({ user }) => {
     >
       <Grid item md={6} xs={12} >
         <img
-          src={user?.profile_picture}
+          src={user?.profile_picture || image}
           alt="img"
           width={"216px"}
           height={"216px"}

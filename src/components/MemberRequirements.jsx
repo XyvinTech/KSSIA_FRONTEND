@@ -9,7 +9,7 @@ import { useApprovalStore } from "../store/approval-store";
 
 export default function MembersRequirements({ id }) {
   const [filterOpen, setFilterOpen] = useState(false);
-  const { approvals, fetchApprovalByUser } = useApprovalStore();
+  const {approvalByUser, fetchApprovalByUser } = useApprovalStore();
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -23,7 +23,6 @@ export default function MembersRequirements({ id }) {
   const userColumns = [
     { title: "date", field: "createdAt", padding: "none" },
     { title: "image", field: "image" },
-    { title: "description", field: "content" },
     ,
     { title: "Status", field: "status" },
   ];
@@ -65,7 +64,7 @@ export default function MembersRequirements({ id }) {
           p={1}
           border={"1px solid rgba(0, 0, 0, 0.12)"}
         >
-          <StyledTable columns={userColumns} data={approvals} menu />{" "}
+          <StyledTable columns={userColumns} data={approvalByUser} menu />{" "}
         </Box>
       </>
     </>
