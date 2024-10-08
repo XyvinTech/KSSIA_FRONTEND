@@ -11,6 +11,7 @@ import { useEventStore } from "../../../../store/event-store.js";
 export default function EventHistorypage() {
   const [filterOpen, setFilterOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const [row, setRow] = useState(10);
   const [pageNo, setPageNo] = useState(1);
   const handleOpenFilter = () => {
     setFilterOpen(true);
@@ -25,9 +26,10 @@ export default function EventHistorypage() {
     if (search) {
       filter.search = search;
     }
+    filter.limit=row
     filter.pageNo = pageNo;
     eventHistory(filter);
-  }, [pageNo, search]);
+  }, [pageNo, search,row]);
   return (
     <>
       {" "}
@@ -82,7 +84,8 @@ export default function EventHistorypage() {
             border={"1px solid rgba(0, 0, 0, 0.12)"}
           >
             <StyledTable columns={eventColumns} data={events}  pageNo={pageNo}
-              setPageNo={setPageNo} totalCount={totalCount}/>{" "}
+              setPageNo={setPageNo}    rowPerSize={row}
+              setRowPerSize={setRow} totalCount={totalCount}/>{" "}
           </Box>
         </>
       </Box>

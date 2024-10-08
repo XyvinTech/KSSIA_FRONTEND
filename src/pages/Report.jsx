@@ -16,6 +16,7 @@ export default function Report() {
   const [isChange, setIsChange] = useState(false);
   const [pageNo, setPageNo] = useState(1);
   const [search, setSearch] = useState('');
+  const [row, setRow] = useState(10);
   const [previewOpen, setPreviewOpen] = useState(false);
   const {
     reports,
@@ -31,18 +32,19 @@ export default function Report() {
   useEffect(() => {
     let filter = {};
     filter.page = pageNo;
+    filter.limit = row;
     if (search) {
       filter.search = search;
     }
     fetchReport(filter);
-  }, [isChange, pageNo,search]);
+  }, [isChange, pageNo,search,row]);
   const formattedReports = reports.map((report) => ({
     ...report,
-    reportBy: `${report?.reportBy?.name?.first_name} ${
-      report?.reportBy?.name?.middle_name
-        ? report?.reportBy?.name?.middle_name + " "
+    reportBy: `${report?.reportByDetails?.name?.first_name} ${
+      report?.reportByDetails?.name?.middle_name
+        ? report?.reportByDetails?.name?.middle_name + " "
         : ""
-    }${report?.reportBy?.name?.last_name}`,
+    }${report?.reportByDetails?.name?.last_name}`,
   }));
   const handleDelete = async () => {
     if (selectedRows.length > 0) {
@@ -141,6 +143,8 @@ export default function Report() {
               pageNo={pageNo}
               onAction={handlePreview}
               setPageNo={setPageNo}
+              rowPerSize={row}
+              setRowPerSize={setRow}
             />{" "}
             <ReportPreview
               open={previewOpen}

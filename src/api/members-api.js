@@ -10,9 +10,11 @@ export const createMember = async (memberData) => {
     throw error.response.data;
   }
 };
-export const getPaymentByUserId = async (id) => {
+export const getPaymentByUserId = async (id,filter) => {
   try {
-    const response = await axiosInstance.get(`/payments/user/${id}`);
+    const response = await axiosInstance.get(`/payments/user/${id}`, {
+      params: filter,
+    });
     return response.data;
   } catch (error) {
     return null;

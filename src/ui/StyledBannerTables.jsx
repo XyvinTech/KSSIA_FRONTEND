@@ -12,8 +12,10 @@ export default function StyledBannerTables() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
   const [isChange, setIsChange] = useState(false);
-  const[pageNo, setPageNo] = useState(1)
-  const { promotions, fetchPromotion, deletePromotions,totalCount } = usePromotionStore();
+  const [pageNo, setPageNo] = useState(1);
+  const [row, setRow] = useState(10);
+  const { promotions, fetchPromotion, deletePromotions, totalCount } =
+    usePromotionStore();
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -27,24 +29,25 @@ export default function StyledBannerTables() {
   const handleDelete = async () => {
     if (selectedRows.length > 0) {
       await Promise.all(selectedRows?.map((id) => deletePromotions(id)));
-      toast.success('Deleted successfully');
+      toast.success("Deleted successfully");
       setIsChange(!isChange);
       setSelectedRows([]);
     }
   };
   const handleRowDelete = async (id) => {
     await deletePromotions(id);
-    toast.success('Deleted successfully');
+    toast.success("Deleted successfully");
     setIsChange(!isChange);
   };
   const handleEdit = (id) => {
     navigate(`/promotion/edit/${id}`, { state: { value: "banner" } });
   };
   useEffect(() => {
-    let filter = { }
+    let filter = {};
     filter.pageNo = pageNo;
-    fetchPromotion("banner",filter);
-  }, [isChange,pageNo]);
+    filter.limit = row;
+    fetchPromotion("banner", filter);
+  }, [isChange, pageNo, row]);
   const userColumns = [
     { title: "Start Date", field: "startDate", padding: "none" },
     { title: "End Date", field: "endDate", padding: "none" },
@@ -57,12 +60,10 @@ export default function StyledBannerTables() {
         <Stack
           direction={"row"}
           justifyContent={"end"}
-          paddingBottom={'15px'}
+          paddingBottom={"15px"}
           alignItems={"center"}
         >
-          <Stack direction={"row"} spacing={2}>
-           
-          </Stack>
+          <Stack direction={"row"} spacing={2}></Stack>
         </Stack>{" "}
         <Box
           borderRadius={"16px"}
@@ -80,6 +81,8 @@ export default function StyledBannerTables() {
             setPageNo={setPageNo}
             onDeleteRow={handleRowDelete}
             onModify={handleEdit}
+            rowPerSize={row}
+            setRowPerSize={setRow}
           />{" "}
         </Box>
       </>

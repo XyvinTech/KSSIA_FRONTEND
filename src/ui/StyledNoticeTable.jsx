@@ -13,7 +13,9 @@ export default function StyledNoticeTable() {
   const [selectedRows, setSelectedRows] = useState([]);
   const [isChange, setIsChange] = useState(false);
   const [pageNo, setPageNo] = useState(1);
-  const { promotions, fetchPromotion, deletePromotions,totalCount } = usePromotionStore();
+  const [row, setRow] = useState(10);
+  const { promotions, fetchPromotion, deletePromotions, totalCount } =
+    usePromotionStore();
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -28,24 +30,24 @@ export default function StyledNoticeTable() {
     setSelectedRows(newSelectedIds);
   };
   const handleDelete = async () => {
-    
     if (selectedRows.length > 0) {
       await Promise.all(selectedRows?.map((id) => deletePromotions(id)));
-      toast.success('Deleted successfully');
+      toast.success("Deleted successfully");
       setIsChange(!isChange);
       setSelectedRows([]);
     }
   };
   const handleRowDelete = async (id) => {
     await deletePromotions(id);
-    toast.success('Deleted successfully');
+    toast.success("Deleted successfully");
     setIsChange(!isChange);
   };
   useEffect(() => {
-    let filter = { }
+    let filter = {};
     filter.pageNo = pageNo;
-    fetchPromotion("notice",filter);
-  }, [isChange,pageNo]);
+    filter.limit = row;
+    fetchPromotion("notice", filter);
+  }, [isChange, pageNo, row]);
   const userColumns = [
     { title: "Date", field: "startDate", padding: "none" },
 
@@ -58,12 +60,10 @@ export default function StyledNoticeTable() {
         <Stack
           direction={"row"}
           justifyContent={"end"}
-          paddingBottom={'15px'}
+          paddingBottom={"15px"}
           alignItems={"center"}
         >
-          <Stack direction={"row"} spacing={2}>
-           
-          </Stack>
+          <Stack direction={"row"} spacing={2}></Stack>
         </Stack>{" "}
         <Box
           borderRadius={"16px"}
@@ -81,6 +81,8 @@ export default function StyledNoticeTable() {
             setPageNo={setPageNo}
             onDeleteRow={handleRowDelete}
             onModify={handleEdit}
+            rowPerSize={row}
+            setRowPerSize={setRow}
           />{" "}
         </Box>
       </>

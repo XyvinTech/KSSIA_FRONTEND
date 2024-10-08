@@ -17,6 +17,7 @@ export default function ApprovalPage() {
   const [approveOpen, setApproveOpen] = useState(false);
   const [isChange, setIsChange] = useState(false);
   const [pageNo, setPageNo] = useState(1);
+  const [row, setRow] = useState(10);
   const [formattedApprovals, setFormattedApprovals] = useState([]);
   const { approvals, fetchApproval, fetchApprovalById, totalCount, approval } =
     useApprovalStore();
@@ -28,9 +29,10 @@ export default function ApprovalPage() {
     if (search) {
       filter.search = search;
     }
+    filter.limit = row;
     filter.pageNo = pageNo;
     fetchApproval(filter);
-  }, [isChange, pageNo, search]);
+  }, [isChange, pageNo, search, row]);
   const handleChange = () => {
     setIsChange(!isChange);
   };
@@ -134,6 +136,8 @@ export default function ApprovalPage() {
               onAction={handleReject}
               totalCount={totalCount}
               pageNo={pageNo}
+              rowPerSize={row}
+              setRowPerSize={setRow}
               setPageNo={setPageNo}
             />{" "}
             <ApproveReject

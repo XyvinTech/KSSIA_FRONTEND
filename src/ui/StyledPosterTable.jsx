@@ -14,6 +14,7 @@ export default function StyledPosterTable() {
   const [selectedRows, setSelectedRows] = useState([]);
   const [isChange, setIsChange] = useState(false);
   const[pageNo, setPageNo] = useState(1)
+  const [row, setRow] = useState(10);
   const { promotions, fetchPromotion, deletePromotions, totalCount } = usePromotionStore();
   const handleOpenFilter = () => {
     setFilterOpen(true);
@@ -44,8 +45,9 @@ export default function StyledPosterTable() {
   useEffect(() => {
     let filter = { }
     filter.pageNo = pageNo;
+    filter.limit = row;
     fetchPromotion("poster",filter);
-  }, [isChange,pageNo]);
+  }, [isChange,pageNo,row]);
   const userColumns = [
     { title: "Start Date", field: "startDate", padding: "none" },
     { title: "End Date", field: "endDate", padding: "none" },
@@ -81,6 +83,8 @@ export default function StyledPosterTable() {
             setPageNo={setPageNo}
             onDeleteRow={handleRowDelete}
             onModify={handleEdit}
+            rowPerSize={row}
+            setRowPerSize={setRow}
           />{" "}
         </Box>
       </>

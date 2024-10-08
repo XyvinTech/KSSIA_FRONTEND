@@ -30,6 +30,7 @@ import EditPromotion from "../pages/Admin/Promotions/EditPromotion.jsx";
 import { PrivateRoute } from "./privateRouter.jsx";
 import QRPage from "../pages/QRPage.jsx";
 import Report from "../pages/Report.jsx";
+import QRHtmlPage from "../pages/QRHtmlpage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -279,7 +280,7 @@ const router = createBrowserRouter([
 
   {
     path: "/user/:id",
-    element: <QRPage />,
+    element: <QRHtmlPage />,
   },
 ]);
 

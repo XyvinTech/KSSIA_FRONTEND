@@ -16,6 +16,7 @@ export default function PaymentPage() {
   const [filterOpen, setFilterOpen] = useState(false);
   const [approveOpen, setApproveOpen] = useState(false);
   const [pageNo, setPageNo] = useState(1);
+  const [row, setRow] = useState(10);
   const [isChange, setIsChange] = useState(false);
 
   const {
@@ -50,9 +51,10 @@ export default function PaymentPage() {
     if (search) {
       filter.search = search;
     }
+    filter.limit = row;
     filter.pageNo = pageNo;
     fetchPayment(filter);
-  }, [isChange, pageNo, search]);
+  }, [isChange, pageNo, search, row]);
 
   const handleSelectionChange = (newSelectedIds) => {
     setSelectedRows(newSelectedIds);
@@ -165,6 +167,8 @@ export default function PaymentPage() {
               pageNo={pageNo}
               setPageNo={setPageNo}
               onDeleteRow={handleRowDelete}
+              rowPerSize={row}
+              setRowPerSize={setRow}
             />{" "}
             <MemberShipRenewal
               open={approveOpen}

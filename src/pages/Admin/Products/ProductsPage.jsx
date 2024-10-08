@@ -26,6 +26,7 @@ export default function MembersPage() {
   const [approveOpen, setApproveOpen] = useState(false);
   const { deleteProducts, fetchProductById, products } = useProductsStore();
   const [pageNo, setPageNo] = useState(1);
+  const [row, setRow] = useState(10);
   const [total, setTotal] = useState(0);
   useEffect(() => {
     async function init() {
@@ -34,6 +35,7 @@ export default function MembersPage() {
         if (search) {
           filter.search = search;
         }
+        filter.limit=row;
         filter.pageNo = pageNo;
         const response = await axiosInstance.get(CONSTANTS.PRODUCTS_API, {
           params: filter,
@@ -51,7 +53,7 @@ export default function MembersPage() {
     }
 
     init();
-  }, [isChange, pageNo, search]);
+  }, [isChange, pageNo, search,row]);
 
   const handleApprove = async (id) => {
     await fetchProductById(id);
@@ -198,6 +200,8 @@ export default function MembersPage() {
               pageNo={pageNo}
               product
               setPageNo={setPageNo}
+              rowPerSize={row}
+              setRowPerSize={setRow}
             />{" "}
             <RemoveProduct
               open={removeOpen}

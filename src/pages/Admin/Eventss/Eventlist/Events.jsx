@@ -15,6 +15,7 @@ export default function Events() {
   const [filterOpen, setFilterOpen] = useState(false);
   const [tableData, setTableData] = useState([]);
   const [search, setSearch] = useState("");
+  const [row, setRow] = useState(10);
   const [total, setTotal] = useState(0);
   const [pageNo, setPageNo] = useState(1);
   const [isChange, setIsChange] = useState(false);
@@ -47,7 +48,7 @@ export default function Events() {
           filter.search = search;
         }
         filter.pageNo = pageNo;
-
+        filter.limit=row
         const response = await getEvents(filter);
         setTableData(response.data);
         setTotal(response.totalCount);
@@ -57,7 +58,7 @@ export default function Events() {
     };
 
     fetchEvents();
-  }, [isChange, pageNo,search]);
+  }, [isChange, pageNo,search,row]);
   const handleSelectionChange = (newSelectedIds) => {
     setSelectedRows(newSelectedIds);
   };
@@ -113,6 +114,8 @@ export default function Events() {
             onDelete={handleDelete}
             totalCount={total}
             pageNo={pageNo}
+            rowPerSize={row}
+            setRowPerSize={setRow}
             setPageNo={setPageNo}
             onDeleteRow={handleRowDelete}
           />{" "}

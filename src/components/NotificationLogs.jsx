@@ -13,6 +13,7 @@ export default function NotificationLogs() {
   const [isChange, setIsChange] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
+  const [row, setRow] = useState(10);
   const [pageNo, setPageNo] = useState(1);
   const {
     notifications,
@@ -51,8 +52,9 @@ export default function NotificationLogs() {
   useEffect(() => {
     let filter = {};
     filter.pageNo = pageNo;
+    filter.limit=row;
     fetchNotification(filter);
-  }, [isChange, pageNo]);
+  }, [isChange, pageNo,row]);
   const userColumns = [
     { title: "Date", field: "createdAt", padding: "none" },
 
@@ -103,6 +105,8 @@ export default function NotificationLogs() {
             setPageNo={setPageNo}
             onSelectionChange={handleSelectionChange}
             onDelete={handleDelete}
+            rowPerSize={row}
+            setRowPerSize={setRow}
           />{" "}
           <NotificationView
             open={previewOpen}

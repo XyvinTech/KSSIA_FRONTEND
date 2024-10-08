@@ -16,6 +16,7 @@ export default function NewsAllpage() {
   const [selectedRows, setSelectedRows] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);
   const [pageNo, setPageNo] = useState(1);
+  const [row, setRow] = useState(10);
   const [isChange, setIsChange] = useState(false);
 
   const { singleNews, news, fetchNews, deleteNews, totalCount, fetchNewsById } =
@@ -66,8 +67,9 @@ export default function NewsAllpage() {
       filter.search = search;
     }
     filter.pageNo = pageNo;
+    filter.limit=row;
     fetchNews(filter);
-  }, [isChange, pageNo, search]);
+  }, [isChange, pageNo, search,row]);
   const handleChange = () => {
     setIsChange(!isChange);
   };
@@ -167,6 +169,8 @@ export default function NewsAllpage() {
           setPageNo={setPageNo}
           onDelete={handleDelete}
           onDeleteRow={handleRowDelete}
+          rowPerSize={row}
+          setRowPerSize={setRow}
         />{" "}
         <NewsPreview
           open={previewOpen}

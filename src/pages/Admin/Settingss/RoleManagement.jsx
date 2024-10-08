@@ -13,6 +13,7 @@ export default function RoleManagement() {
   const [filterOpen, setFilterOpen] = useState(false);
   const [isChange, setIsChange] = useState(false);
   const [pageNo, setPageNo] = useState(1);
+  const [row, setRow] = useState(10);
   const [search, setSearch] = useState("");
   const { roles, getRoles, totalCount, deleteRoles } = useRoleStore();
   useEffect(() => {
@@ -21,8 +22,9 @@ export default function RoleManagement() {
     if (search) {
       filter.search = search;
     }
+    filter.limit =row;
     getRoles(filter);
-  }, [isChange, pageNo, search]);
+  }, [isChange, pageNo, search,row]);
 
   const handleOpenFilter = () => {
     setFilterOpen(true);
@@ -137,6 +139,8 @@ export default function RoleManagement() {
               pageNo={pageNo}
               setPageNo={setPageNo}
               onDelete={handleDelete}
+              rowPerSize={row}
+              setRowPerSize={setRow}
               onDeleteRow={handleRowDelete}
             />{" "}
           </Box>

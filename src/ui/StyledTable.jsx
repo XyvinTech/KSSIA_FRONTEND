@@ -77,6 +77,8 @@ const StyledTable = ({
   product,
   onApprove,
   payment,
+  rowPerSize,
+  setRowPerSize,
 }) => {
   const [selectedIds, setSelectedIds] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -154,7 +156,10 @@ const StyledTable = ({
     setPageNo((prev) => prev - 1);
   };
   const isSelected = (id) => selectedIds.includes(id);
-
+  const handleChangeRowsPerPage = (event) => {
+    setRowPerSize(parseInt(event.target.value, 10));
+    setPageNo(1);
+  };
   const getStatusVariant = (status) => {
     if (typeof status === "boolean") {
       return status ? "green" : "red";
@@ -270,7 +275,8 @@ const StyledTable = ({
                         "paymentdate",
                         "date",
                         "createdAt",
-                        "startDate","endDate"
+                        "startDate",
+                        "endDate",
                       ].includes(column.field) ? (
                         formatIndianDate(row[column.field])
                       ) : ["starttime", "endtime", "time"].includes(
@@ -469,10 +475,13 @@ const StyledTable = ({
                 <Box display="flex" alignItems="center">
                   <TablePagination
                     component="div"
-                    rowsPerPage={10}
+                    rowsPerPage={rowPerSize}
                     labelDisplayedRows={({ from, to }) =>
-                      `${pageNo}-${Math.ceil(totalCount / 10)} of ${totalCount}`
+                      `${pageNo}-${Math.ceil(
+                        totalCount / rowPerSize
+                      )} of ${totalCount}`
                     }
+                    onRowsPerPageChange={handleChangeRowsPerPage}
                     ActionsComponent={({ onPageChange }) => (
                       <Stack
                         direction="row"
@@ -484,7 +493,8 @@ const StyledTable = ({
                         <Box
                           onClick={pageDec}
                           sx={{
-                            display:"flex",alignItems:"center",
+                            display: "flex",
+                            alignItems: "center",
                             cursor: pageNo > 1 ? "pointer" : "not-allowed",
                             opacity: pageNo > 1 ? 1 : 0.5,
                           }}
@@ -494,13 +504,16 @@ const StyledTable = ({
                         <Box
                           onClick={pageInc}
                           sx={{
-                            display:"flex",alignItems:"center",
+                            display: "flex",
+                            alignItems: "center",
                             cursor:
-                              pageNo < Math.ceil(totalCount / 10)
+                              pageNo < Math.ceil(totalCount / rowPerSize)
                                 ? "pointer"
                                 : "not-allowed",
                             opacity:
-                              pageNo < Math.ceil(totalCount / 10) ? 1 : 0.5,
+                              pageNo < Math.ceil(totalCount / rowPerSize)
+                                ? 1
+                                : 0.5,
                           }}
                         >
                           {" "}

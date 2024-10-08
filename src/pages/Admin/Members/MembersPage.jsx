@@ -22,6 +22,7 @@ export default function MembersPage() {
   const [search, setSearch] = useState("");
   const [userData, setUserData] = useState([]);
   const [total, setTotal] = useState(0);
+  const [row, setRow] = useState(10);
   const { deleteUsers } = useMemberStore();
   const [pageNo, setPageNo] = useState(1);
   const [userId, setUserId] = useState(null);
@@ -42,6 +43,7 @@ export default function MembersPage() {
         if (search) {
           filter.search = search;
         }
+        filter.limit = row;
         filter.pageNo = pageNo;
         const response = await axiosInstance.get(CONSTANTS.MEMBERS_API, {
           params: filter,
@@ -59,7 +61,7 @@ export default function MembersPage() {
     }
 
     fetchUserData();
-  }, [isChange, pageNo, search]);
+  }, [isChange, pageNo, search, row]);
 
   const handleOpenFilter = () => {
     setFilterOpen(true);
@@ -204,6 +206,8 @@ export default function MembersPage() {
               onDeleteRow={handleRowDelete}
               onAction={handleSuspend}
               onDelete={handleDelete}
+              rowPerSize={row}
+              setRowPerSize={setRow}
             />{" "}
           </Box>
           <SuspendProfile

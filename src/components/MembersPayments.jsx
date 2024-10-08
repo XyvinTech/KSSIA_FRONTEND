@@ -10,6 +10,7 @@ import { useMemberStore } from "../store/member-store";
 export default function MembersPayments({ id }) {
   const [filterOpen, setFilterOpen] = useState(false);
   const [pageNo, setPageNo] = useState(1);
+  const [row, setRow] = useState(10);
   const { fetchPaymentByUser, payments ,totalCount} = useMemberStore();
   const [isChange, setIsChange] = useState(false);
   const [rejectOpen, setRejectOpen] = useState(false);
@@ -28,8 +29,11 @@ export default function MembersPayments({ id }) {
     setFilterOpen(false);
   };
   useEffect(() => {
-    fetchPaymentByUser(id);
-  }, [isChange,pageNo]);
+    let filter = {};
+    filter.pageNo = pageNo;
+    filter.limit = row;
+    fetchPaymentByUser(id,filter);
+  }, [isChange,pageNo,row]);
   const handleChange = () => {
     setIsChange(!isChange);
   };
@@ -87,6 +91,8 @@ export default function MembersPayments({ id }) {
             payment
             totalCount={totalCount}
             pageNo={pageNo}
+            rowPerSize={row}
+            setRowPerSize={setRow}
             setPageNo={setPageNo}
           />{" "}
           <RejectionEntryForm

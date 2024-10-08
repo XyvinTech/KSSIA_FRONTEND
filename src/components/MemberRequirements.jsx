@@ -10,7 +10,9 @@ import { useApprovalStore } from "../store/approval-store";
 export default function MembersRequirements({ id }) {
   const [filterOpen, setFilterOpen] = useState(false);
   const [pageNo, setPageNo] = useState(1);
-  const {approvalByUser, fetchApprovalByUser ,totalCount} = useApprovalStore();
+  const [row, setRow] = useState(10);
+  const { approvalByUser, fetchApprovalByUser, totalCount } =
+    useApprovalStore();
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -21,8 +23,9 @@ export default function MembersRequirements({ id }) {
   useEffect(() => {
     let filter = {};
     filter.pageNo = pageNo;
-    fetchApprovalByUser(id,filter);
-  }, [pageNo]);
+    filter.limit = row;
+    fetchApprovalByUser(id, filter);
+  }, [pageNo, row]);
   const userColumns = [
     { title: "date", field: "createdAt", padding: "none" },
     { title: "image", field: "image" },
@@ -36,7 +39,7 @@ export default function MembersRequirements({ id }) {
         <Stack
           direction={"row"}
           justifyContent={"end"}
-          paddingBottom={'15px'}
+          paddingBottom={"15px"}
           alignItems={"center"}
         >
           <Stack direction={"row"} spacing={2}>
@@ -67,7 +70,16 @@ export default function MembersRequirements({ id }) {
           p={1}
           border={"1px solid rgba(0, 0, 0, 0.12)"}
         >
-          <StyledTable columns={userColumns} data={approvalByUser} pageNo={pageNo}  setPageNo={setPageNo} totalCount={totalCount} menu />{" "}
+          <StyledTable
+            columns={userColumns}
+            rowPerSize={row}
+            setRowPerSize={setRow}
+            data={approvalByUser}
+            pageNo={pageNo}
+            setPageNo={setPageNo}
+            totalCount={totalCount}
+            menu
+          />{" "}
         </Box>
       </>
     </>

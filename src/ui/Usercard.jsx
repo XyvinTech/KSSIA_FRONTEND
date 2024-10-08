@@ -16,7 +16,7 @@ const UserCard = ({ user }) => {
       minHeight={"420px"}
       position="relative"
     >
-      <Grid item md={6} xs={12} >
+      <Grid item md={6} xs={12}>
         <img
           src={user?.profile_picture || image}
           alt="img"
@@ -42,19 +42,22 @@ const UserCard = ({ user }) => {
             {user?.title}
           </Typography>
           <Stack direction="row" alignItems="center" spacing={1}>
-            <PhoneIcon />
+            <Stack>
+              {" "}
+              <PhoneIcon />
+            </Stack>
             <Typography variant="h6" color={"#2C2829"}>
               {user?.mobile}
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="center" spacing={1}>
-            <EmailIcon />
+          <Stack> <EmailIcon /> </Stack>
             <Typography variant="h6" color={"#2C2829"}>
               {user?.email}
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="flex-start" spacing={1}>
-            <LocationIcon />
+          <Stack> <LocationIcon /> </Stack>
             <Typography variant="h6" color={"#2C2829"}>
               {user?.address}
             </Typography>
@@ -94,7 +97,7 @@ const UserCard = ({ user }) => {
           Bio
         </Typography>
         <Typography variant="h6" color={"#626262"}>
-        {user?.bio}
+          {user?.bio}
         </Typography>
       </Grid>
     </Grid>

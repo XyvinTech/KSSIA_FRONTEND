@@ -13,6 +13,7 @@ export default function AdminManagement() {
   const [filterOpen, setFilterOpen] = useState(false);
   const [isChange, setIsChange] = useState(false);
   const [pageNo, setPageNo] = useState(1);
+  const [row, setRow] = useState(10);
   const[ search,setSearch]=useState("")
   const { fetchAdmins, totalCount, admins,deleteAdmins } = useAdminStore();
   const userColumns = [
@@ -57,8 +58,9 @@ export default function AdminManagement() {
     if (search) {
       filter.search = search;
     }
+    filter.limit=row
     fetchAdmins(filter);
-  }, [isChange,pageNo,search]);
+  }, [isChange,pageNo,search,row]);
   const handleEdit = (id) => {
     navigate(`/settings/addnewadmin`, {
       state: { adminId: id, isUpdate: true },
@@ -128,6 +130,8 @@ export default function AdminManagement() {
               pageNo={pageNo}
               setPageNo={setPageNo}
               onDelete={handleDelete}
+              rowPerSize={row}
+              setRowPerSize={setRow}
               onDeleteRow={handleRowDelete}
               onSelectionChange={handleSelectionChange}
             />{" "}
