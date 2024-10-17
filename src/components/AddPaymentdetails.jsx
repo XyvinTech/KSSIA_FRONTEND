@@ -84,6 +84,10 @@ export default function AddPaymentdetails() {
           label: `${user.name.first_name} ${user.name.middle_name} ${user.name.last_name}`,
         }))
       : [];
+const handleClear = (event) => {
+  event.preventDefault(); 
+  reset();
+}
   const onSubmit = async (data) => {
     try {
       setLoading(true);
@@ -445,7 +449,7 @@ export default function AddPaymentdetails() {
                   <Stack direction={"row"} spacing={2}>
                     <StyledButton
                       name="Cancel"
-                      variant="secondary"
+                      variant="secondary" onClick={(e) => handleClear(e)}
                       style={{ width: "auto" }}
                     >
                       Cancel

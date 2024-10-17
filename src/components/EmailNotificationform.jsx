@@ -37,6 +37,10 @@ export default function EmailNotificationform({ setSelectedTab }) {
           })),
         ]
       : [];
+  const handleClear = (event) => {
+    event.preventDefault();
+    reset();
+  };
   const onSubmit = async (data) => {
     try {
       setLoading(true);
@@ -215,7 +219,11 @@ export default function EmailNotificationform({ setSelectedTab }) {
           <Grid item xs={6} display={"flex"} justifyContent={"end"}>
             {" "}
             <Stack direction={"row"} spacing={2}>
-              <StyledButton name="Cancel" variant="secondary">
+              <StyledButton
+                name="Cancel"
+                variant="secondary"
+                onClick={(event) => handleClear(event)}
+              >
                 Cancel
               </StyledButton>
               <StyledButton

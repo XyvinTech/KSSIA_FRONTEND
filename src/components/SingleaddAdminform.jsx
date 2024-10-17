@@ -53,7 +53,12 @@ export default function SingleaddAdminform() {
           label: r.roleName,
         }))
       : [];
-
+      const handleClear=(event)=>{
+        event.preventDefault();
+        reset();
+        setPermissions([]);
+      
+      }
   const onSubmit = async (data) => {
     try {
       setLoading(true);
@@ -163,7 +168,7 @@ export default function SingleaddAdminform() {
             <Stack direction={"row"} spacing={2}>
               <StyledButton
                 name="Cancel"
-                variant="secondary"
+                variant="secondary"onClick={(event) => handleClear(event)}
                 style={{ width: "auto" }}
               >
                 Cancel

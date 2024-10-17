@@ -79,7 +79,12 @@ const AddRole = () => {
       setLoading(false);
     }
   };
+const handleClear=(event)=>{
+  event.preventDefault();
+  reset();
+  setPermissions([]);
 
+}
     useEffect(() => {
       if (isUpdate && roleId) {
         getRoleById(roleId);
@@ -250,7 +255,7 @@ const AddRole = () => {
           <Grid item xs={6}></Grid>
           <Grid item xs={6}>
             <Stack direction={"row"} spacing={2} justifyContent={"flex-end"}>
-              <StyledButton name="Cancel" variant="secondary" />
+              <StyledButton name="Cancel" variant="secondary" onClick={(event) => handleClear(event)}/>
               <StyledButton
                 name={loading ? "Saving..." : "Save"}
                 variant="primary"

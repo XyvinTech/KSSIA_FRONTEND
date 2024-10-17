@@ -32,7 +32,7 @@ export default function Addproductform() {
   const location = useLocation();
   const { productId, isUpdate } = location.state || {};
   useEffect(() => {
-    let filter={};
+    let filter = {};
     filter.limit = "full";
     fetchUsers(filter);
   }, []);
@@ -68,6 +68,10 @@ export default function Addproductform() {
         }))
       : [];
 
+  const handleClear = (event) => {
+    event.preventDefault();
+    reset();
+  };
   const onSubmit = async (data) => {
     try {
       setLoading(true);
@@ -313,6 +317,7 @@ export default function Addproductform() {
                     <StyledButton
                       name="Cancel"
                       variant="secondary"
+                      onClick={(event) => handleClear(event)}
                       style={{ width: "auto" }}
                     >
                       Cancel

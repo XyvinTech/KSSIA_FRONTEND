@@ -39,7 +39,10 @@ export default function InappNotificationform({ setSelectedTab }) {
           })),
         ]
       : [];
-
+  const handleClear = (event) => {
+    event.preventDefault();
+    reset();
+  };
   const onSubmit = async (data) => {
     try {
       setLoading(true);
@@ -221,6 +224,7 @@ export default function InappNotificationform({ setSelectedTab }) {
                 name="Cancel"
                 variant="secondary"
                 style={{ width: "auto" }}
+                onClick={(event) => handleClear(event)}
               >
                 Cancel
               </StyledButton>
