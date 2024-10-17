@@ -12,6 +12,7 @@ import { useNotificationStore } from "../store/notificationStore";
 import { useDropDownStore } from "../store/dropDownStore";
 import { toast } from "react-toastify";
 import { set } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 export default function InappNotificationform({ setSelectedTab }) {
   const {
@@ -24,6 +25,7 @@ export default function InappNotificationform({ setSelectedTab }) {
   const { addAppNotifications } = useNotificationStore();
   const { users, fetchUsers } = useDropDownStore();
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   useEffect(() => {
     let filter = {};
     filter.limit = "full";
@@ -42,6 +44,7 @@ export default function InappNotificationform({ setSelectedTab }) {
   const handleClear = (event) => {
     event.preventDefault();
     reset();
+    navigate(-1)
   };
   const onSubmit = async (data) => {
     try {

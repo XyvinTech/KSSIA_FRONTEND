@@ -81,8 +81,7 @@ const AddRole = () => {
   };
 const handleClear=(event)=>{
   event.preventDefault();
-  reset();
-  setPermissions([]);
+  navigate(-1)
 
 }
     useEffect(() => {

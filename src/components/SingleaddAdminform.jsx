@@ -56,7 +56,7 @@ export default function SingleaddAdminform() {
       const handleClear=(event)=>{
         event.preventDefault();
         reset();
-        setPermissions([]);
+        navigate(-1)
       
       }
   const onSubmit = async (data) => {

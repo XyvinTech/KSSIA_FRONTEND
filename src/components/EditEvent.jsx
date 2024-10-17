@@ -32,9 +32,9 @@ export default function EditEvent({ eventId, setSelectedTab }) {
   const navigate = useNavigate();
   const handleClear = (event) => {
     event.preventDefault();
-    setSelectedTab(0);
     reset();
     setSpeakerImages([]);
+    navigate(-1)
   };
   const handleTypeChange = (selectedOption) => {
     setType(selectedOption.value);

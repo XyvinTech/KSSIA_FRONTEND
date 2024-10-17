@@ -37,6 +37,7 @@ export default function AddEvent({ eventId, setSelectedTab }) {
     setSelectedTab(0);
     reset();
     setSpeakerImages([]);
+    navigate(-1);
   };
   const [speakerImages, setSpeakerImages] = useState([]);
   const [speakers, setSpeakers] = useState([

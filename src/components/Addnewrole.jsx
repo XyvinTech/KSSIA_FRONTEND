@@ -161,6 +161,7 @@ export default function Addnewrole() {
                 name="Cancel"
                 variant="secondary"
                 style={{ width: "auto" }}
+                
               >
                 Cancel
               </StyledButton>

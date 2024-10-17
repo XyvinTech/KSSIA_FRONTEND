@@ -87,6 +87,7 @@ export default function AddPaymentdetails() {
 const handleClear = (event) => {
   event.preventDefault(); 
   reset();
+  navigate(-1)
 }
   const onSubmit = async (data) => {
     try {

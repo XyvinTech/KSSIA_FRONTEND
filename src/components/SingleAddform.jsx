@@ -757,7 +757,7 @@ export default function SingleAddform() {
                       variant="secondary"
                       onClick={(e) => {
                         e.preventDefault();
-                        reset();
+                        navigate(-1)
                       }}
                     >
                       Cancel

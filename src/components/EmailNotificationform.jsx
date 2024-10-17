@@ -11,6 +11,7 @@ import DropZoneforForm from "../ui/DropzoneforForm";
 import { useNotificationStore } from "../store/notificationStore";
 import { useDropDownStore } from "../store/dropDownStore";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export default function EmailNotificationform({ setSelectedTab }) {
   const {
@@ -22,6 +23,7 @@ export default function EmailNotificationform({ setSelectedTab }) {
   const { users, fetchUsers } = useDropDownStore();
   const { addEmailNotifications } = useNotificationStore();
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   useEffect(() => {
     let filter = {};
     filter.limit = "full";
@@ -40,6 +42,7 @@ export default function EmailNotificationform({ setSelectedTab }) {
   const handleClear = (event) => {
     event.preventDefault();
     reset();
+    navigate(-1)
   };
   const onSubmit = async (data) => {
     try {
