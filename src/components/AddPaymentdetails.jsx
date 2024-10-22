@@ -45,12 +45,13 @@ export default function AddPaymentdetails() {
       setValue("date", payment.date || "");
       setValue("time", payment.time || "");
       setValue("amount", payment.amount || "");
-      setValue("plan", payment.plan || "");
       setValue("mode_of_payment", payment.mode_of_payment || "");
       const selectedCategory = category.find(
         (item) => item.value === payment.category
       );
       setValue("category", selectedCategory || "");
+      const selectedPlan = plan.find((item) => item.value === payment.plan);
+      setValue("plan", selectedPlan || "");
       const selectedStatus = status.find(
         (item) => item.value === payment.status
       );
@@ -73,6 +74,10 @@ export default function AddPaymentdetails() {
     { value: "membership", label: "Membership renewal" },
     { value: "app", label: "App renewal" },
   ];
+  const plan = [
+    { value: "free", label: "Free" },
+    { value: "premium", label: "Premium" },
+  ];
   const status = [
     { value: "pending", label: "Pending" },
     { value: "accepted", label: "Complete" },
@@ -84,11 +89,11 @@ export default function AddPaymentdetails() {
           label: `${user.name.first_name} ${user.name.middle_name} ${user.name.last_name}`,
         }))
       : [];
-const handleClear = (event) => {
-  event.preventDefault(); 
-  reset();
-  navigate(-1)
-}
+  const handleClear = (event) => {
+    event.preventDefault();
+    reset();
+    navigate(-1);
+  };
   const onSubmit = async (data) => {
     try {
       setLoading(true);
@@ -101,7 +106,7 @@ const handleClear = (event) => {
       formData.append("category", data.category.value);
       formData.append("status", data.status.value);
       formData.append("remarks", data.remarks);
-      formData.append("plan", data.plan);
+      formData.append("plan", data.plan.value);
       if (!isUpdate || (isUpdate && data.file instanceof File)) {
         formData.append("file", data.file);
       }
@@ -435,7 +440,11 @@ const handleClear = (event) => {
                     rules={{ required: "Plan is required" }}
                     render={({ field }) => (
                       <>
-                        <StyledInput placeholder="Add plan " {...field} />
+                        <StyledSelectField
+                          options={plan}
+                          placeholder="Add plan "
+                          {...field}
+                        />
                         {errors.plan && (
                           <span style={{ color: "red" }}>
                             {errors.plan.message}
@@ -450,7 +459,8 @@ const handleClear = (event) => {
                   <Stack direction={"row"} spacing={2}>
                     <StyledButton
                       name="Cancel"
-                      variant="secondary" onClick={(e) => handleClear(e)}
+                      variant="secondary"
+                      onClick={(e) => handleClear(e)}
                       style={{ width: "auto" }}
                     >
                       Cancel

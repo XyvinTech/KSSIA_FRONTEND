@@ -104,7 +104,7 @@ export default function SingleAddform() {
       const memberData = {
         name: {
           first_name: data.first_name,
-          middle_name: data.middle_name,
+          ...(data.middle_name && { middle_name: data.middle_name }),
           last_name: data.last_name,
         },
         websites: Array.isArray(data.websites)
@@ -113,7 +113,7 @@ export default function SingleAddform() {
           ? [{ url: data.websites }]
           : [],
         phone_numbers: {
-          personal: data.phone_number ? data.phone_number: undefined,
+          personal: data.phone_number ? data.phone_number : undefined,
           landline: data.landline ? data.landline : undefined,
           company_phone_number: data.company_phone_number
             ? data.company_phone_number
@@ -189,12 +189,12 @@ export default function SingleAddform() {
   return (
     <>
       {loadings ? (
-        <Skeleton 
-        variant="rectangular" 
-        width={'100%'} 
-        height={'800px'} 
-        sx={{ bgcolor: 'white' }} 
-      />
+        <Skeleton
+          variant="rectangular"
+          width={"100%"}
+          height={"800px"}
+          sx={{ bgcolor: "white" }}
+        />
       ) : (
         <>
           <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"12px"}>
@@ -757,7 +757,7 @@ export default function SingleAddform() {
                       variant="secondary"
                       onClick={(e) => {
                         e.preventDefault();
-                        navigate(-1)
+                        navigate(-1);
                       }}
                     >
                       Cancel

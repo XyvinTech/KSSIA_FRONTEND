@@ -491,18 +491,23 @@ const StyledTable = ({
                       >
                         {" "}
                         <Box
-                          onClick={pageDec}
+                          onClick={pageNo > 1 ? pageDec : null}
                           sx={{
                             display: "flex",
                             alignItems: "center",
                             cursor: pageNo > 1 ? "pointer" : "not-allowed",
                             opacity: pageNo > 1 ? 1 : 0.5,
+                            pointerEvents: pageNo > 1 ? "auto" : "none",
                           }}
                         >
                           <LeftIcon />{" "}
                         </Box>
                         <Box
-                          onClick={pageInc}
+                          onClick={
+                            pageNo < Math.ceil(totalCount / rowPerSize)
+                              ? pageInc
+                              : null
+                          }
                           sx={{
                             display: "flex",
                             alignItems: "center",
@@ -514,6 +519,10 @@ const StyledTable = ({
                               pageNo < Math.ceil(totalCount / rowPerSize)
                                 ? 1
                                 : 0.5,
+                            pointerEvents:
+                              pageNo < Math.ceil(totalCount / rowPerSize)
+                                ? "auto"
+                                : "none",
                           }}
                         >
                           {" "}
