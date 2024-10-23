@@ -45,6 +45,7 @@ export default function AddPaymentdetails() {
       setValue("date", payment.date || "");
       setValue("time", payment.time || "");
       setValue("amount", payment.amount || "");
+      setValue("year_count", payment.year_count || "");
       setValue("mode_of_payment", payment.mode_of_payment || "");
       const selectedCategory = category.find(
         (item) => item.value === payment.category
@@ -106,6 +107,7 @@ export default function AddPaymentdetails() {
       formData.append("category", data.category.value);
       formData.append("status", data.status.value);
       formData.append("remarks", data.remarks);
+      formData.append("year_count", data.year_count);
       formData.append("plan", data.plan.value);
       if (!isUpdate || (isUpdate && data.file instanceof File)) {
         formData.append("file", data.file);
@@ -448,6 +450,36 @@ export default function AddPaymentdetails() {
                         {errors.plan && (
                           <span style={{ color: "red" }}>
                             {errors.plan.message}
+                          </span>
+                        )}
+                      </>
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography
+                    sx={{ marginBottom: 1 }}
+                    variant="h6"
+                    fontWeight={500}
+                    color={"#333333"}
+                  >
+                    Year Count
+                  </Typography>
+                  <Controller
+                    name="year_count"
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: "Year Count is required" }}
+                    render={({ field }) => (
+                      <>
+                        <StyledInput
+                         
+                          placeholder="Add Year Count "
+                          {...field}
+                        />
+                        {errors.year_count && (
+                          <span style={{ color: "red" }}>
+                            {errors.year_count.message}
                           </span>
                         )}
                       </>
