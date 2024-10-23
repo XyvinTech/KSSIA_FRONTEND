@@ -91,13 +91,13 @@ const ReportPreview = ({ open, onClose, onChange, data }) => {
                 borderRadius: "12px",
                 overflow: "hidden",
                 boxShadow: 3,
-                maxHeight: "180px",
+                maxHeight: "380px",
               }}
             >
               <img
                 src={data?.reportedElement?.image}
                 alt={data?.reportedElement?.name}
-                style={{ width: "100%", height: "180px", objectFit: "cover" }}
+                style={{ width: "100%", height: "380px", objectFit: "cover" }}
               />
             </Box>
           )}
