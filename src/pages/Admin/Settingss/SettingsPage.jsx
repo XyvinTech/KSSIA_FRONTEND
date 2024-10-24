@@ -56,7 +56,7 @@ const SettingsPage= () => {
           },
         }}
       >
-        <Tab label="Admin mangement" />
+        <Tab label="Admin management" />
         <Tab label="Role management" />
         <Tab label="Admin activity" />
       </Tabs>
