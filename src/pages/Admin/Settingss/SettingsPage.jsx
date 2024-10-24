@@ -58,7 +58,7 @@ const SettingsPage= () => {
       >
         <Tab label="Admin management" />
         <Tab label="Role management" />
-        <Tab label="Admin activity" />
+        {/* <Tab label="Admin activity" /> */}
       </Tabs>
       <Box padding="15px" marginBottom={4}>
         {selectedTab === 0 && (
