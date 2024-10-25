@@ -36,7 +36,7 @@ const UserCard = ({ user }) => {
           </Typography>
 
           <Typography variant="h5" color={"#4A4647"}>
-            {user?.full_name}
+            {user?.name?.first_name} {user?.name?.middle_name} {user?.name?.last_name}
           </Typography>
           <Typography variant="h6" color={"#4A4647"}>
             {user?.title}
