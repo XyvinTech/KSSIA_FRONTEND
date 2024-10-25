@@ -87,11 +87,11 @@ const MemberShipRenewal = ({ open, onClose, data, onChange }) => {
                 Payee name
               </Typography>
               <Typography variant="h6" color={"#4A4647"}>
-                {data?.name}
+                {data?.member?.name?.first_name} {data?.member?.name?.middle_name} {data?.member?.name?.last_name}
               </Typography>
             </Stack>{" "}
             <Divider />
-            <Stack
+            {/* <Stack
               spacing={2}
               padding={2}
               direction={"row"}
@@ -103,7 +103,7 @@ const MemberShipRenewal = ({ open, onClose, data, onChange }) => {
               <Typography variant="h6" color={"#4A4647"}>
                 {data?.mobile}
               </Typography>
-            </Stack>{" "}
+            </Stack>{" "} */}
             <Divider />
             <Stack
               spacing={2}
