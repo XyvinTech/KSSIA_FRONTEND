@@ -75,6 +75,8 @@ const BulkAddform = () => {
           phone_numbers: {
             personal: formatPhoneNumber(row["Mobile Number"] || ""),
             whatsapp_number: formatPhoneNumber(row["WhatsApp Number"] || ""),
+            landline:"",
+
           },
           designation: row["Designation"] || "",
           membership_id: row["MemberShip ID"] || "",
