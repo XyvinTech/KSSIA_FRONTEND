@@ -168,7 +168,7 @@ export default function SingleAddform() {
         });
       }
 
-      if (newPhones.length === 3) {
+      if (newPhones.length === 2) {
         setAddMoreDisabled(true);
       }
 
