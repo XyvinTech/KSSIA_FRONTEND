@@ -2,7 +2,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import axiosInstance from "./axios-interceptor";
 
-const baseURL = "https://api.kssiathrissur.com/api/v1/";
+const baseURL = import.meta.env.VITE_APP_API;
 export const getLogin = async (datas) => {
   try {
     const response = await axios.post(`${baseURL}auth/login`, datas);
