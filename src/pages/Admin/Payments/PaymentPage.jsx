@@ -13,7 +13,6 @@ export default function PaymentPage() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
   const [search, setSearch] = useState("");
-  const [filterOpen, setFilterOpen] = useState(false);
   const [approveOpen, setApproveOpen] = useState(false);
   const [pageNo, setPageNo] = useState(1);
   const [row, setRow] = useState(10);
@@ -36,13 +35,7 @@ export default function PaymentPage() {
     { title: "Mode of payment", field: "mode_of_payment" },
     { title: "Status", field: "status" },
   ];
-  const handleOpenFilter = () => {
-    setFilterOpen(true);
-  };
 
-  const handleCloseFilter = () => {
-    setFilterOpen(false);
-  };
   const handleChange = () => {
     setIsChange(!isChange);
   };
@@ -113,11 +106,7 @@ export default function PaymentPage() {
                 Add
               </StyledButton>
             </Grid>
-            <Grid item>
-              <StyledButton name="Download" variant="primary">
-                Download
-              </StyledButton>
-            </Grid>
+        
           </Grid>
         </Grid>
       </Box>
@@ -134,20 +123,7 @@ export default function PaymentPage() {
                 placeholder={"Search payments"}
                 onchange={(e) => setSearch(e.target.value)}
               />
-              <Box
-                bgcolor={"#FFFFFF"}
-                borderRadius={"50%"}
-                width={"48px"}
-                height={"48px"}
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                border="1px solid rgba(0, 0, 0, 0.12)"
-                onClick={handleOpenFilter}
-                style={{ cursor: "pointer" }}
-              >
-                <FilterIcon />
-              </Box>
+          
             </Stack>
           </Stack>{" "}
           <Box

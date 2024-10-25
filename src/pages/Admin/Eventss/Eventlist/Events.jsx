@@ -12,20 +12,12 @@ import { toast } from "react-toastify";
 export default function Events() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
-  const [filterOpen, setFilterOpen] = useState(false);
   const [tableData, setTableData] = useState([]);
   const [search, setSearch] = useState("");
   const [row, setRow] = useState(10);
   const [total, setTotal] = useState(0);
   const [pageNo, setPageNo] = useState(1);
   const [isChange, setIsChange] = useState(false);
-  const handleOpenFilter = () => {
-    setFilterOpen(true);
-  };
-
-  const handleCloseFilter = () => {
-    setFilterOpen(false);
-  };
 
   const handleDelete = async () => {
     if (selectedRows.length > 0) {
@@ -48,7 +40,7 @@ export default function Events() {
           filter.search = search;
         }
         filter.pageNo = pageNo;
-        filter.limit=row
+        filter.limit = row;
         const response = await getEvents(filter);
         setTableData(response.data);
         setTotal(response.totalCount);
@@ -58,7 +50,7 @@ export default function Events() {
     };
 
     fetchEvents();
-  }, [isChange, pageNo,search,row]);
+  }, [isChange, pageNo, search, row]);
   const handleSelectionChange = (newSelectedIds) => {
     setSelectedRows(newSelectedIds);
   };
@@ -79,24 +71,10 @@ export default function Events() {
           alignItems={"center"}
         >
           <Stack direction={"row"} spacing={2}>
-          <StyledSearchbar
-                placeholder={"Search events"}
-                onchange={(e) => setSearch(e.target.value)}
-              />
-            <Box
-              bgcolor={"#FFFFFF"}
-              borderRadius={"50%"}
-              width={"48px"}
-              height={"48px"}
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              border="1px solid rgba(0, 0, 0, 0.12)"
-              onClick={handleOpenFilter}
-              style={{ cursor: "pointer" }}
-            >
-              <FilterIcon />
-            </Box>
+            <StyledSearchbar
+              placeholder={"Search events"}
+              onchange={(e) => setSearch(e.target.value)}
+            />
           </Stack>
         </Stack>{" "}
         <Box

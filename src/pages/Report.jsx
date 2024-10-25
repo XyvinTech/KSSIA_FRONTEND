@@ -3,8 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import StyledSearchbar from "../ui/StyledSearchbar";
-import { ReactComponent as FilterIcon } from "../assets/icons/FilterIcon.svg";
-import { useApprovalStore } from "../store/approval-store";
 import StyledTable from "../ui/StyledTable";
 import { useReportStore } from "../store/reportStore";
 import { toast } from "react-toastify";
@@ -12,10 +10,9 @@ import ReportPreview from "../components/ReportPreview";
 export default function Report() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
-  const [filterOpen, setFilterOpen] = useState(false);
   const [isChange, setIsChange] = useState(false);
   const [pageNo, setPageNo] = useState(1);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [row, setRow] = useState(10);
   const [previewOpen, setPreviewOpen] = useState(false);
   const {
@@ -26,9 +23,6 @@ export default function Report() {
     report,
     fetchReportById,
   } = useReportStore();
-  const handleOpenFilter = () => {
-    setFilterOpen(true);
-  };
   useEffect(() => {
     let filter = {};
     filter.page = pageNo;
@@ -37,7 +31,7 @@ export default function Report() {
       filter.search = search;
     }
     fetchReport(filter);
-  }, [isChange, pageNo,search,row]);
+  }, [isChange, pageNo, search, row]);
   const formattedReports = reports.map((report) => ({
     ...report,
     reportBy: `${report?.reportByDetails?.name?.first_name} ${
@@ -65,9 +59,7 @@ export default function Report() {
     { title: "Type", field: "reportType" },
     { title: "Description", field: "content" },
   ];
-  const handleCloseFilter = () => {
-    setFilterOpen(false);
-  };
+
   const handleChange = () => {
     setIsChange(!isChange);
   };
@@ -109,21 +101,12 @@ export default function Report() {
             alignItems={"center"}
           >
             <Stack direction={"row"} spacing={2}>
-              <StyledSearchbar placeholder={"Search"}onchange={(e)=>{setSearch(e.target.value)}} />
-              <Box
-                bgcolor={"#FFFFFF"}
-                borderRadius={"50%"}
-                width={"48px"}
-                height={"48px"}
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                border="1px solid rgba(0, 0, 0, 0.12)"
-                onClick={handleOpenFilter}
-                style={{ cursor: "pointer" }}
-              >
-                <FilterIcon />
-              </Box>
+              <StyledSearchbar
+                placeholder={"Search"}
+                onchange={(e) => {
+                  setSearch(e.target.value);
+                }}
+              />
             </Stack>
           </Stack>{" "}
           <Box

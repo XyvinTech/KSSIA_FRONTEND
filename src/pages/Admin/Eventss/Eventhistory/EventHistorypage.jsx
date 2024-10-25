@@ -9,27 +9,20 @@ import { StyledButton } from "../../../../ui/StyledButton";
 import StyledSearchbar from "../../../../ui/StyledSearchbar";
 import { useEventStore } from "../../../../store/event-store.js";
 export default function EventHistorypage() {
-  const [filterOpen, setFilterOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [row, setRow] = useState(10);
   const [pageNo, setPageNo] = useState(1);
-  const handleOpenFilter = () => {
-    setFilterOpen(true);
-  };
 
-  const handleCloseFilter = () => {
-    setFilterOpen(false);
-  };
-  const { eventHistory, events,totalCount } = useEventStore();
+  const { eventHistory, events, totalCount } = useEventStore();
   useEffect(() => {
     let filter = {};
     if (search) {
       filter.search = search;
     }
-    filter.limit=row
+    filter.limit = row;
     filter.pageNo = pageNo;
     eventHistory(filter);
-  }, [pageNo, search,row]);
+  }, [pageNo, search, row]);
   return (
     <>
       {" "}
@@ -53,28 +46,14 @@ export default function EventHistorypage() {
           <Stack
             direction={"row"}
             justifyContent={"end"}
-            paddingBottom={'15px'}
+            paddingBottom={"15px"}
             alignItems={"center"}
           >
             <Stack direction={"row"} spacing={2}>
-            <StyledSearchbar
+              <StyledSearchbar
                 placeholder={"Search events"}
                 onchange={(e) => setSearch(e.target.value)}
               />
-              <Box
-                bgcolor={"#FFFFFF"}
-                borderRadius={"50%"}
-                width={"48px"}
-                height={"48px"}
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                border="1px solid rgba(0, 0, 0, 0.12)"
-                onClick={handleOpenFilter}
-                style={{ cursor: "pointer" }}
-              >
-                <FilterIcon />
-              </Box>
             </Stack>
           </Stack>{" "}
           <Box
@@ -83,9 +62,15 @@ export default function EventHistorypage() {
             p={1}
             border={"1px solid rgba(0, 0, 0, 0.12)"}
           >
-            <StyledTable columns={eventColumns} data={events}  pageNo={pageNo}
-              setPageNo={setPageNo}    rowPerSize={row}
-              setRowPerSize={setRow} totalCount={totalCount}/>{" "}
+            <StyledTable
+              columns={eventColumns}
+              data={events}
+              pageNo={pageNo}
+              setPageNo={setPageNo}
+              rowPerSize={row}
+              setRowPerSize={setRow}
+              totalCount={totalCount}
+            />{" "}
           </Box>
         </>
       </Box>

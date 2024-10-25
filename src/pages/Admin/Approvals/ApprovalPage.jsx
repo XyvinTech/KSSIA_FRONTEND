@@ -11,7 +11,6 @@ import ApproveReject from "../../../components/ApproveReject";
 export default function ApprovalPage() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
-  const [filterOpen, setFilterOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [rejectOpen, setRejectOpen] = useState(false);
   const [approveOpen, setApproveOpen] = useState(false);
@@ -21,9 +20,7 @@ export default function ApprovalPage() {
   const [formattedApprovals, setFormattedApprovals] = useState([]);
   const { approvals, fetchApproval, fetchApprovalById, totalCount, approval } =
     useApprovalStore();
-  const handleOpenFilter = () => {
-    setFilterOpen(true);
-  };
+
   useEffect(() => {
     let filter = {};
     if (search) {
@@ -51,9 +48,7 @@ export default function ApprovalPage() {
     ,
     { title: "Status", field: "status" },
   ];
-  const handleCloseFilter = () => {
-    setFilterOpen(false);
-  };
+
   const handleSelectionChange = (newSelectedIds) => {
     setSelectedRows(newSelectedIds);
   };
@@ -103,20 +98,6 @@ export default function ApprovalPage() {
                 placeholder={"Search requirement"}
                 onchange={(e) => setSearch(e.target.value)}
               />
-              <Box
-                bgcolor={"#FFFFFF"}
-                borderRadius={"50%"}
-                width={"48px"}
-                height={"48px"}
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                border="1px solid rgba(0, 0, 0, 0.12)"
-                onClick={handleOpenFilter}
-                style={{ cursor: "pointer" }}
-              >
-                <FilterIcon />
-              </Box>
             </Stack>
           </Stack>{" "}
           <Box

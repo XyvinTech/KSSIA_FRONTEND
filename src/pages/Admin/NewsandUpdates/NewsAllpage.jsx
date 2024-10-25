@@ -14,7 +14,6 @@ export default function NewsAllpage() {
   const [search, setSearch] = useState("");
   const [selectedTab, setSelectedTab] = useState("All");
   const [selectedRows, setSelectedRows] = useState([]);
-  const [filterOpen, setFilterOpen] = useState(false);
   const [pageNo, setPageNo] = useState(1);
   const [row, setRow] = useState(10);
   const [isChange, setIsChange] = useState(false);
@@ -22,13 +21,6 @@ export default function NewsAllpage() {
   const { singleNews, news, fetchNews, deleteNews, totalCount, fetchNewsById } =
     useNewsStore();
   const [previewOpen, setPreviewOpen] = useState(false);
-  const handleOpenFilter = () => {
-    setFilterOpen(true);
-  };
-
-  const handleCloseFilter = () => {
-    setFilterOpen(false);
-  };
 
   const handleTabChange = (tab) => {
     setSelectedTab(tab);
@@ -67,9 +59,9 @@ export default function NewsAllpage() {
       filter.search = search;
     }
     filter.pageNo = pageNo;
-    filter.limit=row;
+    filter.limit = row;
     fetchNews(filter);
-  }, [isChange, pageNo, search,row]);
+  }, [isChange, pageNo, search, row]);
   const handleChange = () => {
     setIsChange(!isChange);
   };
@@ -93,20 +85,6 @@ export default function NewsAllpage() {
             placeholder={"Search news"}
             onchange={(e) => setSearch(e.target.value)}
           />
-          <Box
-            bgcolor={"#FFFFFF"}
-            borderRadius={"50%"}
-            width={"48px"}
-            height={"48px"}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            border="1px solid rgba(0, 0, 0, 0.12)"
-            onClick={handleOpenFilter}
-            style={{ cursor: "pointer" }}
-          >
-            <FilterIcon />
-          </Box>
         </Stack>
       </Stack>
       {/* <Grid container item md={12} paddingBottom={4}>

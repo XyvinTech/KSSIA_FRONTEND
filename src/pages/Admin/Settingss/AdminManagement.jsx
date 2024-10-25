@@ -10,7 +10,6 @@ import { toast } from "react-toastify";
 export default function AdminManagement() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
-  const [filterOpen, setFilterOpen] = useState(false);
   const [isChange, setIsChange] = useState(false);
   const [pageNo, setPageNo] = useState(1);
   const [row, setRow] = useState(10);
@@ -21,9 +20,7 @@ export default function AdminManagement() {
     { title: "Email", field: "email" },
     { title: "Created At", field: "createdAt" },
   ];
-  const handleOpenFilter = () => {
-    setFilterOpen(true);
-  };
+
   const handleDelete = async () => {
     if (selectedRows.length > 0) {
       try {
@@ -45,9 +42,7 @@ export default function AdminManagement() {
       console.log(error);
     }
   };
-  const handleCloseFilter = () => {
-    setFilterOpen(false);
-  };
+
   const handleSelectionChange = (newSelectedIds) => {
     setSelectedRows(newSelectedIds);
     console.log("Selected items:", newSelectedIds);
@@ -87,22 +82,7 @@ export default function AdminManagement() {
             <Grid item>
               <StyledSearchbar placeholder={"Search"} onChange={(e)=>setSearch(e.target.value)} />
             </Grid>
-            <Grid item>
-              <Box
-                bgcolor={"#FFFFFF"}
-                borderRadius={"50%"}
-                width={"48px"}
-                height={"48px"}
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                border="1px solid rgba(0, 0, 0, 0.12)"
-                onClick={handleOpenFilter}
-                style={{ cursor: "pointer" }}
-              >
-                <FilterIcon />
-              </Box>
-            </Grid>
+        
             <Grid item>
               <StyledButton
                 name="Add new admin"
