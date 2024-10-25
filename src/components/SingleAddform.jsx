@@ -114,7 +114,7 @@ export default function SingleAddform() {
           : [],
         phone_numbers: {
           personal: data.phone_number ? data.phone_number : undefined,
-          landline: data.landline ? data.landline : undefined,
+          landline: data.landline ? data.landline : "",
           company_phone_number: data.company_phone_number
             ? data.company_phone_number
             : undefined,
