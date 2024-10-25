@@ -52,11 +52,16 @@ const BulkAddform = () => {
             lastName = nameParts[nameParts.length - 1];
           }
 
-          return {
+          const result = {
             first_name: firstName,
-            middle_name: middleName,
             last_name: lastName,
           };
+
+          if (middleName) {
+            result.middle_name = middleName;
+          }
+
+          return result;
         };
         const formatPhoneNumber = (phoneNumber) => {
           if (phoneNumber.startsWith("+91")) {
