@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Grid, Stack } from "@mui/material";
-
+import {
+  Box,
+  Typography,
+  Grid,
+  Stack,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
 import { StyledEventUpload } from "../ui/StyledEventUpload";
 import { StyledButton } from "../ui/StyledButton";
-import { StyledMultilineTextField } from "../ui/StyledMultilineTextField ";
 import StyledInput from "../ui/StyledInput";
 import { Controller, useForm } from "react-hook-form";
 import StyledSelectField from "../ui/StyledSelectField";
 import { useNewsStore } from "../store/newsStore";
 import { useNavigate, useParams } from "react-router-dom";
+import { StyledMultilineTextField } from "../ui/StyledMultilineTextField ";
 
 export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
   const {
@@ -17,6 +25,7 @@ export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
     reset,
     formState: { errors },
     setValue,
+    getValues,
   } = useForm({
     defaultValues: {
       category: null,
@@ -30,17 +39,15 @@ export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
   const { id } = useParams();
   const { singleNews, fetchNewsById, addNewses, updateNews } = useNewsStore();
 
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [imagePreview, setImagePreview] = useState(null);
+
   useEffect(() => {
     if (isUpdate && id) {
       fetchNewsById(id);
     }
   }, [id, isUpdate, fetchNewsById]);
-  const handleClear = (event) => {
-    console.log("event");
 
-    event.preventDefault();
-    navigate(-1);
-  };
   useEffect(() => {
     if (singleNews && isUpdate) {
       setValue("category", {
@@ -50,6 +57,7 @@ export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
       setValue("title", singleNews.title);
       setValue("content", singleNews.content);
       setValue("image", singleNews.image);
+      if (singleNews.image) setImagePreview(singleNews.image);
     }
   }, [singleNews, isUpdate, setValue]);
 
@@ -64,7 +72,7 @@ export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
     formData.append("category", data.category.value);
     formData.append("title", data.title);
     formData.append("content", data.content);
-    if (!isUpdate || (isUpdate && data.file instanceof File)) {
+    if (!isUpdate || (isUpdate && data.image instanceof File)) {
       formData.append("image", data.image);
     }
 
@@ -74,6 +82,22 @@ export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
     } else {
       await addNewses(formData);
       setSelectedTab(0);
+    }
+  };
+
+  const handlePreviewOpen = () => {
+    setPreviewOpen(true);
+  };
+
+  const handlePreviewClose = () => {
+    setPreviewOpen(false);
+  };
+
+  const handleImageChange = (selectedFile) => {
+    setValue("image", selectedFile);
+    if (selectedFile) {
+      const previewURL = URL.createObjectURL(selectedFile);
+      setImagePreview(previewURL);
     }
   };
 
@@ -152,9 +176,7 @@ export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
                   <StyledEventUpload
                     label="Upload image here"
                     {...field}
-                    onChange={(selectedFile) => {
-                      field.onChange(selectedFile);
-                    }}
+                    onChange={(selectedFile) => handleImageChange(selectedFile)}
                   />
                   {errors.image && (
                     <span style={{ color: "red" }}>{errors.image.message}</span>
@@ -194,15 +216,16 @@ export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
           <Grid item xs={6}></Grid>
           <Grid item xs={6} display={"flex"} justifyContent={"end"}>
             <Stack direction={"row"} spacing={2}>
-              {isUpdate && (
-                <StyledButton
-                  name="Preview"
-                  variant="secondary"
-                  onClick={(event) => handleClear(event)}
-                >
-                  Preview
-                </StyledButton>
-              )}
+              <StyledButton
+                name="Preview"
+                variant="secondary"
+                onClick={(event) => {
+                  event.preventDefault();
+                  handlePreviewOpen();
+                }}
+              >
+                Preview
+              </StyledButton>
               <StyledButton
                 name={isUpdate ? "Update" : "Publish"}
                 variant="primary"
@@ -215,6 +238,45 @@ export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
           </Grid>
         </Grid>
       </form>
+
+      {/* Preview Dialog */}
+      <Dialog
+        open={previewOpen}
+        onClose={handlePreviewClose}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogContent>
+          <Typography variant="h6" fontWeight="bold">
+            Category:
+          </Typography>
+          <Typography>{getValues("category")?.label || "N/A"}</Typography>
+
+          <Typography variant="h6" fontWeight="bold" mt={2}>
+            Title:
+          </Typography>
+          <Typography>{getValues("title") || "N/A"}</Typography>
+
+          <Typography variant="h6" fontWeight="bold" mt={2}>
+            Content:
+          </Typography>
+          <Typography>{getValues("content") || "N/A"}</Typography>
+
+          <Typography variant="h6" fontWeight="bold" mt={2}>
+            Image:
+          </Typography>
+          {imagePreview ? (
+            <Box
+              component="img"
+              src={imagePreview}
+              alt="Preview"
+              sx={{ width: "100%", borderRadius: 2, mt: 1 }}
+            />
+          ) : (
+            <Typography>No image selected</Typography>
+          )}
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 }
