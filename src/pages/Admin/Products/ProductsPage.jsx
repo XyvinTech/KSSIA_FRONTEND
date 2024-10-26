@@ -13,6 +13,8 @@ import { useProductsStore } from "../../../store/productStore";
 import { toast } from "react-toastify";
 import ProductReject from "../../../components/ProductReject";
 import ProductDetail from "../../../components/ProductDetail";
+import StyledFilter from "../../../ui/StyledFilter";
+import ProductFilter from "../../../ui/ProductFilter";
 export default function MembersPage() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
@@ -28,6 +30,11 @@ export default function MembersPage() {
   const [pageNo, setPageNo] = useState(1);
   const [row, setRow] = useState(10);
   const [total, setTotal] = useState(0);
+  const [filters, setFilters] = useState({
+    name: "",
+    status: "",
+    date: "",
+  });
   useEffect(() => {
     async function init() {
       try {
@@ -35,8 +42,11 @@ export default function MembersPage() {
         if (search) {
           filter.search = search;
         }
-        filter.limit=row;
+        filter.limit = row;
         filter.pageNo = pageNo;
+        if (filters.name) filter.name = filters.name;
+        if (filters.status) filter.status = filters.status;
+        if (filters.date) filter.date = filters.date;
         const response = await axiosInstance.get(CONSTANTS.PRODUCTS_API, {
           params: filter,
         });
@@ -53,7 +63,7 @@ export default function MembersPage() {
     }
 
     init();
-  }, [isChange, pageNo, search,row]);
+  }, [isChange, pageNo, search, row, filters]);
 
   const handleApprove = async (id) => {
     await fetchProductById(id);
@@ -105,6 +115,9 @@ export default function MembersPage() {
   };
   const handleCloseDelete = () => {
     setRemoveOpen(false);
+  };
+  const handleApplyFilter = (newFilters) => {
+    setFilters(newFilters);
   };
   const handleDelete = async () => {
     try {
@@ -222,6 +235,11 @@ export default function MembersPage() {
               onDeny={handleReject}
             />
           </Box>
+          <ProductFilter
+            open={filterOpen}
+            onClose={handleCloseFilter}
+            onApply={handleApplyFilter}
+          />
         </>
       </Box>
     </>

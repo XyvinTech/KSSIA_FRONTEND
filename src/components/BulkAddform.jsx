@@ -31,6 +31,7 @@ const BulkAddform = () => {
         const filteredData = parsedData.data.filter((row) =>
           Object.values(row).some((value) => value !== null && value !== "")
         );
+
         const splitFullName = (fullName) => {
           const titles = ["Mr.", "Mrs.", "Dr.", "Miss", "Ms."];
           const nameParts = fullName
@@ -63,24 +64,35 @@ const BulkAddform = () => {
 
           return result;
         };
-        const formatPhoneNumber = (phoneNumber) => {
-          if (phoneNumber.startsWith("+91")) {
-            return phoneNumber;
-          }
-          return `+91${phoneNumber}`;
-        };
-        const formattedData = filteredData.map((row) => ({
-          name: splitFullName(row["Name"]),
-          email: row["Email ID"] || "",
-          phone_numbers: {
-            personal: formatPhoneNumber(row["Mobile Number"] || ""),
-            whatsapp_number: formatPhoneNumber(row["WhatsApp Number"] || ""),
-            landline:"",
 
-          },
-          designation: row["Designation"] || "",
-          membership_id: row["MemberShip ID"] || "",
-        }));
+        const formatPhoneNumber = (phoneNumber, addPrefix = true) => {
+          if (addPrefix && !phoneNumber.startsWith("+91")) {
+            return `+91${phoneNumber}`;
+          }
+          return phoneNumber;
+        };
+
+        const formattedData = filteredData.map((row) => {
+          const formattedRow = {
+            name: splitFullName(row["Name"]),
+            email: row["Email ID"] || "",
+            phone_numbers: {
+              personal: formatPhoneNumber(row["Mobile Number"] || ""),
+              whatsapp_number: formatPhoneNumber(row["WhatsApp Number"] || ""),
+              landline: formatPhoneNumber(row["Landline Number"] || "", false), // No prefix for landline
+            },
+            designation: row["Designation"] || "",
+            membership_id: row["MemberShip ID"] || "",
+          };
+
+          // Add address only if it's non-empty
+          if (row["Address"] && row["Address"].trim() !== "") {
+            formattedRow.address = row["Address"];
+          }
+
+          return formattedRow;
+        });
+
         callback(formattedData);
       } else if (
         file.type === "application/vnd.ms-excel" ||
@@ -94,20 +106,32 @@ const BulkAddform = () => {
         const filteredData = jsonData.filter((row) =>
           Object.values(row).some((value) => value !== null && value !== "")
         );
-        const formattedData = filteredData.map((row) => ({
-          name: {
-            first_name: row["Name"].split(" ")[1] || "",
-            middle_name: "",
-            last_name: row["Name"].split(" ").slice(2).join(" ") || "",
-          },
-          email: row["Email ID"] || "",
-          phone_numbers: {
-            personal: row["Mobile Number"] || "",
-            whatsapp_number: row["WhatsApp Number"] || "",
-          },
-          designation: row["Designation"] || "",
-          membership_id: row["MemberShip ID"] || "",
-        }));
+
+        const formattedData = filteredData.map((row) => {
+          const formattedRow = {
+            name: {
+              first_name: row["Name"].split(" ")[1] || "",
+              middle_name: "",
+              last_name: row["Name"].split(" ").slice(2).join(" ") || "",
+            },
+            email: row["Email ID"] || "",
+            phone_numbers: {
+              personal: formatPhoneNumber(row["Mobile Number"] || ""),
+              whatsapp_number: formatPhoneNumber(row["WhatsApp Number"] || ""),
+              landline: row["Landline Number"] || "", // No prefix for landline
+            },
+            designation: row["Designation"] || "",
+            membership_id: row["MemberShip ID"] || "",
+          };
+
+          // Add address only if it's non-empty
+          if (row["Address"] && row["Address"].trim() !== "") {
+            formattedRow.address = row["Address"];
+          }
+
+          return formattedRow;
+        });
+
         callback(formattedData);
       }
     };
@@ -128,6 +152,7 @@ const BulkAddform = () => {
             try {
               setLoading(true);
               await addMembersBulk(parsedData);
+              navigate("/members");
             } catch (error) {
               toast.error(error.message);
             } finally {

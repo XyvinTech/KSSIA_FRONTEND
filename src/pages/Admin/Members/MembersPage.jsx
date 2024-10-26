@@ -12,6 +12,7 @@ import SuspendProfile from "../../../components/SuspendProfile";
 import DeleteProfile from "../../../components/DeleteProfile";
 import { useMemberStore } from "../../../store/member-store";
 import { toast } from "react-toastify";
+import StyledFilter from "../../../ui/StyledFilter";
 export default function MembersPage() {
   const navigate = useNavigate();
   const [filterOpen, setFilterOpen] = useState(false);
@@ -26,6 +27,12 @@ export default function MembersPage() {
   const { deleteUsers } = useMemberStore();
   const [pageNo, setPageNo] = useState(1);
   const [userId, setUserId] = useState(null);
+  const [filters, setFilters] = useState({
+    name: "",
+    membershipId: "",
+    designation: "",
+    companyName: "",
+  });
   const userColumns = [
     { title: "Name", field: "full_name", padding: "none" },
     { title: "Member ID", field: "membership_id" },
@@ -45,6 +52,10 @@ export default function MembersPage() {
         }
         filter.limit = row;
         filter.pageNo = pageNo;
+        if (filters.name) filter.name = filters.name;
+        if (filters.membershipId) filter.membershipId = filters.membershipId;
+        if (filters.designation) filter.designation = filters.designation;
+        if (filters.companyName) filter.companyName = filters.companyName;
         const response = await axiosInstance.get(CONSTANTS.MEMBERS_API, {
           params: filter,
         });
@@ -61,7 +72,7 @@ export default function MembersPage() {
     }
 
     fetchUserData();
-  }, [isChange, pageNo, search, row]);
+  }, [isChange, pageNo, search, row, filters]);
 
   const handleOpenFilter = () => {
     setFilterOpen(true);
@@ -77,9 +88,9 @@ export default function MembersPage() {
   const handleCloseSuspend = () => {
     setSuspendOpen(false);
   };
-  // const handleDelete = () => {
-  //   setDeleteOpen(true);
-  // };
+  const handleApplyFilter = (newFilters) => {
+    setFilters(newFilters);
+  };
   const handleCloseDelete = () => {
     setDeleteOpen(false);
   };
@@ -220,6 +231,11 @@ export default function MembersPage() {
             open={deleteOpen}
             onClose={handleCloseDelete}
             onChange={handleChange}
+          />
+          <StyledFilter
+            open={filterOpen}
+            onClose={handleCloseFilter}
+            onApply={handleApplyFilter}
           />
         </>
       </Box>
