@@ -29,24 +29,13 @@ export default function EditEventpage() {
     <>
        {" "}
        <Box padding={"10px"} bgcolor={"#FFFFFF"}>
-      <Grid container alignItems="center">
-        <Grid item xs={6}>
+      <Grid container alignItems="center"display={"flex"} justifyContent={"start"}height={"40px"}>
+        <Grid item xs={6} >
           <Typography variant="h4" color={"#4A4647"}>
            Events / Edit event
           </Typography>
         </Grid>
-        <Grid item xs={6} container justifyContent="flex-end" spacing={2}>
-          <Grid item>
-            <StyledButton name="Cancel" variant="secondary">
-              Download
-            </StyledButton>
-          </Grid>
-          <Grid item>
-            <StyledButton name="Postpone" variant="primary" >
-             Postpone
-            </StyledButton>
-          </Grid>
-        </Grid>
+       
       </Grid>
     </Box>
     <Grid container item xs={12}>
