@@ -375,17 +375,15 @@ const AdminLayout = (props) => {
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Box display={isMobile && "none"}> </Box>
             {/* <NotificationIcon /> */}
-
             <Box
               borderRadius="24px"
-              padding={"5px 20px 5px 5px"}
-              bgcolor={"#F7F7F7"}
-              width={"200px"}
-              color={"#000"}
+              padding="5px 20px 5px 5px"
+              bgcolor="#F7F7F7"
+              color="#000"
               gap={1}
-              display={"flex"}
-              alignItems={"center"}
-              justifyContent={"space-between"}
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
               onClick={handleDialogOpen}
               sx={{ cursor: "pointer", flexShrink: 0, marginLeft: "10px" }}
             >
@@ -396,18 +394,19 @@ const AdminLayout = (props) => {
                   sx={{ width: 40, height: 40 }}
                 />
                 <Box sx={{ marginLeft: "10px" }}>
-                  <Typography variant="h6" color={"#292D32"} display="block">
+                  <Typography variant="h6" color="#292D32" display="block">
                     {singleAdmin?.name}
                   </Typography>
                   <Typography
-                    variant="h7"
-                    color={"rgba(41, 45, 50, 0.44)"}
+                    variant="body2"
+                    color="rgba(41, 45, 50, 0.44)"
                     display="block"
                   >
                     {singleAdmin?.email}
                   </Typography>
                 </Box>
               </Box>
+              {/* Icon is now outside of the inner Box, aligned to the right */}
               <ExpandMoreIcon />
             </Box>
           </Box>
