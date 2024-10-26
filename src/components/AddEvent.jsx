@@ -70,7 +70,9 @@ export default function AddEvent({ eventId, setSelectedTab }) {
       formData.append("organiser_role", data.organiser_role);
       formData.append("startTime", data.startTime);
       formData.append("startDate", data.startDate);
-      formData.append("platform", data.platform);
+      if(data?.plaform){
+        formData.append("platform", data?.plaform);
+      }
       formData.append("activate", data.activate);
       formData.append("type", data.type.value);
       formData.append("image", data.image);

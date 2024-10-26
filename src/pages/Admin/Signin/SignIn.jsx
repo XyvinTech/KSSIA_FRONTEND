@@ -26,7 +26,7 @@ const SignIn = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const [showOTP, setShowOTP] = useState(false);
+  const [showOTP, setShowOTP] = useState(true);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const onSubmit = async (data) => {
