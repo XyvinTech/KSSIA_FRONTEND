@@ -36,15 +36,20 @@ export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
     }
   }, [id, isUpdate, fetchNewsById]);
   const handleClear = (event) => {
+    console.log("event");
+
     event.preventDefault();
-    navigate("/news");
+    navigate(-1);
   };
   useEffect(() => {
     if (singleNews && isUpdate) {
-      setValue("category", { value: singleNews.category, label: singleNews.category });
+      setValue("category", {
+        value: singleNews.category,
+        label: singleNews.category,
+      });
       setValue("title", singleNews.title);
       setValue("content", singleNews.content);
-      setValue("image",singleNews.image);
+      setValue("image", singleNews.image);
     }
   }, [singleNews, isUpdate, setValue]);
 
@@ -189,13 +194,15 @@ export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
           <Grid item xs={6}></Grid>
           <Grid item xs={6} display={"flex"} justifyContent={"end"}>
             <Stack direction={"row"} spacing={2}>
-              <StyledButton
-                name="Preview"
-                variant="secondary"
-                onClick={(event) => handleClear(event)}
-              >
-                Preview
-              </StyledButton>
+              {isUpdate && (
+                <StyledButton
+                  name="Preview"
+                  variant="secondary"
+                  onClick={(event) => handleClear(event)}
+                >
+                  Preview
+                </StyledButton>
+              )}
               <StyledButton
                 name={isUpdate ? "Update" : "Publish"}
                 variant="primary"
