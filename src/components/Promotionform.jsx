@@ -44,6 +44,12 @@ export default function PromotionForm({ isUpdate }) {
   const handleTypeChange = (selectedOption) => {
     setType(selectedOption.value);
   };
+  const getYouTubeId = (url) => {
+    const regExp =
+      /^.*(?:youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|watch\?.+&v=)([^&]{11}).*/;
+    const match = url.match(regExp);
+    return match ? match[1] : null;
+  };
 
   const handlePreviewOpen = () => {
     const data = {
@@ -410,7 +416,9 @@ export default function PromotionForm({ isUpdate }) {
             {previewData?.type && (
               <Typography variant="h6" fontWeight="bold" gutterBottom>
                 Type:{" "}
-                <span style={{ fontWeight: "normal" }}>{previewData?.type}</span>
+                <span style={{ fontWeight: "normal" }}>
+                  {previewData?.type}
+                </span>
               </Typography>
             )}
 
@@ -454,11 +462,19 @@ export default function PromotionForm({ isUpdate }) {
               </>
             )}
 
-            {previewData?.type === "video" && previewData?.yt_link && (
-              <Typography variant="h6" gutterBottom>
-                <strong>YouTube Link:</strong>{" "}
-                <span>{previewData?.yt_link}</span>
-              </Typography>
+            {previewData?.yt_link && (
+              <Box mt={2} sx={{ display: "flex", justifyContent: "center" }}>
+                <iframe
+                  width="100%"
+                  height="315"
+                  src={`https://www.youtube.com/embed/${getYouTubeId(
+                    previewData?.yt_link
+                  )}`}
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </Box>
             )}
 
             <Box mt={2} sx={{ display: "flex", justifyContent: "center" }}>

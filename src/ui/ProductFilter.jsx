@@ -15,7 +15,7 @@ import StyledSelectField from "./StyledSelectField";
 
 const ProductFilter = ({ open, onClose, onApply }) => {
   const [date, setDate] = useState("");
-  const [status, setStatus] = useState(null); // Set default as null for no selection
+  const [status, setStatus] = useState(null);
   const [name, setName] = useState("");
 
   const handleClear = (event) => {
@@ -81,7 +81,7 @@ const ProductFilter = ({ open, onClose, onApply }) => {
               { value: "active", label: "Active" },
               { value: "inactive", label: "Inactive" },
             ]}
-            value={status} // Pass the full selected option object
+            value={status}
             onChange={(selectedOption) => setStatus(selectedOption)}
           />
         </Stack>
