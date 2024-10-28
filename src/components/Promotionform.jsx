@@ -1,22 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Grid, Stack } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Grid,
+  Stack,
+  Dialog,
+  DialogContent,
+} from "@mui/material";
 import { StyledButton } from "../ui/StyledButton.jsx";
 import { StyledCalender } from "../ui/StyledCalender.jsx";
 import { Controller, useForm } from "react-hook-form";
 import StyledSelectField from "../ui/StyledSelectField.jsx";
 import { StyledEventUpload } from "../ui/StyledEventUpload.jsx";
 import StyledInput from "../ui/StyledInput.jsx";
-import { StyledMultilineTextField } from "../ui/StyledMultilineTextField .jsx";
 import { usePromotionStore } from "../store/promotionStore.js";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import moment from "moment";
+import { StyledMultilineTextField } from "../ui/StyledMultilineTextField .jsx";
 
-export default function Promotionform({ isUpdate }) {
+export default function PromotionForm({ isUpdate }) {
   const {
     control,
     handleSubmit,
     reset,
     setValue,
+    getValues,
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
@@ -26,10 +35,41 @@ export default function Promotionform({ isUpdate }) {
 
   const [type, setType] = useState();
   const [submitting, setSubmitting] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewData, setPreviewData] = useState({});
+  const [imagePreview, setImagePreview] = useState(null);
   const { addPromotions, fetchPromotionById, promotions, updatePromotion } =
     usePromotionStore();
+
   const handleTypeChange = (selectedOption) => {
     setType(selectedOption.value);
+  };
+
+  const handlePreviewOpen = () => {
+    const data = {
+      type: getValues("type")?.label,
+      startDate: getValues("startDate"),
+      endDate: getValues("endDate"),
+      title: getValues("title"),
+      description: getValues("description"),
+      link: getValues("link"),
+      yt_link: getValues("yt_link"),
+      file: getValues("file"),
+    };
+    setPreviewData(data);
+    setPreviewOpen(true);
+  };
+
+  const handleImageChange = (selectedFile) => {
+    setValue("file", selectedFile);
+    if (selectedFile) {
+      const previewURL = URL.createObjectURL(selectedFile);
+      setImagePreview(previewURL);
+    }
+  };
+
+  const handlePreviewClose = () => {
+    setPreviewOpen(false);
   };
 
   const option = [
@@ -38,15 +78,18 @@ export default function Promotionform({ isUpdate }) {
     { value: "poster", label: "Poster" },
     { value: "notice", label: "Notice" },
   ];
+
   const handleClear = (event) => {
     event.preventDefault();
     navigate("/promotions");
   };
+
   useEffect(() => {
     if (isUpdate && id) {
       fetchPromotionById(value, id);
     }
   }, [id, isUpdate, fetchPromotionById]);
+
   useEffect(() => {
     if (isUpdate && promotions) {
       setValue("type", { value: promotions.type, label: promotions.type });
@@ -77,27 +120,18 @@ export default function Promotionform({ isUpdate }) {
       const formData = new FormData();
       formData.append("startDate", data?.startDate);
       formData.append("endDate", data?.endDate);
+
       if (type === "notice") {
         formData.append("type", "notice");
         formData.append("notice_title", data?.title);
         formData.append("notice_description", data?.description);
         formData.append("notice_link", data?.link);
-      }
-
-      if (type === "banner") {
-        formData.append("type", "banner");
+      } else if (type === "banner" || type === "poster") {
+        formData.append("type", type);
         if (!isUpdate || (isUpdate && data.file instanceof File)) {
           formData.append("file", data.file);
         }
-      }
-      if (type === "poster") {
-        formData.append("type", "poster");
-        if (!isUpdate || (isUpdate && data.file instanceof File)) {
-          formData.append("file", data.file);
-        }
-      }
-
-      if (type === "video") {
+      } else if (type === "video") {
         formData.append("type", "video");
         formData.append("yt_link", data?.yt_link);
         formData.append("video_title", data?.title);
@@ -105,13 +139,13 @@ export default function Promotionform({ isUpdate }) {
           formData.append("file", data?.upload_video);
         }
       }
+
       if (isUpdate && id) {
         await updatePromotion(id, formData);
-        navigate(`/promotions`);
       } else {
         await addPromotions(formData);
-        navigate(`/promotions`);
       }
+      navigate("/promotions");
     } catch (error) {
       toast.error(error.message);
     } finally {
@@ -154,7 +188,8 @@ export default function Promotionform({ isUpdate }) {
                 </>
               )}
             />
-          </Grid>{" "}
+          </Grid>
+
           {(type === "banner" || type === "poster") && (
             <Grid item xs={12}>
               <Typography
@@ -170,66 +205,37 @@ export default function Promotionform({ isUpdate }) {
                 control={control}
                 defaultValue=""
                 render={({ field }) => (
-                  <>
-                    <StyledEventUpload
-                      label="Upload image here"
-                      {...field}
-                      onChange={(selectedFile) => {
-                        field.onChange(selectedFile);
-                      }}
-                    />
-                  </>
+                  <StyledEventUpload
+                    label="Upload image here"
+                    {...field}
+                    onChange={handleImageChange}
+                  />
                 )}
               />
             </Grid>
           )}
+
           {type === "video" && (
-            <>
-              {/* <Grid item xs={12}>
-                <Typography
-                  sx={{ marginBottom: 1 }}
-                  variant="h6"
-                  fontWeight={500}
-                  color={"#333333"}
-                >
-                  Upload video
-                </Typography>
-                <Controller
-                  name="upload_video"
-                  control={control}
-                  defaultValue=""
-                  render={({ field: { onChange } }) => (
-                    <>
-                      <StyledEventUpload
-                        label="Upload video here"
-                        onChange={onChange}
-                      />
-                    </>
-                  )}
-                />
-              </Grid> */}
-              <Grid item xs={12}>
-                <Typography
-                  sx={{ marginBottom: 1 }}
-                  variant="h6"
-                  fontWeight={500}
-                  color={"#333333"}
-                >
-                  Add Youtube link
-                </Typography>
-                <Controller
-                  name="yt_link"
-                  control={control}
-                  defaultValue=""
-                  render={({ field }) => (
-                    <>
-                      <StyledInput placeholder="Add Youtube link" {...field} />
-                    </>
-                  )}
-                />
-              </Grid>{" "}
-            </>
-          )}{" "}
+            <Grid item xs={12}>
+              <Typography
+                sx={{ marginBottom: 1 }}
+                variant="h6"
+                fontWeight={500}
+                color={"#333333"}
+              >
+                Add YouTube link
+              </Typography>
+              <Controller
+                name="yt_link"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <StyledInput placeholder="Add YouTube link" {...field} />
+                )}
+              />
+            </Grid>
+          )}
+
           {(type === "video" || type === "notice") && (
             <Grid item xs={12}>
               <Typography
@@ -245,13 +251,12 @@ export default function Promotionform({ isUpdate }) {
                 control={control}
                 defaultValue=""
                 render={({ field }) => (
-                  <>
-                    <StyledInput placeholder="Title" {...field} />
-                  </>
+                  <StyledInput placeholder="Title" {...field} />
                 )}
               />
             </Grid>
-          )}{" "}
+          )}
+
           {type === "notice" && (
             <>
               <Grid item xs={12}>
@@ -268,12 +273,10 @@ export default function Promotionform({ isUpdate }) {
                   control={control}
                   defaultValue=""
                   render={({ field }) => (
-                    <>
-                      <StyledMultilineTextField
-                        placeholder="Add Description in less than 500 words"
-                        {...field}
-                      />
-                    </>
+                    <StyledMultilineTextField
+                      placeholder="Add Description (max 500 words)"
+                      {...field}
+                    />
                   )}
                 />
               </Grid>
@@ -291,14 +294,13 @@ export default function Promotionform({ isUpdate }) {
                   control={control}
                   defaultValue=""
                   render={({ field }) => (
-                    <>
-                      <StyledInput placeholder="Link" {...field} />
-                    </>
+                    <StyledInput placeholder="Link" {...field} />
                   )}
                 />
               </Grid>
             </>
           )}
+
           <Grid item xs={6}>
             <Typography
               sx={{ marginBottom: 1 }}
@@ -316,7 +318,7 @@ export default function Promotionform({ isUpdate }) {
               render={({ field }) => (
                 <>
                   <StyledCalender
-                    label="Select start date from Calender"
+                    label="Select start date from Calendar"
                     {...field}
                   />
                   {errors.startDate && (
@@ -328,6 +330,7 @@ export default function Promotionform({ isUpdate }) {
               )}
             />
           </Grid>
+
           <Grid item xs={6}>
             <Typography
               sx={{ marginBottom: 1 }}
@@ -345,7 +348,7 @@ export default function Promotionform({ isUpdate }) {
               render={({ field }) => (
                 <>
                   <StyledCalender
-                    label="Select end date from Calender"
+                    label="Select end date from Calendar"
                     {...field}
                   />
                   {errors.endDate && (
@@ -357,15 +360,18 @@ export default function Promotionform({ isUpdate }) {
               )}
             />
           </Grid>
+
           <Grid item xs={6}></Grid>
           <Grid item xs={6} display={"flex"} justifyContent={"end"}>
-            {" "}
             <Stack direction={"row"} spacing={2}>
               <StyledButton
                 name="Preview"
                 variant="secondary"
                 disabled={submitting}
-                onClick={(event) => handleClear(event)}
+                onClick={(event) => {
+                  event.preventDefault();
+                  handlePreviewOpen();
+                }}
               >
                 Preview
               </StyledButton>
@@ -381,6 +387,118 @@ export default function Promotionform({ isUpdate }) {
           </Grid>
         </Grid>
       </form>
+
+      <Dialog
+        open={previewOpen}
+        onClose={handlePreviewClose}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogContent>
+          <Box
+            sx={{
+              padding: 3,
+              bgcolor: "#f5f5f5",
+              borderRadius: 2,
+              boxShadow: 3,
+            }}
+          >
+            <Typography variant="h5" fontWeight="bold" gutterBottom>
+              Promotion Preview
+            </Typography>
+
+            {previewData?.type && (
+              <Typography variant="h6" fontWeight="bold" gutterBottom>
+                Type:{" "}
+                <span style={{ fontWeight: "normal" }}>{previewData?.type}</span>
+              </Typography>
+            )}
+
+            {previewData?.startDate && (
+              <Typography variant="h6" gutterBottom>
+                <strong>Start Date:</strong>{" "}
+                <span>
+                  {moment(previewData?.startDate).format("MMMM Do YYYY")}
+                </span>
+              </Typography>
+            )}
+
+            {previewData?.endDate && (
+              <Typography variant="h6" gutterBottom>
+                <strong>End Date:</strong>{" "}
+                <span>
+                  {moment(previewData?.endDate).format("MMMM Do YYYY")}
+                </span>
+              </Typography>
+            )}
+
+            {previewData?.title && (
+              <Typography variant="h6" gutterBottom>
+                <strong>Title:</strong> <span>{previewData?.title}</span>
+              </Typography>
+            )}
+
+            {previewData?.type === "notice" && (
+              <>
+                {previewData?.description && (
+                  <Typography variant="h6" gutterBottom>
+                    <strong>Description:</strong>{" "}
+                    <span>{previewData?.description}</span>
+                  </Typography>
+                )}
+                {previewData?.link && (
+                  <Typography variant="h6" gutterBottom>
+                    <strong>Link:</strong> <span>{previewData?.link}</span>
+                  </Typography>
+                )}
+              </>
+            )}
+
+            {previewData?.type === "video" && previewData?.yt_link && (
+              <Typography variant="h6" gutterBottom>
+                <strong>YouTube Link:</strong>{" "}
+                <span>{previewData?.yt_link}</span>
+              </Typography>
+            )}
+
+            <Box mt={2} sx={{ display: "flex", justifyContent: "center" }}>
+              {imagePreview ? (
+                <Box
+                  component="img"
+                  src={imagePreview}
+                  alt="Preview"
+                  sx={{
+                    width: "100%",
+                    maxHeight: "300px",
+                    borderRadius: 2,
+                    boxShadow: 2,
+                    objectFit: "cover",
+                  }}
+                />
+              ) : (
+                previewData?.file && (
+                  <Box
+                    component="img"
+                    src={
+                      previewData.file instanceof File
+                        ? URL.createObjectURL(previewData.file)
+                        : previewData.file
+                    }
+                    alt="Uploaded Preview"
+                    sx={{
+                      width: "100%",
+                      maxHeight: "300px",
+                      borderRadius: 2,
+                      boxShadow: 2,
+                      objectFit: "cover",
+                    }}
+                  />
+                )
+              )}
+            </Box>
+          </Box>
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 }

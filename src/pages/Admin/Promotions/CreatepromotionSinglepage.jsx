@@ -53,16 +53,12 @@ const CreatepromotionSinglepage = () => {
           },
         }}
       >
-        <Tab label="Promotion list" />
+      
         <Tab label="Create a promotion" />
       </Tabs>
       <Box padding="15px" marginBottom={4}>
+     
         {selectedTab === 0 && (
-             <Grid spacing={2}>
-            <PromotionListempty/>
-           </Grid>
-        )}
-        {selectedTab === 1 && (
           <Grid container>
             <Grid item md={8}>
             <Promotionform/>
