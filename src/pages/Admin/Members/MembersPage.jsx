@@ -13,6 +13,10 @@ import DeleteProfile from "../../../components/DeleteProfile";
 import { useMemberStore } from "../../../store/member-store";
 import { toast } from "react-toastify";
 import StyledFilter from "../../../ui/StyledFilter";
+import { getDwld } from "../../../api/members-api";
+import * as XLSX from "xlsx";
+import { generateExcel } from "../../../utils/generateExcel";
+
 export default function MembersPage() {
   const navigate = useNavigate();
   const [filterOpen, setFilterOpen] = useState(false);
@@ -108,6 +112,21 @@ export default function MembersPage() {
       state: { memberId: id, isUpdate: true },
     });
   };
+  const handleDownload = async () => {
+    try {
+      const data = await getDwld();
+      const csvData = data.data;
+      if (csvData && csvData.headers && csvData.body) {
+        generateExcel(csvData.headers, csvData.body);
+      } else {
+        console.error(
+          "Error: Missing headers or data in the downloaded content"
+        );
+      }
+    } catch (error) {
+      console.error("Error downloading users:", error);
+    }
+  };
 
   const handleDelete = async () => {
     try {
@@ -152,7 +171,11 @@ export default function MembersPage() {
           </Grid>
           <Grid item xs={6} container justifyContent="flex-end" spacing={2}>
             <Grid item>
-              <StyledButton name="Download" variant="secondary">
+              <StyledButton
+                name="Download"
+                variant="secondary"
+                onClick={handleDownload}
+              >
                 Download
               </StyledButton>
             </Grid>

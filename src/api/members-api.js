@@ -10,7 +10,7 @@ export const createMember = async (memberData) => {
     throw error.response.data;
   }
 };
-export const getPaymentByUserId = async (id,filter) => {
+export const getPaymentByUserId = async (id, filter) => {
   try {
     const response = await axiosInstance.get(`/payments/user/${id}`, {
       params: filter,
@@ -68,6 +68,22 @@ export const deleteUser = async (id) => {
 export const getSingleUser = async (id) => {
   try {
     const response = await axiosInstance.get(`/user/qr/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+export const getDwld = async () => {
+  try {
+    const response = await axiosInstance.get(`/admin/download-users`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+export const getDwldProduct = async () => {
+  try {
+    const response = await axiosInstance.get(`/products/download-products`);
     return response.data;
   } catch (error) {
     throw error;

@@ -15,20 +15,20 @@ import StyledSelectField from "./StyledSelectField";
 
 const ProductFilter = ({ open, onClose, onApply }) => {
   const [date, setDate] = useState("");
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState(null); // Set default as null for no selection
   const [name, setName] = useState("");
 
   const handleClear = (event) => {
     event.preventDefault();
     setName("");
     setDate("");
-    setStatus("");
+    setStatus(null);
     onApply({ name: "", date: "", status: "" });
     onClose();
   };
 
   const handleApply = () => {
-    onApply({ name, date, status });
+    onApply({ name, date, status: status?.value || "" });
     onClose();
   };
 
@@ -81,10 +81,8 @@ const ProductFilter = ({ open, onClose, onApply }) => {
               { value: "active", label: "Active" },
               { value: "inactive", label: "Inactive" },
             ]}
-            value={status}
-            onChange={(selectedOption) =>
-              setStatus(selectedOption?.value || "")
-            }
+            value={status} // Pass the full selected option object
+            onChange={(selectedOption) => setStatus(selectedOption)}
           />
         </Stack>
       </DialogContent>

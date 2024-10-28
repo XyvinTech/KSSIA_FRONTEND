@@ -15,6 +15,8 @@ import ProductReject from "../../../components/ProductReject";
 import ProductDetail from "../../../components/ProductDetail";
 import StyledFilter from "../../../ui/StyledFilter";
 import ProductFilter from "../../../ui/ProductFilter";
+import { getDwldProduct } from "../../../api/members-api";
+import { generateExcel } from "../../../utils/generateExcel";
 export default function MembersPage() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
@@ -131,6 +133,21 @@ export default function MembersPage() {
       console.error(error.message);
     }
   };
+  const handleDownload = async () => {
+    try {
+      const data = await getDwldProduct();
+      const csvData = data.data;
+      if (csvData && csvData.headers && csvData.body) {
+        generateExcel(csvData.headers, csvData.body);
+      } else {
+        console.error(
+          "Error: Missing headers or data in the downloaded content"
+        );
+      }
+    } catch (error) {
+      console.error("Error downloading users:", error);
+    }
+  };
   return (
     <>
       {" "}
@@ -149,7 +166,11 @@ export default function MembersPage() {
           </Grid>
           <Grid item xs={6} container justifyContent="flex-end" spacing={2}>
             <Grid item>
-              <StyledButton name="Download" variant="secondary">
+              <StyledButton
+                name="Download"
+                variant="secondary"
+                onClick={handleDownload}
+              >
                 Download
               </StyledButton>
             </Grid>
