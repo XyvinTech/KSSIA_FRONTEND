@@ -14,21 +14,23 @@ import { StyledCalender } from "./StyledCalender";
 import StyledSelectField from "./StyledSelectField";
 
 const ProductFilter = ({ open, onClose, onApply }) => {
-  const [date, setDate] = useState("");
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
   const [status, setStatus] = useState(null);
   const [name, setName] = useState("");
 
   const handleClear = (event) => {
     event.preventDefault();
     setName("");
-    setDate("");
+    setFrom("");
+    setTo("");
     setStatus(null);
-    onApply({ name: "", date: "", status: "" });
+    onApply({ name: "", date: "", status: "", from: "", to: "" });
     onClose();
   };
 
   const handleApply = () => {
-    onApply({ name, date, status: status?.value || "" });
+    onApply({ name, from, to, status: status?.value || "" });
     onClose();
   };
 
@@ -69,10 +71,15 @@ const ProductFilter = ({ open, onClose, onApply }) => {
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
-          <Typography>Date</Typography>
+          <Typography>From</Typography>
           <StyledCalender
-            value={date}
-            onChange={(selectedDate) => setDate(selectedDate)}
+            value={from}
+            onChange={(selectedDate) => setFrom(selectedDate)}
+          />
+          <Typography>To</Typography>
+          <StyledCalender
+            value={to}
+            onChange={(selectedDate) => setTo(selectedDate)}
           />
           <Typography>Status</Typography>
           <StyledSelectField

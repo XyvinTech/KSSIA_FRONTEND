@@ -35,7 +35,8 @@ export default function MembersPage() {
   const [filters, setFilters] = useState({
     name: "",
     status: "",
-    date: "",
+    from: "",
+    to: "",
   });
   useEffect(() => {
     async function init() {
@@ -48,7 +49,8 @@ export default function MembersPage() {
         filter.pageNo = pageNo;
         if (filters.name) filter.name = filters.name;
         if (filters.status) filter.status = filters.status;
-        if (filters.date) filter.date = filters.date;
+        if (filters.from) filter.from = filters.from;
+        if (filters.to) filter.to = filters.to;
         const response = await axiosInstance.get(CONSTANTS.PRODUCTS_API, {
           params: filter,
         });
