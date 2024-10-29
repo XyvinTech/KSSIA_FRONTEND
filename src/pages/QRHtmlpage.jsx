@@ -28,6 +28,7 @@ import { useParams } from "react-router-dom";
 import QRvideoCard from "../ui/QRvideoCard";
 import QRCertificateCard from "../ui/QRCertificateCard";
 import QRAwardCard from "../ui/QRAwardCard";
+import QRProductCard from "../components/QRProductCard";
 const responsive = {
   superLargeDesktop: {
     breakpoint: { max: 4000, min: 3000 },
@@ -453,7 +454,7 @@ const QRHtmlPage = () => {
                     ))}
                   </Grid>
                 </>
-              )}{" "}
+              )}
               {userData?.awards && userData?.awards?.length > 0 && (
                 <>
                   <Typography
@@ -477,6 +478,26 @@ const QRHtmlPage = () => {
                   </Grid>{" "}
                 </>
               )}{" "}
+               {userData?.products && userData?.products?.length > 0 && (
+                <>
+                  <Typography
+                    variant="h5"
+                    color="textTertiary"
+                    mt={5}
+                    mb={2}
+                    pt={2}
+                  >
+                    Products
+                  </Typography>
+                  <Grid container spacing={2}>
+                    {userData?.products?.map((certificate, index) => (
+                      <Grid item xs={6} sm={6} lg={6} key={index}>
+                        <QRProductCard product={certificate} isMobile/>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </>
+              )}
             </Box>
           </Grid>
         </Grid>

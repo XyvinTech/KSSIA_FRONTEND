@@ -64,7 +64,7 @@ export default function Addproductform() {
     users && Array.isArray(users)
       ? users.map((user) => ({
           value: user._id,
-          label: `${user.name.first_name} ${user.name.middle_name} ${user.name.last_name}`,
+          label: `${user?.name?.first_name} ${user?.name?.middle_name} ${user?.name?.last_name}`,
         }))
       : [];
 
