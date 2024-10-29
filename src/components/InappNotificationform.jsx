@@ -18,7 +18,7 @@ export default function InappNotificationform({ setSelectedTab }) {
   const {
     control,
     handleSubmit,
-    reset,
+    reset,watch,
     formState: { errors },
   } = useForm();
 
@@ -31,7 +31,10 @@ export default function InappNotificationform({ setSelectedTab }) {
     filter.limit = "full";
     fetchUsers(filter);
   }, []);
-  const option =
+
+  const watchedToField = watch("to"); 
+
+  const allOptions =
     users && Array.isArray(users)
       ? [
           { value: "*", label: "All" },
@@ -41,6 +44,11 @@ export default function InappNotificationform({ setSelectedTab }) {
           })),
         ]
       : [];
+
+  const filteredOptions =
+    watchedToField?.some((option) => option.value === "*")
+      ? [{ value: "*", label: "All" }]
+      : allOptions;
   const handleClear = (event) => {
     event.preventDefault();
     reset();
@@ -101,7 +109,7 @@ export default function InappNotificationform({ setSelectedTab }) {
                 <>
                   <StyledSelectField
                     placeholder="Select member"
-                    options={option}
+                    options={filteredOptions}
                     isMulti
                     {...field}
                   />

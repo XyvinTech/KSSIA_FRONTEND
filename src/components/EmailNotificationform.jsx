@@ -3,7 +3,6 @@ import { Box, Typography, Grid, Stack } from "@mui/material";
 
 import { StyledEventUpload } from "../ui/StyledEventUpload";
 import { StyledButton } from "../ui/StyledButton";
-import { StyledMultilineTextField } from "../ui/StyledMultilineTextField ";
 import StyledInput from "../ui/StyledInput";
 import { Controller, useForm } from "react-hook-form";
 import StyledSelectField from "../ui/StyledSelectField";
@@ -12,24 +11,30 @@ import { useNotificationStore } from "../store/notificationStore";
 import { useDropDownStore } from "../store/dropDownStore";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { StyledMultilineTextField } from "../ui/StyledMultilineTextField ";
 
 export default function EmailNotificationform({ setSelectedTab }) {
   const {
     control,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
   } = useForm();
   const { users, fetchUsers } = useDropDownStore();
   const { addEmailNotifications } = useNotificationStore();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  
   useEffect(() => {
     let filter = {};
     filter.limit = "full";
     fetchUsers(filter);
   }, []);
-  const option =
+
+  const watchedToField = watch("to");
+
+  const allOptions =
     users && Array.isArray(users)
       ? [
           { value: "*", label: "All" },
@@ -39,11 +44,18 @@ export default function EmailNotificationform({ setSelectedTab }) {
           })),
         ]
       : [];
+
+  const filteredOptions =
+    watchedToField?.some((option) => option.value === "*")
+      ? [{ value: "*", label: "All" }]
+      : allOptions;
+
   const handleClear = (event) => {
     event.preventDefault();
     reset();
-    navigate(-1)
+    navigate(-1);
   };
+
   const onSubmit = async (data) => {
     try {
       setLoading(true);
@@ -51,9 +63,7 @@ export default function EmailNotificationform({ setSelectedTab }) {
       let userIds = data.to.map((user) => user.value);
 
       if (userIds.includes("*")) {
-        userIds.forEach((id) => {
-          formData.append("to", "*");
-        });
+        formData.append("to", "*");
       } else {
         userIds.forEach((id) => {
           formData.append("to", id);
@@ -62,7 +72,6 @@ export default function EmailNotificationform({ setSelectedTab }) {
       formData.append("subject", data?.subject);
       formData.append("content", data?.content);
       formData.append("link_url", data?.link_url);
-      // formData.append("file", data.file_url);
       if (data?.media_url) {
         formData.append("media_url", data.media_url);
       }
@@ -99,7 +108,7 @@ export default function EmailNotificationform({ setSelectedTab }) {
                 <>
                   <StyledSelectField
                     placeholder="Select member"
-                    options={option}
+                    options={filteredOptions}
                     isMulti
                     {...field}
                   />
@@ -178,7 +187,6 @@ export default function EmailNotificationform({ setSelectedTab }) {
               name="media_url"
               control={control}
               defaultValue=""
-              // rules={{ required: "File is required" }}
               render={({ field }) => (
                 <>
                   <StyledEventUpload
@@ -187,11 +195,6 @@ export default function EmailNotificationform({ setSelectedTab }) {
                       field.onChange(selectedFile);
                     }}
                   />
-                  {/* {errors.media_url && (
-                    <span style={{ color: "red" }}>
-                      {errors.media_url.message}
-                    </span>
-                  )} */}
                 </>
               )}
             />
@@ -211,21 +214,18 @@ export default function EmailNotificationform({ setSelectedTab }) {
               control={control}
               defaultValue=""
               render={({ field }) => (
-                <>
-                  <StyledInput placeholder="Paste link here" {...field} />
-                </>
+                <StyledInput placeholder="Paste link here" {...field} />
               )}
             />
           </Grid>
 
           <Grid item xs={6}></Grid>
           <Grid item xs={6} display={"flex"} justifyContent={"end"}>
-            {" "}
             <Stack direction={"row"} spacing={2}>
               <StyledButton
                 name="Cancel"
                 variant="secondary"
-                onClick={(event) => handleClear(event)}
+                onClick={handleClear}
               >
                 Cancel
               </StyledButton>
