@@ -51,7 +51,13 @@ export default function AddEvent({ eventId, setSelectedTab }) {
     setIsChecked(e.target.checked);
   };
 
-  const option = [{ value: "gmeet", label: "Gmeet" }];
+  const option = [
+    { value: "gmeet", label: "Gmeet" },
+    { value: "zoom", label: "Zoom" },
+    { value: "microsoft", label: "Microsoft Teams" },
+    { value: "webex", label: "Webex" },
+    { value: "zoho", label: "Zoho" },
+  ];
 
   const types = [
     { value: "online", label: "Online" },
@@ -70,7 +76,7 @@ export default function AddEvent({ eventId, setSelectedTab }) {
       formData.append("organiser_role", data.organiser_role);
       formData.append("startTime", data.startTime);
       formData.append("startDate", data.startDate);
-      if(data?.plaform){
+      if (data?.plaform) {
         formData.append("platform", data?.plaform);
       }
       formData.append("activate", data.activate);
@@ -728,7 +734,6 @@ export default function AddEvent({ eventId, setSelectedTab }) {
               name="activate"
               control={control}
               defaultValue={false}
-              rules={{ required: "Activate is required" }}
               render={({ field }) => (
                 <>
                   <StyledSwitch
@@ -738,11 +743,6 @@ export default function AddEvent({ eventId, setSelectedTab }) {
                       handleSwitchChange(e);
                     }}
                   />{" "}
-                  {errors.activate && (
-                    <span style={{ color: "red" }}>
-                      {errors.activate.message}
-                    </span>
-                  )}{" "}
                 </>
               )}
             />

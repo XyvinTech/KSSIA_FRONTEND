@@ -34,7 +34,7 @@ export default function EditEvent({ eventId, setSelectedTab }) {
     event.preventDefault();
     reset();
     setSpeakerImages([]);
-    navigate(-1)
+    navigate(-1);
   };
   const handleTypeChange = (selectedOption) => {
     setType(selectedOption.value);
@@ -61,7 +61,7 @@ export default function EditEvent({ eventId, setSelectedTab }) {
           const updatedEventData = {
             ...eventData,
           };
-
+          setType(updatedEventData.type);
           reset(updatedEventData);
           setSpeakers(updatedEventData.speakers || []);
           setIsChecked(updatedEventData.activate || false);
@@ -73,7 +73,13 @@ export default function EditEvent({ eventId, setSelectedTab }) {
       fetchEventData();
     }
   }, [eventId, reset]);
-  const option = [{ value: "gmeet", label: "Gmeet" }];
+  const option = [
+    { value: "gmeet", label: "Gmeet" },
+    { value: "zoom", label: "Zoom" },
+    { value: "microsoft", label: "Microsoft Teams" },
+    { value: "webex", label: "Webex" },
+    { value: "zoho", label: "Zoho" },
+  ];
 
   const types = [
     { value: "online", label: "Online" },
@@ -682,7 +688,6 @@ export default function EditEvent({ eventId, setSelectedTab }) {
               name="activate"
               control={control}
               defaultValue={false}
-              rules={{ required: "Activate is required" }}
               render={({ field }) => (
                 <>
                   <StyledSwitch
@@ -692,11 +697,6 @@ export default function EditEvent({ eventId, setSelectedTab }) {
                       handleSwitchChange(e);
                     }}
                   />{" "}
-                  {errors.activate && (
-                    <span style={{ color: "red" }}>
-                      {errors.activate.message}
-                    </span>
-                  )}{" "}
                 </>
               )}
             />

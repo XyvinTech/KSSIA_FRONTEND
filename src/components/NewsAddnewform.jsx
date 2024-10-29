@@ -15,6 +15,7 @@ import StyledInput from "../ui/StyledInput";
 import { Controller, useForm } from "react-hook-form";
 import StyledSelectField from "../ui/StyledSelectField";
 import { useNewsStore } from "../store/newsStore";
+import { ReactComponent as CloseIcon } from "../assets/icons/CloseIcon.svg";
 import { useNavigate, useParams } from "react-router-dom";
 import { StyledMultilineTextField } from "../ui/StyledMultilineTextField ";
 
@@ -246,6 +247,16 @@ export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
         maxWidth="sm"
         fullWidth
       >
+        {" "}
+        <Stack direction={"row"} justifyContent={"end"} padding={2}>
+          <Typography
+            onClick={handlePreviewClose}
+            color="#E71D36"
+            style={{ cursor: "pointer" }}
+          >
+            <CloseIcon />
+          </Typography>
+        </Stack>
         <DialogContent>
           <Typography variant="h6" fontWeight="bold">
             Category:

@@ -32,7 +32,7 @@ const EventCard = ({ user }) => {
       <Grid item md={6} xs={12} justifyContent={"center"} alignItems={"center"}>
         <Stack spacing={"10px"}>
           <Typography variant="h7" color={"#EB5860"}>
-          {user?.status} Event
+            {user?.status} Event
           </Typography>
 
           <Typography
@@ -51,14 +51,20 @@ const EventCard = ({ user }) => {
           <Stack direction="row" alignItems="center" spacing={1}>
             <EmailIcon />
             <Typography variant="h6" color={"#2C2829"}>
-            {formatDate(user?.startDate)}-{formatDate(user?.endDate)}
+              {formatDate(user?.startDate)}-{formatDate(user?.endDate)}
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="flex-start" spacing={1}>
             <LocationIcon />
-            <Typography variant="h6" color={"#2C2829"}>
-              {user?.platform}
-            </Typography>
+            {user?.type === "online" ? (
+              <Typography variant="h6" color={"#2C2829"}>
+                {user?.platform}
+              </Typography>
+            ) : (
+              <Typography variant="h6" color={"#2C2829"}>
+                {user?.venue}
+              </Typography>
+            )}
           </Stack>
         </Stack>
       </Grid>

@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { StyledButton } from "../ui/StyledButton.jsx";
 import { StyledCalender } from "../ui/StyledCalender.jsx";
+import { ReactComponent as CloseIcon } from "../assets/icons/CloseIcon.svg";
 import { Controller, useForm } from "react-hook-form";
 import StyledSelectField from "../ui/StyledSelectField.jsx";
 import { StyledEventUpload } from "../ui/StyledEventUpload.jsx";
@@ -401,6 +402,15 @@ export default function PromotionForm({ isUpdate }) {
         fullWidth
       >
         <DialogContent>
+          <Stack direction={"row"} justifyContent={"end"}paddingBottom={2}>
+            <Typography
+              onClick={handlePreviewClose}
+              color="#E71D36"
+              style={{ cursor: "pointer" }}
+            >
+              <CloseIcon />
+            </Typography>
+          </Stack>
           <Box
             sx={{
               padding: 3,
@@ -412,7 +422,6 @@ export default function PromotionForm({ isUpdate }) {
             <Typography variant="h5" fontWeight="bold" gutterBottom>
               Promotion Preview
             </Typography>
-
             {previewData?.type && (
               <Typography variant="h6" fontWeight="bold" gutterBottom>
                 Type:{" "}

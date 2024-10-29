@@ -51,7 +51,6 @@ export const userColumns = [
     { title: "Organizer Name", field: "organiser_name" },
     { title: "Activate", field: "activate" },
     { title: "Type", field: "type" },
-    { title: "Mode", field: "platform" },
     // { title: "RSVP", field: "rsvp" }
 
   ];
