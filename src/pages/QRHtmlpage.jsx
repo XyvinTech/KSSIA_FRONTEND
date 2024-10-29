@@ -131,7 +131,7 @@ const QRHtmlPage = () => {
               >
                 <Stack>
                   <img
-                    src={userData?.image || image}
+                    src={userData?.profile_picture || image}
                     alt="image"
                     width={"130px"}
                     height={"130px"}
@@ -154,7 +154,7 @@ const QRHtmlPage = () => {
                     >
                       <Stack>
                         <img
-                          src={userData?.company?.logo || companylogo}
+                          src={userData?.company_logo || companylogo}
                           alt="image"
                           width={"36px"}
                           height={"36px"}
