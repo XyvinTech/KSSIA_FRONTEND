@@ -365,7 +365,8 @@ const QRHtmlPage = () => {
                           p={2}
                           mb={5}
                         >
-                          <AppWebsiteIcon />{" "}
+                          <Stack>
+                          <AppWebsiteIcon />{" "}</Stack>
                           <Typography
                             variant="h5"
                             color="#6D6D6D"
@@ -478,26 +479,27 @@ const QRHtmlPage = () => {
                   </Grid>{" "}
                 </>
               )}{" "}
-               {userData?.products && userData?.products?.length > 0 && (
-                <>
-                  <Typography
-                    variant="h5"
-                    color="textTertiary"
-                    mt={5}
-                    mb={2}
-                    pt={2}
-                  >
-                    Products
-                  </Typography>
-                  <Grid container spacing={2}>
-                    {userData?.products?.map((certificate, index) => (
-                      <Grid item xs={6} sm={6} lg={6} key={index}>
-                        <QRProductCard product={certificate} isMobile/>
-                      </Grid>
-                    ))}
-                  </Grid>
-                </>
-              )}
+             {Array.isArray(userData?.products) &&
+                userData?.products.length > 0 && (
+                  <>
+                    <Typography
+                      variant="h5"
+                      color="textTertiary"
+                      mt={5}
+                      mb={2}
+                      pt={2}
+                    >
+                      Products
+                    </Typography>
+                    <Grid container spacing={2}>
+                      {userData.products.map((certificate, index) => (
+                        <Grid item xs={6} sm={6} lg={6} key={index}>
+                          <QRProductCard product={certificate} isMobile />
+                        </Grid>
+                      ))}
+                    </Grid>
+                  </>
+                )}
             </Box>
           </Grid>
         </Grid>
