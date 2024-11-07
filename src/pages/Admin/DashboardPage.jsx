@@ -12,6 +12,7 @@ import { ReactComponent as FrozenIcon } from "../../assets/icons/FrozenIcon.svg"
 import { ReactComponent as EventsIcon } from "../../assets/icons/EventsIcon.svg";
 import { ReactComponent as NewsIcon } from "../../assets/icons/NewsIcon.svg";
 import { ReactComponent as NotificationIcon } from "../../assets/icons/NotificationsIcon.svg";
+import { ReactComponent as PromotionIcon } from "../../assets/icons/PromotionIcon.svg";
 import { RevenueCard } from "../../components/Dashboard/RevenueCard";
 
 const DashboardPage = () => {
@@ -71,7 +72,7 @@ const DashboardPage = () => {
   const promotions = {
     title: "Promotions",
     amount: 12,
-    icon: RevenueIcon,
+    icon: PromotionIcon,
   };
   const products = {
     title: "Total Products",
