@@ -14,77 +14,99 @@ import { ReactComponent as NewsIcon } from "../../assets/icons/NewsIcon.svg";
 import { ReactComponent as NotificationIcon } from "../../assets/icons/NotificationsIcon.svg";
 import { ReactComponent as PromotionIcon } from "../../assets/icons/PromotionIcon.svg";
 import { RevenueCard } from "../../components/Dashboard/RevenueCard";
+import { getDashboard } from "../../api/dashboard-api";
 
 const DashboardPage = () => {
+  const [data, setData] = useState({});
+  const [month, setMonth] = useState(new Date().getMonth() + 1); 
+  const [year, setYear] = useState(new Date().getFullYear());
   const totalMember = {
     title: "Total KSSIA Members",
-    amount: 984,
+    amount:data?.userCount,
     icon: TotalMemberIcon,
   };
   const totalRevenue = {
     title: "Total Revenue",
-    amount: "₹ 28533",
+    amount: `₹ ${data?.totalRevenue? data?.totalRevenue : 0}`,
     icon: RevenueIcon,
-    percentage: '+12% ',
+    percentage: "+12% ",
   };
   const membershipRevenue = {
     title: "Membership Revenue",
-    amount: "₹ 19695",
+    amount: `₹ ${data?.totalCategoryMembershipRevenue ? data?.totalCategoryMembershipRevenue : 0}`,
     icon: MembershipRevenueIcon,
-    percentage: '+12% ',
+    percentage: "+12% ",
   };
   const appRevenue = {
     title: "App Revenue",
-    amount: "₹ 8838",
+    amount: `₹ ${data?.totalCategoryAppRevenue ? data?.totalCategoryAppRevenue : 0}`,
     icon: AppRevenueIcon,
-    percentage: '+12% ',
+    percentage: "+12% ",
   };
   const activeMember = {
     title: "Active Users",
-    amount: 840,
+    amount: data?.activeUserCount,
     icon: ActiveMemberIcon,
   };
   const premiumMember = {
     title: "Premium Users",
-    amount: 136,
+    amount: data?.activePremiumUserCount,
     icon: PremiumIcon,
   };
   const frozenMember = {
     title: "Frozen Users",
-    amount: 4,
+    amount:data?.suspendedUserCount,
     icon: FrozenIcon,
   };
   const events = {
     title: "Events",
-    amount: 18,
+    amount: data?.eventCount,
     icon: EventsIcon,
   };
   const news = {
     title: "News",
-    amount: 12,
+    amount: data?.newsCount,
     icon: NewsIcon,
   };
   const notifications = {
     title: "Notifications",
-    amount: 35,
+    amount: 0,
     icon: NotificationIcon,
   };
   const promotions = {
     title: "Promotions",
-    amount: 12,
+    amount: data?.promotionCount,
     icon: PromotionIcon,
   };
   const products = {
     title: "Total Products",
-    amount: 274,
+    amount: data?.productCount,
     icon: TotalProductIcon,
   };
   const requirements = {
     title: "Total Requirements",
-    amount: 163,
+    amount: data?.requirementCount,
     icon: TotalRequirementIcon,
   };
+  const fetchData = async () => {
+    try {
+      const response = await getDashboard( year, month );
+      setData(response.data);
+    } catch (error) {
+      console.error("Error fetching dashboard data:", error);
+    }
+  };
 
+  const handleDateChange = (selectedMonthYear) => {
+    const [selectedYear, selectedMonth] = selectedMonthYear.split("-").map(Number);
+    setMonth(selectedMonth);
+    setYear(selectedYear);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [month, year]);
+  
   return (
     <>
       <Box
@@ -102,7 +124,7 @@ const DashboardPage = () => {
         <Grid item md={6}>
           <Stack spacing={2}>
             {" "}
-            <RevenueCard data={totalRevenue} isDate />
+            <RevenueCard data={totalRevenue} isDate onDateChange={handleDateChange} />
             <Stack direction={"row"} spacing={2}>
               {" "}
               <Box width={"100%"}>

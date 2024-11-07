@@ -7,11 +7,14 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 
-export const RevenueCard = ({ isMobile, data, isDate, spacing,height }) => {
+export const RevenueCard = ({ isMobile, data, isDate, spacing, height ,onDateChange}) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
+    if (onDateChange) {
+      onDateChange(moment(date).format("YYYY-MM"));
+    }
   };
 
   return (
@@ -67,7 +70,9 @@ export const RevenueCard = ({ isMobile, data, isDate, spacing,height }) => {
         alignItems={"center"}
       >
         <Typography fontWeight={700} fontSize={isMobile ? "24px" : "45px"}>
-          {data?.amount}
+          {data?.amount !== null && data?.amount !== undefined
+            ? data.amount
+            : "_"}
         </Typography>
         {data?.percentage && (
           <Typography
