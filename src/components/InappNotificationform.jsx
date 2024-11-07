@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Grid, Stack } from "@mui/material";
+import { Box, Typography, Grid, Stack, FormHelperText } from "@mui/material";
 
 import { StyledEventUpload } from "../ui/StyledEventUpload";
 import { StyledButton } from "../ui/StyledButton";
@@ -182,7 +182,7 @@ export default function InappNotificationform({ setSelectedTab }) {
               fontWeight={500}
               color={"#333333"}
             >
-              Upload photo or video
+              Upload photo
             </Typography>
             <Controller
               name="file"
@@ -198,9 +198,9 @@ export default function InappNotificationform({ setSelectedTab }) {
                       field.onChange(selectedFile);
                     }}
                   />
-                  {/* {errors.file && (
-                    <span style={{ color: "red" }}>{errors.file.message}</span>
-                  )} */}
+                  <FormHelperText sx={{ color: "#757575" }}>
+                    Image must be under 1 MB
+                  </FormHelperText>
                 </>
               )}
             />

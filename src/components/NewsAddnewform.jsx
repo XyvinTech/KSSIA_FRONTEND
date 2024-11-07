@@ -8,6 +8,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  FormHelperText,
 } from "@mui/material";
 import { StyledEventUpload } from "../ui/StyledEventUpload";
 import { StyledButton } from "../ui/StyledButton";
@@ -182,6 +183,9 @@ export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
                   {errors.image && (
                     <span style={{ color: "red" }}>{errors.image.message}</span>
                   )}
+                   <FormHelperText sx={{ color: "#757575" }}>
+                    Image must be under 1 MB
+                  </FormHelperText>
                 </>
               )}
             />

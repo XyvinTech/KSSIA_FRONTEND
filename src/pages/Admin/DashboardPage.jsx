@@ -18,28 +18,34 @@ import { getDashboard } from "../../api/dashboard-api";
 
 const DashboardPage = () => {
   const [data, setData] = useState({});
-  const [month, setMonth] = useState(new Date().getMonth() + 1); 
+  const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [year, setYear] = useState(new Date().getFullYear());
   const totalMember = {
     title: "Total KSSIA Members",
-    amount:data?.userCount,
+    amount: data?.userCount,
     icon: TotalMemberIcon,
   };
   const totalRevenue = {
     title: "Total Revenue",
-    amount: `₹ ${data?.totalRevenue? data?.totalRevenue : 0}`,
+    amount: `₹ ${data?.totalRevenue ? data?.totalRevenue : 0}`,
     icon: RevenueIcon,
     percentage: "+12% ",
   };
   const membershipRevenue = {
     title: "Membership Revenue",
-    amount: `₹ ${data?.totalCategoryMembershipRevenue ? data?.totalCategoryMembershipRevenue : 0}`,
+    amount: `₹ ${
+      data?.totalCategoryMembershipRevenue
+        ? data?.totalCategoryMembershipRevenue
+        : 0
+    }`,
     icon: MembershipRevenueIcon,
     percentage: "+12% ",
   };
   const appRevenue = {
     title: "App Revenue",
-    amount: `₹ ${data?.totalCategoryAppRevenue ? data?.totalCategoryAppRevenue : 0}`,
+    amount: `₹ ${
+      data?.totalCategoryAppRevenue ? data?.totalCategoryAppRevenue : 0
+    }`,
     icon: AppRevenueIcon,
     percentage: "+12% ",
   };
@@ -55,7 +61,7 @@ const DashboardPage = () => {
   };
   const frozenMember = {
     title: "Frozen Users",
-    amount:data?.suspendedUserCount,
+    amount: data?.suspendedUserCount,
     icon: FrozenIcon,
   };
   const events = {
@@ -90,7 +96,7 @@ const DashboardPage = () => {
   };
   const fetchData = async () => {
     try {
-      const response = await getDashboard( year, month );
+      const response = await getDashboard(year, month);
       setData(response.data);
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
@@ -98,7 +104,9 @@ const DashboardPage = () => {
   };
 
   const handleDateChange = (selectedMonthYear) => {
-    const [selectedYear, selectedMonth] = selectedMonthYear.split("-").map(Number);
+    const [selectedYear, selectedMonth] = selectedMonthYear
+      .split("-")
+      .map(Number);
     setMonth(selectedMonth);
     setYear(selectedYear);
   };
@@ -106,7 +114,7 @@ const DashboardPage = () => {
   useEffect(() => {
     fetchData();
   }, [month, year]);
-  
+
   return (
     <>
       <Box
@@ -124,7 +132,11 @@ const DashboardPage = () => {
         <Grid item md={6}>
           <Stack spacing={2}>
             {" "}
-            <RevenueCard data={totalRevenue} isDate onDateChange={handleDateChange} />
+            <RevenueCard
+              data={totalRevenue}
+              isDate
+              onDateChange={handleDateChange}
+            />
             <Stack direction={"row"} spacing={2}>
               {" "}
               <Box width={"100%"}>

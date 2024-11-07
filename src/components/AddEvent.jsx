@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Typography, Grid, Stack } from "@mui/material";
+import { Box, Typography, Grid, Stack, FormHelperText } from "@mui/material";
 import { StyledEventUpload } from "../ui/StyledEventUpload.jsx";
 import { StyledButton } from "../ui/StyledButton.jsx";
 import { StyledTime } from "../ui/StyledTime.jsx";
@@ -281,7 +281,11 @@ export default function AddEvent({ eventId, setSelectedTab }) {
                   {errors.image && (
                     <span style={{ color: "red" }}>{errors.image.message}</span>
                   )}
+                   <FormHelperText sx={{ color: "#757575" }}>
+                    Image must be under 1 MB
+                  </FormHelperText>
                 </>
+
               )}
             />
           </Grid>
@@ -669,7 +673,7 @@ export default function AddEvent({ eventId, setSelectedTab }) {
                     control={control}
                     defaultValue={speaker.speaker_image || ""}
                     render={({ field: { onChange, value } }) => (
-                      <StyledEventUpload
+                   <>   <StyledEventUpload
                         label="Upload Speaker Image here"
                         onChange={(file) => {
                           handleSpeakerImageChange(index, file);
@@ -677,6 +681,10 @@ export default function AddEvent({ eventId, setSelectedTab }) {
                         }}
                         value={value}
                       />
+                       <FormHelperText sx={{ color: "#757575" }}>
+                    Image must be under 1 MB
+                  </FormHelperText>
+                      </>
                     )}
                   />
                 </Grid>
@@ -696,6 +704,9 @@ export default function AddEvent({ eventId, setSelectedTab }) {
                           }}
                           value={value}
                         />
+                         <FormHelperText sx={{ color: "#757575" }}>
+                    Image must be under 1 MB
+                  </FormHelperText>
                       </>
                     )}
                   />

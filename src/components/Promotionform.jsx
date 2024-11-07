@@ -6,6 +6,7 @@ import {
   Stack,
   Dialog,
   DialogContent,
+  FormHelperText,
 } from "@mui/material";
 import { StyledButton } from "../ui/StyledButton.jsx";
 import { StyledCalender } from "../ui/StyledCalender.jsx";
@@ -212,11 +213,17 @@ export default function PromotionForm({ isUpdate }) {
                 control={control}
                 defaultValue=""
                 render={({ field }) => (
-                  <StyledEventUpload
-                    label="Upload image here"
-                    {...field}
-                    onChange={handleImageChange}
-                  />
+                  <>
+                    {" "}
+                    <StyledEventUpload
+                      label="Upload image here"
+                      {...field}
+                      onChange={handleImageChange}
+                    />{" "}
+                    <FormHelperText sx={{ color: "#757575" }}>
+                      Image must be under 1 MB
+                    </FormHelperText>
+                  </>
                 )}
               />
             </Grid>
@@ -402,7 +409,7 @@ export default function PromotionForm({ isUpdate }) {
         fullWidth
       >
         <DialogContent>
-          <Stack direction={"row"} justifyContent={"end"}paddingBottom={2}>
+          <Stack direction={"row"} justifyContent={"end"} paddingBottom={2}>
             <Typography
               onClick={handlePreviewClose}
               color="#E71D36"

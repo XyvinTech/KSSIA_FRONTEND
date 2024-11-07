@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Typography, Grid, Stack } from "@mui/material";
+import { Box, Typography, Grid, Stack, FormHelperText } from "@mui/material";
 import { StyledEventUpload } from "../ui/StyledEventUpload.jsx";
 import { StyledButton } from "../ui/StyledButton.jsx";
 import { StyledTime } from "../ui/StyledTime.jsx";
@@ -236,6 +236,9 @@ export default function EditEvent({ eventId, setSelectedTab }) {
                     }}
                     value={value}
                   />
+                   <FormHelperText sx={{ color: "#757575" }}>
+                    Image must be under 1 MB
+                  </FormHelperText>
                   {errors.image && (
                     <span style={{ color: "red" }}>{errors.image.message}</span>
                   )}
@@ -636,7 +639,7 @@ export default function EditEvent({ eventId, setSelectedTab }) {
                   name={`speakers[${index}].speaker_image`}
                   control={control}
                   defaultValue={speaker.speaker_image || ""}
-                  render={({ field: { onChange, value } }) => (
+                  render={({ field: { onChange, value } }) => (<>
                     <StyledEventUpload
                       label="Upload Speaker Image here"
                       onChange={async (file) => {
@@ -652,6 +655,10 @@ export default function EditEvent({ eventId, setSelectedTab }) {
                       }}
                       value={value}
                     />
+                     <FormHelperText sx={{ color: "#757575" }}>
+                    Image must be under 1 MB
+                  </FormHelperText>
+                    </>
                   )}
                 />
               </Grid>

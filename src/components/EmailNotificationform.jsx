@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Grid, Stack } from "@mui/material";
+import { Box, Typography, Grid, Stack, FormHelperText } from "@mui/material";
 
 import { StyledEventUpload } from "../ui/StyledEventUpload";
 import { StyledButton } from "../ui/StyledButton";
@@ -25,7 +25,7 @@ export default function EmailNotificationform({ setSelectedTab }) {
   const { addEmailNotifications } = useNotificationStore();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     let filter = {};
     filter.limit = "full";
@@ -45,10 +45,9 @@ export default function EmailNotificationform({ setSelectedTab }) {
         ]
       : [];
 
-  const filteredOptions =
-    watchedToField?.some((option) => option.value === "*")
-      ? [{ value: "*", label: "All" }]
-      : allOptions;
+  const filteredOptions = watchedToField?.some((option) => option.value === "*")
+    ? [{ value: "*", label: "All" }]
+    : allOptions;
 
   const handleClear = (event) => {
     event.preventDefault();
@@ -181,7 +180,7 @@ export default function EmailNotificationform({ setSelectedTab }) {
               fontWeight={500}
               color={"#333333"}
             >
-              Upload photo or video
+              Upload photo
             </Typography>
             <Controller
               name="media_url"
@@ -195,6 +194,9 @@ export default function EmailNotificationform({ setSelectedTab }) {
                       field.onChange(selectedFile);
                     }}
                   />
+                  <FormHelperText sx={{ color: "#757575" }}>
+                    Image must be under 1 MB
+                  </FormHelperText>
                 </>
               )}
             />

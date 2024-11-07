@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Grid, Stack, Skeleton } from "@mui/material";
+import { Box, Typography, Grid, Stack, Skeleton, FormHelperText } from "@mui/material";
 
 import { StyledEventUpload } from "../ui/StyledEventUpload";
 import { StyledButton } from "../ui/StyledButton";
@@ -393,6 +393,9 @@ export default function AddPaymentdetails() {
                             {errors.file.message}
                           </span>
                         )}
+                         <FormHelperText sx={{ color: "#757575" }}>
+                    Image must be under 1 MB
+                  </FormHelperText>
                       </>
                     )}
                   />
