@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { deleteReport, getReport, getReportById } from "../api/report-api";
+import { deleteChat, deleteReport, getReport, getReportById } from "../api/report-api";
 
 const useReportStore = create((set) => ({
   reports: [],
@@ -16,6 +16,9 @@ const useReportStore = create((set) => ({
   },
   deleteReports: async (id) => {
     await deleteReport(id);
+  },
+  reportChat: async (id) => {
+    await deleteChat(id);
   },
 }));
 

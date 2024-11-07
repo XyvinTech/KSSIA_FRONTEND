@@ -584,7 +584,7 @@ export default function AddEvent({ eventId, setSelectedTab }) {
               rules={{ required: "Role  is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput placeholder="Enter speaker's role" {...field} />
+                  <StyledInput placeholder="Enter organiser's role" {...field} />
                   {errors.organiser_role && (
                     <span style={{ color: "red" }}>
                       {errors.organiser_role.message}

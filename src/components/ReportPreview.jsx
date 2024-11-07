@@ -9,19 +9,35 @@ import {
   Grid,
   Avatar,
 } from "@mui/material";
-import { useForm } from "react-hook-form";
 import { StyledButton } from "../ui/StyledButton";
 import { ReactComponent as CloseIcon } from "../assets/icons/CloseIcon.svg";
 import { useProductsStore } from "../store/productStore";
 import { useApprovalStore } from "../store/approval-store";
+import company from "../assets/images/companylogo.png";
+import { useMemberStore } from "../store/member-store";
+import image from "../assets/images/Group.png";
+import QRProductCard from "./QRProductCard";
+import moment from "moment";
+import { useReportStore } from "../store/reportStore";
 
 const ReportPreview = ({ open, onClose, onChange, data }) => {
   const { patchProducts } = useProductsStore();
   const { patchApprovals } = useApprovalStore();
+  const { reportChat } = useReportStore();
+  const { suspend } = useMemberStore();
   const handleSubmit = async () => {
     try {
       const updateData = { status: "reported" };
       await patchProducts(data?.reportedElement?._id, updateData);
+      onChange();
+      onClose();
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+  const handleReportChat = async () => {
+    try {
+      await reportChat(data?.reportedElement?._id);
       onChange();
       onClose();
     } catch (error) {
@@ -58,11 +74,26 @@ const ReportPreview = ({ open, onClose, onChange, data }) => {
       console.error(error.message);
     }
   };
+  const handleSuspend = async () => {
+    try {
+      await suspend(data?.reportedElement?._id);
+      onChange();
+      onClose();
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
   const handleClear = (event) => {
     event.preventDefault();
     onClose();
   };
-
+  const SampleProduct = {
+    image: data?.reportedElement?.image,
+    name: data?.reportedElement?.name,
+    price: data?.reportedElement?.price,
+    offer_price: data?.reportedElement?.offer_price,
+    moq: data?.reportedElement?.units,
+  };
   return (
     <Dialog
       open={open}
@@ -72,7 +103,8 @@ const ReportPreview = ({ open, onClose, onChange, data }) => {
       }}
     >
       <DialogTitle sx={{ height: "auto", padding: 3 }}>
-        <Box display="flex" justifyContent="end" alignItems="center">
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Typography>Report Details</Typography>
           <Typography
             onClick={(event) => handleClear(event)}
             color="#E71D36"
@@ -82,105 +114,374 @@ const ReportPreview = ({ open, onClose, onChange, data }) => {
           </Typography>
         </Box>
       </DialogTitle>
-      <Divider />
       <DialogContent sx={{ padding: 3 }}>
         <Stack spacing={3}>
-          {data?.reportType === "user" ? null : (
-            <Box
-              sx={{
-                borderRadius: "12px",
-                overflow: "hidden",
-                boxShadow: 3,
-                maxHeight: "380px",
-              }}
-            >
-              <img
-                src={data?.reportedElement?.image}
-                alt={data?.reportedElement?.name}
-                style={{ width: "100%", height: "380px", objectFit: "cover" }}
-              />
-            </Box>
-          )}
-
-          <Stack spacing={1}>
-            {data?.reportType === "user" ? (
-              <Typography variant="h4" fontWeight={600} color={"#2C2829"}>
-                {data?.reportedElement?.name?.first_name +
-                  " " +
-                  data?.reportedElement?.name?.middle_name +
-                  " " +
-                  data?.reportedElement?.name?.last_name}
-              </Typography>
-            ) : (
-              <Typography variant="h4" fontWeight={600} color={"#2C2829"}>
-                {data?.reportedElement?.name}
-              </Typography>
-            )}
-            <Typography variant="h6" color={"#4A4647"}>
+          <Stack spacing={2}>
+            <Typography variant="h6" color={"#333333"} fontWeight={600}>
               Report Type: {data?.reportType}
             </Typography>{" "}
-            {data?.reportType === "product" && (
+            {data?.reportedElement !== null && (
               <>
-                <Typography variant="body1" color={"#4A4647"}>
-                  Price: ₹{data?.reportedElement?.price} &nbsp; (Offer Price: ₹
-                  {data?.reportedElement?.offer_price})
+                <Typography variant="h6" color={"#333333"} fontWeight={600}>
+                  Reported Content
                 </Typography>
-                <Typography variant="h6" color={"#4A4647"}>
-                  Units: {data?.reportedElement?.units}
-                </Typography>
-                <Typography variant="h6" color={"#4A4647"}>
-                  Description: {data?.reportedElement?.description}
-                </Typography>{" "}
+
+                <Box
+                  display={"flex"}
+                  justifyContent="center"
+                  alignItems={"center"}
+                  bgcolor={"#f2f2f2"}
+                  padding={"16px"}
+                  borderRadius={"10px"}
+                >
+                  {data?.reportType === "user" && (
+                    <Stack
+                      spacing={2}
+                      bgcolor={"white"}
+                      borderRadius={"10px"}
+                      padding={"10px"}
+                      width={"185px"}
+                      display={"flex"}
+                      alignItems={"center"}
+                      justifyContent={"center"}
+                    >
+                      <img
+                        src={data?.reportedElement?.profile_picture || image}
+                        alt="profile"
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          borderRadius: "50%",
+                        }}
+                      />
+                      <Typography
+                        variant="h4"
+                        fontWeight={600}
+                        color={"#2C2829"}
+                      >
+                        {data?.reportedElement?.name?.first_name +
+                          " " +
+                          data?.reportedElement?.name?.middle_name +
+                          " " +
+                          data?.reportedElement?.name?.last_name}
+                      </Typography>
+                      <Stack
+                        direction={"row"}
+                        spacing={2}
+                        width={"100%"}
+                        justifyContent={"center"}
+                        alignItems={"center"}
+                      >
+                        <img
+                          src={data?.reportedElement?.company_logo || company}
+                          alt="profile"
+                          style={{
+                            width: "26px",
+                            height: "26px",
+                            borderRadius: "50%",
+                          }}
+                        />
+                        <Stack justifyContent={"start"} width={"100%"}>
+                          <Typography fontWeight={600}>
+                            {data?.reportedElement?.designation}
+                          </Typography>
+                          <Typography>
+                            {data?.reportedElement?.company_name}
+                          </Typography>
+                        </Stack>
+                      </Stack>
+                    </Stack>
+                  )}
+                  {data?.reportType === "product" && (
+                    <Stack
+                      spacing={2}
+                      bgcolor={"white"}
+                      borderRadius={"10px"}
+                      padding={"10px"}
+                      width={"185px"}
+                      display={"flex"}
+                      alignItems={"center"}
+                      justifyContent={"center"}
+                    >
+                      <QRProductCard product={SampleProduct} isMobile />
+                    </Stack>
+                  )}
+                  {data?.reportType === "requirement" && (
+                    <Stack
+                      spacing={2}
+                      bgcolor={"white"}
+                      borderRadius={"10px"}
+                      padding={"10px"}
+                      width={"185px"}
+                      display={"flex"}
+                      alignItems={"center"}
+                      justifyContent={"center"}
+                    >
+                      <img
+                        src={data?.reportedElement?.image || image}
+                        alt="profile"
+                        style={{
+                          width: "165px",
+                          height: "85px",
+                          objectFit: "contain",
+                        }}
+                      />
+                      <Typography mt={2}>
+                        {data?.reportedElement?.content}
+                      </Typography>
+                    </Stack>
+                  )}
+                  {data?.reportType === "chat" && (
+                    <Stack
+                      spacing={2}
+                      bgcolor={"white"}
+                      borderRadius={"10px"}
+                      padding={"10px"}
+                      width={"185px"}
+                      display={"flex"}
+                      justifyContent={"flex-start"}
+                    >
+                      <Typography mt={2}>
+                        {data?.reportedElement?.content}
+                      </Typography>
+                      <Typography mt={2} textAlign="end">
+                        {moment(data?.reportedElement?.timestamp).format(
+                          "HH:mm"
+                        )}
+                      </Typography>
+                    </Stack>
+                  )}
+                </Box>
               </>
             )}
           </Stack>
 
-          <Divider />
           <Box>
-            <Typography variant="h6" fontWeight={600} color={"#2C2829"}>
-              Reporter Details:
-            </Typography>
             <Grid container spacing={2} alignItems="center">
-              <Grid item>
-                <Avatar sx={{ bgcolor: "#E0F2F1", width: 56, height: 56 }}>
-                  {data?.reportBy?.name?.first_name?.[0]}
-                </Avatar>
-              </Grid>
-              <Grid item>
-                <Stack spacing={0.5}>
-                  <Typography variant="body1" fontWeight={500}>
+              <Grid item md={6}>
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  mb={2}
+                >
+                  <Typography sx={{ width: "60%", textAlign: "left" }}>
+                    Reported By:
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    sx={{ width: "40%", textAlign: "left" }}
+                  >
                     {data?.reportBy?.name?.first_name}{" "}
                     {data?.reportBy?.name?.middle_name}{" "}
                     {data?.reportBy?.name?.last_name}
                   </Typography>
-                  <Typography variant="h6" color={"#4A4647"}>
-                    Company: {data?.reportBy?.company_name}
+                </Stack>
+                {data?.reportType === "user" && (
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center" // Centers the text vertically within each Stack
+                    mb={2}
+                  >
+                    <Typography sx={{ width: "60%", textAlign: "left" }}>
+                      Offender:
+                    </Typography>
+                    <Typography
+                      variant="h6"
+                      sx={{ width: "40%", textAlign: "left" }}
+                    >
+                      {data?.reportedElement?.name?.first_name}{" "}
+                      {data?.reportedElement?.name?.middle_name}{" "}
+                      {data?.reportedElement?.name?.last_name}
+                    </Typography>
+                  </Stack>
+                )}
+                {data?.reportType === "product" ||
+                  (data?.reportType === "requirement" && (
+                    <Stack
+                      direction="row"
+                      justifyContent="space-between"
+                      alignItems="center"
+                      mb={2}
+                    >
+                      <Typography sx={{ width: "60%", textAlign: "left" }}>
+                        Posted By
+                      </Typography>
+                      <Typography
+                        variant="h6"
+                        sx={{ width: "40%", textAlign: "left" }}
+                      >
+                        {data?.reportedElement?.name?.first_name}{" "}
+                        {data?.reportedElement?.name?.middle_name}{" "}
+                        {data?.reportedElement?.name?.last_name}
+                      </Typography>
+                    </Stack>
+                  ))}
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center" // Centers the text vertically within each Stack
+                  mb={2}
+                >
+                  <Typography sx={{ width: "60%", textAlign: "left" }}>
+                    Report Reason :
                   </Typography>
-                  <Typography variant="h6" color={"#4A4647"}>
-                    Phone: {data?.reportBy?.phone_numbers?.personal}
-                  </Typography>
-                  <Typography variant="h6" color={"#4A4647"}>
-                    WhatsApp: {data?.reportBy?.phone_numbers?.whatsapp_number}
+                  <Typography
+                    variant="h6"
+                    sx={{ width: "40%", textAlign: "left" }}
+                  >
+                    {data?.content}
                   </Typography>
                 </Stack>
               </Grid>
+              <Grid item md={6}>
+                {data?.reportType === "requirement" && (
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="start"
+                    mb={2}
+                  >
+                    <Typography sx={{ width: "60%", textAlign: "left" }}>
+                      Requirement time/ date:
+                    </Typography>
+                    <Typography
+                      variant="h6"
+                      sx={{ width: "40%", textAlign: "left" }}
+                    >
+                      {moment(data?.createdAt).format("DD-MM-YYYY HH:mm")}
+                    </Typography>
+                  </Stack>
+                )}
+                {(data?.reportType === "user" ||
+                  data?.reportType === "requirement" ||
+                  data?.reportType === "chat") && (
+                  <>
+                    {" "}
+                    <Stack
+                      direction="row"
+                      justifyContent="space-between"
+                      alignItems="start"
+                      mb={2}
+                    >
+                      <Typography sx={{ width: "60%", textAlign: "left" }}>
+                        Report time/ date:
+                      </Typography>
+                      <Typography
+                        variant="h6"
+                        sx={{ width: "40%", textAlign: "left" }}
+                      >
+                        {moment(data?.createdAt).format("DD-MM-YYYY HH:mm")}
+                      </Typography>
+                    </Stack>
+                    <Stack
+                      direction="row"
+                      justifyContent="space-between"
+                      alignItems="center"
+                      mb={2}
+                    >
+                      <Typography sx={{ width: "60%", textAlign: "left" }}>
+                        Offence time/ date:
+                      </Typography>
+                      <Typography
+                        variant="h6"
+                        sx={{ width: "40%", textAlign: "left" }}
+                      >
+                        {moment(data?.reportedElement?.createdAt).format("DD-MM-YYYY HH:mm")}
+                      </Typography>
+                    </Stack>
+                  </>
+                )}
+                {data?.reportType === "product" && (
+                  <>
+                    <Stack
+                      direction="row"
+                      justifyContent="space-between"
+                      alignItems="center"
+                      mb={2}
+                    >
+                      <Typography sx={{ width: "60%", textAlign: "left" }}>
+                        Purchased Quantity
+                      </Typography>
+                      <Typography
+                        variant="h6"
+                        sx={{ width: "40%", textAlign: "left" }}
+                      ></Typography>
+                    </Stack>
+                    <Stack
+                      direction="row"
+                      justifyContent="space-between"
+                      alignItems="center"
+                      mb={2}
+                    >
+                      <Typography sx={{ width: "60%", textAlign: "left" }}>
+                        Order time/ date:
+                      </Typography>
+                      <Typography
+                        variant="h6"
+                        sx={{ width: "40%", textAlign: "left" }}
+                      ></Typography>
+                    </Stack>
+                    <Stack
+                      direction="row"
+                      justifyContent="space-between"
+                      alignItems="start"
+                      mb={2}
+                    >
+                      <Typography sx={{ width: "60%", textAlign: "left" }}>
+                        Report time/ date:
+                      </Typography>
+                      <Typography
+                        variant="h6"
+                        sx={{ width: "40%", textAlign: "left" }}
+                      ></Typography>
+                    </Stack>
+                  </>
+                )}
+              </Grid>
             </Grid>
           </Box>
-
-          <Divider />
-
-          {data?.reportType === "product" && (
-            <Stack spacing={1}>
-              <Typography variant="h6" fontWeight={600} color={"#2C2829"}>
-                Report Content:
-              </Typography>
-              <Typography variant="body1" color={"#4A4647"}>
-                {data?.content}
-              </Typography>
-            </Stack>
-          )}
         </Stack>
       </DialogContent>
+      {data?.reportType === "user" && (
+        <Stack direction={"row"} spacing={2} padding={2} justifyContent={"end"}>
+          {data?.reportedElement?.status !== "suspended" && (
+            <>
+              {" "}
+              <StyledButton
+                variant="secondary"
+                name={"Cancel"}
+                onClick={handleClear}
+              />
+              <StyledButton
+                variant="primary"
+                name={"Suspend User"}
+                onClick={handleSuspend}
+              />
+            </>
+          )}
+        </Stack>
+      )}
+      {data?.reportType === "chat" && (
+        <Stack direction={"row"} spacing={2} padding={2} justifyContent={"end"}>
+          {data?.reportedElement !== null && (
+            <>
+              {" "}
+              <StyledButton
+                variant="secondary"
+                name={"Cancel"}
+                onClick={handleClear}
+              />{" "}
+              <StyledButton
+                variant="primary"
+                name={"Report Chat"}
+                onClick={handleReportChat}
+              />
+            </>
+          )}
+        </Stack>
+      )}{" "}
       {data?.reportType === "product" && (
         <Stack direction={"row"} spacing={2} padding={2} justifyContent={"end"}>
           {data?.reportedElement?.status === "reported" ? (
@@ -190,11 +491,19 @@ const ReportPreview = ({ open, onClose, onChange, data }) => {
               onClick={handleApproveProduct}
             />
           ) : (
-            <StyledButton
-              variant="primary"
-              name={"Report"}
-              onClick={handleSubmit}
-            />
+            <>
+              {" "}
+              <StyledButton
+                variant="secondary"
+                name={"Cancel"}
+                onClick={handleClear}
+              />{" "}
+              <StyledButton
+                variant="primary"
+                name={"Report Product"}
+                onClick={handleSubmit}
+              />
+            </>
           )}
         </Stack>
       )}{" "}
@@ -207,11 +516,19 @@ const ReportPreview = ({ open, onClose, onChange, data }) => {
               onClick={handleApproveRequirement}
             />
           ) : (
-            <StyledButton
-              variant="primary"
-              name={"Report Requirement"}
-              onClick={handleRequirementSubmit}
-            />
+            <>
+              {" "}
+              <StyledButton
+                variant="secondary"
+                name={"Cancel"}
+                onClick={handleClear}
+              />{" "}
+              <StyledButton
+                variant="primary"
+                name={"Report Requirement"}
+                onClick={handleRequirementSubmit}
+              />
+            </>
           )}
         </Stack>
       )}

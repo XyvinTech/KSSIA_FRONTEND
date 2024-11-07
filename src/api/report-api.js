@@ -27,3 +27,12 @@ export const getReportById = async (id) => {
     throw error;
   }
 };
+export const deleteChat = async (id) => {
+  try {
+    const response = await axiosInstance.delete(`/chats/delete/${id}`);
+
+    return response.data;
+  } catch (error) {
+    console.error(error.response.data.message);
+  }
+};

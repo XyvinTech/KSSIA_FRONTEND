@@ -16,7 +16,7 @@ export const getLogin = async (datas) => {
 export const getAdminById = async () => {
   try {
     const response = await axiosInstance.get(`/auth`);
-    console.log("response admin", response);
+    
     return response.data;
   } catch (error) {
     console.log(error.response.data.message);
