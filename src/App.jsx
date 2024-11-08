@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { userColumns, userData } from "./assets/json/TableData";
-import StyledInput from './ui/StyledInput'
-import StyledTable from './ui/StyledTable'
-import { StyledButton } from './ui/StyledButton'
+import StyledInput from "./ui/StyledInput";
+import StyledTable from "./ui/StyledTable";
+import { StyledButton } from "./ui/StyledButton";
 import { StyledCalender } from "./ui/StyledCalender";
 import DashboardCardbig from "./ui/DashboardCard";
 
@@ -17,8 +17,6 @@ import MemberAnalytics from "./components/MemberAnalytics";
 import UserCard from "./ui/Usercard";
 import MemberProfile from "./components/MemberProfile";
 import UserCard2 from "./ui/Usercard2";
-
-
 
 import Addproductform from "./components/AddProductform.jsx";
 import AddEvent from "./components/AddEvent";
@@ -35,14 +33,6 @@ import SingleaddAdminform from "./components/SingleaddAdminform.jsx";
 import StyledselectAccess from "./ui/StyledselectAccess.jsx";
 import LogoutScreen from "./ui/LogoutScreen.jsx";
 import SignIn from "./pages/Admin/Signin/SignIn.jsx";
-
-
-
-
-
-
-
-
 
 function App() {
   const [selectedRows, setSelectedRows] = useState([]);
@@ -67,60 +57,51 @@ function App() {
     console.log("View item:", id);
   };
 
-
-
   return (
     <>
-      
       <StyledTable
         columns={userColumns}
         data={userData}
         onSelectionChange={handleSelectionChange}
         onView={handleView}
       />
-       <StyledButton name="Primary" variant="primary">
+      <StyledButton name="Primary" variant="primary">
         Primary Button
       </StyledButton>
       <StyledButton name="Secondary" variant="secondary">
         Secondary Button
       </StyledButton>
-      <StyledInput/>
-      <StyledCalender/>
-      <DashboardCardbig/>
-      <StyledSearchbar/>
-      <MembersPayments/>
-      <AppSubscriptionCard/> 
-      <MemberSubscriptionCard/>
-      <MembersProducts/>
-      <StyledReview/>
-      <Review/>
-     <MemberAnalytics/>
-     <UserCard/>
-     <MemberProfile/>
-     <UserCard2/>
-     <Addproductform/>
-     <AddEvent/>
-    <AddPaymentdetails/>
-    <StyledBannerTables/>
-    <Promotionform/>
-    <DropzoneforForm/>
-    <EmailNotificationform/>
-    <InappNotificationform/>
-    <NotificationLogs/>
-    <NewsAddnewform/>
-    <NewsAllpage/>
-    <SingleaddAdminform/>
-    <StyledselectAccess/>
-    <LogoutScreen/>
-    <SignIn/>
-    
-
-
-
-    
-    
+      <StyledInput />
+      <StyledCalender />
+      <DashboardCardbig />
+      <StyledSearchbar />
+      <MembersPayments />
+      <AppSubscriptionCard />
+      <MemberSubscriptionCard />
+      <MembersProducts />
+      <StyledReview />
+      <Review />
+      <MemberAnalytics />
+      <UserCard />
+      <MemberProfile />
+      <UserCard2 />
+      <Addproductform />
+      <AddEvent />
+      <AddPaymentdetails />
+      <StyledBannerTables />
+      <Promotionform />
+      <DropzoneforForm />
+      <EmailNotificationform />
+      <InappNotificationform />
+      <NotificationLogs />
+      <NewsAddnewform />
+      <NewsAllpage />
+      <SingleaddAdminform />
+      <StyledselectAccess />
+      <LogoutScreen />
+      <SignIn />
     </>
-  )
+  );
 }
 
 export default App;
