@@ -15,11 +15,13 @@ import { ReactComponent as NotificationIcon } from "../../assets/icons/Notificat
 import { ReactComponent as PromotionIcon } from "../../assets/icons/PromotionIcon.svg";
 import { RevenueCard } from "../../components/Dashboard/RevenueCard";
 import { getDashboard } from "../../api/dashboard-api";
+import moment from "moment";
 
 const DashboardPage = () => {
   const [data, setData] = useState({});
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [year, setYear] = useState(new Date().getFullYear());
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const totalMember = {
     title: "Total KSSIA Members",
     amount: data?.userCount,
@@ -103,14 +105,13 @@ const DashboardPage = () => {
     }
   };
 
-  const handleDateChange = (selectedMonthYear) => {
-    const [selectedYear, selectedMonth] = selectedMonthYear
-      .split("-")
-      .map(Number);
-    setMonth(selectedMonth);
-    setYear(selectedYear);
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    const selectedMonth = moment(date).format("MM");
+    const selectedYear = moment(date).format("YYYY");
+    setMonth(Number(selectedMonth));
+    setYear(Number(selectedYear));
   };
-
   useEffect(() => {
     fetchData();
   }, [month, year]);
@@ -135,17 +136,17 @@ const DashboardPage = () => {
             <RevenueCard
               data={totalRevenue}
               isDate
-              onDateChange={handleDateChange}
+              onDateChange={handleDateChange} selectedDate={selectedDate}
             />
             <Stack direction={"row"} spacing={2}>
               {" "}
               <Box width={"100%"}>
                 {" "}
-                <RevenueCard isMobile data={membershipRevenue} isDate />{" "}
+                <RevenueCard isMobile data={membershipRevenue} isDate onDateChange={handleDateChange} selectedDate={selectedDate}/>{" "}
               </Box>{" "}
               <Box width={"100%"}>
                 {" "}
-                <RevenueCard isMobile data={appRevenue} isDate />{" "}
+                <RevenueCard isMobile data={appRevenue} isDate  onDateChange={handleDateChange} selectedDate={selectedDate}/>{" "}
               </Box>
             </Stack>
           </Stack>

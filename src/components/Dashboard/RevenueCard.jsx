@@ -7,16 +7,15 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 
-export const RevenueCard = ({ isMobile, data, isDate, spacing, height ,onDateChange}) => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-    if (onDateChange) {
-      onDateChange(moment(date).format("YYYY-MM"));
-    }
-  };
-
+export const RevenueCard = ({
+  isMobile,
+  data,
+  isDate,
+  spacing,
+  height,
+  onDateChange,
+  selectedDate,
+}) => {
   return (
     <Stack
       bgcolor={"white"}
@@ -43,7 +42,7 @@ export const RevenueCard = ({ isMobile, data, isDate, spacing, height ,onDateCha
           <Stack>
             <DatePicker
               selected={selectedDate}
-              onChange={handleDateChange}
+              onChange={onDateChange}
               dateFormat="MMM, yyyy"
               showMonthYearPicker
               customInput={
