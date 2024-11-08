@@ -116,7 +116,7 @@ const DashboardPage = () => {
     fetchData();
   }, [month, year]);
 
-
+  
   return (
     <>
       <Box
@@ -127,7 +127,7 @@ const DashboardPage = () => {
         alignItems={"center"}
       >
         <Typography variant="h4" color={"#4A4647"}>
-          Dashboard page
+          Dashboard
         </Typography>
       </Box>
       <Grid container padding={"15px"} paddingTop={3} spacing={4}>
