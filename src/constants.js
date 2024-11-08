@@ -1,5 +1,5 @@
 const CONSTANTS = {
-  BACKEND_URL: "http://43.205.89.79",
+  BACKEND_URL: "https://api.kssiathrissur.com",
   BASIC_API_URL: "/api/v1",
   MEMBERS_API: "/admin/users",
   PRODUCTS_API: "/products/admin",
