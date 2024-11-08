@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseURL =  "https://dev-api.kssiathrissur.com/api/v1/"
+const baseURL =  "https://api.kssiathrissur.com/api/v1/"
 const axiosInstance = axios.create({
   baseURL: baseURL,
 });
