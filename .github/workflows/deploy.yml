@@ -45,3 +45,5 @@ jobs:
             sudo mv ~/deploy-temp/* /var/www/html/
             sudo rm -rf ~/deploy-temp
             sudo systemctl restart nginx
+
+            
