@@ -14,11 +14,7 @@ export const getPromotion = async (type, filter) => {
 
 export const addPromotion = async (data) => {
   try {
-    const response = await axiosInstance.post("/promotions", data, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const response = await axiosInstance.post("/promotions", data);
     toast.success(response.data.message);
     return response.data;
   } catch (error) {

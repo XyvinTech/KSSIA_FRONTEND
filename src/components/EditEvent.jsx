@@ -63,7 +63,6 @@ export default function EditEvent({ eventId, setSelectedTab }) {
           };
           setType(updatedEventData.type);
           reset(updatedEventData);
-          setSpeakers(updatedEventData.speakers || []);
           setIsChecked(updatedEventData.activate || false);
         } catch (error) {
           console.error("Error fetching event data:", error);
@@ -236,9 +235,7 @@ export default function EditEvent({ eventId, setSelectedTab }) {
                     }}
                     value={value}
                   />
-                   <FormHelperText sx={{ color: "#757575" }}>
-                    Image must be under 1 MB
-                  </FormHelperText>
+                
                   {errors.image && (
                     <span style={{ color: "red" }}>{errors.image.message}</span>
                   )}
@@ -655,9 +652,7 @@ export default function EditEvent({ eventId, setSelectedTab }) {
                       }}
                       value={value}
                     />
-                     <FormHelperText sx={{ color: "#757575" }}>
-                    Image must be under 1 MB
-                  </FormHelperText>
+                 
                     </>
                   )}
                 />

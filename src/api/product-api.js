@@ -3,11 +3,7 @@ import axiosInstance from "./axios-interceptor";
 
 export const addProduct = async (data) => {
   try {
-    const response = await axiosInstance.post("/products", data, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const response = await axiosInstance.post("/products", data);
     toast.success(response.data.message);
     return response.data;
   } catch (error) {

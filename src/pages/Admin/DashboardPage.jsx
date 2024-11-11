@@ -31,7 +31,7 @@ const DashboardPage = () => {
     title: "Total Revenue",
     amount: `₹ ${data?.totalRevenue ? data?.totalRevenue : 0}`,
     icon: RevenueIcon,
-    percentage: "+12% ",
+    percentage: `${data?.totalRevenuePercentage}`,
   };
   const membershipRevenue = {
     title: "Membership Revenue",
@@ -41,7 +41,7 @@ const DashboardPage = () => {
         : 0
     }`,
     icon: MembershipRevenueIcon,
-    percentage: "+12% ",
+    percentage: `${data?.membershipRevenuePercentage}`,
   };
   const appRevenue = {
     title: "App Revenue",
@@ -49,7 +49,7 @@ const DashboardPage = () => {
       data?.totalCategoryAppRevenue ? data?.totalCategoryAppRevenue : 0
     }`,
     icon: AppRevenueIcon,
-    percentage: "+12% ",
+    percentage: `${data?.appRevenuePercentage}`,
   };
   const activeMember = {
     title: "Active Users",
@@ -116,7 +116,6 @@ const DashboardPage = () => {
     fetchData();
   }, [month, year]);
 
-  
   return (
     <>
       <Box
@@ -137,17 +136,30 @@ const DashboardPage = () => {
             <RevenueCard
               data={totalRevenue}
               isDate
-              onDateChange={handleDateChange} selectedDate={selectedDate}
+              onDateChange={handleDateChange}
+              selectedDate={selectedDate}
             />
             <Stack direction={"row"} spacing={2}>
               {" "}
               <Box width={"100%"}>
                 {" "}
-                <RevenueCard isMobile data={membershipRevenue} isDate onDateChange={handleDateChange} selectedDate={selectedDate}/>{" "}
+                <RevenueCard
+                  isMobile
+                  data={membershipRevenue}
+                  isDate
+                  onDateChange={handleDateChange}
+                  selectedDate={selectedDate}
+                />{" "}
               </Box>{" "}
               <Box width={"100%"}>
                 {" "}
-                <RevenueCard isMobile data={appRevenue} isDate  onDateChange={handleDateChange} selectedDate={selectedDate}/>{" "}
+                <RevenueCard
+                  isMobile
+                  data={appRevenue}
+                  isDate
+                  onDateChange={handleDateChange}
+                  selectedDate={selectedDate}
+                />{" "}
               </Box>
             </Stack>
           </Stack>

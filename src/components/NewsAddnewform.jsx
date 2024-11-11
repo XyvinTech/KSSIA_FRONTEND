@@ -19,6 +19,8 @@ import { useNewsStore } from "../store/newsStore";
 import { ReactComponent as CloseIcon } from "../assets/icons/CloseIcon.svg";
 import { useNavigate, useParams } from "react-router-dom";
 import { StyledMultilineTextField } from "../ui/StyledMultilineTextField ";
+import uploadFileToS3 from "../utils/s3Upload";
+import StyledCrop from "../ui/StyledCrop";
 
 export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
   const {
@@ -43,6 +45,7 @@ export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
 
   const [previewOpen, setPreviewOpen] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
 
   useEffect(() => {
     if (isUpdate && id) {
@@ -70,13 +73,29 @@ export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
   ];
 
   const onSubmit = async (data) => {
-    const formData = new FormData();
-    formData.append("category", data.category.value);
-    formData.append("title", data.title);
-    formData.append("content", data.content);
-    if (!isUpdate || (isUpdate && data.image instanceof File)) {
-      formData.append("image", data.image);
+    let imageUrl = data?.image || "";
+
+    if (imageFile) {
+      try {
+        imageUrl = await new Promise((resolve, reject) => {
+          uploadFileToS3(
+            imageFile,
+            (location) => resolve(location),
+            (error) => reject(error)
+          );
+        });
+      } catch (error) {
+        console.error("Failed to upload image:", error);
+        return;
+      }
     }
+
+    const formData = {
+      image: imageUrl,
+      category: data.category.value,
+      title: data.title,
+      content: data.content,
+    };
 
     if (isUpdate && id) {
       await updateNews(id, formData);
@@ -96,6 +115,7 @@ export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
   };
 
   const handleImageChange = (selectedFile) => {
+    setImageFile(selectedFile);
     setValue("image", selectedFile);
     if (selectedFile) {
       const previewURL = URL.createObjectURL(selectedFile);
@@ -166,26 +186,28 @@ export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
               fontWeight={500}
               color={"#333333"}
             >
-              Upload Photo or video
+              Upload Photo
             </Typography>
             <Controller
               name="image"
               control={control}
               defaultValue=""
               rules={{ required: "File is required" }}
-              render={({ field }) => (
+              render={({ field: { onChange,value } }) => (
                 <>
-                  <StyledEventUpload
+                  <StyledCrop
                     label="Upload image here"
-                    {...field}
-                    onChange={(selectedFile) => handleImageChange(selectedFile)}
+                    onChange={(selectedFile) => {
+                      handleImageChange(selectedFile);
+                      onChange(selectedFile);
+                    }}
+                    ratio={16 / 9}
+                    value={value}
                   />
                   {errors.image && (
                     <span style={{ color: "red" }}>{errors.image.message}</span>
                   )}
-                   <FormHelperText sx={{ color: "#757575" }}>
-                    Image must be under 1 MB
-                  </FormHelperText>
+              
                 </>
               )}
             />

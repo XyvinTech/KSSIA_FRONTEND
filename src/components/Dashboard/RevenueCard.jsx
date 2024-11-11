@@ -76,12 +76,14 @@ export const RevenueCard = ({
         {data?.percentage && (
           <Typography
             color={
-              isMobile ? "rgba(27, 210, 17, 0.98)" : "rgba(9, 63, 179, 0.5)"
+              data?.percentage?.includes("+")
+                ? "rgba(27, 210, 17, 0.98)"
+                : "rgba(210, 17, 17, 0.98)"
             }
             fontSize={isMobile ? "12px" : "16px"}
             fontWeight={400}
           >
-            {isMobile ? <GreenIcon /> : <IncreaseIcon />} {data?.percentage}
+            {data?.percentage}
           </Typography>
         )}
       </Stack>

@@ -13,18 +13,21 @@ import { useDropDownStore } from "../store/dropDownStore";
 import { toast } from "react-toastify";
 import { set } from "date-fns";
 import { useNavigate } from "react-router-dom";
+import uploadFileToS3 from "../utils/s3Upload";
 
 export default function InappNotificationform({ setSelectedTab }) {
   const {
     control,
     handleSubmit,
-    reset,watch,
+    reset,
+    watch,
     formState: { errors },
   } = useForm();
 
   const { addAppNotifications } = useNotificationStore();
   const { users, fetchUsers } = useDropDownStore();
   const [loading, setLoading] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
   const navigate = useNavigate();
   useEffect(() => {
     let filter = {};
@@ -32,7 +35,7 @@ export default function InappNotificationform({ setSelectedTab }) {
     fetchUsers(filter);
   }, []);
 
-  const watchedToField = watch("to"); 
+  const watchedToField = watch("to");
 
   const allOptions =
     users && Array.isArray(users)
@@ -45,39 +48,50 @@ export default function InappNotificationform({ setSelectedTab }) {
         ]
       : [];
 
-  const filteredOptions =
-    watchedToField?.some((option) => option.value === "*")
-      ? [{ value: "*", label: "All" }]
-      : allOptions;
+  const filteredOptions = watchedToField?.some((option) => option.value === "*")
+    ? [{ value: "*", label: "All" }]
+    : allOptions;
   const handleClear = (event) => {
     event.preventDefault();
     reset();
-    navigate(-1)
+    navigate(-1);
   };
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-      const formData = new FormData();
+      let imageUrl = data?.file || "";
+
+      if (imageFile) {
+        try {
+          imageUrl = await new Promise((resolve, reject) => {
+            uploadFileToS3(
+              imageFile,
+              (location) => resolve(location),
+              (error) => reject(error)
+            );
+          });
+        } catch (error) {
+          console.error("Failed to upload image:", error);
+          return;
+        }
+      }
+      const newformData = {
+        subject: data?.subject,
+        content: data?.content,
+        link_url: data?.link_url,
+      };
+      if (data?.file) {
+        newformData.file_url = imageUrl;
+      }
+
       let userIds = data.to.map((user) => user.value);
 
       if (userIds.includes("*")) {
-        userIds.forEach((id) => {
-          formData.append("to", "*");
-        });
+        newformData.to = "*";
       } else {
-        userIds.forEach((id) => {
-          formData.append("to", id);
-        });
+        newformData.to = userIds;
       }
-      formData.append("subject", data?.subject);
-      formData.append("content", data?.content);
-      formData.append("link_url", data?.link_url);
-
-      if (data?.file) {
-        formData.append("file_url", data.file);
-      }
-
-      await addAppNotifications(formData);
+      await addAppNotifications(newformData);
       reset();
       setSelectedTab(2);
     } catch (error) {
@@ -195,12 +209,11 @@ export default function InappNotificationform({ setSelectedTab }) {
                     label="Upload image here"
                     {...field}
                     onChange={(selectedFile) => {
+                      setImageFile(selectedFile);
                       field.onChange(selectedFile);
                     }}
                   />
-                  <FormHelperText sx={{ color: "#757575" }}>
-                    Image must be under 1 MB
-                  </FormHelperText>
+         
                 </>
               )}
             />

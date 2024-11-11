@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Grid, Stack, Skeleton, FormHelperText } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Grid,
+  Stack,
+  Skeleton,
+  FormHelperText,
+} from "@mui/material";
 
 import { StyledEventUpload } from "../ui/StyledEventUpload";
 import { StyledButton } from "../ui/StyledButton";
@@ -13,6 +20,7 @@ import { useDropDownStore } from "../store/dropDownStore.js";
 import { usePaymentStore } from "../store/payment-store.js";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import uploadFileToS3 from "../utils/s3Upload.js";
 
 export default function AddPaymentdetails() {
   const {
@@ -27,6 +35,7 @@ export default function AddPaymentdetails() {
   const { addPayments, fetchPaymentById, updatePayment, payment, loadings } =
     usePaymentStore();
   const [loading, setLoading] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
   const navigate = useNavigate();
   const { users, fetchUsers } = useDropDownStore();
   useEffect(() => {
@@ -98,20 +107,35 @@ export default function AddPaymentdetails() {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-      const formData = new FormData();
-      formData.append("member", data.member.value);
-      formData.append("date", data.date);
-      formData.append("time", data.time);
-      formData.append("amount", data.amount);
-      formData.append("mode_of_payment", data.mode_of_payment);
-      formData.append("category", data.category.value);
-      formData.append("status", data.status.value);
-      formData.append("remarks", data.remarks);
-      formData.append("year_count", data.year_count);
-      formData.append("plan", data.plan.value);
-      if (!isUpdate || (isUpdate && data.file instanceof File)) {
-        formData.append("file", data.file);
+      let imageUrl = data?.file || "";
+
+      if (imageFile) {
+        try {
+          imageUrl = await new Promise((resolve, reject) => {
+            uploadFileToS3(
+              imageFile,
+              (location) => resolve(location),
+              (error) => reject(error)
+            );
+          });
+        } catch (error) {
+          console.error("Failed to upload image:", error);
+          return;
+        }
       }
+      const formData = {
+        member: data.member.value,
+        date: data.date,
+        time: data.time,
+        amount: data.amount,
+        mode_of_payment: data.mode_of_payment,
+        category: data.category.value,
+        status: data.status.value,
+        remarks: data.remarks,
+        year_count: data.year_count,
+        plan: data.plan.value,
+        invoice_url: imageUrl,
+      };
 
       if (isUpdate && paymentId) {
         await updatePayment(paymentId, formData);
@@ -385,7 +409,10 @@ export default function AddPaymentdetails() {
                       <>
                         <StyledEventUpload
                           label="Upload Product Image"
-                          onChange={field.onChange}
+                          onChange={(selectedFile) => {
+                            setImageFile(selectedFile);
+                            field.onChange(selectedFile);
+                          }}
                           value={field.value}
                         />
                         {errors.file && (
@@ -393,9 +420,7 @@ export default function AddPaymentdetails() {
                             {errors.file.message}
                           </span>
                         )}
-                         <FormHelperText sx={{ color: "#757575" }}>
-                    Image must be under 1 MB
-                  </FormHelperText>
+                     
                       </>
                     )}
                   />
@@ -475,11 +500,7 @@ export default function AddPaymentdetails() {
                     rules={{ required: "Year Count is required" }}
                     render={({ field }) => (
                       <>
-                        <StyledInput
-                         
-                          placeholder="Add Year Count "
-                          {...field}
-                        />
+                        <StyledInput placeholder="Add Year Count " {...field} />
                         {errors.year_count && (
                           <span style={{ color: "red" }}>
                             {errors.year_count.message}

@@ -1,9 +1,8 @@
 import { Box, Grid, Stack, Typography } from '@mui/material'
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { StyledButton } from '../../../../ui/StyledButton.jsx';
 import { useParams } from "react-router-dom";
-import EditEvent from '../../../../components/EditEvent.jsx';
+import AddEvent from '../../../../components/AddEvent.jsx';
 
 export default function EditEventpage() {
   const navigate = useNavigate();
@@ -40,7 +39,7 @@ export default function EditEventpage() {
     </Box>
     <Grid container item xs={12}>
       <Grid item xs={10} padding={'15px'}>
-       <EditEvent
+       <AddEvent
         eventId = {id}
        />
 

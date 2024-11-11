@@ -12,6 +12,7 @@ import { useDropDownStore } from "../store/dropDownStore";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { StyledMultilineTextField } from "../ui/StyledMultilineTextField ";
+import uploadFileToS3 from "../utils/s3Upload";
 
 export default function EmailNotificationform({ setSelectedTab }) {
   const {
@@ -24,6 +25,7 @@ export default function EmailNotificationform({ setSelectedTab }) {
   const { users, fetchUsers } = useDropDownStore();
   const { addEmailNotifications } = useNotificationStore();
   const [loading, setLoading] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -58,24 +60,40 @@ export default function EmailNotificationform({ setSelectedTab }) {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-      const formData = new FormData();
+      let imageUrl = data?.media_url || "";
+
+      if (imageFile) {
+        try {
+          imageUrl = await new Promise((resolve, reject) => {
+            uploadFileToS3(
+              imageFile,
+              (location) => resolve(location),
+              (error) => reject(error)
+            );
+          });
+        } catch (error) {
+          console.error("Failed to upload image:", error);
+          return;
+        }
+      }
+      const newformData = {
+        subject: data?.subject,
+        content: data?.content,
+        link_url: data?.link_url,
+      };
+      if (data?.media_url) {
+        newformData.media_url = imageUrl;
+      }
+
       let userIds = data.to.map((user) => user.value);
 
       if (userIds.includes("*")) {
-        formData.append("to", "*");
+        newformData.to = "*";
       } else {
-        userIds.forEach((id) => {
-          formData.append("to", id);
-        });
-      }
-      formData.append("subject", data?.subject);
-      formData.append("content", data?.content);
-      formData.append("link_url", data?.link_url);
-      if (data?.media_url) {
-        formData.append("media_url", data.media_url);
+        newformData.to = userIds;
       }
 
-      await addEmailNotifications(formData);
+      await addEmailNotifications(newformData);
       reset();
       setSelectedTab(2);
     } catch (error) {
@@ -191,12 +209,11 @@ export default function EmailNotificationform({ setSelectedTab }) {
                   <StyledEventUpload
                     label="Upload your file"
                     onChange={(selectedFile) => {
+                      setImageFile(selectedFile);
                       field.onChange(selectedFile);
                     }}
                   />
-                  <FormHelperText sx={{ color: "#757575" }}>
-                    Image must be under 1 MB
-                  </FormHelperText>
+                
                 </>
               )}
             />

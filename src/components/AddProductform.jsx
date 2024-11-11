@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Grid, Stack, Skeleton, FormHelperText } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Grid,
+  Stack,
+  Skeleton,
+  FormHelperText,
+} from "@mui/material";
 
 import { StyledEventUpload } from "../ui/StyledEventUpload";
 import { StyledButton } from "../ui/StyledButton";
@@ -13,6 +20,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDropDownStore } from "../store/dropDownStore";
 import { useProductsStore } from "../store/productStore";
 import { toast } from "react-toastify";
+import uploadFileToS3 from "../utils/s3Upload";
 
 export default function Addproductform() {
   const navigate = useNavigate();
@@ -31,6 +39,7 @@ export default function Addproductform() {
 
   const location = useLocation();
   const { productId, isUpdate } = location.state || {};
+  const [imageFile, setImageFile] = useState(null);
   useEffect(() => {
     let filter = {};
     filter.limit = "full";
@@ -71,21 +80,36 @@ export default function Addproductform() {
   const handleClear = (event) => {
     event.preventDefault();
     reset();
-    navigate(-1)
+    navigate(-1);
   };
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-      const formData = new FormData();
-      formData.append("seller_id", data?.seller_id.value);
-      formData.append("description", data?.description);
-      formData.append("offer_price", data?.offer_price);
-      formData.append("price", data?.price);
-      formData.append("units", data?.units);
-      if (!isUpdate || (isUpdate && data.file instanceof File)) {
-        formData.append("image", data.image);
+      let imageUrl = data?.image || "";
+
+      if (imageFile) {
+        try {
+          imageUrl = await new Promise((resolve, reject) => {
+            uploadFileToS3(
+              imageFile,
+              (location) => resolve(location),
+              (error) => reject(error)
+            );
+          });
+        } catch (error) {
+          console.error("Failed to upload image:", error);
+          return;
+        }
       }
-      formData.append("name", data?.productname);
+      const formData = {
+        seller_id: data?.seller_id.value,
+        description: data?.description,
+        offer_price: data?.offer_price,
+        price: data?.price,
+        units: data?.units,
+        image: imageUrl,
+        name: data?.productname,
+      };
       if (isUpdate && productId) {
         await updateProduct(productId, formData);
       } else {
@@ -186,21 +210,22 @@ export default function Addproductform() {
                     control={control}
                     defaultValue=""
                     rules={{ required: "Image is required" }}
-                    render={({ field }) => (
+                    render={({ field: { onChange, value } }) => (
                       <>
                         <StyledEventUpload
                           label="Upload Product Image"
-                          onChange={field.onChange}
-                          value={field.value}
+                          onChange={(file) => {
+                            setImageFile(file);
+                            onChange(file);
+                          }}
+                          value={value}
                         />
                         {errors.photo && (
                           <span style={{ color: "red" }}>
                             {errors.photo.message}
                           </span>
                         )}
-                         <FormHelperText sx={{ color: "#757575" }}>
-                    Image must be under 1 MB
-                  </FormHelperText>
+                     
                       </>
                     )}
                   />

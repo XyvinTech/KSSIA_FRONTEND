@@ -20,6 +20,8 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import moment from "moment";
 import { StyledMultilineTextField } from "../ui/StyledMultilineTextField .jsx";
+import uploadFileToS3 from "../utils/s3Upload.js";
+import StyledCrop from "../ui/StyledCrop.jsx";
 
 export default function PromotionForm({ isUpdate }) {
   const {
@@ -40,6 +42,7 @@ export default function PromotionForm({ isUpdate }) {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewData, setPreviewData] = useState({});
   const [imagePreview, setImagePreview] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
   const { addPromotions, fetchPromotionById, promotions, updatePromotion } =
     usePromotionStore();
 
@@ -52,7 +55,16 @@ export default function PromotionForm({ isUpdate }) {
     const match = url?.match(regExp);
     return match ? match[1] : null;
   };
-
+  const getAspectRatio = () => {
+    switch (type) {
+      case "banner":
+        return 2 / 1;
+      case "poster":
+        return 19 / 20;
+      default:
+        return 1;
+    }
+  };
   const handlePreviewOpen = () => {
     const data = {
       type: getValues("type")?.label,
@@ -69,6 +81,7 @@ export default function PromotionForm({ isUpdate }) {
   };
 
   const handleImageChange = (selectedFile) => {
+    setImageFile(selectedFile);
     setValue("file", selectedFile);
     if (selectedFile) {
       const previewURL = URL.createObjectURL(selectedFile);
@@ -125,27 +138,38 @@ export default function PromotionForm({ isUpdate }) {
   const onSubmit = async (data) => {
     try {
       setSubmitting(true);
-      const formData = new FormData();
-      formData.append("startDate", data?.startDate);
-      formData.append("endDate", data?.endDate);
+      let imageUrl = data?.file || "";
 
+      if (imageFile) {
+        try {
+          imageUrl = await new Promise((resolve, reject) => {
+            uploadFileToS3(
+              imageFile,
+              (location) => resolve(location),
+              (error) => reject(error)
+            );
+          });
+        } catch (error) {
+          console.error("Failed to upload image:", error);
+          return;
+        }
+      }
+      const formData = {
+        startDate: data?.startDate,
+        endDate: data?.endDate,
+      };
       if (type === "notice") {
-        formData.append("type", "notice");
-        formData.append("notice_title", data?.title);
-        formData.append("notice_description", data?.description);
-        formData.append("notice_link", data?.link);
+        formData.type = "notice";
+        formData.notice_title = data?.title;
+        formData.notice_description = data?.description;
+        formData.notice_link = data?.link;
       } else if (type === "banner" || type === "poster") {
-        formData.append("type", type);
-        if (!isUpdate || (isUpdate && data.file instanceof File)) {
-          formData.append("file", data.file);
-        }
+        formData.type = type;
+        formData.file_url = imageUrl;
       } else if (type === "video") {
-        formData.append("type", "video");
-        formData.append("yt_link", data?.yt_link);
-        formData.append("video_title", data?.title);
-        if (data?.upload_video) {
-          formData.append("file", data?.upload_video);
-        }
+        formData.type = "video";
+        formData.yt_link = data?.yt_link;
+        formData.video_title = data?.title;
       }
 
       if (isUpdate && id) {
@@ -212,17 +236,19 @@ export default function PromotionForm({ isUpdate }) {
                 name="file"
                 control={control}
                 defaultValue=""
-                render={({ field }) => (
+                render={({ field: { onChange, value } }) => (
                   <>
                     {" "}
-                    <StyledEventUpload
+                    <StyledCrop
                       label="Upload image here"
-                      {...field}
-                      onChange={handleImageChange}
+                      onChange={(file) => {
+                        handleImageChange(file);
+                        onChange(file);
+                      }}
+                      ratio={getAspectRatio()}
+                      value={value}
                     />{" "}
-                    <FormHelperText sx={{ color: "#757575" }}>
-                      Image must be under 1 MB
-                    </FormHelperText>
+                    
                   </>
                 )}
               />

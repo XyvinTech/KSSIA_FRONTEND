@@ -21,11 +21,7 @@ export const getSingleNotification = async (id) => {
 };
 export const addAppNotification = async (data) => {
   try {
-    const response = await axiosInstance.post("/notification/in-app", data, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const response = await axiosInstance.post("/notification/in-app", data);
     toast.success(response.data.message);
     return response.data;
   } catch (error) {
@@ -34,11 +30,7 @@ export const addAppNotification = async (data) => {
 };
 export const addEmailNotification = async (data) => {
   try {
-    const response = await axiosInstance.post("/notification/email", data, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const response = await axiosInstance.post("/notification/email", data);
     toast.success(response.data.message);
     return response.data;
   } catch (error) {

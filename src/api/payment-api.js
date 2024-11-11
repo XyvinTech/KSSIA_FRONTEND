@@ -4,7 +4,7 @@ import axiosInstance from "./axios-interceptor";
 export const getPayment = async (filter) => {
   try {
     const response = await axiosInstance.get(`/payments`, {
-      params: filter, 
+      params: filter,
     });
     return response.data;
   } catch (error) {
@@ -14,11 +14,7 @@ export const getPayment = async (filter) => {
 
 export const addPayment = async (data) => {
   try {
-    const response = await axiosInstance.post("/payments", data, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const response = await axiosInstance.post("/payments", data);
     toast.success(response.data.message);
     return response.data;
   } catch (error) {
@@ -36,10 +32,10 @@ export const getPaymentById = async (id) => {
 export const deletePayment = async (id) => {
   try {
     const response = await axiosInstance.delete(`/payments/${id}`);
-    
+
     return response.data;
   } catch (error) {
-  console.error(error.response.data.message);
+    console.error(error.response.data.message);
   }
 };
 export const editPayment = async (id, data) => {

@@ -17,18 +17,21 @@ import {
 import { StyledMultilineTextField } from "../ui/StyledMultilineTextField .jsx";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import uploadFileToS3 from "../utils/s3Upload.js";
 
 export default function AddEvent({ eventId, setSelectedTab }) {
   const {
     control,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm();
   const [isChecked, setIsChecked] = useState(false);
   const [type, setType] = useState();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [imageFile, setImageFile] = useState(null);
   const handleTypeChange = (selectedOption) => {
     setType(selectedOption.value);
   };
@@ -36,15 +39,14 @@ export default function AddEvent({ eventId, setSelectedTab }) {
     event.preventDefault();
     setSelectedTab(0);
     reset();
-    setSpeakerImages([]);
     navigate(-1);
   };
-  const [speakerImages, setSpeakerImages] = useState([]);
   const [speakers, setSpeakers] = useState([
     {
       speaker_name: "",
       speaker_designation: "",
       speaker_role: "",
+      speaker_image: "",
     },
   ]);
   const handleSwitchChange = (e) => {
@@ -66,53 +68,84 @@ export default function AddEvent({ eventId, setSelectedTab }) {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
+      let imageUrl = data?.image || "";
 
-      const formData = new FormData();
-      formData.append("organiser_name", data.organiser_name);
-      formData.append("organiser_company_name", data.organiser_company_name);
-      formData.append("endTime", data.endTime);
-      formData.append("endDate", data.endDate);
-      formData.append("name", data.name);
-      formData.append("organiser_role", data.organiser_role);
-      formData.append("startTime", data.startTime);
-      formData.append("startDate", data.startDate);
+      if (imageFile) {
+        try {
+          imageUrl = await new Promise((resolve, reject) => {
+            uploadFileToS3(
+              imageFile,
+              (location) => resolve(location),
+              (error) => reject(error)
+            );
+          });
+        } catch (error) {
+          console.error("Failed to upload image:", error);
+          return;
+        }
+      }
+      const filteredSpeakers = data?.speakers?.filter(
+        (speaker) =>
+          speaker.speaker_name ||
+          speaker.speaker_designation ||
+          speaker.speaker_role ||
+          speaker.speaker_image
+      );
+
+      const speakersData = await Promise.all(
+        filteredSpeakers.map(async (speaker, index) => {
+          let speakerImageUrl = speakers[index]?.speaker_image || "";
+
+          if (
+            speaker?.speaker_image &&
+            typeof speaker.speaker_image === "object"
+          ) {
+            try {
+              speakerImageUrl = await new Promise((resolve, reject) => {
+                uploadFileToS3(
+                  speaker.speaker_image,
+                  (location) => resolve(location),
+                  (error) => reject(error)
+                );
+              });
+            } catch (error) {
+              console.error(`Failed to upload image for speaker:`, error);
+            }
+          }
+
+          return {
+            speaker_name: speaker?.speaker_name,
+            speaker_designation: speaker?.speaker_designation,
+            speaker_role: speaker?.speaker_role,
+            speaker_image: speakerImageUrl || "",
+          };
+        })
+      );
+      const formData = {
+        organiser_name: data.organiser_name,
+        organiser_company_name: data.organiser_company_name,
+        endTime: data.endTime,
+        endDate: data.endDate,
+        name: data.name,
+        organiser_role: data.organiser_role,
+        startTime: data.startTime,
+        startDate: data.startDate,
+        activate: data.activate,
+        type: data.type.value,
+        image: imageUrl,
+        description: data.description,
+        speakers: speakersData,
+      };
       if (data?.plaform) {
-        formData.append("platform", data?.plaform);
+        formData.plaform = data?.plaform;
       }
-      formData.append("activate", data.activate);
-      formData.append("type", data.type.value);
-      formData.append("image", data.image);
       if (type === "offline") {
-        formData.append("venue", data.venue);
+        formData.venue = data.venue;
       }
 
-      formData.append("description", data.description);
-      formData.append("meeting_link", data.meeting_link);
-
-      // Handle speakers: Keep existing image if no new image is provided
-      const speakersWithRetainedImages = data.speakers.map((speaker, index) => {
-        // Check if a new image has been uploaded for this speaker
-        if (speakerImages[index]) {
-          // If new image exists, exclude the old image field and upload the new image
-          const { speaker_image, ...rest } = speaker;
-          return rest;
-        } else {
-          // If no new image, keep the old image
-          return speaker;
-        }
-      });
-
-      // Append speakers (without new images) to formData as JSON
-      formData.append("speakers", JSON.stringify(speakersWithRetainedImages));
-
-      // Append new speaker images separately if they exist
-      speakerImages.forEach((image, index) => {
-        if (image) {
-          formData.append(`speaker_images`, image); // Append only new images
-        }
-      });
-
-      // Update or create event
+      if (data?.meeting_link) {
+        formData.meeting_link = data.meeting_link;
+      }
       if (eventId) {
         await updateEventById(eventId, formData);
         navigate(`/events/eventlist`);
@@ -134,6 +167,7 @@ export default function AddEvent({ eventId, setSelectedTab }) {
         speaker_name: "",
         speaker_designation: "",
         speaker_role: "",
+        speaker_image: "",
       },
     ]);
   };
@@ -143,24 +177,33 @@ export default function AddEvent({ eventId, setSelectedTab }) {
         try {
           const response = await getEventById(eventId);
           const eventData = response.data;
-
-          // Extract speaker images from the event's speaker data
-          const speakerImagesFromAPI = (eventData.speakers || []).map(
-            (speaker) => speaker.speaker_image // Assuming `speaker_image` is the field name
-          );
-
-          // Set the speakers and speaker images in the state
-          setSpeakers(eventData.speakers || []);
-          setSpeakerImages(speakerImagesFromAPI);
-
-          // Set form fields including other event data
-          reset({
+          const updatedEventData = {
             ...eventData,
-            speakers: eventData.speakers || [], // Pre-fill speakers
-            activate: eventData.activate || false, // Pre-fill switch state
-          });
-
-          setIsChecked(eventData.activate || false); // Set initial checked state for switch
+          };
+          setType(updatedEventData.type);
+          if (Array.isArray(updatedEventData.speakers)) {
+            setSpeakers(updatedEventData.speakers);
+            updatedEventData.speakers.forEach((speaker, index) => {
+              setValue(
+                `speakers[${index}].speaker_name`,
+                speaker.speaker_name || ""
+              );
+              setValue(
+                `speakers[${index}].speaker_designation`,
+                speaker.speaker_designation || ""
+              );
+              setValue(
+                `speakers[${index}].speaker_role`,
+                speaker.speaker_role || ""
+              );
+              setValue(
+                `speakers[${index}].speaker_image`,
+                speaker.speaker_image || ""
+              );
+            });
+          }
+          reset(updatedEventData);
+          setIsChecked(updatedEventData.activate || false);
         } catch (error) {
           console.error("Error fetching event data:", error);
         }
@@ -170,27 +213,10 @@ export default function AddEvent({ eventId, setSelectedTab }) {
     }
   }, [eventId, reset]);
 
-  const handleSpeakerChange = (index, field, value) => {
-    setSpeakers((prevSpeakers) => {
-      const updatedSpeakers = [...prevSpeakers];
-      updatedSpeakers[index] = {
-        ...updatedSpeakers[index],
-        [field]: value,
-      };
-      return updatedSpeakers;
-    });
-  };
-  const handleSpeakerImageChange = (index, file) => {
-    const newSpeakerImages = [...speakerImages];
-    newSpeakerImages[index] = file;
-    setSpeakerImages(newSpeakerImages);
-  };
-
   const removeSpeaker = (index) => {
     const newSpeakers = speakers.filter((_, i) => i !== index);
-    const newSpeakerImages = speakerImages.filter((_, i) => i !== index);
     setSpeakers(newSpeakers);
-    setSpeakerImages(newSpeakerImages);
+    setValue("speakers", newSpeakers);
   };
 
   return (
@@ -275,17 +301,18 @@ export default function AddEvent({ eventId, setSelectedTab }) {
                 <>
                   <StyledEventUpload
                     label="Upload image here"
-                    onChange={onChange}
+                    onChange={(file) => {
+                      setImageFile(file);
+                      onChange(file);
+                    }}
+                    ratio={16 / 9}
                     value={value}
                   />
                   {errors.image && (
                     <span style={{ color: "red" }}>{errors.image.message}</span>
                   )}
-                   <FormHelperText sx={{ color: "#757575" }}>
-                    Image must be under 1 MB
-                  </FormHelperText>
+               
                 </>
-
               )}
             />
           </Grid>
@@ -588,7 +615,10 @@ export default function AddEvent({ eventId, setSelectedTab }) {
               rules={{ required: "Role  is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput placeholder="Enter organiser's role" {...field} />
+                  <StyledInput
+                    placeholder="Enter organiser's role"
+                    {...field}
+                  />
                   {errors.organiser_role && (
                     <span style={{ color: "red" }}>
                       {errors.organiser_role.message}
@@ -630,7 +660,7 @@ export default function AddEvent({ eventId, setSelectedTab }) {
           <Grid item xs={6}></Grid>
           <Grid item xs={6}></Grid>
           {speakers.map((speaker, index) => (
-            <React.Fragment key={index}>
+            <Grid container key={index} spacing={4} padding={4}>
               <Grid item xs={12}>
                 <Typography variant="h6" fontWeight={500} color={"#333333"}>
                   Speaker {index + 1}
@@ -666,58 +696,35 @@ export default function AddEvent({ eventId, setSelectedTab }) {
                   )}
                 />
               </Grid>
-              {eventId ? (
-                <Grid item xs={6}>
-                  <Controller
-                    name={`speakers[${index}].speaker_image`}
-                    control={control}
-                    defaultValue={speaker.speaker_image || ""}
-                    render={({ field: { onChange, value } }) => (
-                   <>   <StyledEventUpload
+
+              <Grid item xs={6}>
+                <Controller
+                  name={`speakers[${index}].speaker_image`}
+                  control={control}
+                  defaultValue={speaker.speaker_image}
+                  render={({ field }) => (
+                    <>
+                      <StyledEventUpload
                         label="Upload Speaker Image here"
                         onChange={(file) => {
-                          handleSpeakerImageChange(index, file);
-                          onChange(file);
+                          const updatedSpeakers = [...speakers];
+                          updatedSpeakers[index].speaker_image = file;
+                          setSpeakers(updatedSpeakers);
+                          field.onChange(file);
                         }}
-                        value={value}
+                        value={field.value}
                       />
-                       <FormHelperText sx={{ color: "#757575" }}>
-                    Image must be under 1 MB
-                  </FormHelperText>
-                      </>
-                    )}
-                  />
-                </Grid>
-              ) : (
-                <Grid item xs={6}>
-                  <Controller
-                    name={`speaker_images[${index}]`}
-                    control={control}
-                    defaultValue={speaker.speaker_image}
-                    render={({ field: { onChange, value } }) => (
-                      <>
-                        <StyledEventUpload
-                          label="Upload Speaker Image here"
-                          onChange={(file) => {
-                            handleSpeakerImageChange(index, file);
-                            onChange(file);
-                          }}
-                          value={value}
-                        />
-                         <FormHelperText sx={{ color: "#757575" }}>
-                    Image must be under 1 MB
-                  </FormHelperText>
-                      </>
-                    )}
-                  />
-                </Grid>
-              )}
+                    
+                    </>
+                  )}
+                />
+              </Grid>
 
               <Grid item xs={6}></Grid>
               <Grid item xs={6} display={"flex"} justifyContent={"end"}>
                 <Delete onClick={() => removeSpeaker(index)} />
               </Grid>
-            </React.Fragment>
+            </Grid>
           ))}
           <Grid item xs={12}>
             <Typography
