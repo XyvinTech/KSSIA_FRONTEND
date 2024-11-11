@@ -44,6 +44,7 @@ export default function MembersPage() {
         let filter = {};
         if (search) {
           filter.search = search;
+          setPageNo(1);
         }
         filter.limit = row;
         filter.pageNo = pageNo;

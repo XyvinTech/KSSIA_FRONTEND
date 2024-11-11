@@ -57,6 +57,7 @@ export default function NewsAllpage() {
     let filter = {};
     if (search) {
       filter.search = search;
+      setPageNo(1);
     }
     filter.pageNo = pageNo;
     filter.limit = row;

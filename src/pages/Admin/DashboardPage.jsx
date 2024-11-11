@@ -16,6 +16,7 @@ import { ReactComponent as PromotionIcon } from "../../assets/icons/PromotionIco
 import { RevenueCard } from "../../components/Dashboard/RevenueCard";
 import { getDashboard } from "../../api/dashboard-api";
 import moment from "moment";
+import { da } from "date-fns/locale";
 
 const DashboardPage = () => {
   const [data, setData] = useState({});
@@ -31,7 +32,9 @@ const DashboardPage = () => {
     title: "Total Revenue",
     amount: `₹ ${data?.totalRevenue ? data?.totalRevenue : 0}`,
     icon: RevenueIcon,
-    percentage: `${data?.totalRevenuePercentage}`,
+    percentage: `${
+      data?.totalRevenuePercentage ? data?.totalRevenuePercentage : 0
+    }`,
   };
   const membershipRevenue = {
     title: "Membership Revenue",
@@ -41,7 +44,9 @@ const DashboardPage = () => {
         : 0
     }`,
     icon: MembershipRevenueIcon,
-    percentage: `${data?.membershipRevenuePercentage}`,
+    percentage: `${
+      data?.membershipRevenuePercentage ? data?.membershipRevenuePercentage : 0
+    }`,
   };
   const appRevenue = {
     title: "App Revenue",
@@ -49,7 +54,9 @@ const DashboardPage = () => {
       data?.totalCategoryAppRevenue ? data?.totalCategoryAppRevenue : 0
     }`,
     icon: AppRevenueIcon,
-    percentage: `${data?.appRevenuePercentage}`,
+    percentage: `${
+      data?.appRevenuePercentage ? data?.appRevenuePercentage : 0
+    }`,
   };
   const activeMember = {
     title: "Active Users",

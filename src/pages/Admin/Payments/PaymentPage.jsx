@@ -43,6 +43,7 @@ export default function PaymentPage() {
     let filter = {};
     if (search) {
       filter.search = search;
+      setPageNo(1);
     }
     filter.limit = row;
     filter.pageNo = pageNo;

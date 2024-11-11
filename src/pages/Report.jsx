@@ -29,6 +29,7 @@ export default function Report() {
     filter.limit = row;
     if (search) {
       filter.search = search;
+      setPageNo(1);
     }
     fetchReport(filter);
   }, [isChange, pageNo, search, row]);

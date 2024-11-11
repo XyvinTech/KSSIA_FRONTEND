@@ -10,7 +10,6 @@ import {
   DialogActions,
   FormHelperText,
 } from "@mui/material";
-import { StyledEventUpload } from "../ui/StyledEventUpload";
 import { StyledButton } from "../ui/StyledButton";
 import StyledInput from "../ui/StyledInput";
 import { Controller, useForm } from "react-hook-form";

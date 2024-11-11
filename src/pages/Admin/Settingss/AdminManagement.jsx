@@ -52,6 +52,7 @@ export default function AdminManagement() {
     filter.pageNo = pageNo;
     if (search) {
       filter.search = search;
+      setPageNo(1);
     }
     filter.limit=row
     fetchAdmins(filter);
