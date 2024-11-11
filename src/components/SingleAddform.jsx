@@ -115,7 +115,7 @@ export default function SingleAddform() {
         phone_numbers: {
           personal: data.phone_number ? data.phone_number : undefined,
           landline: data.landline ? data.landline : "",
-          company_phone_number: data.company_phone_number
+          company_phone_number: data?.company_phone_number
             ? data.company_phone_number
             : undefined,
           whatsapp_number: data.whatsapp_number
@@ -128,13 +128,13 @@ export default function SingleAddform() {
         blood_group: data.blood_group,
         designation: data.designation,
         email: data.email,
-        company_name: data.company_name,
+        company_name: data?.company_name,
         address: data.address,
         bio: data.bio,
-        company_email: data.company_email,
-        business_category: data.business_category.value,
+        company_email: data?.company_email,
+        business_category: data?.business_category?.value,
         status: data.status.value,
-        sub_category: data.sub_category.value,
+        sub_category: data?.sub_category?.value,
       };
 
       if (!isUpdate) {
@@ -527,18 +527,13 @@ export default function SingleAddform() {
                     name="company_name"
                     control={control}
                     defaultValue=""
-                    rules={{ required: "Company Name is required" }}
                     render={({ field }) => (
                       <>
                         <StyledInput
                           placeholder="Enter the name of Company"
                           {...field}
                         />
-                        {errors.companyname && (
-                          <span style={{ color: "red" }}>
-                            {errors.companyname.message}
-                          </span>
-                        )}
+                      
                       </>
                     )}
                   />
@@ -556,18 +551,14 @@ export default function SingleAddform() {
                     name="company_phone_number"
                     control={control}
                     defaultValue=""
-                    rules={{ required: "Company Phone is required" }}
+                    // rules={{ required: "Company Phone is required" }}
                     render={({ field }) => (
                       <>
                         <StyledInput
                           placeholder="Enter the phone number"
                           {...field}
                         />
-                        {errors.company_phone_number && (
-                          <span style={{ color: "red" }}>
-                            {errors.company_phone_number.message}
-                          </span>
-                        )}
+                       
                       </>
                     )}
                   />
@@ -614,18 +605,13 @@ export default function SingleAddform() {
                     name="company_email"
                     control={control}
                     defaultValue=""
-                    rules={{ required: "Company Email is required" }}
                     render={({ field }) => (
                       <>
                         <StyledInput
                           placeholder="Enter the company email id"
                           {...field}
                         />
-                        {errors.companyemail && (
-                          <span style={{ color: "red" }}>
-                            {errors.companyemail.message}
-                          </span>
-                        )}
+                       
                       </>
                     )}
                   />
@@ -672,7 +658,7 @@ export default function SingleAddform() {
                     name="business_category"
                     control={control}
                     defaultValue=""
-                    rules={{ required: "Business category is required" }}
+                    // rules={{ required: "Business category is required" }}
                     render={({ field }) => (
                       <>
                         <StyledSelectField
@@ -680,11 +666,7 @@ export default function SingleAddform() {
                           options={business}
                           {...field}
                         />
-                        {errors.businesscategory && (
-                          <span style={{ color: "red" }}>
-                            {errors.businesscategory.message}
-                          </span>
-                        )}
+                       
                       </>
                     )}
                   />
@@ -702,7 +684,7 @@ export default function SingleAddform() {
                     name="sub_category"
                     control={control}
                     defaultValue=""
-                    rules={{ required: "Subcategory is required" }}
+                    // rules={{ required: "Subcategory is required" }}
                     render={({ field }) => (
                       <>
                         <StyledSelectField
@@ -710,11 +692,7 @@ export default function SingleAddform() {
                           options={sub}
                           {...field}
                         />
-                        {errors.subcategory && (
-                          <span style={{ color: "red" }}>
-                            {errors.subcategory.message}
-                          </span>
-                        )}
+                      
                       </>
                     )}
                   />

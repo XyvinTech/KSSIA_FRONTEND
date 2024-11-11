@@ -248,7 +248,7 @@ const AdminLayout = (props) => {
         {subNavigation.map((item) =>
           item.name === "Events" ? (
             <div key={item.name}>
-              <ListItem disablePadding>
+              <ListItem sx={{ pb: "10px" }} disablePadding>
                 <ListItemButton
                   onClick={handleClick}
                   sx={{
@@ -267,9 +267,9 @@ const AdminLayout = (props) => {
                 </ListItemButton>
               </ListItem>
               <Collapse in={open}>
-                <List component="div" disablePadding>
+                <List component="div" >
                   {item.subItems.map((subItem) => (
-                    <ListItem key={subItem.name} disablePadding>
+                    <ListItem key={subItem.name} sx={{ paddingBottom: "10px" }} disablePadding>
                       <ListItemButton
                         component={Link}
                         to={subItem.to}
