@@ -111,7 +111,7 @@ const QRHtmlPage = () => {
         <Grid
           container
           justifyContent="center"
-          minHeight={"100vh"}
+          minHeight={"100vh"} mb={10}
           bgcolor={isMobile ? "#fff" : "#F2F2F2"}
         >
           <Grid item xs={12} sm={8} md={6} lg={5}>
@@ -447,7 +447,7 @@ const QRHtmlPage = () => {
                   >
                     Certificates
                   </Typography>
-                  <Grid container spacing={2}>
+                  <Grid container spacing={2} >
                     {userData?.certificates?.map((certificate, index) => (
                       <Grid item xs={12} lg={6} key={index}>
                         <QRCertificateCard certificate={certificate} />
