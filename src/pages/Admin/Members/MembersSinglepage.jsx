@@ -62,7 +62,8 @@ const MembersSinglepage = () => {
         alignItems={"center"}
       >
         <Typography variant="h4" color={"#4A4647"}>
-          Members list / {userData?.name?.first_name} {userData?.name?.middle_name} {userData?.name?.last_name}
+          Members list / {userData?.name?.first_name}{" "}
+          {userData?.name?.middle_name} {userData?.name?.last_name}
         </Typography>
       </Box>{" "}
       <Divider />
@@ -154,7 +155,7 @@ const MembersSinglepage = () => {
               <MemberAnalytics />
             </Grid>
             <Grid item xs={12} marginTop={4}>
-              <Review />
+              <Review data={userData?.reviews} />
             </Grid>
           </Grid>
         )}

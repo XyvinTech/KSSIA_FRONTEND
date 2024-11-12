@@ -3,7 +3,7 @@ import DashboardCard from '../ui/DashboardCard';
 import { Grid, Typography, Stack } from '@mui/material';
 import Review from './Review';
 
-export default function MemberAnalytics() {
+export default function MemberAnalytics({data}) {
   const eventsData = [
     { title: 'Total Products', value: '23', bgcolor: '#FFFFFF', color: '#34C759' },
     { title: 'Profile Shares', value: '10', bgcolor: '#FFFFFF', color: '#686465' },
