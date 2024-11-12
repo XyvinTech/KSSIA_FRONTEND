@@ -64,6 +64,7 @@ const UserCard = ({ user }) => {
           </Stack>
         </Stack>
       </Grid>
+    
       <Grid
         item
         md={1}
@@ -82,7 +83,7 @@ const UserCard = ({ user }) => {
             borderRadius: "12px",
           }}
         >
-          Premium
+          {user?.subscription}
         </Typography>
       </Grid>
       <Grid
