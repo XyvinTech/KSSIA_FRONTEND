@@ -230,7 +230,7 @@ const AdminLayout = (props) => {
           gap: "5px",
           padding: 0,
           "&::-webkit-scrollbar": {
-            width: "0px",
+            width: "4px",
           },
           "&::-webkit-scrollbar-track": {
             backgroundColor: "#f1f1f1",
