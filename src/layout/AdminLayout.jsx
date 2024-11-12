@@ -65,7 +65,7 @@ const subNavigation = [
       },
     ],
   },
-  { name: "Payments", to: "/payments", icon: <PaymentsOutlinedIcon /> },
+  // { name: "Payments", to: "/payments", icon: <PaymentsOutlinedIcon /> },
   { name: "Approvals", to: "/approvals", icon: <GavelOutlinedIcon /> },
   { name: "Promotions", to: "/promotions", icon: <ReceiptLongOutlinedIcon /> },
   {

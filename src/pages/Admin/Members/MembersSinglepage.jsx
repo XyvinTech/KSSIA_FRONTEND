@@ -114,7 +114,7 @@ const MembersSinglepage = () => {
       >
         <Tab label="Profile" />
         <Tab label="Payments" />
-        <Tab label="Subscriptions" />
+        {/* <Tab label="Subscriptions" /> */}
         <Tab label="Products" />
         <Tab label="Requirements" />
         <Tab label="Reviews" />
@@ -130,7 +130,7 @@ const MembersSinglepage = () => {
             <MembersPayments id={id} />
           </Grid>
         )}
-        {selectedTab === 2 && (
+        {/* {selectedTab === 2 && (
           <Grid container >
            
               {cards && cards?.length > 0 ? (
@@ -157,19 +157,19 @@ const MembersSinglepage = () => {
                 </ReviewContainer>
               )}
           </Grid>
-        )}
+        )} */}
 
-        {selectedTab === 3 && (
+        {selectedTab === 2 && (
           <Grid>
             <MembersProducts id={id} />
           </Grid>
         )}
-        {selectedTab === 4 && (
+        {selectedTab === 3 && (
           <Grid>
             <MembersRequirements id={id} />
           </Grid>
         )}
-        {selectedTab === 5 && (
+        {selectedTab === 4 && (
           <Grid container item xs={12}>
             {/* <Grid item xs={12}>
               <MemberAnalytics />
