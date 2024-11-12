@@ -29,6 +29,7 @@ import QRvideoCard from "../ui/QRvideoCard";
 import QRCertificateCard from "../ui/QRCertificateCard";
 import QRAwardCard from "../ui/QRAwardCard";
 import QRProductCard from "../components/QRProductCard";
+import StyledReview from "../ui/StyledReview";
 const responsive = {
   superLargeDesktop: {
     breakpoint: { max: 4000, min: 3000 },
@@ -111,7 +112,8 @@ const QRHtmlPage = () => {
         <Grid
           container
           justifyContent="center"
-          minHeight={"100vh"} mb={10}
+          minHeight={"100vh"}
+          mb={10}
           bgcolor={isMobile ? "#fff" : "#F2F2F2"}
         >
           <Grid item xs={12} sm={8} md={6} lg={5}>
@@ -287,6 +289,26 @@ const QRHtmlPage = () => {
                   onClick={handleSaveContact}
                 />
               </Box>
+              {userData?.reviews && userData?.reviews?.length > 0 && (
+                <>
+                  <Typography
+                    variant="h5"
+                    color="textTertiary"
+                    mt={5}
+                    mb={4}
+                    pt={2}
+                  >
+                    Reviews
+                  </Typography>
+                  <Grid container spacing={4}>
+                    {userData?.reviews?.map((data, index) => (
+                      <Grid item xs={12} lg={12} key={index}>
+                        <StyledReview review={data} />
+                      </Grid>
+                    ))}{" "}
+                  </Grid>
+                </>
+              )}
               {userData?.social_media && userData?.social_media?.length > 0 && (
                 <>
                   {" "}
@@ -366,7 +388,8 @@ const QRHtmlPage = () => {
                           mb={5}
                         >
                           <Stack>
-                          <AppWebsiteIcon />{" "}</Stack>
+                            <AppWebsiteIcon />{" "}
+                          </Stack>
                           <Typography
                             variant="h5"
                             color="#6D6D6D"
@@ -447,7 +470,7 @@ const QRHtmlPage = () => {
                   >
                     Certificates
                   </Typography>
-                  <Grid container spacing={2} >
+                  <Grid container spacing={2}>
                     {userData?.certificates?.map((certificate, index) => (
                       <Grid item xs={12} lg={6} key={index}>
                         <QRCertificateCard certificate={certificate} />
@@ -479,7 +502,7 @@ const QRHtmlPage = () => {
                   </Grid>{" "}
                 </>
               )}{" "}
-             {Array.isArray(userData?.products) &&
+              {Array.isArray(userData?.products) &&
                 userData?.products.length > 0 && (
                   <>
                     <Typography

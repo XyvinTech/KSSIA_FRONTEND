@@ -1,37 +1,59 @@
 import React from "react";
-import { Box, Grid, Rating, Stack, Typography } from "@mui/material";
-import { ReactComponent as DeleteIcon } from "../assets/icons/DeleteIcon.svg";
+import { Box, Grid, Rating, Stack, Typography, Avatar } from "@mui/material";
 import moment from "moment";
+import styled from "styled-components";
+
+const StyledReviewContainer = styled(Grid)`
+  padding: 16px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
+`;
+
+const ReviewerName = styled(Typography)`
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #2c2829;
+`;
+
+const ReviewContent = styled(Typography)`
+  font-size: 0.95rem;
+  color: #5f6368;
+  margin-top: 8px;
+`;
+
+const ReviewDate = styled(Typography)`
+  font-size: 0.85rem;
+  color: #b5b8c5;
+  margin-top: 4px;
+`;
 
 const StyledReview = ({ review }) => {
   const formatDate = (date) => {
     return date ? moment(date).format("DD-MM-YYYY") : "-";
   };
+
   return (
-    <Grid container spacing={2}>
-      <Grid item md={12} xs={12}>
-        <Stack spacing={1}>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Typography variant="h6" fontWeight={400} color={"#2C2829"}>
-              {review?.reviewer?.name?.first_name}  {review?.reviewer?.name?.middle_name}  {review?.reviewer?.name?.last_name}
-            </Typography>
-            <Rating name="read-only" value={review?.rating} readOnly />
-            {/* <Box flexGrow={1} />
-            <DeleteIcon /> */}
-          </Stack>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Typography variant="h7" fontWeight={400} color={"#B5B8C5"}>
-              {review?.content}
-            </Typography>
-          </Stack>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Typography variant="h6" color={"#2C2829"} fontWeight={400}>
-              {formatDate(review?.created_at || "")}
-            </Typography>
-          </Stack>
+    <StyledReviewContainer container spacing={2}>
+      <Grid item xs={12}>
+        <Stack direction="row" alignItems="center" spacing={2}>
+          {review?.reviewer?.profile_picture && (
+            <Avatar src={review?.reviewer?.profile_picture} alt="Profile Picture" />
+          )}
+          <ReviewerName variant="h6">
+            {review?.reviewer?.name?.first_name} {review?.reviewer?.name?.middle_name} {review?.reviewer?.name?.last_name}
+          </ReviewerName>
+          <Box flexGrow={1} />
+          <ReviewDate>{formatDate(review?.created_at || "")}</ReviewDate>
         </Stack>
+        <Stack direction="row" alignItems="center" spacing={1} mt={1}>
+          <Rating name="read-only" value={review?.rating} readOnly />
+        </Stack>
+        <ReviewContent>{review?.content}</ReviewContent>
+        
       </Grid>
-    </Grid>
+    </StyledReviewContainer>
   );
 };
 
