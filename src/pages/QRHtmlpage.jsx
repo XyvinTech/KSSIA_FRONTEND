@@ -73,9 +73,9 @@ const QRHtmlPage = () => {
     const vCardData = `
   BEGIN:VCARD
   VERSION:3.0
-  FN:${userData?.name?.first} ${userData?.name?.last}
-  ORG:${userData?.company?.name}
-  TEL:${userData?.phone}
+  FN:${userData?.name?.first_name} ${userData?.name?.last_name}
+  ORG:${userData?.company_name}
+  TEL:${userData?.phone_numbers?.personal}
   EMAIL:${userData?.email}
   ADR:${userData?.address}
   END:VCARD
@@ -84,7 +84,7 @@ const QRHtmlPage = () => {
     const blob = new Blob([vCardData], { type: "text/vcard" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = `${userData?.name?.first}_${userData?.name?.last}.vcf`;
+    link.download = `${userData?.name?.first_name}_${userData?.name?.last_name}.vcf`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -269,7 +269,7 @@ const QRHtmlPage = () => {
                 }}
               >
                 <a
-                  href={`https://wa.me/${userData?.company?.phone}`}
+                  href={`https://wa.me/${userData?.phone_numbers?.whatsapp_number}`}
                   target="_blank"
                   style={{ textDecoration: "none" }}
                   rel="noopener noreferrer"
