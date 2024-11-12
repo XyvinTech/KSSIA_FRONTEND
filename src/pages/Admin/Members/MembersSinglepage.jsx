@@ -21,6 +21,7 @@ import CONSTANTS from "../../../constants";
 import { useParams } from "react-router-dom";
 import { usePaymentStore } from "../../../store/payment-store";
 import styled from "styled-components";
+import { useMemberStore } from "../../../store/member-store";
 const StyledNoReviewsMessage = styled(Typography)`
   font-size: 1.2rem;
   color: #a0a0a0;
@@ -41,6 +42,7 @@ const MembersSinglepage = () => {
   const [userData, setUserData] = useState({});
   const [isChange, setIsChange] = useState(false);
   const { id } = useParams();
+  const {refreshMembers}=useMemberStore();
   const { fetchsubscriptionByUser, cards, refreshMember } = usePaymentStore();
   useEffect(() => {
     async function init() {
@@ -53,7 +55,7 @@ const MembersSinglepage = () => {
       setUserData(response.data.data);
     }
     init();
-  }, [id, isChange]);
+  }, [id, isChange,refreshMembers]);
   const handleIsChange = () => {
     setIsChange(!isChange);
   };

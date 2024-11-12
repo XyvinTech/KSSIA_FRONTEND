@@ -1,11 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import { Grid, Stack, Typography, Box } from "@mui/material";
 import { ReactComponent as EmailIcon } from "../assets/icons/EmailIcon.svg";
 import { ReactComponent as PhoneIcon } from "../assets/icons/PhoneIcon.svg";
 import { ReactComponent as StarIcon } from "../assets/icons/StarIcon.svg";
 import { ReactComponent as LocationIcon } from "../assets/icons/LocationIcon.svg";
 import image from "../assets/images/Group.png";
+import { StyledButton } from "./StyledButton";
+import { useParams } from "react-router-dom";
+import FreeSubscription from "./FreeSubscription";
+import PremiumSubscription from "./PremiumSubscription";
 const UserCard = ({ user }) => {
+  const [open, setOpen] = useState(false);
+  const [unopen, setUnOpen] = useState(false);
+  const { id } = useParams();
+  const handleFree = () => {
+    setOpen(true);
+  };
+  const handlePremium = () => {
+    setUnOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleUnClose = () => {
+    setUnOpen(false);
+  };
   return (
     <Grid
       container
@@ -36,7 +55,8 @@ const UserCard = ({ user }) => {
           </Typography>
 
           <Typography variant="h5" color={"#4A4647"}>
-            {user?.name?.first_name} {user?.name?.middle_name} {user?.name?.last_name}
+            {user?.name?.first_name} {user?.name?.middle_name}{" "}
+            {user?.name?.last_name}
           </Typography>
           <Typography variant="h6" color={"#4A4647"}>
             {user?.title}
@@ -51,20 +71,26 @@ const UserCard = ({ user }) => {
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="center" spacing={1}>
-          <Stack> <EmailIcon /> </Stack>
+            <Stack>
+              {" "}
+              <EmailIcon />{" "}
+            </Stack>
             <Typography variant="h6" color={"#2C2829"}>
               {user?.email}
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="flex-start" spacing={1}>
-          <Stack> <LocationIcon /> </Stack>
+            <Stack>
+              {" "}
+              <LocationIcon />{" "}
+            </Stack>
             <Typography variant="h6" color={"#2C2829"}>
               {user?.address}
             </Typography>
           </Stack>
         </Stack>
       </Grid>
-    
+
       <Grid
         item
         md={1}
@@ -86,6 +112,28 @@ const UserCard = ({ user }) => {
           {user?.subscription}
         </Typography>
       </Grid>
+      <Grid item md={12} xs={12}>
+        {" "}
+        {user?.subscription === "free" && (
+          <Stack direction="row" alignItems="center" spacing={2}>
+            <StyledButton
+              variant={"primary"}
+              name={"Premium"}
+              onClick={handleFree}
+            />
+          </Stack>
+        )}
+        {user?.subscription === "premium" && (
+          <Stack direction="row" alignItems="center" spacing={2}>
+            <StyledButton
+              variant={"secondary"}
+              name={"Free"}
+              onClick={handlePremium}
+            />
+          </Stack>
+        )}
+      </Grid>
+
       <Grid
         item
         md={12}
@@ -101,6 +149,8 @@ const UserCard = ({ user }) => {
           {user?.bio}
         </Typography>
       </Grid>
+      <FreeSubscription open={unopen} onClose={handleUnClose} id={id} />
+      <PremiumSubscription open={open} onClose={handleClose} id={id} />
     </Grid>
   );
 };

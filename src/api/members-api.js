@@ -89,6 +89,18 @@ export const getDwldProduct = async () => {
     throw error;
   }
 };
+export const updateSubscription = async (id, data) => {
+  try {
+    const response = await axiosInstance.put(
+      `/user/subscription/${id}`,
+      data
+    );
+    toast.success(response.data.message);
+    return response.data;
+  } catch (error) {
+    toast.error(error.response.data.message);
+  }
+};
 export const addMembersBulk = async (data) => {
   try {
     const response = await axiosInstance.post("/admin/users/bulk", data);

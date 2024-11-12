@@ -6,6 +6,7 @@ import {
   getSubscriptionsByUserId,
   getUserById,
   suspendUser,
+  updateSubscription,
   updateUser,
 } from "../api/members-api";
 
@@ -15,6 +16,7 @@ const useMemberStore = create((set) => ({
   loadings: false,
   payment: [],
   totalCount: 0,
+  refreshMembers: false,
   addMembers: async (data) => {
     await createMember(data);
   },
@@ -39,6 +41,11 @@ const useMemberStore = create((set) => ({
   deleteUsers: async (id) => {
     await deleteUser(id);
   },
+  subscription: async (id, data) => {
+    await updateSubscription(id,data);
+  },
+  setRefreshMember: () =>
+    set((state) => ({ refreshMembers: !state.refreshMembers })),
 }));
 
 export { useMemberStore };
