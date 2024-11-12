@@ -118,7 +118,7 @@ const UserCard = ({ user }) => {
           <Stack direction="row" alignItems="center" spacing={2}>
             <StyledButton
               variant={"primary"}
-              name={"Premium"}
+              name={"Change to Premium"}
               onClick={handleFree}
             />
           </Stack>
@@ -127,7 +127,7 @@ const UserCard = ({ user }) => {
           <Stack direction="row" alignItems="center" spacing={2}>
             <StyledButton
               variant={"secondary"}
-              name={"Free"}
+              name={"Change to Free"}
               onClick={handlePremium}
             />
           </Stack>
