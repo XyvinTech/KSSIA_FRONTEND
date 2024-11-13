@@ -64,3 +64,5 @@ jobs:
 
             # Restart NGINX to apply changes
             sudo systemctl restart nginx
+
+            
