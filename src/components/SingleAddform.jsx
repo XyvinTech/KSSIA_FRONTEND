@@ -498,18 +498,14 @@ export default function SingleAddform() {
                     name="address"
                     control={control}
                     defaultValue=""
-                    rules={{ required: "Personal Address is required" }}
+                    // rules={{ required: "Personal Address is required" }}
                     render={({ field }) => (
                       <>
                         <StyledInput
                           placeholder="Enter the Personal Address"
                           {...field}
                         />
-                        {errors.address && (
-                          <span style={{ color: "red" }}>
-                            {errors.address.message}
-                          </span>
-                        )}
+                       
                       </>
                     )}
                   />
