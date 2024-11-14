@@ -125,11 +125,11 @@ export default function SingleAddform() {
             ? data.whatsapp_business_number
             : undefined,
         },
-        blood_group: data.blood_group,
+        ...(data?.blood_group && { blood_group: data?.blood_group }),
         designation: data.designation,
         email: data.email,
         company_name: data?.company_name,
-        address: data.address,
+        ...(data?.address && { address: data?.address }),
         bio: data.bio,
         company_email: data?.company_email,
         business_category: data?.business_category?.value,
@@ -338,11 +338,6 @@ export default function SingleAddform() {
                           placeholder="Enter the Blood Group"
                           {...field}
                         />
-                        {errors.bloodgroup && (
-                          <span style={{ color: "red" }}>
-                            {errors.bloodgroup.message}
-                          </span>
-                        )}
                       </>
                     )}
                   />
@@ -367,11 +362,6 @@ export default function SingleAddform() {
                           label="Add Description"
                           {...field}
                         />
-                        {errors.bio && (
-                          <span style={{ color: "red" }}>
-                            {errors.bio.message}
-                          </span>
-                        )}
                       </>
                     )}
                   />
@@ -389,18 +379,18 @@ export default function SingleAddform() {
                     name="email"
                     control={control}
                     defaultValue=""
-                    rules={{ required: "Email ID is required" }}
+                    // rules={{ required: "Email ID is required" }}
                     render={({ field }) => (
                       <>
                         <StyledInput
                           placeholder="Enter the Email ID"
                           {...field}
                         />
-                        {errors.emails && (
+                        {/* {errors.email && (
                           <span style={{ color: "red" }}>
-                            {errors.emails.message}
+                            {errors.email.message}
                           </span>
-                        )}
+                        )} */}
                       </>
                     )}
                   />
@@ -445,11 +435,6 @@ export default function SingleAddform() {
                             placeholder="Enter landline number"
                             {...field}
                           />
-                          {errors.landline && (
-                            <span style={{ color: "red" }}>
-                              {errors.landline.message}
-                            </span>
-                          )}
                         </>
                       )}
                     />
@@ -505,7 +490,6 @@ export default function SingleAddform() {
                           placeholder="Enter the Personal Address"
                           {...field}
                         />
-                       
                       </>
                     )}
                   />
@@ -529,7 +513,6 @@ export default function SingleAddform() {
                           placeholder="Enter the name of Company"
                           {...field}
                         />
-                      
                       </>
                     )}
                   />
@@ -554,7 +537,6 @@ export default function SingleAddform() {
                           placeholder="Enter the phone number"
                           {...field}
                         />
-                       
                       </>
                     )}
                   />
@@ -607,7 +589,6 @@ export default function SingleAddform() {
                           placeholder="Enter the company email id"
                           {...field}
                         />
-                       
                       </>
                     )}
                   />
@@ -662,7 +643,6 @@ export default function SingleAddform() {
                           options={business}
                           {...field}
                         />
-                       
                       </>
                     )}
                   />
@@ -688,7 +668,6 @@ export default function SingleAddform() {
                           options={sub}
                           {...field}
                         />
-                      
                       </>
                     )}
                   />
