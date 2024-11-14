@@ -41,7 +41,16 @@ export default function SingleAddform() {
       fetchUserById(memberId);
     }
   }, [memberId, isUpdate, fetchUserById]);
-
+  const business = [{ value: "IT Services", label: "IT Services" }];
+  const sub = [
+    { value: "Software Development", label: "Software Development" },
+  ];
+  const status = [
+    { value: "active", label: "active" },
+    { value: "inactive", label: "inactive" },
+    { value: "suspended", label: "suspended" },
+    { value: "notice", label: "notice" },
+  ];
   useEffect(() => {
     if (member && isUpdate) {
       setValue("first_name", member?.name?.first_name);
@@ -176,16 +185,7 @@ export default function SingleAddform() {
     });
   };
 
-  const business = [{ value: "IT Services", label: "IT Services" }];
-  const sub = [
-    { value: "Software Development", label: "Software Development" },
-  ];
-  const status = [
-    { value: "active", label: "active" },
-    { value: "inactive", label: "inactive" },
-    { value: "suspended", label: "suspended" },
-    { value: "notice", label: "notice" },
-  ];
+
   return (
     <>
       {loadings ? (
