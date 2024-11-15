@@ -42,8 +42,6 @@ export default function Addproductform() {
   const location = useLocation();
   const { productId, isUpdate } = location.state || {};
   const [imageFile, setImageFile] = useState(null);
-  const [tags, setTags] = useState([]);
-  const [tagInput, setTagInput] = useState("");
   useEffect(() => {
     let filter = {};
     filter.limit = "full";
@@ -71,7 +69,10 @@ export default function Addproductform() {
           label: `${sellerUser.name.first_name} ${sellerUser.name.middle_name} ${sellerUser.name.last_name}`,
         });
       }
-      setTags(products.tags);
+      const selectedTags = products?.tags?.map((Id) =>
+        tagOptions.find((option) => option?.value === Id)
+      );
+      setValue("tags", selectedTags || []);
     }
   }, [products, isUpdate, setValue, users]);
   const option =
@@ -81,22 +82,94 @@ export default function Addproductform() {
           label: `${user?.name?.first_name} ${user?.name?.middle_name} ${user?.name?.last_name}`,
         }))
       : [];
+  const tagOptions = [
+    { value: "Pipes and Fillings", label: "Pipes and Fillings" },
+    { value: "Water Tanks", label: "Water Tanks" },
+    { value: "Water Taps", label: "Water Taps" },
+    { value: "Septic Tanks", label: "Septic Tanks" },
+    { value: "Carbuoys", label: "Carbuoys" },
+    { value: "Garden Hoses", label: "Garden Hoses" },
+    { value: "Chairs", label: "Chairs" },
+    { value: "Printing Machinery", label: "Printing Machinery" },
+    { value: "Printing Work", label: "Printing Work" },
+    { value: "Multiwood", label: "Multiwood" },
+    { value: "Films", label: "Films" },
+    { value: "Adhesive Tapes", label: "Adhesive Tapes" },
+    { value: "Packing Materials", label: "Packing Materials" },
+    { value: "Packing Containers", label: "Packing Containers" },
+    { value: "Moulds", label: "Moulds" },
+    { value: "Bucket and Cups", label: "Bucket and Cups" },
+    { value: "Household Items", label: "Household Items" },
+    { value: "Rainguard Materials", label: "Rainguard Materials" },
+    { value: "Pots", label: "Pots" },
+    { value: "Safety Products", label: "Safety Products" },
+    { value: "Tread Rubber", label: "Tread Rubber" },
+    { value: "Balloons", label: "Balloons" },
+    { value: "Gloves", label: "Gloves" },
+    { value: "Rubber Moulds", label: "Rubber Moulds" },
+    { value: "Dies", label: "Dies" },
+    { value: "CNC Works", label: "CNC Works" },
+    { value: "Cleaning Chemicals", label: "Cleaning Chemicals" },
+    { value: "Water Treatment Chemicals", label: "Water Treatment Chemicals" },
+    { value: "Soaps and Detergents", label: "Soaps and Detergents" },
+    { value: "Paints", label: "Paints" },
+    { value: "Varnishes", label: "Varnishes" },
+    { value: "Solvents", label: "Solvents" },
+    { value: "Process Oil", label: "Process Oil" },
+    { value: "Machine Oil", label: "Machine Oil" },
+    { value: "Hydraulic Oil", label: "Hydraulic Oil" },
+    { value: "Carton Box", label: "Carton Box" },
+    { value: "Plywood Packing", label: "Plywood Packing" },
+    { value: "Boilers", label: "Boilers" },
+    { value: "Industrial Gas", label: "Industrial Gas" },
+    { value: "Rolling Shutters", label: "Rolling Shutters" },
+    { value: "Industrial Adhesive", label: "Industrial Adhesive" },
+    { value: "Door & Window Frames", label: "Door & Window Frames" },
+    { value: "Structural Building", label: "Structural Building" },
+    { value: "Writing Pen", label: "Writing Pen" },
+    { value: "Dresses", label: "Dresses" },
+    { value: "Packing Machines", label: "Packing Machines" },
+    {
+      value: "Designer Tiles and Paver Blocks",
+      label: "Designer Tiles and Paver Blocks",
+    },
+    { value: "Crusher Machinery", label: "Crusher Machinery" },
+    { value: "Industrial Heaters", label: "Industrial Heaters" },
+    { value: "Industrial Ovens", label: "Industrial Ovens" },
+    { value: "Food Processing Machinery", label: "Food Processing Machinery" },
+    { value: "Electrical Machinery", label: "Electrical Machinery" },
+    { value: "Electroplating", label: "Electroplating" },
+    { value: "Rubber Reclaim", label: "Rubber Reclaim" },
+    { value: "Food Products", label: "Food Products" },
+    { value: "Packaged Snacks", label: "Packaged Snacks" },
+    { value: "Lathe Work", label: "Lathe Work" },
+    { value: "Cosmetic Products", label: "Cosmetic Products" },
+    { value: "Ayurvedic Products", label: "Ayurvedic Products" },
+    { value: "Healthcare Products", label: "Healthcare Products" },
+    { value: "Rubber Machinery", label: "Rubber Machinery" },
+    { value: "Clay Tile", label: "Clay Tile" },
+    { value: "Clay Tile Machinery", label: "Clay Tile Machinery" },
+    { value: "Irrigation Pipes", label: "Irrigation Pipes" },
+    { value: "Pet Cages", label: "Pet Cages" },
+    { value: "Rubber Products", label: "Rubber Products" },
+    { value: "Plastic Containers", label: "Plastic Containers" },
+    { value: "Welding Materials", label: "Welding Materials" },
+    { value: "Wiring Cables", label: "Wiring Cables" },
+    { value: "Milk and Milk Products", label: "Milk and Milk Products" },
+    { value: "Plastic Moulded Items", label: "Plastic Moulded Items" },
+    { value: "Manure", label: "Manure" },
+    { value: "Nails", label: "Nails" },
+    { value: "Aluminium Products", label: "Aluminium Products" },
+  ];
 
   const handleClear = (event) => {
     event.preventDefault();
     reset();
     navigate(-1);
   };
-  const handleTagAddition = () => {
-    if (tagInput && !tags.includes(tagInput)) {
-      setTags([...tags, tagInput]);
-      setTagInput("");
-    }
-  };
 
-  const handleTagRemoval = (tagToRemove) => {
-    setTags(tags.filter((tag) => tag !== tagToRemove));
-  };
+
+
   const onSubmit = async (data) => {
     try {
       setLoading(true);
@@ -123,7 +196,7 @@ export default function Addproductform() {
         price: data?.price,
         units: data?.units,
         image: imageUrl,
-        tags: tags,
+        tags: data?.tags.map((i) => i.value),
         name: data?.productname,
       };
       if (isUpdate && productId) {
@@ -336,54 +409,21 @@ export default function Addproductform() {
                     Add Tags
                   </Typography>
 
-                  <Stack direction="row" spacing={2}justifyContent="center">
-                    <StyledInput
-                      placeholder="Add Tag"
-                      value={tagInput}
-                      onChange={(e) => setTagInput(e.target.value)}
-                    />
-                    <Typography
-                      onClick={handleTagAddition}
-                      sx={{
-                        width: "50%",
-                        color: "#004797",
-                        cursor: "pointer",
-                    
-                        fontSize: "0.9rem",
-                        textDecoration: "none",
-                      }}
-                    >
-                      + Add more
-                    </Typography>
-                  </Stack>
-                  <Box mt={2}>
-                    
-                    {tags?.map((tag, index) => (
-                      <Stack
-                        direction="row"
-                        key={index}
-                        alignItems="center"
-                        sx={{
-                          display: "inline-flex",
-                          marginRight: 1,
-                          padding: "5px 10px",
-                          border: "1px solid #ccc",
-                          borderRadius: "16px",
-                        }}
-                      >
-                        <Typography variant="body2" mr={1}>
-                          {tag}
-                        </Typography>
-                        <IconButton
-                          size="small"
-                          onClick={() => handleTagRemoval(tag)}
-                          sx={{ padding: 0 }}
-                        >
-                          <CloseIcon sx={{ fontSize: "0.9rem" }} />
-                        </IconButton>
-                      </Stack>
-                    ))}
-                  </Box>
+                  <Controller
+                    name="tags"
+                    control={control}
+                    defaultValue={[]}
+                    render={({ field }) => (
+                      <>
+                        <StyledSelectField
+                          placeholder="Select Tag"
+                          options={tagOptions}
+                          isMulti
+                          {...field}
+                        />
+                      </>
+                    )}
+                  />
                 </Grid>
                 <Grid item xs={12}>
                   <Typography
