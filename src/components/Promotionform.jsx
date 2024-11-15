@@ -55,7 +55,7 @@ export default function PromotionForm({ isUpdate }) {
     const match = url?.match(regExp);
     return match ? match[1] : null;
   };
-  
+
   const getAspectRatio = () => {
     switch (type) {
       case "banner":
@@ -163,7 +163,9 @@ export default function PromotionForm({ isUpdate }) {
         formData.type = "notice";
         formData.notice_title = data?.title;
         formData.notice_description = data?.description;
-        formData.notice_link = data?.link;
+        if (data?.link) {
+          formData.notice_link = data?.link;
+        }
       } else if (type === "banner" || type === "poster") {
         formData.type = type;
         formData.file_url = imageUrl;
@@ -249,7 +251,6 @@ export default function PromotionForm({ isUpdate }) {
                       ratio={getAspectRatio()}
                       value={value}
                     />{" "}
-                    
                   </>
                 )}
               />
