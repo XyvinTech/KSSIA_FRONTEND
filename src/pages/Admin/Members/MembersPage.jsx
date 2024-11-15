@@ -167,7 +167,7 @@ export default function MembersPage() {
         <Grid container alignItems="center">
           <Grid item xs={6}>
             <Typography variant="h4" color={"#4A4647"}>
-              Members List
+              Members
             </Typography>
           </Grid>
           <Grid item xs={6} container justifyContent="flex-end" spacing={2}>
