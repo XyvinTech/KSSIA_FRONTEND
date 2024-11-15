@@ -43,6 +43,7 @@ export default function MembersPage() {
     { title: "Company Name", field: "company_name" },
     { title: "Designation", field: "designation" },
     { title: "Phone Number", field: "mobile" },
+    { title: "Subscription", field: "subscription" },
   ];
   const handleSelectionChange = (newSelectedIds) => {
     setSelectedRows(newSelectedIds);

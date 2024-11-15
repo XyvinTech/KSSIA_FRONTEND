@@ -4,7 +4,7 @@ export const userColumns = [
     { title: "Company Name", field: "companyname" },
     { title: "Designation", field: "designation" },
     { title: "Phone Number", field: "phonenumber" },
-    // { title: "Subscription", field: "status" },
+    { title: "Subscription", field: "status" },
     // { title: "Rating", field: "rating" },
     // { title: "Membership Status", field: "status" },
 
