@@ -357,6 +357,7 @@ export default function Addproductform() {
                     </Typography>
                   </Stack>
                   <Box mt={2}>
+                    
                     {tags?.map((tag, index) => (
                       <Stack
                         direction="row"
