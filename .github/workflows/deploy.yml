@@ -74,5 +74,8 @@ jobs:
             # Remove temporary deployment folder
             sudo rm -rf ~/deploy-temp
 
+            # Clear any server-side cache
+            sudo rm -rf /var/cache/nginx/*
+
             # Restart NGINX to apply changes
             sudo systemctl restart nginx
