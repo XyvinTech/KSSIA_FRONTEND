@@ -6,6 +6,7 @@ import {
   Stack,
   Skeleton,
   FormHelperText,
+  IconButton,
 } from "@mui/material";
 
 import { StyledEventUpload } from "../ui/StyledEventUpload";
@@ -21,6 +22,7 @@ import { useDropDownStore } from "../store/dropDownStore";
 import { useProductsStore } from "../store/productStore";
 import { toast } from "react-toastify";
 import uploadFileToS3 from "../utils/s3Upload";
+import CloseIcon from "@mui/icons-material/Close";
 
 export default function Addproductform() {
   const navigate = useNavigate();
@@ -40,6 +42,8 @@ export default function Addproductform() {
   const location = useLocation();
   const { productId, isUpdate } = location.state || {};
   const [imageFile, setImageFile] = useState(null);
+  const [tags, setTags] = useState([]);
+  const [tagInput, setTagInput] = useState("");
   useEffect(() => {
     let filter = {};
     filter.limit = "full";
@@ -52,7 +56,6 @@ export default function Addproductform() {
   }, [productId, isUpdate, fetchProductById]);
   useEffect(() => {
     if (products && isUpdate) {
-      
       setValue("productname", products.name);
       setValue("description", products.description);
       setValue("price", products.price);
@@ -68,6 +71,7 @@ export default function Addproductform() {
           label: `${sellerUser.name.first_name} ${sellerUser.name.middle_name} ${sellerUser.name.last_name}`,
         });
       }
+      setTags(products.tags);
     }
   }, [products, isUpdate, setValue, users]);
   const option =
@@ -82,6 +86,16 @@ export default function Addproductform() {
     event.preventDefault();
     reset();
     navigate(-1);
+  };
+  const handleTagAddition = () => {
+    if (tagInput && !tags.includes(tagInput)) {
+      setTags([...tags, tagInput]);
+      setTagInput("");
+    }
+  };
+
+  const handleTagRemoval = (tagToRemove) => {
+    setTags(tags.filter((tag) => tag !== tagToRemove));
   };
   const onSubmit = async (data) => {
     try {
@@ -109,6 +123,7 @@ export default function Addproductform() {
         price: data?.price,
         units: data?.units,
         image: imageUrl,
+        tags: tags,
         name: data?.productname,
       };
       if (isUpdate && productId) {
@@ -226,7 +241,6 @@ export default function Addproductform() {
                             {errors.photo.message}
                           </span>
                         )}
-                     
                       </>
                     )}
                   />
@@ -312,7 +326,64 @@ export default function Addproductform() {
                     )}
                   />
                 </Grid>
+                <Grid item xs={12}>
+                  <Typography
+                    sx={{ marginBottom: 1 }}
+                    variant="h6"
+                    fontWeight={500}
+                    color={"#333333"}
+                  >
+                    Add Tags
+                  </Typography>
 
+                  <Stack direction="row" spacing={2}justifyContent="center">
+                    <StyledInput
+                      placeholder="Add Tag"
+                      value={tagInput}
+                      onChange={(e) => setTagInput(e.target.value)}
+                    />
+                    <Typography
+                      onClick={handleTagAddition}
+                      sx={{
+                        width: "50%",
+                        color: "#004797",
+                        cursor: "pointer",
+                    
+                        fontSize: "0.9rem",
+                        textDecoration: "none",
+                      }}
+                    >
+                      + Add more
+                    </Typography>
+                  </Stack>
+                  <Box mt={2}>
+                    {tags.map((tag, index) => (
+                      <Stack
+                        direction="row"
+                        key={index}
+                        alignItems="center"
+                        sx={{
+                          display: "inline-flex",
+                          marginRight: 1,
+                          padding: "5px 10px",
+                          border: "1px solid #ccc",
+                          borderRadius: "16px",
+                        }}
+                      >
+                        <Typography variant="body2" mr={1}>
+                          {tag}
+                        </Typography>
+                        <IconButton
+                          size="small"
+                          onClick={() => handleTagRemoval(tag)}
+                          sx={{ padding: 0 }}
+                        >
+                          <CloseIcon sx={{ fontSize: "0.9rem" }} />
+                        </IconButton>
+                      </Stack>
+                    ))}
+                  </Box>
+                </Grid>
                 <Grid item xs={12}>
                   <Typography
                     sx={{ marginBottom: 1 }}
@@ -326,7 +397,7 @@ export default function Addproductform() {
                     name="units"
                     control={control}
                     defaultValue=""
-                    rules={{ required: "Status is required" }}
+                    rules={{ required: "Units is required" }}
                     render={({ field }) => (
                       <>
                         <StyledInput placeholder="Select the unit" {...field} />
