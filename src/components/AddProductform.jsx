@@ -52,6 +52,7 @@ export default function Addproductform() {
   }, [productId, isUpdate, fetchProductById]);
   useEffect(() => {
     if (products && isUpdate) {
+      
       setValue("productname", products.name);
       setValue("description", products.description);
       setValue("price", products.price);
