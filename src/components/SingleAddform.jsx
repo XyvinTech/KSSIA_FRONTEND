@@ -272,18 +272,14 @@ export default function SingleAddform() {
                     name="last_name"
                     control={control}
                     defaultValue=""
-                    rules={{ required: "Last Name is required" }}
+                    // rules={{ required: "Last Name is required" }}
                     render={({ field }) => (
                       <>
                         <StyledInput
                           placeholder="Enter the Last Name"
                           {...field}
                         />
-                        {errors.lastname && (
-                          <span style={{ color: "red" }}>
-                            {errors.lastname.message}
-                          </span>
-                        )}
+                        
                       </>
                     )}
                   />
