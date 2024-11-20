@@ -1,21 +1,7 @@
-import React, { useState } from "react";
-import { Stack, Typography, IconButton } from "@mui/material";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import { ReactComponent as IncreaseIcon } from "../../assets/icons/IncreaseIcon.svg";
-import { ReactComponent as GreenIcon } from "../../assets/icons/IncreaseGreenIcon.svg";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import moment from "moment";
+import React from "react";
+import { Stack, Typography } from "@mui/material";
 
-export const RevenueCard = ({
-  isMobile,
-  data,
-  isDate,
-  spacing,
-  height,
-  onDateChange,
-  selectedDate,
-}) => {
+export const RevenueCard = ({ isMobile, data, spacing, height }) => {
   return (
     <Stack
       bgcolor={"white"}
@@ -38,28 +24,6 @@ export const RevenueCard = ({
             {data?.title}
           </Typography>
         </Stack>
-        {isDate && (
-          <Stack>
-            <DatePicker
-              selected={selectedDate}
-              onChange={onDateChange}
-              dateFormat="MMM, yyyy"
-              showMonthYearPicker
-              customInput={
-                <Typography
-                  fontWeight={400}
-                  fontSize={isMobile ? "12px" : "14px"}
-                  color="rgba(0, 0, 0, 0.6)"
-                >
-                  {moment(selectedDate).format("MMM, YYYY")}
-                  <IconButton size="small" sx={{ padding: 0, color: "blue" }}>
-                    <ArrowDropDownIcon fontSize="small" />
-                  </IconButton>
-                </Typography>
-              }
-            />
-          </Stack>
-        )}
       </Stack>
 
       <Stack
@@ -73,19 +37,6 @@ export const RevenueCard = ({
             ? data.amount
             : "_"}
         </Typography>
-        {data?.percentage && (
-          <Typography
-            color={
-              data?.percentage?.includes("+")
-                ? "rgba(27, 210, 17, 0.98)"
-                : "rgba(210, 17, 17, 0.98)"
-            }
-            fontSize={isMobile ? "12px" : "16px"}
-            fontWeight={400}
-          >
-            {data?.percentage}
-          </Typography>
-        )}
       </Stack>
     </Stack>
   );

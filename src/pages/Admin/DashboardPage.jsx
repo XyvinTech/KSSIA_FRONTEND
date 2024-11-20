@@ -16,7 +16,6 @@ import { ReactComponent as PromotionIcon } from "../../assets/icons/PromotionIco
 import { RevenueCard } from "../../components/Dashboard/RevenueCard";
 import { getDashboard } from "../../api/dashboard-api";
 import moment from "moment";
-import { da } from "date-fns/locale";
 
 const DashboardPage = () => {
   const [data, setData] = useState({});
@@ -32,9 +31,6 @@ const DashboardPage = () => {
     title: "Total Revenue",
     amount: `₹ ${data?.totalRevenue ? data?.totalRevenue : 0}`,
     icon: RevenueIcon,
-    percentage: `${
-      data?.totalRevenuePercentage ? data?.totalRevenuePercentage : 0
-    }`,
   };
   const membershipRevenue = {
     title: "Membership Revenue",
@@ -44,9 +40,6 @@ const DashboardPage = () => {
         : 0
     }`,
     icon: MembershipRevenueIcon,
-    percentage: `${
-      data?.membershipRevenuePercentage ? data?.membershipRevenuePercentage : 0
-    }`,
   };
   const appRevenue = {
     title: "App Revenue",
@@ -54,9 +47,6 @@ const DashboardPage = () => {
       data?.totalCategoryAppRevenue ? data?.totalCategoryAppRevenue : 0
     }`,
     icon: AppRevenueIcon,
-    percentage: `${
-      data?.appRevenuePercentage ? data?.appRevenuePercentage : 0
-    }`,
   };
   const activeMember = {
     title: "Active Users",
@@ -112,17 +102,6 @@ const DashboardPage = () => {
     }
   };
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-    const selectedMonth = moment(date).format("MM");
-    const selectedYear = moment(date).format("YYYY");
-    setMonth(Number(selectedMonth));
-    setYear(Number(selectedYear));
-  };
-  useEffect(() => {
-    fetchData();
-  }, [month, year]);
-
   return (
     <>
       <Box
@@ -140,33 +119,16 @@ const DashboardPage = () => {
         <Grid item md={6}>
           <Stack spacing={2}>
             {" "}
-            <RevenueCard
-              data={totalRevenue}
-              isDate
-              onDateChange={handleDateChange}
-              selectedDate={selectedDate}
-            />
+            <RevenueCard data={totalRevenue} />
             <Stack direction={"row"} spacing={2}>
               {" "}
               <Box width={"100%"}>
                 {" "}
-                <RevenueCard
-                  isMobile
-                  data={membershipRevenue}
-                  isDate
-                  onDateChange={handleDateChange}
-                  selectedDate={selectedDate}
-                />{" "}
+                <RevenueCard isMobile data={membershipRevenue} />{" "}
               </Box>{" "}
               <Box width={"100%"}>
                 {" "}
-                <RevenueCard
-                  isMobile
-                  data={appRevenue}
-                  isDate
-                  onDateChange={handleDateChange}
-                  selectedDate={selectedDate}
-                />{" "}
+                <RevenueCard isMobile data={appRevenue} />{" "}
               </Box>
             </Stack>
           </Stack>
