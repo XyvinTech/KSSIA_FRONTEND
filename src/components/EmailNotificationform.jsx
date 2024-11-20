@@ -42,7 +42,7 @@ export default function EmailNotificationform({ setSelectedTab }) {
           { value: "*", label: "All" },
           ...users.map((user) => ({
             value: user._id,
-            label: `${user.name.first_name} ${user.name.middle_name} ${user.name.last_name}`,
+            label: `${user?.abbreviation} ${user.name}`,
           })),
         ]
       : [];
@@ -213,7 +213,6 @@ export default function EmailNotificationform({ setSelectedTab }) {
                       field.onChange(selectedFile);
                     }}
                   />
-                
                 </>
               )}
             />

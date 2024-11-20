@@ -40,7 +40,7 @@ const StyledReview = ({ review }) => {
             <Avatar src={review?.reviewer?.profile_picture} alt="Profile Picture" />
           )}
           <ReviewerName variant="h6">
-            {review?.reviewer?.name?.first_name} {review?.reviewer?.name?.middle_name} {review?.reviewer?.name?.last_name}
+            {review?.reviewer?.name}
           </ReviewerName>
           <Box flexGrow={1} />
           <ReviewDate>{formatDate(review?.created_at || "")}</ReviewDate>

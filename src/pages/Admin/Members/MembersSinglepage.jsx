@@ -79,8 +79,7 @@ const MembersSinglepage = () => {
         alignItems={"center"}
       >
         <Typography variant="h4" color={"#4A4647"}>
-          Members list / {userData?.name?.first_name}{" "}
-          {userData?.name?.middle_name} {userData?.name?.last_name}
+          Members list /{userData?.abbreviation} {userData?.name}
         </Typography>
       </Box>{" "}
       <Divider />

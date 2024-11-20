@@ -74,7 +74,7 @@ const QRHtmlPage = () => {
     const vCardData = `
   BEGIN:VCARD
   VERSION:3.0
-  FN:${userData?.name?.first_name} ${userData?.name?.last_name}
+  FN:${userData?.name}
   ORG:${userData?.company_name}
   TEL:${userData?.phone_numbers?.personal}
   EMAIL:${userData?.email}
@@ -85,7 +85,7 @@ const QRHtmlPage = () => {
     const blob = new Blob([vCardData], { type: "text/vcard" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = `${userData?.name?.first_name}_${userData?.name?.last_name}.vcf`;
+    link.download = `${userData?.name}.vcf`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -152,7 +152,7 @@ const QRHtmlPage = () => {
                 </Stack>
                 <Stack direction={"column"} alignItems={isMobile && "center"}>
                   <Typography variant="h3" color="textTertiary" mt={1} mb={1}>
-                    {userData?.name?.first_name} {userData?.name?.last_name}
+                  {userData?.abbreviation}  {userData?.name}
                   </Typography>
                   {userData?.company_name && (
                     <Stack

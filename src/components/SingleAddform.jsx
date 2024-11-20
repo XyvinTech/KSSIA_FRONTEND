@@ -53,9 +53,8 @@ export default function SingleAddform() {
   ];
   useEffect(() => {
     if (member && isUpdate) {
-      setValue("first_name", member?.name?.first_name);
-      setValue("middle_name", member?.name?.middle_name);
-      setValue("last_name", member?.name?.last_name);
+      setValue("name", member?.name);
+      setValue("abbreviation", member?.abbreviation);
       setValue("membership_id", member?.membership_id);
       setValue("blood_group", member?.blood_group);
       setValue("designation", member?.designation);
@@ -111,11 +110,8 @@ export default function SingleAddform() {
     try {
       setIsLoading(true);
       const memberData = {
-        name: {
-          first_name: data.first_name,
-          ...(data.middle_name && { middle_name: data.middle_name }),
-          last_name: data.last_name,
-        },
+        name: data?.name,
+        abbreviation: data?.abbreviation,
         websites: Array.isArray(data.websites)
           ? data.websites.map((url) => ({ url }))
           : data.websites
@@ -185,7 +181,6 @@ export default function SingleAddform() {
     });
   };
 
-
   return (
     <>
       {loadings ? (
@@ -207,29 +202,27 @@ export default function SingleAddform() {
                     fontWeight={500}
                     color={"#333333"}
                   >
-                    First Name
+                    Abbreviation
                   </Typography>
                   <Controller
-                    name="first_name"
+                    name="abbreviation"
                     control={control}
                     defaultValue=""
-                    rules={{ required: "First Name is required" }}
                     render={({ field }) => (
                       <>
                         <StyledInput
-                          placeholder="Enter the First name"
+                          placeholder="Enter the abbreviation"
                           {...field}
                         />
-                        {errors.firstname && (
+                        {errors.abbreviation && (
                           <span style={{ color: "red" }}>
-                            {errors.firstname.message}
+                            {errors.abbreviation.message}
                           </span>
                         )}
                       </>
                     )}
                   />
                 </Grid>
-
                 <Grid item xs={12}>
                   <Typography
                     sx={{ marginBottom: 1 }}
@@ -237,49 +230,21 @@ export default function SingleAddform() {
                     fontWeight={500}
                     color={"#333333"}
                   >
-                    Middle Name
+                    Name
                   </Typography>
                   <Controller
-                    name="middle_name"
+                    name="name"
                     control={control}
                     defaultValue=""
+                    rules={{ required: " Name is required" }}
                     render={({ field }) => (
                       <>
-                        <StyledInput
-                          placeholder="Enter the Middle Name"
-                          {...field}
-                        />
-                        {errors.middlename && (
+                        <StyledInput placeholder="Enter the Name" {...field} />
+                        {errors.name && (
                           <span style={{ color: "red" }}>
-                            {errors.middlename.message}
+                            {errors.name.message}
                           </span>
                         )}
-                      </>
-                    )}
-                  />
-                </Grid>
-
-                <Grid item xs={12}>
-                  <Typography
-                    sx={{ marginBottom: 1 }}
-                    variant="h6"
-                    fontWeight={500}
-                    color={"#333333"}
-                  >
-                    Last Name
-                  </Typography>
-                  <Controller
-                    name="last_name"
-                    control={control}
-                    defaultValue=""
-                    // rules={{ required: "Last Name is required" }}
-                    render={({ field }) => (
-                      <>
-                        <StyledInput
-                          placeholder="Enter the Last Name"
-                          {...field}
-                        />
-                        
                       </>
                     )}
                   />
@@ -305,9 +270,9 @@ export default function SingleAddform() {
                           placeholder="Enter the Member ID"
                           {...field}
                         />
-                        {errors.memberid && (
+                        {errors.membership_id && (
                           <span style={{ color: "red" }}>
-                            {errors.memberid.message}
+                            {errors.membership_id.message}
                           </span>
                         )}
                       </>

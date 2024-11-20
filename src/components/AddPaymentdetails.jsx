@@ -71,7 +71,7 @@ export default function AddPaymentdetails() {
       if (sellerUser) {
         setValue("member", {
           value: sellerUser._id,
-          label: `${sellerUser.name.first_name} ${sellerUser.name.middle_name} ${sellerUser.name.last_name}`,
+          label: `${sellerUser.name}`,
         });
       }
       setValue("status", selectedStatus || "");
@@ -96,7 +96,7 @@ export default function AddPaymentdetails() {
     users && Array.isArray(users)
       ? users.map((user) => ({
           value: user._id,
-          label: `${user.name.first_name} ${user.name.middle_name} ${user.name.last_name}`,
+          label: `${user.name}`,
         }))
       : [];
   const handleClear = (event) => {
@@ -420,7 +420,6 @@ export default function AddPaymentdetails() {
                             {errors.file.message}
                           </span>
                         )}
-                     
                       </>
                     )}
                   />

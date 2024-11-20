@@ -66,7 +66,7 @@ export default function Addproductform() {
       if (sellerUser) {
         setValue("seller_id", {
           value: sellerUser._id,
-          label: `${sellerUser.name.first_name} ${sellerUser.name.middle_name} ${sellerUser.name.last_name}`,
+          label: `${sellerUser.abbreviation} ${sellerUser.name}`,
         });
       }
       const selectedTags = products?.tags?.map((Id) =>
@@ -79,7 +79,7 @@ export default function Addproductform() {
     users && Array.isArray(users)
       ? users.map((user) => ({
           value: user._id,
-          label: `${user?.name?.first_name} ${user?.name?.middle_name} ${user?.name?.last_name}`,
+          label: `${user?.abbreviation} ${user?.name} `,
         }))
       : [];
   const tagOptions = [
@@ -167,8 +167,6 @@ export default function Addproductform() {
     reset();
     navigate(-1);
   };
-
-
 
   const onSubmit = async (data) => {
     try {

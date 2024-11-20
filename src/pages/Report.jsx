@@ -35,11 +35,7 @@ export default function Report() {
   }, [isChange, pageNo, search, row]);
   const formattedReports = reports.map((report) => ({
     ...report,
-    reportBy: `${report?.reportByDetails?.name?.first_name} ${
-      report?.reportByDetails?.name?.middle_name
-        ? report?.reportByDetails?.name?.middle_name + " "
-        : ""
-    }${report?.reportByDetails?.name?.last_name}`,
+    reportBy: `${report?.reportByDetails?.name}`,
   }));
   const handleDelete = async () => {
     if (selectedRows.length > 0) {

@@ -11,9 +11,7 @@ const RsvpTable = ({ data }) => {
   };
   useEffect(() => {
     const transformedData = data.map((item) => ({
-      full_name: `${item.name.first_name} ${
-        item.name.middle_name ? item.name.middle_name + " " : ""
-      }${item.name.last_name}`,
+      full_name: `${item.name}`,
       phone_number: item.phone_numbers.company_phone_number,
       company_name: item.company_name,
     }));

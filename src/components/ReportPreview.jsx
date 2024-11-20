@@ -159,11 +159,7 @@ const ReportPreview = ({ open, onClose, onChange, data }) => {
                         fontWeight={600}
                         color={"#2C2829"}
                       >
-                        {data?.reportedElement?.name?.first_name +
-                          " " +
-                          data?.reportedElement?.name?.middle_name +
-                          " " +
-                          data?.reportedElement?.name?.last_name}
+                        {data?.reportedElement?.name}
                       </Typography>
                       <Stack
                         direction={"row"}
@@ -272,9 +268,7 @@ const ReportPreview = ({ open, onClose, onChange, data }) => {
                     variant="h6"
                     sx={{ width: "40%", textAlign: "left" }}
                   >
-                    {data?.reportBy?.name?.first_name}{" "}
-                    {data?.reportBy?.name?.middle_name}{" "}
-                    {data?.reportBy?.name?.last_name}
+                    {data?.reportBy?.name}
                   </Typography>
                 </Stack>
                 {data?.reportType === "user" && (
@@ -291,9 +285,7 @@ const ReportPreview = ({ open, onClose, onChange, data }) => {
                       variant="h6"
                       sx={{ width: "40%", textAlign: "left" }}
                     >
-                      {data?.reportedElement?.name?.first_name}{" "}
-                      {data?.reportedElement?.name?.middle_name}{" "}
-                      {data?.reportedElement?.name?.last_name}
+                      {data?.reportedElement?.name}
                     </Typography>
                   </Stack>
                 )}
@@ -312,9 +304,7 @@ const ReportPreview = ({ open, onClose, onChange, data }) => {
                         variant="h6"
                         sx={{ width: "40%", textAlign: "left" }}
                       >
-                        {data?.reportedElement?.name?.first_name}{" "}
-                        {data?.reportedElement?.name?.middle_name}{" "}
-                        {data?.reportedElement?.name?.last_name}
+                        {data?.reportedElement?.name}
                       </Typography>
                     </Stack>
                   ))}
@@ -388,7 +378,9 @@ const ReportPreview = ({ open, onClose, onChange, data }) => {
                         variant="h6"
                         sx={{ width: "40%", textAlign: "left" }}
                       >
-                        {moment(data?.reportedElement?.createdAt).format("DD-MM-YYYY HH:mm")}
+                        {moment(data?.reportedElement?.createdAt).format(
+                          "DD-MM-YYYY HH:mm"
+                        )}
                       </Typography>
                     </Stack>
                   </>
