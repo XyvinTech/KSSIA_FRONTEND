@@ -6,8 +6,6 @@ import styled from "styled-components";
 const StyledReviewContainer = styled(Grid)`
   padding: 16px;
   border-radius: 8px;
-  background-color: #f9f9f9;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   margin-bottom: 16px;
 `;
 

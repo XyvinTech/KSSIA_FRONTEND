@@ -28,7 +28,6 @@ import EditNews from "../pages/Admin/NewsandUpdates/EditNews.jsx";
 import EventSingleView from "../pages/Admin/Eventss/Eventlist/EventSingleView.jsx";
 import EditPromotion from "../pages/Admin/Promotions/EditPromotion.jsx";
 import { PrivateRoute } from "./privateRouter.jsx";
-import QRPage from "../pages/QRPage.jsx";
 import Report from "../pages/Report.jsx";
 import QRHtmlPage from "../pages/QRHtmlpage.jsx";
 

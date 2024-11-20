@@ -19,8 +19,9 @@ import { ReactComponent as AppTwitterIcon } from "../assets/icons/AppTwitterIcon
 import { ReactComponent as AppFacebookIcon } from "../assets/icons/AppFacebookIcon.svg";
 import { ReactComponent as AppBioIcon } from "../assets/icons/AppBioIcon.svg";
 import { ReactComponent as WhatsappIcon } from "../assets/icons/WhatsappIcon.svg";
-
+import bg from "../assets/images/bg.png";
 import image from "../assets/images/image.png";
+import kssia from "../assets/images/kssia.png";
 import companylogo from "../assets/images/companylogo.png";
 import { StyledButton } from "../ui/StyledButton";
 import { getSingleUser } from "../api/members-api";
@@ -114,22 +115,26 @@ const QRHtmlPage = () => {
           justifyContent="center"
           minHeight={"100vh"}
           mb={10}
-          bgcolor={isMobile ? "#fff" : "#F2F2F2"}
+          bgcolor={"#F2F2F2"}
         >
           <Grid item xs={12} sm={8} md={6} lg={5}>
             <Box
               sx={{
                 p: 4,
-                bgcolor: "#FFFFFF",
+
                 borderRadius: isMobile ? 0 : 5,
                 boxShadow: isMobile ? "none" : 2,
-                mt: 4,
               }}
             >
               <Stack
                 direction={isMobile ? "column" : "row"}
                 justifyContent={isMobile ? "center" : "start"}
                 alignItems={"center"}
+                sx={{
+                  backgroundImage: `url(${bg})`,
+                  backgroundSize: "contain",
+                  backgroundPosition: "center",
+                }}
                 spacing={isMobile ? 0 : 5}
               >
                 <Stack>
@@ -141,6 +146,7 @@ const QRHtmlPage = () => {
                     style={{
                       borderRadius: "50%",
                       objectFit: "cover",
+                      border: "2px solid #5686C0",
                     }}
                   />
                 </Stack>
@@ -169,30 +175,38 @@ const QRHtmlPage = () => {
                           {userData?.company_name}
                         </Typography>
                         <Typography variant="h8">
-                          {userData?.company_designation}
+                          {userData?.designation}
                         </Typography>
                       </Stack>
                     </Stack>
                   )}
                 </Stack>
-
-                <Typography
-                  variant="h8"
-                  color="textTertiary"
-                  mt={1}
-                  mb={1}
-                  fontWeight={600}
-                ></Typography>
               </Stack>
-              <Typography
-                variant="h5"
-                color="textTertiary"
-                mt={isMobile ? 1 : 4}
-                mb={1}
+              <Stack
+                mt={4}
+                direction={"row"}
+                bgcolor="#fff"
+                justifyContent={"space-between"}
+                padding={"10px"}
+                borderRadius={"12px"}
+                border={"1px solid rgba(0, 0, 0, 0.12)"}
+                display={"flex"}
+                alignItems={"center"}
               >
-                Personal
-              </Typography>
-              <Stack spacing={2} mb={4} mt={4}>
+                {" "}
+                <img src={kssia} alt="image" width={"93px"} height={"25px"} />
+                <Typography color={"#6D6D6D"} variant="h7">
+                  Member ID-{" "}
+                  <span style={{ color: "black" }}>
+                    {userData?.membership_id}
+                  </span>{" "}
+                </Typography>
+              </Stack>
+              <Stack spacing={2} mb={4} mt={4} sx={{
+                  backgroundImage: `url(${bg})`,
+                  backgroundSize: "contain",
+                  backgroundPosition: "center",
+                }}>
                 <Stack direction="row" alignItems="center" spacing={1}>
                   <Stack>
                     {" "}
@@ -228,30 +242,6 @@ const QRHtmlPage = () => {
                   </Stack>
                 </>
               )}
-              <>
-                {/* <Typography variant="h5" color="textTertiary" mt={4} mb={2}>
-                  Company
-                </Typography>
-                <Stack spacing={2} mb={4} mt={4}>
-                  <Stack direction="row" alignItems="center" spacing={1}>
-                    <Stack>
-                      {" "}
-                      <AppPhoneIcon />{" "}
-                    </Stack>
-                    <Typography variant="h7">
-                      {userData?.company?.phone}
-                    </Typography>
-                  </Stack>
-                  <Stack direction="row" alignItems="center" spacing={1}>
-                    <Stack>
-                      <AppLocationIcon />{" "}
-                    </Stack>
-                    <Typography variant="h7">
-                      {userData?.company?.address}
-                    </Typography>
-                  </Stack>
-                </Stack> */}
-              </>
               <Box
                 display="flex"
                 justifyContent="center"
@@ -291,15 +281,6 @@ const QRHtmlPage = () => {
               </Box>
               {userData?.reviews && userData?.reviews?.length > 0 && (
                 <>
-                  <Typography
-                    variant="h5"
-                    color="textTertiary"
-                    mt={5}
-                    mb={4}
-                    pt={2}
-                  >
-                    Reviews
-                  </Typography>
                   <Grid container spacing={4}>
                     {userData?.reviews?.map((data, index) => (
                       <Grid item xs={12} lg={12} key={index}>
@@ -331,7 +312,7 @@ const QRHtmlPage = () => {
                             display="flex"
                             alignItems="center"
                             justifyContent="flex-start"
-                            bgcolor="#F2F2F2"
+                            bgcolor="#fff"
                             borderRadius={"12px"}
                             p={2}
                           >
@@ -382,10 +363,10 @@ const QRHtmlPage = () => {
                           display="flex"
                           alignItems="center"
                           justifyContent="flex-start"
-                          bgcolor="#F2F2F2"
+                          bgcolor="#fff"
                           borderRadius={"12px"}
                           p={2}
-                          mb={5}
+                          mb={2}
                         >
                           <Stack>
                             <AppWebsiteIcon />{" "}
@@ -464,7 +445,7 @@ const QRHtmlPage = () => {
                   <Typography
                     variant="h5"
                     color="textTertiary"
-                    mt={5}
+                    mt={2}
                     mb={2}
                     pt={2}
                   >
