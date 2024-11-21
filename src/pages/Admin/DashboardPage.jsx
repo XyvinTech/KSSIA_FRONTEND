@@ -16,12 +16,15 @@ import { ReactComponent as PromotionIcon } from "../../assets/icons/PromotionIco
 import { RevenueCard } from "../../components/Dashboard/RevenueCard";
 import { getDashboard } from "../../api/dashboard-api";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
+import { useMemberStore } from "../../store/member-store";
 
 const DashboardPage = () => {
   const [data, setData] = useState({});
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [year, setYear] = useState(new Date().getFullYear());
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const{setStatus}=useMemberStore();
+  const navigate=useNavigate();
   const totalMember = {
     title: "Total KSSIA Members",
     amount: data?.userCount,
@@ -101,6 +104,13 @@ const DashboardPage = () => {
       console.error("Error fetching dashboard data:", error);
     }
   };
+useEffect(() => {
+  fetchData();
+},[])
+const fetchActiveUser = async () => {
+  setStatus("active");
+  navigate(`/members`);
+}
 
   return (
     <>
@@ -141,7 +151,7 @@ const DashboardPage = () => {
             <RevenueCard data={totalMember} />
             <Stack direction={"row"} spacing={2}>
               {" "}
-              <Box width={"100%"}>
+              <Box width={"100%"} sx={{ cursor: "pointer" }} onClick={fetchActiveUser}>
                 {" "}
                 <RevenueCard isMobile data={activeMember} />{" "}
               </Box>{" "}

@@ -16,7 +16,9 @@ const useMemberStore = create((set) => ({
   loadings: false,
   payment: [],
   totalCount: 0,
+  memberStatus: "",
   refreshMembers: false,
+  setStatus: (newStatus) => set({ memberStatus: newStatus }), 
   addMembers: async (data) => {
     await createMember(data);
   },

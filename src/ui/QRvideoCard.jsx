@@ -14,8 +14,8 @@ const QRvideoCard = ({ url }) => {
   const videoId = extractVideoId(url);
 
   const opts = {
-    height:isMobile? '200' : '150',
-    width: isMobile? '100%' : '268',
+    height:isMobile? '200' : '120',
+    width: isMobile? '100%' : '100%',
     playerVars: {
       autoplay: 1,
     },

@@ -85,8 +85,8 @@ const ProductFilter = ({ open, onClose, onApply }) => {
           <StyledSelectField
             placeholder="Select Status"
             options={[
-              { value: "active", label: "Active" },
-              { value: "inactive", label: "Inactive" },
+              { value: "pending", label: "Pending" },
+              { value: "accepted", label: "Accepted" },
             ]}
             value={status}
             onChange={(selectedOption) => setStatus(selectedOption)}

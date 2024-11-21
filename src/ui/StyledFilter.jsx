@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Typography,
   Dialog,
@@ -10,25 +10,49 @@ import {
 import { ReactComponent as CloseIcon } from "../assets/icons/CloseIcon.svg";
 import { StyledButton } from "./StyledButton";
 import StyledInput from "./StyledInput";
+import StyledSelectField from "./StyledSelectField";
+import { useMemberStore } from "../store/member-store";
 
 const StyledFilter = ({ open, onClose, onApply }) => {
+  const { memberStatus } = useMemberStore();
   const [membershipId, setMembershipId] = useState("");
   const [designation, setDesignation] = useState("");
   const [companyName, setCompanyName] = useState("");
+  const [status, setStatus] = useState(null);
   const [name, setName] = useState("");
 
+  useEffect(() => {
+    if (memberStatus) {
+      const newStatus = { value: memberStatus, label: memberStatus };
+      setStatus(newStatus);
+      handleApply(newStatus);
+    }
+  }, [memberStatus]);
   const handleClear = (event) => {
     event.preventDefault();
     setName("");
     setMembershipId("");
     setDesignation("");
     setCompanyName("");
-    onApply({ name: "", membershipId: "", designation: "", companyName: "" });
+    setStatus(null);
+    onApply({
+      name: "",
+      membershipId: "",
+      designation: "",
+      status: "",
+      companyName: "",
+    });
     onClose();
   };
 
-  const handleApply = () => {
-    onApply({ name, membershipId, designation, companyName });
+  const handleApply = (appliedStatus = status) => {
+    onApply({
+      name,
+      membershipId,
+      designation,
+      companyName,
+      status: appliedStatus?.value || "",
+    });
     onClose();
   };
 
@@ -86,6 +110,17 @@ const StyledFilter = ({ open, onClose, onApply }) => {
             placeholder={"Enter Company Name"}
             value={companyName}
             onChange={(e) => setCompanyName(e.target.value)}
+          />
+          <Typography>Status</Typography>
+          <StyledSelectField
+            placeholder="Select Status"
+            options={[
+              { value: "active", label: "active" },
+              { value: "inactive", label: "inactive" },
+              { value: "suspended", label: "suspended" },
+            ]}
+            value={status}
+            onChange={(selectedOption) => setStatus(selectedOption)}
           />
         </Stack>
       </DialogContent>

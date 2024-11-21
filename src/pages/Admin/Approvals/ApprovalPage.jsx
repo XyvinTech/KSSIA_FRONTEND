@@ -37,7 +37,7 @@ export default function ApprovalPage() {
   useEffect(() => {
     const transformedApprovals = approvals?.map((item) => ({
       ...item,
-      full_name: `${item?.author?.full_name} `,
+      full_name: `${item?.author?.name} `,
     }));
 
     setFormattedApprovals(transformedApprovals);

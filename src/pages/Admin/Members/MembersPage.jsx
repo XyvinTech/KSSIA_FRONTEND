@@ -1,11 +1,10 @@
-import { Box, Grid, Stack, Typography } from "@mui/material";
+import { Badge, Box, Grid, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { StyledButton } from "../../../ui/StyledButton";
 import StyledSearchbar from "../../../ui/StyledSearchbar";
 import { ReactComponent as FilterIcon } from "../../../assets/icons/FilterIcon.svg";
 import StyledTable from "../../../ui/StyledTable";
-import { userColumns } from "../../../assets/json/TableData";
 import axiosInstance from "../../../api/axios-interceptor";
 import CONSTANTS from "../../../constants";
 import SuspendProfile from "../../../components/SuspendProfile";
@@ -14,7 +13,6 @@ import { useMemberStore } from "../../../store/member-store";
 import { toast } from "react-toastify";
 import StyledFilter from "../../../ui/StyledFilter";
 import { getDwld } from "../../../api/members-api";
-import * as XLSX from "xlsx";
 import { generateExcel } from "../../../utils/generateExcel";
 
 export default function MembersPage() {
@@ -36,6 +34,7 @@ export default function MembersPage() {
     membershipId: "",
     designation: "",
     companyName: "",
+    status: "",
   });
   const userColumns = [
     { title: "Name", field: "full_name", padding: "none" },
@@ -62,6 +61,7 @@ export default function MembersPage() {
         if (filters.membershipId) filter.membershipId = filters.membershipId;
         if (filters.designation) filter.designation = filters.designation;
         if (filters.companyName) filter.companyName = filters.companyName;
+        if (filters.status) filter.status = filters.status;
         const response = await axiosInstance.get(CONSTANTS.MEMBERS_API, {
           params: filter,
         });
@@ -167,7 +167,6 @@ export default function MembersPage() {
       >
         <Grid container alignItems="center">
           <Grid item xs={6}>
-            
             <Typography variant="h4" color={"#4A4647"}>
               Members
             </Typography>
@@ -207,20 +206,45 @@ export default function MembersPage() {
                 placeholder={"Search members"}
                 onchange={(e) => setSearch(e.target.value)}
               />
-              <Box
-                bgcolor={"#FFFFFF"}
-                borderRadius={"50%"}
-                width={"48px"}
-                height={"48px"}
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                border="1px solid rgba(0, 0, 0, 0.12)"
-                onClick={handleOpenFilter}
-                style={{ cursor: "pointer" }}
+              <Badge
+                color="error"
+                variant="dot"
+                invisible={
+                  !(
+                    filters.name ||
+                    filters.membershipId ||
+                    filters.designation ||
+                    filters.companyName ||
+                    filters.status
+                  )
+                }  sx={{
+    "& .MuiBadge-dot": {
+      width: "15px", 
+      height: "15px", 
+      borderRadius: "50%", 
+    },}}
+                overlap="circular"
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
               >
-                <FilterIcon />
-              </Box>
+                <Box
+                  bgcolor={"#FFFFFF"}
+                  borderRadius={"50%"}
+                  width={"48px"}
+                  height={"48px"}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  border="1px solid rgba(0, 0, 0, 0.12)"
+                  onClick={handleOpenFilter}
+                  style={{ cursor: "pointer" }}
+                >
+                  {" "}
+                  <FilterIcon />
+                </Box>
+              </Badge>
             </Stack>
           </Stack>{" "}
           <Box
