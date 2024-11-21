@@ -529,7 +529,7 @@ const QRHtmlPage = () => {
                       autoPlay={true}
                       autoPlaySpeed={2000}
                       keyBoardControl={true}
-                      showDots={true}
+                      showDots={false}
                     >
                       {userData?.video?.map(
                         (videoItem, index) =>
