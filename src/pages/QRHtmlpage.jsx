@@ -1,5 +1,6 @@
 import {
   Box,
+  Divider,
   Grid,
   LinearProgress,
   Stack,
@@ -18,11 +19,11 @@ import { ReactComponent as AppWebsiteIcon } from "../assets/icons/AppWebsiteIcon
 import { ReactComponent as AppTwitterIcon } from "../assets/icons/AppTwitterIcon.svg";
 import { ReactComponent as AppFacebookIcon } from "../assets/icons/AppFacebookIcon.svg";
 import { ReactComponent as AppBioIcon } from "../assets/icons/AppBioIcon.svg";
-import { ReactComponent as WhatsappIcon } from "../assets/icons/WhatsappIcon.svg";
+import { ReactComponent as AppWhatsappIcon } from "../assets/icons/AppWhatsappIcon.svg";
+import { ReactComponent as AppContactIcon } from "../assets/icons/AddContactIcon.svg";
 import bg from "../assets/images/bg.png";
 import image from "../assets/images/image.png";
 import kssia from "../assets/images/kssia.png";
-import companylogo from "../assets/images/companylogo.png";
 import { StyledButton } from "../ui/StyledButton";
 import { getSingleUser } from "../api/members-api";
 import { useParams } from "react-router-dom";
@@ -34,15 +35,15 @@ import StyledReview from "../ui/StyledReview";
 const responsive = {
   superLargeDesktop: {
     breakpoint: { max: 4000, min: 3000 },
-    items: 5,
+    items: 1,
   },
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
-    items: 3,
+    items: 1,
   },
   tablet: {
     breakpoint: { max: 1024, min: 464 },
-    items: 2,
+    items: 1,
   },
   mobile: {
     breakpoint: { max: 464, min: 0 },
@@ -74,7 +75,7 @@ const QRHtmlPage = () => {
     const vCardData = `
   BEGIN:VCARD
   VERSION:3.0
-  FN:${userData?.name?.first_name} ${userData?.name?.last_name}
+  FN:${userData?.name}
   ORG:${userData?.company_name}
   TEL:${userData?.phone_numbers?.personal}
   EMAIL:${userData?.email}
@@ -85,7 +86,7 @@ const QRHtmlPage = () => {
     const blob = new Blob([vCardData], { type: "text/vcard" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = `${userData?.name?.first_name}_${userData?.name?.last_name}.vcf`;
+    link.download = `${userData?.name}.vcf`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -113,397 +114,526 @@ const QRHtmlPage = () => {
         <Grid
           container
           justifyContent="center"
-          minHeight={"100vh"}
+          minHeight={isMobile && "100vh"}
           mb={10}
-          bgcolor={"#F2F2F2"}
+          bgcolor={isMobile ? "#F2F2F2" : "#fff"}
         >
-          <Grid item xs={12} sm={8} md={6} lg={5}>
+          <Grid item xs={12} sm={12} md={6} lg={7}>
             <Box
               sx={{
-                p: 4,
-
                 borderRadius: isMobile ? 0 : 5,
                 boxShadow: isMobile ? "none" : 2,
+                m: 2,
+                p: 2,
               }}
             >
               <Stack
+                spacing={!isMobile && 4}
                 direction={isMobile ? "column" : "row"}
-                justifyContent={isMobile ? "center" : "start"}
-                alignItems={"center"}
-                sx={{
-                  backgroundImage: `url(${bg})`,
-                  backgroundSize: "contain",
-                  backgroundPosition: "center",
-                }}
-                spacing={isMobile ? 0 : 5}
               >
-                <Stack>
-                  <img
-                    src={userData?.profile_picture || image}
-                    alt="image"
-                    width={"130px"}
-                    height={"130px"}
-                    style={{
-                      borderRadius: "50%",
-                      objectFit: "cover",
-                      border: "2px solid #5686C0",
-                    }}
-                  />
-                </Stack>
-                <Stack direction={"column"} alignItems={isMobile && "center"}>
-                  <Typography variant="h3" color="textTertiary" mt={1} mb={1}>
-                    {userData?.name?.first_name} {userData?.name?.last_name}
-                  </Typography>
-                  {userData?.company_name && (
-                    <Stack
-                      mt={2}
-                      direction={"row"}
-                      alignItems={"center"}
-                      spacing={1}
-                    >
-                      <Stack>
-                        <img
-                          src={userData?.company_logo || companylogo}
-                          alt="image"
-                          width={"36px"}
-                          height={"36px"}
-                          style={{ borderRadius: "50%", objectFit: "cover" }}
-                        />
-                      </Stack>
-                      <Stack>
-                        <Typography variant="h6">
-                          {userData?.company_name}
-                        </Typography>
-                        <Typography variant="h8">
-                          {userData?.designation}
-                        </Typography>
-                      </Stack>
-                    </Stack>
-                  )}
-                </Stack>
-              </Stack>
-              <Stack
-                mt={4}
-                direction={"row"}
-                bgcolor="#fff"
-                justifyContent={"space-between"}
-                padding={"10px"}
-                borderRadius={"12px"}
-                border={"1px solid rgba(0, 0, 0, 0.12)"}
-                display={"flex"}
-                alignItems={"center"}
-              >
-                {" "}
-                <img src={kssia} alt="image" width={"93px"} height={"25px"} />
-                <Typography color={"#6D6D6D"} variant="h7">
-                  Member ID-{" "}
-                  <span style={{ color: "black" }}>
-                    {userData?.membership_id}
-                  </span>{" "}
-                </Typography>
-              </Stack>
-              <Stack spacing={2} mb={4} mt={4} sx={{
-                  backgroundImage: `url(${bg})`,
-                  backgroundSize: "contain",
-                  backgroundPosition: "center",
-                }}>
-                <Stack direction="row" alignItems="center" spacing={1}>
-                  <Stack>
-                    {" "}
-                    <AppPhoneIcon />{" "}
-                  </Stack>
-                  <Typography variant="h7">
-                    {userData?.phone_numbers?.personal}
-                  </Typography>
-                </Stack>
-                <Stack direction="row" alignItems="center" spacing={1}>
-                  <Stack>
-                    <AppEmailIcon />{" "}
-                  </Stack>
-                  <Typography variant="h7">{userData?.email}</Typography>
-                </Stack>
-                {userData?.address && (
-                  <Stack direction="row" alignItems="center" spacing={1}>
-                    <Stack>
-                      {" "}
-                      <AppLocationIcon />{" "}
-                    </Stack>
-                    <Typography variant="h7">{userData?.address}</Typography>
-                  </Stack>
-                )}
-              </Stack>
-              {userData?.bio && (
-                <>
-                  <AppBioIcon />
-                  <Stack>
-                    <Typography variant="h7" color="#626262" mt={1} mb={1}>
-                      {userData?.bio}
-                    </Typography>
-                  </Stack>
-                </>
-              )}
-              <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                gap={2}
-                sx={{
-                  position: "fixed",
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  zIndex: 1000,
-                  backgroundColor: "white",
-                  padding: 2,
-                  boxShadow: "0 -2px 10px rgba(0, 0, 0, 0.1)",
-                }}
-              >
-                <a
-                  href={`https://wa.me/${userData?.phone_numbers?.whatsapp_number}`}
-                  target="_blank"
-                  style={{ textDecoration: "none" }}
-                  rel="noopener noreferrer"
-                >
-                  <StyledButton
-                    variant={"primary"}
-                    name={
-                      <>
-                        <WhatsappIcon style={{ marginRight: "8px" }} /> SAY HAI
-                      </>
+                <Grid item lg={6} sm={12} pl={!isMobile && 4}>
+                  <Stack
+                    direction={"column"}
+                    justifyContent={isMobile ? "center" : "start"}
+                    alignItems={isMobile ? "center" : "flex-start"}
+                    bgcolor={!isMobile && "#fff"}
+                    sx={
+                      isMobile
+                        ? {
+                            backgroundImage: `url(${bg})`,
+                            backgroundSize: "contain",
+                            backgroundPosition: "center",
+                          }
+                        : {}
                     }
-                  />
-                </a>
-                <StyledButton
-                  variant={"secondary"}
-                  name={"SAVE CONTACT"}
-                  onClick={handleSaveContact}
-                />
-              </Box>
-              {userData?.reviews && userData?.reviews?.length > 0 && (
-                <>
-                  <Grid container spacing={4}>
-                    {userData?.reviews?.map((data, index) => (
-                      <Grid item xs={12} lg={12} key={index}>
-                        <StyledReview review={data} />
-                      </Grid>
-                    ))}{" "}
-                  </Grid>
-                </>
-              )}
-              {userData?.social_media && userData?.social_media?.length > 0 && (
-                <>
-                  {" "}
-                  <Typography variant="h5" color="textTertiary" mt={1} mb={2}>
-                    Social Media
-                  </Typography>
-                  <Stack>
-                    <Grid container spacing={isMobile ? 0 : 2}>
-                      {" "}
-                      {userData?.social_media?.map((media, index) => (
-                        <Grid
-                          item
-                          xs={12}
-                          sm={6}
-                          key={index}
-                          paddingBottom={isMobile && 3}
-                        >
-                          {" "}
-                          <Box
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="flex-start"
-                            bgcolor="#fff"
-                            borderRadius={"12px"}
-                            p={2}
-                          >
-                            {renderSocialIcon(media?.platform)}{" "}
-                            <Typography
-                              variant="h5"
-                              color="#6D6D6D"
-                              fontWeight={400}
-                              ml={1}
-                            >
-                              <a
-                                href={media?.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                style={{
-                                  textDecoration: "none",
-                                  color: "#6D6D6D",
-                                  textTransform: "capitalize",
-                                }}
-                              >
-                                {media?.platform}
-                              </a>
-                            </Typography>
-                          </Box>
-                        </Grid>
-                      ))}
-                    </Grid>
-                  </Stack>
-                </>
-              )}{" "}
-              {userData?.websites && userData?.websites?.length > 0 && (
-                <>
-                  <Typography
-                    variant="h5"
-                    color="textTertiary"
-                    mt={2}
-                    mb={1}
-                    pt={2}
+                    spacing={isMobile ? 0 : 2}
                   >
-                    Websites & links
-                  </Typography>{" "}
-                  <Grid container spacing={3}>
-                    {" "}
-                    {userData?.websites?.map((website, index) => (
-                      <Grid item xs={12} sm={6} key={index}>
-                        {" "}
-                        <Box
-                          display="flex"
-                          alignItems="center"
-                          justifyContent="flex-start"
-                          bgcolor="#fff"
-                          borderRadius={"12px"}
-                          p={2}
-                          mb={2}
+                    <Stack>
+                      <img
+                        src={userData?.profile_picture || image}
+                        alt="image"
+                        width={isMobile ? "130px" : "80px"}
+                        height={isMobile ? "130px" : "80px"}
+                        style={{
+                          borderRadius: "50%",
+                          objectFit: "cover",
+                          ...(isMobile && { border: "2px solid #5686C0" }),
+                        }}
+                      />
+                    </Stack>
+                    <Stack
+                      direction={"column"}
+                      alignItems={isMobile && "center"}
+                    >
+                      <Typography variant="h3" color="textTertiary">
+                        {userData?.abbreviation}
+                        {/* {userData?.name} */}
+                      </Typography>
+                      {userData?.company_name && (
+                        <Stack
+                          direction={"row"}
+                          alignItems={"center"}
+                          spacing={1}
                         >
                           <Stack>
-                            <AppWebsiteIcon />{" "}
+                            <Typography variant="h6">
+                              {userData?.company_name}
+                            </Typography>
+                            <Typography variant="h8" fontWeight={400}>
+                              {userData?.designation}
+                            </Typography>
                           </Stack>
-                          <Typography
-                            variant="h5"
-                            color="#6D6D6D"
-                            fontWeight={400}
-                            ml={1}
-                          >
-                            <a
-                              href={website?.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              style={{
-                                textDecoration: "none",
-                                color: "#6D6D6D",
-                              }}
-                            >
-                              {website?.url}
-                            </a>
+                        </Stack>
+                      )}
+                      {!isMobile && (
+                        <Stack spacing={2} mt={2}>
+                          <Typography variant="h7" color="#626262" mb={1}>
+                            {userData?.bio}
                           </Typography>
-                        </Box>
-                      </Grid>
-                    ))}
-                  </Grid>
-                </>
-              )}{" "}
-              {userData?.video && userData?.video?.length > 0 && (
-                <Typography
-                  variant="h5"
-                  color="textTertiary"
-                  mt={2}
-                  mb={2}
-                  pt={2}
-                >
-                  Video title
-                </Typography>
-              )}
-              {isMobile ? (
-                userData?.video?.length > 0 && (
-                  <Carousel
-                    responsive={responsive}
-                    infinite={true}
-                    swipeable={true}
-                    draggable={true}
-                    autoPlay={true}
-                    autoPlaySpeed={2000}
-                    keyBoardControl={true}
-                    showDots={false}
+
+                          <StyledButton
+                            variant={"preview"}
+                            onClick={() => {
+                              const whatsappUrl = `https://wa.me/${userData?.phone_numbers?.whatsapp_number}`;
+                              window.open(
+                                whatsappUrl,
+                                "_blank",
+                                "noopener,noreferrer"
+                              );
+                            }}
+                            name={
+                              <>
+                                <AppWhatsappIcon
+                                  style={{ marginRight: "8px" }}
+                                />{" "}
+                                SAY HAI
+                              </>
+                            }
+                          />
+                          <StyledButton
+                            variant={"primary"}
+                            name={
+                              <>
+                                <AppContactIcon
+                                  style={{ marginRight: "8px" }}
+                                />{" "}
+                                SAVE CONTACT
+                              </>
+                            }
+                            onClick={handleSaveContact}
+                          />
+                        </Stack>
+                      )}
+                    </Stack>
+                  </Stack>
+                  <Stack
+                    mt={4}
+                    direction={"row"}
+                    bgcolor="#fff"
+                    justifyContent={"space-between"}
+                    padding={"10px"}
+                    borderRadius={"12px"}
+                    border={"1px solid rgba(0, 0, 0, 0.12)"}
+                    display={isMobile ? "flex" : "none"}
+                    alignItems={"center"}
                   >
-                    {userData?.video?.map(
-                      (videoItem, index) =>
-                        videoItem?.url && (
-                          <div key={index}>
-                            <QRvideoCard url={videoItem.url} />
-                          </div>
-                        )
-                    )}
-                  </Carousel>
-                )
-              ) : (
-                <Grid container spacing={2}>
-                  {userData?.video?.map(
-                    (videoItem, index) =>
-                      videoItem?.url && (
-                        <Grid item xs={12} sm={6} key={index}>
-                          <QRvideoCard url={videoItem.url} />
-                        </Grid>
-                      )
-                  )}
-                </Grid>
-              )}
-              {userData?.certificates && userData?.certificates?.length > 0 && (
-                <>
-                  <Typography
-                    variant="h5"
-                    color="textTertiary"
-                    mt={2}
-                    mb={2}
-                    pt={2}
+                    {" "}
+                    <img
+                      src={kssia}
+                      alt="image"
+                      width={"93px"}
+                      height={"25px"}
+                    />
+                    <Typography color={"#6D6D6D"} variant="h7">
+                      Member ID-{" "}
+                      <span style={{ color: "black" }}>
+                        {userData?.membership_id}
+                      </span>{" "}
+                    </Typography>
+                  </Stack>
+                  <Stack
+                    spacing={2}
+                    mb={4}
+                    mt={4}
+                    sx={{
+                      backgroundImage: `url(${bg})`,
+                      backgroundSize: "contain",
+                      backgroundPosition: "center",
+                    }}
                   >
-                    Certificates
-                  </Typography>
-                  <Grid container spacing={2}>
-                    {userData?.certificates?.map((certificate, index) => (
-                      <Grid item xs={12} lg={6} key={index}>
-                        <QRCertificateCard certificate={certificate} />
-                      </Grid>
-                    ))}
-                  </Grid>
-                </>
-              )}
-              {userData?.awards && userData?.awards?.length > 0 && (
-                <>
-                  <Typography
-                    variant="h5"
-                    color="textTertiary"
-                    mt={1}
-                    mb={1}
-                    pt={2}
-                  >
-                    Awards
-                  </Typography>
-                  <Grid container spacing={2} mt={2} mb={10}>
-                    {userData?.awards?.map((award, index) => (
-                      <>
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                      <Stack>
                         {" "}
-                        <Grid item xs={6} lg={4} key={index}>
-                          <QRAwardCard award={award} ismobile />
+                        <AppPhoneIcon />{" "}
+                      </Stack>
+                      <Typography variant="h7">
+                        {userData?.phone_numbers?.personal}
+                      </Typography>
+                    </Stack>
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                      <Stack>
+                        <AppEmailIcon />{" "}
+                      </Stack>
+                      <Typography variant="h7">{userData?.email}</Typography>
+                    </Stack>
+                    {userData?.address && (
+                      <Stack direction="row" alignItems="center" spacing={1}>
+                        <Stack>
+                          {" "}
+                          <AppLocationIcon />{" "}
+                        </Stack>
+                        <Typography variant="h7">
+                          {userData?.address}
+                        </Typography>
+                      </Stack>
+                    )}
+                  </Stack>
+                  {userData?.bio && isMobile && (
+                    <>
+                      <AppBioIcon />
+                      <Stack>
+                        <Typography variant="h7" color="#626262" mt={1} mb={1}>
+                          {userData?.bio}
+                        </Typography>
+                      </Stack>
+                    </>
+                  )}
+                  <Box
+                    display={isMobile ? "flex" : "none"}
+                    justifyContent="center"
+                    alignItems="center"
+                    gap={2}
+                    sx={{
+                      position: "fixed",
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      zIndex: 1000,
+                      backgroundColor: "white",
+                      padding: 2,
+                      boxShadow: "0 -2px 10px rgba(0, 0, 0, 0.1)",
+                    }}
+                  >
+                    <StyledButton
+                      variant={"preview"}
+                      onClick={() => {
+                        const whatsappUrl = `https://wa.me/${userData?.phone_numbers?.whatsapp_number}`;
+                        window.open(
+                          whatsappUrl,
+                          "_blank",
+                          "noopener,noreferrer"
+                        );
+                      }}
+                      name={
+                        <>
+                          <AppWhatsappIcon style={{ marginRight: "8px" }} /> SAY
+                          HAI
+                        </>
+                      }
+                    />
+                    <StyledButton
+                      variant={"primary"}
+                      name={
+                        <>
+                          <AppContactIcon style={{ marginRight: "8px" }} /> SAVE
+                          CONTACT
+                        </>
+                      }
+                      onClick={handleSaveContact}
+                    />
+                  </Box>
+                  {isMobile &&
+                    userData?.reviews &&
+                    userData?.reviews?.length > 0 && (
+                      <> <Typography
+                      variant="h5"
+                      color="textTertiary"
+                      mt={2}
+                      mb={2}
+                    >
+                      Reviews
+                    </Typography>
+                        <Grid container spacing={4}mb={2}>
+                          {userData?.reviews?.map((data, index) => (
+                            <Grid item xs={12} lg={12} key={index}>
+                              <StyledReview review={data} />
+                            </Grid>
+                          ))}{" "}
                         </Grid>
                       </>
-                    ))}
-                  </Grid>{" "}
-                </>
-              )}{" "}
-              {Array.isArray(userData?.products) &&
-                userData?.products.length > 0 && (
-                  <>
+                    )}
+                </Grid>{" "}
+                <Divider
+                  orientation="vertical"
+                  flexItem
+                  sx={{
+                    margin: "2px",
+                  }}
+                />
+                <Grid
+                  item
+                  lg={6}
+                  sm={12}
+                  pr={!isMobile && 4}
+                  sx={
+                    !isMobile
+                      ? {
+                          maxHeight: "90vh",
+                          overflowY: "auto",
+                          overflowX: "hidden",
+                          "&::-webkit-scrollbar": {
+                            width: "8px",
+                          },
+                          "&::-webkit-scrollbar-track": {
+                            backgroundColor: "#f0f0f0",
+                          },
+                          "&::-webkit-scrollbar-thumb": {
+                            backgroundColor: "#004797",
+                            borderRadius: "4px",
+                          },
+                          "&::-webkit-scrollbar-thumb:hover": {
+                            backgroundColor: "#004797",
+                          },
+                        }
+                      : {}
+                  }
+                >
+                  {userData?.social_media &&
+                    userData?.social_media?.length > 0 && (
+                      <>
+                        {" "}
+                        <Typography
+                          variant="h5"
+                          color="textTertiary"
+                          mt={1}
+                          mb={2}
+                        >
+                          Social Media
+                        </Typography>
+                        <Stack>
+                          <Grid container spacing={isMobile ? 0 : 2}>
+                            {" "}
+                            {userData?.social_media?.map((media, index) => (
+                              <Grid
+                                item
+                                xs={12}
+                                sm={6}
+                                key={index}
+                                paddingBottom={isMobile && 3}
+                              >
+                                {" "}
+                                <Box
+                                  display="flex"
+                                  alignItems="center"
+                                  justifyContent="flex-start"
+                                  bgcolor={isMobile ? "#fff" : "#f2f2f2"}
+                                  borderRadius={"12px"}
+                                  p={2}
+                                >
+                                  {renderSocialIcon(media?.platform)}{" "}
+                                  <Typography
+                                    variant="h5"
+                                    color="#6D6D6D"
+                                    fontWeight={400}
+                                    ml={1}
+                                  >
+                                    <a
+                                      href={media?.url}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      style={{
+                                        textDecoration: "none",
+                                        color: "#6D6D6D",
+                                        textTransform: "capitalize",
+                                      }}
+                                    >
+                                      {media?.platform}
+                                    </a>
+                                  </Typography>
+                                </Box>
+                              </Grid>
+                            ))}
+                          </Grid>
+                        </Stack>
+                      </>
+                    )}{" "}
+                  {userData?.websites && userData?.websites?.length > 0 && (
+                    <>
+                      <Typography
+                        variant="h5"
+                        color="textTertiary"
+                        mt={2}
+                        mb={1}
+                        pt={2}
+                      >
+                        Websites & links
+                      </Typography>{" "}
+                      <Grid container spacing={3}>
+                        {" "}
+                        {userData?.websites?.map((website, index) => (
+                          <Grid item xs={12} sm={6} key={index}>
+                            {" "}
+                            <Box
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="flex-start"
+                              bgcolor={isMobile ? "#fff" : "#F4F9FF"}
+                              borderRadius={"12px"}
+                              p={2}
+                              mb={2}
+                            >
+                              <Stack>
+                                <AppWebsiteIcon />{" "}
+                              </Stack>
+                              <Typography
+                                variant="h5"
+                                color="#6D6D6D"
+                                fontWeight={400}
+                                ml={1}
+                              >
+                                <a
+                                  href={website?.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  style={{
+                                    textDecoration: "none",
+                                    color: "#6D6D6D",
+                                  }}
+                                >
+                                  {website?.url}
+                                </a>
+                              </Typography>
+                            </Box>
+                          </Grid>
+                        ))}
+                      </Grid>
+                    </>
+                  )}{" "}
+                  {userData?.video && userData?.video?.length > 0 && (
                     <Typography
                       variant="h5"
                       color="textTertiary"
-                      mt={5}
+                      mt={2}
                       mb={2}
                       pt={2}
                     >
-                      Products
+                      Video title
                     </Typography>
-                    <Grid container spacing={2}>
-                      {userData.products.map((certificate, index) => (
-                        <Grid item xs={6} sm={6} lg={6} key={index}>
-                          <QRProductCard product={certificate} isMobile />
+                  )}
+                  {userData?.video?.length > 0 && (
+                    <Carousel
+                      responsive={responsive}
+                      infinite={true}
+                      swipeable={true}
+                      draggable={true}
+                      autoPlay={true}
+                      autoPlaySpeed={2000}
+                      keyBoardControl={true}
+                      showDots={true}
+                    >
+                      {userData?.video?.map(
+                        (videoItem, index) =>
+                          videoItem?.url && (
+                            <div key={index}>
+                              <QRvideoCard url={videoItem.url} />
+                            </div>
+                          )
+                      )}
+                    </Carousel>
+                  )}
+                  {userData?.certificates &&
+                    userData?.certificates?.length > 0 && (
+                      <>
+                        <Typography
+                          variant="h5"
+                          color="textTertiary"
+                          mt={2}
+                          mb={2}
+                          pt={2}
+                        >
+                          Certificates
+                        </Typography>
+                        <Grid container spacing={2}>
+                          {userData?.certificates?.map((certificate, index) => (
+                            <>
+                              {" "}
+                              <Grid item xs={12} lg={6} key={index}>
+                                <QRCertificateCard
+                                  isMobile
+                                  certificate={certificate}
+                                />
+                              </Grid>
+                            </>
+                          ))}
                         </Grid>
-                      ))}
-                    </Grid>
-                  </>
-                )}
+                      </>
+                    )}
+                  {userData?.awards && userData?.awards?.length > 0 && (
+                    <>
+                      <Typography
+                        variant="h5"
+                        color="textTertiary"
+                        mt={1}
+                        mb={1}
+                        pt={2}
+                      >
+                        Awards
+                      </Typography>
+                      <Grid container spacing={2} mt={2} mb={5}>
+                        {userData?.awards?.map((award, index) => (
+                          <>
+                            {" "}
+                            <Grid item xs={6} lg={6} key={index}>
+                              <QRAwardCard award={award} ismobile />
+                            </Grid>
+                          </>
+                        ))}
+                      </Grid>{" "}
+                    </>
+                  )}{" "}
+                  {Array.isArray(userData?.products) &&
+                    userData?.products.length > 0 && (
+                      <>
+                        <Typography
+                          variant="h5"
+                          color="textTertiary"
+                          mt={2}
+                          mb={2}
+                        >
+                          Products
+                        </Typography>
+                        <Grid container spacing={2}>
+                          {userData.products.map((certificate, index) => (
+                            <Grid item xs={6} sm={6} lg={6} key={index}>
+                              <QRProductCard product={certificate} isMobile />
+                            </Grid>
+                          ))}
+                        </Grid>
+                      </>
+                    )}{" "}
+                  {!isMobile &&
+                    userData?.reviews &&
+                    userData?.reviews?.length > 0 && (
+                      <>
+                        <Typography
+                          variant="h5"
+                          color="textTertiary"
+                          mt={2}
+                          mb={2}
+                        >
+                          Reviews
+                        </Typography>
+                        <Grid container spacing={4}>
+                          {userData?.reviews?.map((data, index) => (
+                            <Grid item xs={12} lg={12} key={index}>
+                              <StyledReview review={data} />
+                            </Grid>
+                          ))}{" "}
+                        </Grid>
+                      </>
+                    )}
+                </Grid>
+              </Stack>
             </Box>
           </Grid>
         </Grid>

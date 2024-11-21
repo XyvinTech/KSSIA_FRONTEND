@@ -1,9 +1,7 @@
 import React from "react";
 import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 
-const QRCertificateCard = ({ certificate }) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+const QRCertificateCard = ({ certificate,isMobile }) => {
   return (
     <Box
       borderRadius={"8px"}
@@ -18,7 +16,7 @@ const QRCertificateCard = ({ certificate }) => {
           borderTopLeftRadius: "12px",
           borderTopRightRadius: "12px",
           width: isMobile ? "100%" : "268px",
-          height: "160px",
+          height: isMobile ? "140px" : "160px",
           objectFit: "cover",
         }}
         alt={certificate?.name}

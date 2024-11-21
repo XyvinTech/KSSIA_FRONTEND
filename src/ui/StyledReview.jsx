@@ -4,21 +4,21 @@ import moment from "moment";
 import styled from "styled-components";
 
 const StyledReviewContainer = styled(Grid)`
-  padding: 16px;
-  border-radius: 8px;
-  margin-bottom: 16px;
+  padding-top: 16px;
+  border-radius: 8px; 
 `;
 
 const ReviewerName = styled(Typography)`
-  font-size: 1.1rem;
+  font-size: 12px;
   font-weight: 500;
-  color: #2c2829;
+  color: #616161;
 `;
 
 const ReviewContent = styled(Typography)`
-  font-size: 0.95rem;
-  color: #5f6368;
+  font-size: 14px;
+  color: #343434;
   margin-top: 8px;
+  margin-left: 46px;
 `;
 
 const ReviewDate = styled(Typography)`
@@ -37,19 +37,22 @@ const StyledReview = ({ review }) => {
       <Grid item xs={12}>
         <Stack direction="row" alignItems="center" spacing={2}>
           {review?.reviewer?.profile_picture && (
-            <Avatar src={review?.reviewer?.profile_picture} alt="Profile Picture" />
+            <Avatar
+              src={review?.reviewer?.profile_picture}
+              alt="Profile Picture"
+              sx={{ width: "34px", height: "34px" }}
+            />
           )}
-          <ReviewerName variant="h6">
-            {review?.reviewer?.name?.first_name} {review?.reviewer?.name?.middle_name} {review?.reviewer?.name?.last_name}
-          </ReviewerName>
+          <ReviewerName>
+            {review?.reviewer?.name?.first_name}{" "}
+            {review?.reviewer?.name?.middle_name}{" "}
+            {review?.reviewer?.name?.last_name}
+          </ReviewerName>{" "}
+          <Rating name="read-only" value={review?.rating} readOnly size="small" />
           <Box flexGrow={1} />
           <ReviewDate>{formatDate(review?.created_at || "")}</ReviewDate>
         </Stack>
-        <Stack direction="row" alignItems="center" spacing={1} mt={1}>
-          <Rating name="read-only" value={review?.rating} readOnly />
-        </Stack>
         <ReviewContent>{review?.content}</ReviewContent>
-        
       </Grid>
     </StyledReviewContainer>
   );
