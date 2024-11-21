@@ -35,15 +35,15 @@ import StyledReview from "../ui/StyledReview";
 const responsive = {
   superLargeDesktop: {
     breakpoint: { max: 4000, min: 3000 },
-    items: 5,
+    items: 1,
   },
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
-    items: 3,
+    items: 1,
   },
   tablet: {
     breakpoint: { max: 1024, min: 464 },
-    items: 2,
+    items: 1,
   },
   mobile: {
     breakpoint: { max: 464, min: 0 },
@@ -114,20 +114,24 @@ const QRHtmlPage = () => {
         <Grid
           container
           justifyContent="center"
-          minHeight={"100vh"}
+          minHeight={isMobile && "100vh"}
           mb={10}
           bgcolor={isMobile ? "#F2F2F2" : "#fff"}
         >
           <Grid item xs={12} sm={12} md={6} lg={7}>
             <Box
               sx={{
-                p: 4,
                 borderRadius: isMobile ? 0 : 5,
                 boxShadow: isMobile ? "none" : 2,
+                m: 2,
+                p: 2,
               }}
             >
-              <Stack spacing={4} direction={isMobile ? "column" : "row"}>
-                <Grid item lg={6}sm={12}>
+              <Stack
+                spacing={!isMobile && 4}
+                direction={isMobile ? "column" : "row"}
+              >
+                <Grid item lg={6} sm={12} pl={!isMobile && 4}>
                   <Stack
                     direction={"column"}
                     justifyContent={isMobile ? "center" : "start"}
@@ -163,7 +167,7 @@ const QRHtmlPage = () => {
                     >
                       <Typography variant="h3" color="textTertiary">
                         {userData?.abbreviation}
-                        {/* {userData?.name} */}
+                        {userData?.name}
                       </Typography>
                       {userData?.company_name && (
                         <Stack
@@ -311,48 +315,53 @@ const QRHtmlPage = () => {
                     }}
                   >
                     <StyledButton
-                            variant={"preview"}
-                            onClick={() => {
-                              const whatsappUrl = `https://wa.me/${userData?.phone_numbers?.whatsapp_number}`;
-                              window.open(
-                                whatsappUrl,
-                                "_blank",
-                                "noopener,noreferrer"
-                              );
-                            }}
-                            name={
-                              <>
-                                <AppWhatsappIcon
-                                  style={{ marginRight: "8px" }}
-                                />{" "}
-                                SAY HAI
-                              </>
-                            }
-                          />
-                          <StyledButton
-                            variant={"primary"}
-                            name={
-                              <>
-                                <AppContactIcon
-                                  style={{ marginRight: "8px" }}
-                                />{" "}
-                                SAVE CONTACT
-                              </>
-                            }
-                            onClick={handleSaveContact}
-                          />
+                      variant={"preview"}
+                      onClick={() => {
+                        const whatsappUrl = `https://wa.me/${userData?.phone_numbers?.whatsapp_number}`;
+                        window.open(
+                          whatsappUrl,
+                          "_blank",
+                          "noopener,noreferrer"
+                        );
+                      }}
+                      name={
+                        <>
+                          <AppWhatsappIcon style={{ marginRight: "8px" }} /> SAY
+                          HAI
+                        </>
+                      }
+                    />
+                    <StyledButton
+                      variant={"primary"}
+                      name={
+                        <>
+                          <AppContactIcon style={{ marginRight: "8px" }} /> SAVE
+                          CONTACT
+                        </>
+                      }
+                      onClick={handleSaveContact}
+                    />
                   </Box>
-                  {userData?.reviews && userData?.reviews?.length > 0 && (
-                    <>
-                      <Grid container spacing={4}>
-                        {userData?.reviews?.map((data, index) => (
-                          <Grid item xs={12} lg={12} key={index}>
-                            <StyledReview review={data} />
-                          </Grid>
-                        ))}{" "}
-                      </Grid>
-                    </>
-                  )}
+                  {isMobile &&
+                    userData?.reviews &&
+                    userData?.reviews?.length > 0 && (
+                      <> <Typography
+                      variant="h5"
+                      color="textTertiary"
+                      mt={2}
+                      mb={2}
+                    >
+                      Reviews
+                    </Typography>
+                        <Grid container spacing={4}mb={2}>
+                          {userData?.reviews?.map((data, index) => (
+                            <Grid item xs={12} lg={12} key={index}>
+                              <StyledReview review={data} />
+                            </Grid>
+                          ))}{" "}
+                        </Grid>
+                      </>
+                    )}
                 </Grid>{" "}
                 <Divider
                   orientation="vertical"
@@ -361,7 +370,34 @@ const QRHtmlPage = () => {
                     margin: "2px",
                   }}
                 />
-                <Grid item lg={6}sm={12}>
+                <Grid
+                  item
+                  lg={6}
+                  sm={12}
+                  pr={!isMobile && 4}
+                  sx={
+                    !isMobile
+                      ? {
+                          maxHeight: "90vh",
+                          overflowY: "auto",
+                          overflowX: "hidden",
+                          "&::-webkit-scrollbar": {
+                            width: "8px",
+                          },
+                          "&::-webkit-scrollbar-track": {
+                            backgroundColor: "#f0f0f0",
+                          },
+                          "&::-webkit-scrollbar-thumb": {
+                            backgroundColor: "#004797",
+                            borderRadius: "4px",
+                          },
+                          "&::-webkit-scrollbar-thumb:hover": {
+                            backgroundColor: "#004797",
+                          },
+                        }
+                      : {}
+                  }
+                >
                   {userData?.social_media &&
                     userData?.social_media?.length > 0 && (
                       <>
@@ -484,39 +520,26 @@ const QRHtmlPage = () => {
                       Video title
                     </Typography>
                   )}
-                  {isMobile ? (
-                    userData?.video?.length > 0 && (
-                      <Carousel
-                        responsive={responsive}
-                        infinite={true}
-                        swipeable={true}
-                        draggable={true}
-                        autoPlay={true}
-                        autoPlaySpeed={2000}
-                        keyBoardControl={true}
-                        showDots={false}
-                      >
-                        {userData?.video?.map(
-                          (videoItem, index) =>
-                            videoItem?.url && (
-                              <div key={index}>
-                                <QRvideoCard url={videoItem.url} />
-                              </div>
-                            )
-                        )}
-                      </Carousel>
-                    )
-                  ) : (
-                    <Grid container spacing={2}>
+                  {userData?.video?.length > 0 && (
+                    <Carousel
+                      responsive={responsive}
+                      infinite={true}
+                      swipeable={true}
+                      draggable={true}
+                      autoPlay={true}
+                      autoPlaySpeed={2000}
+                      keyBoardControl={true}
+                      showDots={true}
+                    >
                       {userData?.video?.map(
                         (videoItem, index) =>
                           videoItem?.url && (
-                            <Grid item xs={12} sm={6} key={index}>
+                            <div key={index}>
                               <QRvideoCard url={videoItem.url} />
-                            </Grid>
+                            </div>
                           )
                       )}
-                    </Grid>
+                    </Carousel>
                   )}
                   {userData?.certificates &&
                     userData?.certificates?.length > 0 && (
@@ -535,7 +558,10 @@ const QRHtmlPage = () => {
                             <>
                               {" "}
                               <Grid item xs={12} lg={6} key={index}>
-                                <QRCertificateCard isMobile certificate={certificate} />
+                                <QRCertificateCard
+                                  isMobile
+                                  certificate={certificate}
+                                />
                               </Grid>
                             </>
                           ))}
@@ -582,6 +608,27 @@ const QRHtmlPage = () => {
                               <QRProductCard product={certificate} isMobile />
                             </Grid>
                           ))}
+                        </Grid>
+                      </>
+                    )}{" "}
+                  {!isMobile &&
+                    userData?.reviews &&
+                    userData?.reviews?.length > 0 && (
+                      <>
+                        <Typography
+                          variant="h5"
+                          color="textTertiary"
+                          mt={2}
+                          mb={2}
+                        >
+                          Reviews
+                        </Typography>
+                        <Grid container spacing={4}>
+                          {userData?.reviews?.map((data, index) => (
+                            <Grid item xs={12} lg={12} key={index}>
+                              <StyledReview review={data} />
+                            </Grid>
+                          ))}{" "}
                         </Grid>
                       </>
                     )}

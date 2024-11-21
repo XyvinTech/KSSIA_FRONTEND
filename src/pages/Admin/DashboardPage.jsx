@@ -38,8 +38,8 @@ const DashboardPage = () => {
   const membershipRevenue = {
     title: "Membership Revenue",
     amount: `₹ ${
-      data?.totalCategoryMembershipRevenue
-        ? data?.totalCategoryMembershipRevenue
+      data?.membershipRevenue
+        ? data?.membershipRevenue
         : 0
     }`,
     icon: MembershipRevenueIcon,
@@ -47,7 +47,7 @@ const DashboardPage = () => {
   const appRevenue = {
     title: "App Revenue",
     amount: `₹ ${
-      data?.totalCategoryAppRevenue ? data?.totalCategoryAppRevenue : 0
+      data?.appRevenue ? data?.appRevenue : 0
     }`,
     icon: AppRevenueIcon,
   };

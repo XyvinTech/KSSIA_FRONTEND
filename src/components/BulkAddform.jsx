@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { Box, Divider, Stack, Typography } from "@mui/material";
 import Papa from "papaparse";
 import * as XLSX from "xlsx";
@@ -26,74 +26,48 @@ const BulkAddform = () => {
     reader.onload = (event) => {
       const data = event.target.result;
 
+      const processPhoneNumbers = (row) => ({
+        personal: row.personal ? `+91${row.personal}` : undefined,
+        landline: row.landline ? `+91${row.landline}` : undefined,
+        company_phone_number: row.company_phone_number
+          ? `+91${row.company_phone_number}`
+          : undefined,
+        whatsapp_number: row.whatsapp_number
+          ? `+91${row.whatsapp_number}`
+          : undefined,
+        whatsapp_business_number: row.whatsapp_business_number
+          ? `+91${row.whatsapp_business_number}`
+          : undefined,
+      });
+
+      const processData = (data) =>
+        data.map((row) => {
+          const result = {
+            abbreviation: row.abbreviation || "",
+            name: row.name || "",
+            designation: row.designation || "",
+            membership_id: row.membership_id || "",
+            phone_numbers: processPhoneNumbers(row),
+          };
+          if (row.email && row.email.trim() !== "") {
+            result.email = row.email.trim();
+          }
+          if (row.company_name && row.company_name.trim() !== "") {
+            result.company_name = row.company_name.trim();
+          }
+          if (row.address && row.address.trim() !== "") {
+            result.address = row.address.trim();
+          }
+
+          return result;
+        });
+
       if (file.type === "text/csv") {
         const parsedData = Papa.parse(data, { header: true });
         const filteredData = parsedData.data.filter((row) =>
           Object.values(row).some((value) => value !== null && value !== "")
         );
-
-        const splitFullName = (fullName) => {
-          const titles = ["Mr.", "Mrs.", "Dr.", "Miss", "Ms."];
-          const nameParts = fullName
-            .split(" ")
-            .filter((part) => !titles.includes(part));
-
-          let firstName = "";
-          let middleName = "";
-          let lastName = "";
-
-          if (nameParts.length === 1) {
-            firstName = nameParts[0];
-          } else if (nameParts.length === 2) {
-            firstName = nameParts[0];
-            lastName = nameParts[1];
-          } else if (nameParts.length > 2) {
-            firstName = nameParts[0];
-            middleName = nameParts.slice(1, nameParts.length - 1).join(" ");
-            lastName = nameParts[nameParts.length - 1];
-          }
-
-          const result = {
-            first_name: firstName,
-            last_name: lastName,
-          };
-
-          if (middleName) {
-            result.middle_name = middleName;
-          }
-
-          return result;
-        };
-
-        const formatPhoneNumber = (phoneNumber, addPrefix = true) => {
-          if (addPrefix && !phoneNumber.startsWith("+91")) {
-            return `+91${phoneNumber}`;
-          }
-          return phoneNumber;
-        };
-
-        const formattedData = filteredData.map((row) => {
-          const formattedRow = {
-            name: splitFullName(row["Name"]),
-            email: row["Email ID"] || "",
-            phone_numbers: {
-              personal: formatPhoneNumber(row["Mobile Number"] || ""),
-              whatsapp_number: formatPhoneNumber(row["WhatsApp Number"] || ""),
-              landline: formatPhoneNumber(row["Landline Number"] || "", false), // No prefix for landline
-            },
-            designation: row["Designation"] || "",
-            membership_id: row["MemberShip ID"] || "",
-          };
-
-          // Add address only if it's non-empty
-          if (row["Address"] && row["Address"].trim() !== "") {
-            formattedRow.address = row["Address"];
-          }
-
-          return formattedRow;
-        });
-
-        callback(formattedData);
+        callback(processData(filteredData));
       } else if (
         file.type === "application/vnd.ms-excel" ||
         file.type ===
@@ -106,33 +80,7 @@ const BulkAddform = () => {
         const filteredData = jsonData.filter((row) =>
           Object.values(row).some((value) => value !== null && value !== "")
         );
-
-        const formattedData = filteredData.map((row) => {
-          const formattedRow = {
-            name: {
-              first_name: row["Name"].split(" ")[1] || "",
-              middle_name: "",
-              last_name: row["Name"].split(" ").slice(2).join(" ") || "",
-            },
-            email: row["Email ID"] || "",
-            phone_numbers: {
-              personal: formatPhoneNumber(row["Mobile Number"] || ""),
-              whatsapp_number: formatPhoneNumber(row["WhatsApp Number"] || ""),
-              landline: row["Landline Number"] || "", // No prefix for landline
-            },
-            designation: row["Designation"] || "",
-            membership_id: row["MemberShip ID"] || "",
-          };
-
-          // Add address only if it's non-empty
-          if (row["Address"] && row["Address"].trim() !== "") {
-            formattedRow.address = row["Address"];
-          }
-
-          return formattedRow;
-        });
-
-        callback(formattedData);
+        callback(processData(filteredData));
       }
     };
 
