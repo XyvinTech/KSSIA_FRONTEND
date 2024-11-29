@@ -22,7 +22,7 @@ const ReviewContent = styled(Typography)`
 `;
 
 const ReviewDate = styled(Typography)`
-  font-size: 0.85rem;
+  font-size: 10px;
   color: #b5b8c5;
   margin-top: 4px;
 `;

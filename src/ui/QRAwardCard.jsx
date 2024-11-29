@@ -4,7 +4,7 @@ import { Box, Typography } from "@mui/material";
 const QRAwardCard = ({ award, ismobile }) => {
   return (
     <Box
-      borderRadius={"8px"}
+      borderRadius={"12px"}
       bgcolor={"white"}
       width={ismobile ? "100%" : "260px"}
       border={"1px solid rgba(0, 0, 0, 0.12)"}

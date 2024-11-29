@@ -4,7 +4,7 @@ import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 const QRCertificateCard = ({ certificate,isMobile }) => {
   return (
     <Box
-      borderRadius={"8px"}
+      borderRadius={"12px"}
       bgcolor={"white"}
       width={isMobile ? "100%" : "268px"}
       border={"1px solid rgba(0, 0, 0, 0.12)"}
