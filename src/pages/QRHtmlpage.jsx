@@ -116,7 +116,16 @@ const QRHtmlPage = () => {
           justifyContent="center"
           minHeight={isMobile && "100vh"}
           mb={10}
-          bgcolor={isMobile ? "#F2F2F2" : "#fff"}
+          style={
+            isMobile
+              ? {}
+              : {
+                  backgroundImage: `url(${bg})`,
+                  backgroundSize: "contain",
+                  backgroundPosition: "center",
+                }
+          }
+          bgcolor={isMobile ? "#F2F2F2" : "#FFF"}
         >
           <Grid item xs={12} sm={12} md={6} lg={7}>
             <Box
@@ -126,6 +135,7 @@ const QRHtmlPage = () => {
                 m: 2,
                 p: 2,
               }}
+              bgcolor={!isMobile && "#fff"}
             >
               <Stack
                 spacing={!isMobile && 4}
@@ -179,7 +189,11 @@ const QRHtmlPage = () => {
                             <Typography variant="h6">
                               {userData?.company_name}
                             </Typography>
-                            <Typography variant="h8" fontWeight={400}>
+                            <Typography
+                              variant="h6"
+                              fontWeight={600}
+                              textAlign={isMobile && "center"}
+                            >
                               {userData?.designation}
                             </Typography>
                           </Stack>
@@ -251,16 +265,7 @@ const QRHtmlPage = () => {
                       </span>{" "}
                     </Typography>
                   </Stack>
-                  <Stack
-                    spacing={2}
-                    mb={4}
-                    mt={4}
-                    sx={{
-                      backgroundImage: `url(${bg})`,
-                      backgroundSize: "contain",
-                      backgroundPosition: "center",
-                    }}
-                  >
+                  <Stack spacing={2} mb={4} mt={4}>
                     <Stack direction="row" alignItems="center" spacing={1}>
                       <Stack>
                         {" "}
@@ -345,15 +350,17 @@ const QRHtmlPage = () => {
                   {isMobile &&
                     userData?.reviews &&
                     userData?.reviews?.length > 0 && (
-                      <> <Typography
-                      variant="h5"
-                      color="textTertiary"
-                      mt={2}
-                      mb={2}
-                    >
-                      Reviews
-                    </Typography>
-                        <Grid container spacing={4}mb={2}>
+                      <>
+                        {" "}
+                        <Typography
+                          variant="h5"
+                          color="textTertiary"
+                          mt={2}
+                          mb={2}
+                        >
+                          Reviews
+                        </Typography>
+                        <Grid container spacing={4} mb={2}>
                           {userData?.reviews?.map((data, index) => (
                             <Grid item xs={12} lg={12} key={index}>
                               <StyledReview review={data} />
@@ -375,6 +382,7 @@ const QRHtmlPage = () => {
                   lg={6}
                   sm={12}
                   pr={!isMobile && 4}
+                 
                   sx={
                     !isMobile
                       ? {
@@ -388,11 +396,11 @@ const QRHtmlPage = () => {
                             backgroundColor: "#f0f0f0",
                           },
                           "&::-webkit-scrollbar-thumb": {
-                            backgroundColor: "#004797",
+                            backgroundColor: "#CACACA",
                             borderRadius: "4px",
                           },
                           "&::-webkit-scrollbar-thumb:hover": {
-                            backgroundColor: "#004797",
+                            backgroundColor: "#CACACA",
                           },
                         }
                       : {}
