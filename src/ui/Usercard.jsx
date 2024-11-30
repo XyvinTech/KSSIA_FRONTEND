@@ -54,7 +54,11 @@ const UserCard = ({ user }) => {
             <StarIcon /> {user?.id}
           </Typography>
 
-          <Typography variant="h5" color={"#4A4647"}>
+          <Typography
+            variant="h5"
+            color={"#4A4647"}
+            textTransform={"capitalize"}
+          >
             {user?.abbreviation} {user?.name}
           </Typography>
           <Typography variant="h6" color={"#4A4647"}>

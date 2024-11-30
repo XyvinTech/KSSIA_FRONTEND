@@ -217,12 +217,14 @@ export default function MembersPage() {
                     filters.companyName ||
                     filters.status
                   )
-                }  sx={{
-    "& .MuiBadge-dot": {
-      width: "15px", 
-      height: "15px", 
-      borderRadius: "50%", 
-    },}}
+                }
+                sx={{
+                  "& .MuiBadge-dot": {
+                    width: "15px",
+                    height: "15px",
+                    borderRadius: "50%",
+                  },
+                }}
                 overlap="circular"
                 anchorOrigin={{
                   vertical: "top",

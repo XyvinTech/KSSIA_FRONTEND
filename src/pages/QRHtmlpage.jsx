@@ -175,10 +175,10 @@ const QRHtmlPage = () => {
                       direction={"column"}
                       alignItems={isMobile && "center"}
                     >
-                      <Typography variant="h3" color="textTertiary">
-                        {userData?.abbreviation}
-                        {userData?.name}
+                      <Typography variant="h3" color="textTertiary" textTransform={"capitalize"}>
+                      {userData?.abbreviation} {' '} {userData?.name}
                       </Typography>
+
                       {userData?.company_name && (
                         <Stack
                           direction={"row"}
@@ -193,6 +193,7 @@ const QRHtmlPage = () => {
                               variant="h6"
                               fontWeight={600}
                               textAlign={isMobile && "center"}
+                              textTransform={"capitalize"}
                             >
                               {userData?.designation}
                             </Typography>
@@ -382,7 +383,6 @@ const QRHtmlPage = () => {
                   lg={6}
                   sm={12}
                   pr={!isMobile && 4}
-                 
                   sx={
                     !isMobile
                       ? {

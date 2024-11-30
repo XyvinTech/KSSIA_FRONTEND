@@ -78,8 +78,8 @@ const MembersSinglepage = () => {
         display={"flex"}
         alignItems={"center"}
       >
-        <Typography variant="h4" color={"#4A4647"}>
-          Members list /{userData?.abbreviation} {userData?.name}
+        <Typography variant="h4" color={"#4A4647"} textTransform={"capitalize"}>
+          Members list /{userData?.abbreviation}  {' '}{userData?.name}
         </Typography>
       </Box>{" "}
       <Divider />

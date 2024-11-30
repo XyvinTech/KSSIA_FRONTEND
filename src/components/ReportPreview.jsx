@@ -178,7 +178,7 @@ const ReportPreview = ({ open, onClose, onChange, data }) => {
                           }}
                         />
                         <Stack justifyContent={"start"} width={"100%"}>
-                          <Typography fontWeight={600}>
+                          <Typography fontWeight={600} textTransform={"capitalize"}>
                             {data?.reportedElement?.designation}
                           </Typography>
                           <Typography>

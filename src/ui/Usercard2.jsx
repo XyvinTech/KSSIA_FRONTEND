@@ -25,7 +25,7 @@ const UserCard2 = ({ company }) => {
           style={{ borderRadius: "12px", marginRight: "16px" }} // Add margin to the right of the image
         />
         <Box>
-          <Typography variant="h4" color="#000000" mt={1}>
+          <Typography variant="h4" color="#000000" mt={1} textTransform={"capitalize"}>
             {company?.designation}
           </Typography>
           <Typography variant="h6" color="#000000" mt={1}>

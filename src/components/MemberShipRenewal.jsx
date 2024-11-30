@@ -86,7 +86,7 @@ const MemberShipRenewal = ({ open, onClose, data, onChange }) => {
               <Typography variant="h7" color={"#2C2829"} fontWeight={700}>
                 Payee name
               </Typography>
-              <Typography variant="h6" color={"#4A4647"}>
+              <Typography variant="h6" color={"#4A4647"} textTransform={"capitalize"}>
                 {data?.member?.abbreviation} {data?.member?.name}
               </Typography>
             </Stack>{" "}
