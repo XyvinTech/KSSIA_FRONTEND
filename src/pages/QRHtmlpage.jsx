@@ -225,6 +225,7 @@ const QRHtmlPage = () => {
                               </>
                             }
                           />
+                          
                           <StyledButton
                             variant={"primary"}
                             name={
