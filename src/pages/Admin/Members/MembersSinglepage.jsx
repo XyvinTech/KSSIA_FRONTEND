@@ -112,7 +112,7 @@ const MembersSinglepage = () => {
         }}
       >
         <Tab label="Profile" />
-        <Tab label="Payments" />
+        {/* <Tab label="Payments" /> */}
         {/* <Tab label="Subscriptions" /> */}
         <Tab label="Products" />
         <Tab label="Requirements" />
@@ -124,11 +124,7 @@ const MembersSinglepage = () => {
             <MemberProfile data={userData} />
           </Grid>
         )}
-        {selectedTab === 1 && (
-          <Grid>
-            <MembersPayments id={id} />
-          </Grid>
-        )}
+       
         {/* {selectedTab === 2 && (
           <Grid container >
            
@@ -158,17 +154,17 @@ const MembersSinglepage = () => {
           </Grid>
         )} */}
 
-        {selectedTab === 2 && (
+        {selectedTab === 1 && (
           <Grid>
             <MembersProducts id={id} />
           </Grid>
         )}
-        {selectedTab === 3 && (
+        {selectedTab === 2 && (
           <Grid>
             <MembersRequirements id={id} />
           </Grid>
         )}
-        {selectedTab === 4 && (
+        {selectedTab === 3 && (
           <Grid container item xs={12}>
             {/* <Grid item xs={12}>
               <MemberAnalytics />
