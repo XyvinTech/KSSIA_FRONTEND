@@ -89,7 +89,7 @@ const StyledFilter = ({ open, onClose, onApply }) => {
             Filter
           </Typography>
           <Typography
-            onClick={handleClear}
+            onClick={onClose}
             color="#E71D36"
             style={{ cursor: "pointer" }}
           >

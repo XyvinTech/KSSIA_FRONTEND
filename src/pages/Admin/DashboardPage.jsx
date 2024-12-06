@@ -103,9 +103,11 @@ const DashboardPage = () => {
   }, []);
   const fetchActiveUser = async (status) => {
     setStatus(status);
+    setSub(null);
     navigate(`/members`);
   };
   const fetchSub = async () => {
+    setStatus(null);
     setSub("premium");
     navigate(`/members`);
   };
