@@ -56,12 +56,12 @@ const StyledFilter = ({ open, onClose, onApply }) => {
     if (memberStatus) {
       const newStatus = { value: memberStatus, label: memberStatus };
       setStatus(newStatus);
-      handleApply(newStatus);
+      handleApply(newStatus, subscription);
     }
     if (memberSub) {
       const newStatus = { value: memberSub, label: memberSub };
       setSubscription(newStatus);
-      handleApply(newStatus);
+      handleApply(status, newStatus);
     }
   }, [memberStatus, memberSub]);
   const handleStatusChange = (selectedOption) => {
