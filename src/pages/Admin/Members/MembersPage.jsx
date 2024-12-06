@@ -62,6 +62,7 @@ export default function MembersPage() {
         if (filters.designation) filter.designation = filters.designation;
         if (filters.companyName) filter.companyName = filters.companyName;
         if (filters.status) filter.status = filters.status;
+        if (filters.subscription) filter.subscription = filters.subscription;
         const response = await axiosInstance.get(CONSTANTS.MEMBERS_API, {
           params: filter,
         });
@@ -79,7 +80,6 @@ export default function MembersPage() {
 
     fetchUserData();
   }, [isChange, pageNo, search, row, filters]);
-
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -215,7 +215,8 @@ export default function MembersPage() {
                     filters.membershipId ||
                     filters.designation ||
                     filters.companyName ||
-                    filters.status
+                    filters.status||
+                    filters.subscription
                   )
                 }
                 sx={{

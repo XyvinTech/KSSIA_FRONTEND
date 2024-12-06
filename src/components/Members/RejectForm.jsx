@@ -94,7 +94,7 @@ const RejectForm = ({ open, onClose, data }) => {
             Reason for Rejection
           </Typography>
           <Typography variant="h6" color={"#4A4647"}>
-            {data?.reason || "Lorem ipsum dolor sit amet consectetur."}
+            {data?.reason }
           </Typography>
         </Stack>
       </DialogContent>

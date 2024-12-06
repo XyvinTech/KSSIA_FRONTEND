@@ -36,10 +36,10 @@ const RemoveProduct = ({ open, onClose, onChange }) => {
             <Typography variant="h3" color={"#2C2829"} textAlign={"center"}>
               Are you sure you want to remove the product ?
             </Typography>
-            <Typography variant="h7" color={"#87898E"} textAlign={"center"}>
+            {/* <Typography variant="h7" color={"#87898E"} textAlign={"center"}>
               Lorem ipsum dolor sit amet consectetur. Eget in ac urna
               suspendisse.{" "}
-            </Typography>
+            </Typography> */}
           </Stack>
         </DialogContent>
         <Stack

@@ -14,20 +14,14 @@ import StyledSelectField from "./StyledSelectField";
 import { useMemberStore } from "../store/member-store";
 
 const StyledFilter = ({ open, onClose, onApply }) => {
-  const { memberStatus } = useMemberStore();
+  const { memberStatus, memberSub } = useMemberStore();
   const [membershipId, setMembershipId] = useState("");
   const [designation, setDesignation] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [status, setStatus] = useState(null);
+  const [subscription, setSubscription] = useState(null);
   const [name, setName] = useState("");
 
-  useEffect(() => {
-    if (memberStatus) {
-      const newStatus = { value: memberStatus, label: memberStatus };
-      setStatus(newStatus);
-      handleApply(newStatus);
-    }
-  }, [memberStatus]);
   const handleClear = (event) => {
     event.preventDefault();
     setName("");
@@ -35,25 +29,43 @@ const StyledFilter = ({ open, onClose, onApply }) => {
     setDesignation("");
     setCompanyName("");
     setStatus(null);
+    setSubscription(null);
     onApply({
       name: "",
       membershipId: "",
       designation: "",
       status: "",
+      subscription: "",
       companyName: "",
     });
     onClose();
   };
 
-  const handleApply = (appliedStatus = status) => {
+  const handleApply = (appliedStatus = status, appliedSub = subscription) => {
     onApply({
       name,
       membershipId,
       designation,
       companyName,
-      status: appliedStatus?.value || "",
+      status: appliedStatus?.value || status?.value || "",
+      subscription: appliedSub?.value || subscription?.value || "",
     });
     onClose();
+  };
+  useEffect(() => {
+    if (memberStatus) {
+      const newStatus = { value: memberStatus, label: memberStatus };
+      setStatus(newStatus);
+      handleApply(newStatus);
+    }
+    if (memberSub) {
+      const newStatus = { value: memberSub, label: memberSub };
+      setSubscription(newStatus);
+      handleApply(newStatus);
+    }
+  }, [memberStatus, memberSub]);
+  const handleStatusChange = (selectedOption) => {
+    setStatus(selectedOption);
   };
 
   return (
@@ -86,7 +98,7 @@ const StyledFilter = ({ open, onClose, onApply }) => {
         </Box>
       </DialogTitle>
       <DialogContent sx={{ padding: 0 }}>
-        <Stack spacing={2} padding={2}>
+        <Stack spacing={2} padding={2} mb={12}>
           <Typography>Name</Typography>
           <StyledInput
             placeholder={"Enter Member Name"}
@@ -120,7 +132,17 @@ const StyledFilter = ({ open, onClose, onApply }) => {
               { value: "suspended", label: "suspended" },
             ]}
             value={status}
-            onChange={(selectedOption) => setStatus(selectedOption)}
+            onChange={handleStatusChange}
+          />
+          <Typography>Subscription</Typography>
+          <StyledSelectField
+            placeholder="Select Subscription"
+            options={[
+              { value: "free", label: "Free" },
+              { value: "premium", label: "Premium" },
+            ]}
+            value={subscription}
+            onChange={(selectedOption) => setSubscription(selectedOption)}
           />
         </Stack>
       </DialogContent>
