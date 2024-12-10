@@ -42,8 +42,8 @@ const MembersSinglepage = () => {
   const [userData, setUserData] = useState({});
   const [isChange, setIsChange] = useState(false);
   const { id } = useParams();
-  const {refreshMembers}=useMemberStore();
-  const { fetchsubscriptionByUser, cards, refreshMember } = usePaymentStore();
+  const { refreshMembers } = useMemberStore();
+  const { fetchPaymentById, payment, refreshMember } = usePaymentStore();
   useEffect(() => {
     async function init() {
       const response = await axiosInstance.get(
@@ -55,7 +55,7 @@ const MembersSinglepage = () => {
       setUserData(response.data.data);
     }
     init();
-  }, [id, isChange,refreshMembers]);
+  }, [id, isChange, refreshMembers]);
   const handleIsChange = () => {
     setIsChange(!isChange);
   };
@@ -64,10 +64,8 @@ const MembersSinglepage = () => {
     setSelectedTab(newValue);
   };
   useEffect(() => {
-    fetchsubscriptionByUser(id);
-    console.log("fetching");
+    fetchPaymentById(id);
   }, [refreshMember]);
-  console.log("refreshMember", refreshMember);
 
   return (
     <>
@@ -79,7 +77,7 @@ const MembersSinglepage = () => {
         alignItems={"center"}
       >
         <Typography variant="h4" color={"#4A4647"} textTransform={"capitalize"}>
-          Members list /{userData?.abbreviation}  {' '}{userData?.name}
+          Members list /{userData?.abbreviation} {userData?.name}
         </Typography>
       </Box>{" "}
       <Divider />
@@ -113,7 +111,7 @@ const MembersSinglepage = () => {
       >
         <Tab label="Profile" />
         {/* <Tab label="Payments" /> */}
-        {/* <Tab label="Subscriptions" /> */}
+        <Tab label="Subscriptions" />
         <Tab label="Products" />
         <Tab label="Requirements" />
         <Tab label="Reviews" />
@@ -124,47 +122,33 @@ const MembersSinglepage = () => {
             <MemberProfile data={userData} />
           </Grid>
         )}
-       
-        {/* {selectedTab === 2 && (
-          <Grid container >
-           
-              {cards && cards?.length > 0 ? (
-               <Stack direction={"column"} spacing={3}  >
-                  {cards.some((p) => p.category === "app") && (
-                    <AppSubscriptionCard
-                      payment={cards.find((p) => p.category === "app")}
-                    />
-                  )}
-                  {cards.some((p) => p.category === "membership") && (
-                    <MemberSubscriptionCard
-                      payment={cards.find((p) => p.category === "membership")}
-                      onChange={handleIsChange}
-                    />
-                  )}
-                </Stack>
-              ) : (
-                <ReviewContainer>
-                  <Box width="100%" display="flex" justifyContent="center">
-                    <StyledNoReviewsMessage>
-                      No Subscription
-                    </StyledNoReviewsMessage>
-                  </Box>
-                </ReviewContainer>
-              )}
-          </Grid>
-        )} */}
 
         {selectedTab === 1 && (
+          <Grid container>
+            <Stack direction={"column"} spacing={3}>
+              <AppSubscriptionCard
+                payment={payment?.find((p) => p?.category === "app")}
+              />
+
+              <MemberSubscriptionCard
+                payment={payment.find((p) => p.category === "membership")}
+                onChange={handleIsChange}
+              />
+            </Stack>
+          </Grid>
+        )}
+
+        {selectedTab === 2 && (
           <Grid>
             <MembersProducts id={id} />
           </Grid>
         )}
-        {selectedTab === 2 && (
+        {selectedTab === 3 && (
           <Grid>
             <MembersRequirements id={id} />
           </Grid>
         )}
-        {selectedTab === 3 && (
+        {selectedTab === 4 && (
           <Grid container item xs={12}>
             {/* <Grid item xs={12}>
               <MemberAnalytics />

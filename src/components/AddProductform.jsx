@@ -38,7 +38,7 @@ export default function Addproductform() {
     useProductsStore();
   const [loading, setLoading] = useState(false);
   const { users, fetchUsers } = useDropDownStore();
-
+  const [type, setType] = useState();
   const location = useLocation();
   const { productId, isUpdate } = location.state || {};
   const [imageFile, setImageFile] = useState(null);
@@ -69,7 +69,11 @@ export default function Addproductform() {
           label: `${sellerUser.abbreviation} ${sellerUser.name}`,
         });
       }
-      const selectedTags = products?.tags?.map((Id) =>
+      const selectedCat = category.find((cat) => cat?.value === products?.category);
+      setValue("category", selectedCat || []);
+      setType(products?.category)
+      
+      const selectedTags = products?.subcategory?.map((Id) =>
         tagOptions.find((option) => option?.value === Id)
       );
       setValue("tags", selectedTags || []);
@@ -82,92 +86,318 @@ export default function Addproductform() {
           label: `${user?.abbreviation} ${user?.name} `,
         }))
       : [];
-  const tagOptions = [
-    { value: "Pipes and Fillings", label: "Pipes and Fillings" },
-    { value: "Water Tanks", label: "Water Tanks" },
-    { value: "Water Taps", label: "Water Taps" },
-    { value: "Septic Tanks", label: "Septic Tanks" },
-    { value: "Carbuoys", label: "Carbuoys" },
-    { value: "Garden Hoses", label: "Garden Hoses" },
-    { value: "Chairs", label: "Chairs" },
-    { value: "Printing Machinery", label: "Printing Machinery" },
-    { value: "Printing Work", label: "Printing Work" },
-    { value: "Multiwood", label: "Multiwood" },
-    { value: "Films", label: "Films" },
-    { value: "Adhesive Tapes", label: "Adhesive Tapes" },
+  const category = [
+    { value: "Plastic Products", label: "Plastic Products" },
+    { value: "Building Materials", label: "Building Materials" },
+    { value: "Rubber Products", label: "Rubber Products" },
+    { value: "Stationery", label: "Stationery" },
+    { value: "Agricultural Products", label: "Agricultural Products" },
     { value: "Packing Materials", label: "Packing Materials" },
-    { value: "Packing Containers", label: "Packing Containers" },
-    { value: "Moulds", label: "Moulds" },
-    { value: "Bucket and Cups", label: "Bucket and Cups" },
     { value: "Household Items", label: "Household Items" },
-    { value: "Rainguard Materials", label: "Rainguard Materials" },
-    { value: "Pots", label: "Pots" },
     { value: "Safety Products", label: "Safety Products" },
-    { value: "Tread Rubber", label: "Tread Rubber" },
-    { value: "Balloons", label: "Balloons" },
-    { value: "Gloves", label: "Gloves" },
-    { value: "Rubber Moulds", label: "Rubber Moulds" },
-    { value: "Dies", label: "Dies" },
-    { value: "CNC Works", label: "CNC Works" },
-    { value: "Cleaning Chemicals", label: "Cleaning Chemicals" },
-    { value: "Water Treatment Chemicals", label: "Water Treatment Chemicals" },
-    { value: "Soaps and Detergents", label: "Soaps and Detergents" },
-    { value: "Paints", label: "Paints" },
-    { value: "Varnishes", label: "Varnishes" },
-    { value: "Solvents", label: "Solvents" },
-    { value: "Process Oil", label: "Process Oil" },
-    { value: "Machine Oil", label: "Machine Oil" },
-    { value: "Hydraulic Oil", label: "Hydraulic Oil" },
-    { value: "Carton Box", label: "Carton Box" },
-    { value: "Plywood Packing", label: "Plywood Packing" },
-    { value: "Boilers", label: "Boilers" },
-    { value: "Industrial Gas", label: "Industrial Gas" },
-    { value: "Rolling Shutters", label: "Rolling Shutters" },
+    { value: "Chemicals", label: "Chemicals" },
+    { value: "Industrial Oils", label: "Industrial Oils" },
+    { value: "Machinery", label: "Machinery" },
+    { value: "Machine Shop", label: "Machine Shop" },
     { value: "Industrial Adhesive", label: "Industrial Adhesive" },
-    { value: "Door & Window Frames", label: "Door & Window Frames" },
-    { value: "Structural Building", label: "Structural Building" },
-    { value: "Writing Pen", label: "Writing Pen" },
     { value: "Dresses", label: "Dresses" },
-    { value: "Packing Machines", label: "Packing Machines" },
+    { value: "Food Products", label: "Food Products" },
+    { value: "Electroplating", label: "Electroplating" },
+    { value: "Health Care Products", label: "Health Care Products" },
+    { value: "Welding Materials", label: "Welding Materials" },
+    { value: "Milk and Milk Products", label: "Milk and Milk Products" },
+    { value: "Industrial Gas", label: "Industrial Gas" },
+    { value: "Aluminium Products", label: "Aluminium Products" },
+    { value: "Steel Products", label: "Steel Products" },
+    { value: "Electrical Products", label: "Electrical Products" },
+    { value: "Electronic Products", label: "Electronic Products" },
+  ];
+
+  const tagOptions = [
+    {
+      value: "Pipes and Fillings",
+      label: "Pipes and Fillings",
+      category: "Plastic Products",
+    },
+    {
+      value: "Water Tanks",
+      label: "Water Tanks",
+      category: "Plastic Products",
+    },
+    { value: "Water Taps", label: "Water Taps", category: "Plastic Products" },
+    {
+      value: "Septic Tanks",
+      label: "Septic Tanks",
+      category: "Plastic Products",
+    },
+    { value: "Carbuoys", label: "Carbuoys", category: "Plastic Products" },
+    {
+      value: "Plastic Films",
+      label: "Plastic Films",
+      category: "Plastic Products",
+    },
+    { value: "Pots", label: "Pots", category: "Plastic Products" },
+    {
+      value: "Plasic Moulded Items",
+      label: "Plasic Moulded Items",
+      category: "Plastic Products",
+    },
+    {
+      value: "Plastic Containers",
+      label: "Plastic Containers",
+      category: "Plastic Products",
+    },
+
+    { value: "Multiwood", label: "Multiwood", category: "Building Materials" },
+    {
+      value: "Door & Window Frames",
+      label: "Door & Window Frames",
+      category: "Building Materials",
+    },
+    {
+      value: "Structural Building",
+      label: "Structural Building",
+      category: "Building Materials",
+    },
     {
       value: "Designer Tiles and Paver Blocks",
       label: "Designer Tiles and Paver Blocks",
+      category: "Building Materials",
     },
-    { value: "Crusher Machinery", label: "Crusher Machinery" },
-    { value: "Industrial Heaters", label: "Industrial Heaters" },
-    { value: "Industrial Ovens", label: "Industrial Ovens" },
-    { value: "Food Processing Machinery", label: "Food Processing Machinery" },
-    { value: "Electrical Machinery", label: "Electrical Machinery" },
-    { value: "Electroplating", label: "Electroplating" },
-    { value: "Rubber Reclaim", label: "Rubber Reclaim" },
-    { value: "Food Products", label: "Food Products" },
-    { value: "Packaged Snacks", label: "Packaged Snacks" },
-    { value: "Lathe Work", label: "Lathe Work" },
-    { value: "Cosmetic Products", label: "Cosmetic Products" },
-    { value: "Ayurvedic Products", label: "Ayurvedic Products" },
-    { value: "Healthcare Products", label: "Healthcare Products" },
-    { value: "Rubber Machinery", label: "Rubber Machinery" },
-    { value: "Clay Tile", label: "Clay Tile" },
-    { value: "Clay Tile Machinery", label: "Clay Tile Machinery" },
-    { value: "Irrigation Pipes", label: "Irrigation Pipes" },
-    { value: "Pet Cages", label: "Pet Cages" },
-    { value: "Rubber Products", label: "Rubber Products" },
-    { value: "Plastic Containers", label: "Plastic Containers" },
-    { value: "Welding Materials", label: "Welding Materials" },
-    { value: "Wiring Cables", label: "Wiring Cables" },
-    { value: "Milk and Milk Products", label: "Milk and Milk Products" },
-    { value: "Plastic Moulded Items", label: "Plastic Moulded Items" },
-    { value: "Manure", label: "Manure" },
-    { value: "Nails", label: "Nails" },
-    { value: "Aluminium Products", label: "Aluminium Products" },
-  ];
+    {
+      value: "Rolling Shutters",
+      label: "Rolling Shutters",
+      category: "Building Materials",
+    },
+    { value: "Paints", label: "Paints", category: "Building Materials" },
+    { value: "Clay Tile", label: "Clay Tile", category: "Building Materials" },
 
+    {
+      value: "Tread Rubber",
+      label: "Tread Rubber",
+      category: "Rubber Products",
+    },
+    {
+      value: "Rubber Moulds",
+      label: "Rubber Moulds",
+      category: "Rubber Products",
+    },
+    {
+      value: "Conveyor belts",
+      label: "Conveyor belts",
+      category: "Rubber Products",
+    },
+
+    {
+      value: "Printing Paper",
+      label: "Printing Paper",
+      category: "Stationery",
+    },
+    { value: "Writing Pen", label: "Writing Pen", category: "Stationery" },
+
+    { value: "Manure", label: "Manure", category: "Agricultural Products" },
+    {
+      value: "Rainguard Materials",
+      label: "Rainguard Materials",
+      category: "Agricultural Products",
+    },
+
+    { value: "Catron Box", label: "Catron Box", category: "Packing Materials" },
+    {
+      value: "Plywood Packing",
+      label: "Plywood Packing",
+      category: "Packing Materials",
+    },
+
+    { value: "Chairs", label: "Chairs", category: "Household Items" },
+    { value: "Pet Cages", label: "Pet Cages", category: "Household Items" },
+
+    {
+      value: "Cleaning Chemicals",
+      label: "Cleaning Chemicals",
+      category: "Chemicals",
+    },
+    {
+      value: "Water Treatment Chemicals",
+      label: "Water Treatment Chemicals",
+      category: "Chemicals",
+    },
+    {
+      value: "Industrial Chemicals",
+      label: "Industrial Chemicals",
+      category: "Chemicals",
+    },
+    {
+      value: "Soaps and Detergents",
+      label: "Soaps and Detergents",
+      category: "Chemicals",
+    },
+    { value: "Varnishes", label: "Varnishes", category: "Chemicals" },
+    { value: "Solvents", label: "Solvents", category: "Chemicals" },
+
+    { value: "Machine Oil", label: "Machine Oil", category: "Industrial Oils" },
+    {
+      value: "Hydraulic Oil",
+      label: "Hydraulic Oil",
+      category: "Industrial Oils",
+    },
+
+    {
+      value: "Food Processing Machinery",
+      label: "Food Processing Machinery",
+      category: "Machinery",
+    },
+    {
+      value: "Electrical Machinery",
+      label: "Electrical Machinery",
+      category: "Machinery",
+    },
+    {
+      value: "Crusher Machinery",
+      label: "Crusher Machinery",
+      category: "Machinery",
+    },
+    {
+      value: "Packing Machines",
+      label: "Packing Machines",
+      category: "Machinery",
+    },
+    {
+      value: "Industrial Heaters",
+      label: "Industrial Heaters",
+      category: "Machinery",
+    },
+    {
+      value: "Industrial Ovens",
+      label: "Industrial Ovens",
+      category: "Machinery",
+    },
+    {
+      value: "Clay Tile Machinery",
+      label: "Clay Tile Machinery",
+      category: "Machinery",
+    },
+    { value: "Wood Machines", label: "Wood Machines", category: "Machinery" },
+    {
+      value: "Printing Machinery",
+      label: "Printing Machinery",
+      category: "Machinery",
+    },
+    {
+      value: "Boilers, Heaters, Chimneys",
+      label: "Boilers, Heaters, Chimneys",
+      category: "Machinery",
+    },
+    {
+      value: "Rubber Machinery",
+      label: "Rubber Machinery",
+      category: "Machinery",
+    },
+
+    { value: "Dies", label: "Dies", category: "Machine Shop" },
+    { value: "CNC Works", label: "CNC Works", category: "Machine Shop" },
+    { value: "Lathe Work", label: "Lathe Work", category: "Machine Shop" },
+
+    {
+      value: "Industrial Adhesive",
+      label: "Industrial Adhesive",
+      category: "Industrial Adhesive",
+    },
+
+    { value: "Dresses", label: "Dresses", category: "Dresses" },
+
+    {
+      value: "Packaged Food Products",
+      label: "Packaged Food Products",
+      category: "Food Products",
+    },
+    {
+      value: "Packaged Snacks",
+      label: "Packaged Snacks",
+      category: "Food Products",
+    },
+    { value: "Cooking Oil", label: "Cooking Oil", category: "Food Products" },
+
+    {
+      value: "Cosmetic Products",
+      label: "Cosmetic Products",
+      category: "Health Care Products",
+    },
+    {
+      value: "Ayurvedic Products",
+      label: "Ayurvedic Products",
+      category: "Health Care Products",
+    },
+    { value: "Soaps", label: "Soaps", category: "Health Care Products" },
+    {
+      value: "Tooth Paste",
+      label: "Tooth Paste",
+      category: "Health Care Products",
+    },
+
+    {
+      value: "Welding Materials",
+      label: "Welding Materials",
+      category: "Welding Materials",
+    },
+
+    {
+      value: "Milk and Milk Products",
+      label: "Milk and Milk Products",
+      category: "Milk and Milk Products",
+    },
+
+    {
+      value: "Industrial Gas",
+      label: "Industrial Gas",
+      category: "Industrial Gas",
+    },
+
+    {
+      value: "Aluminium Products",
+      label: "Aluminium Products",
+      category: "Aluminium Products",
+    },
+
+    {
+      value: "Steel Products",
+      label: "Steel Products",
+      category: "Steel Products",
+    },
+
+    {
+      value: "Electrical Switches",
+      label: "Electrical Switches",
+      category: "Electrical Products",
+    },
+    {
+      value: "Pannel Boards",
+      label: "Pannel Boards",
+      category: "Electrical Products",
+    },
+    {
+      value: "Earthing Equipments",
+      label: "Earthing Equipments",
+      category: "Electrical Products",
+    },
+    {
+      value: "Wiring Cables",
+      label: "Wiring Cables",
+      category: "Electrical Products",
+    },
+  ];
+  const filteredTagOptions = tagOptions?.filter(
+    (tag) => tag?.category === type
+  );
   const handleClear = (event) => {
     event.preventDefault();
     reset();
     navigate(-1);
   };
-
+  const handleTypeChange = (selectedOption) => {
+    setType(selectedOption.value);
+    setValue("tags", []);
+  };
   const onSubmit = async (data) => {
     try {
       setLoading(true);
@@ -194,7 +424,8 @@ export default function Addproductform() {
         price: data?.price,
         units: data?.units,
         image: imageUrl,
-        tags: data?.tags.map((i) => i.value),
+        category: type,
+        subcategory: data?.tags.map((i) => i.value),
         name: data?.productname,
       };
       if (isUpdate && productId) {
@@ -404,7 +635,41 @@ export default function Addproductform() {
                     fontWeight={500}
                     color={"#333333"}
                   >
-                    Add Tags
+                    Category
+                  </Typography>
+                  <Controller
+                    name="category"
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: "Category is required" }}
+                    render={({ field }) => (
+                      <>
+                        <StyledSelectField
+                          placeholder="Select the category"
+                          options={category}
+                          {...field}
+                          onChange={(e) => {
+                            field.onChange(e);
+                            handleTypeChange(e);
+                          }}
+                        />
+                        {errors.type && (
+                          <span style={{ color: "red" }}>
+                            {errors.type.message}
+                          </span>
+                        )}
+                      </>
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography
+                    sx={{ marginBottom: 1 }}
+                    variant="h6"
+                    fontWeight={500}
+                    color={"#333333"}
+                  >
+                    Add Subcategory
                   </Typography>
 
                   <Controller
@@ -415,7 +680,7 @@ export default function Addproductform() {
                       <>
                         <StyledSelectField
                           placeholder="Select Tag"
-                          options={tagOptions}
+                          options={filteredTagOptions}
                           isMulti
                           {...field}
                         />

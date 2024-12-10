@@ -13,7 +13,6 @@ export default function PaymentPage() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
   const [search, setSearch] = useState("");
-  const [approveOpen, setApproveOpen] = useState(false);
   const [pageNo, setPageNo] = useState(1);
   const [row, setRow] = useState(10);
   const [isChange, setIsChange] = useState(false);
@@ -22,9 +21,7 @@ export default function PaymentPage() {
     payments,
     fetchPayment,
     deletePayments,
-    fetchPaymentById,
     totalCount,
-    payment,
   } = usePaymentStore();
   const userColumns = [
     { title: "Member name", field: "full_name", padding: "none" },
@@ -32,7 +29,6 @@ export default function PaymentPage() {
     { title: "Time", field: "time" },
     { title: "Category", field: "category" },
     { title: "Amount", field: "amount" },
-    { title: "Mode of payment", field: "mode_of_payment" },
     { title: "Status", field: "status" },
   ];
 
@@ -61,26 +57,11 @@ export default function PaymentPage() {
       setSelectedRows([]);
     }
   };
-  const handleRowDelete = async (id) => {
-    await deletePayments(id);
-    toast.success("Payment deleted successfully");
-    setIsChange(!isChange);
-  };
+
   const handleView2 = (id) => {
     navigate(`/payments/addpaymentdetails`);
   };
-  const handleEdit = (id) => {
-    navigate(`/payments/addpaymentdetails`, {
-      state: { paymentId: id, isUpdate: true },
-    });
-  };
-  const handleApprove = async (id) => {
-    await fetchPaymentById(id);
-    setApproveOpen(true);
-  };
-  const handleCloseApprove = () => {
-    setApproveOpen(false);
-  };
+
   return (
     <>
       {" "}
@@ -98,16 +79,7 @@ export default function PaymentPage() {
             </Typography>
           </Grid>
           <Grid item xs={6} container justifyContent="flex-end" spacing={2}>
-            <Grid item>
-              <StyledButton
-                name="Add"
-                variant="secondary"
-                onClick={handleView2}
-              >
-                Add
-              </StyledButton>
-            </Grid>
-        
+            <Grid item></Grid>
           </Grid>
         </Grid>
       </Box>
@@ -124,7 +96,6 @@ export default function PaymentPage() {
                 placeholder={"Search payments"}
                 onchange={(e) => setSearch(e.target.value)}
               />
-          
             </Stack>
           </Stack>{" "}
           <Box
@@ -137,22 +108,14 @@ export default function PaymentPage() {
               columns={userColumns}
               data={payments}
               onSelectionChange={handleSelectionChange}
-              onView={handleApprove}
               onDelete={handleDelete}
-              onModify={handleEdit}
+              menu
               totalCount={totalCount}
               pageNo={pageNo}
               setPageNo={setPageNo}
-              onDeleteRow={handleRowDelete}
               rowPerSize={row}
               setRowPerSize={setRow}
             />{" "}
-            <MemberShipRenewal
-              open={approveOpen}
-              onClose={handleCloseApprove}
-              data={payment}
-              onChange={handleChange}
-            />
           </Box>
         </>
       </Box>

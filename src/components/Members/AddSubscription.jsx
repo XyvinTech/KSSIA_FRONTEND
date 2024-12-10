@@ -14,32 +14,32 @@ import StyledSelectField from "../../ui/StyledSelectField";
 import { ReactComponent as CloseIcon } from "../../assets/icons/CloseIcon.svg";
 import { StyledCalender } from "../../ui/StyledCalender";
 import { usePaymentStore } from "../../store/payment-store";
-import StyledInput from "../../ui/StyledInput";
 import { useParams } from "react-router-dom";
+import StyledInput from "../../ui/StyledInput";
 
-const RenewForm = ({ open, onClose, data,category }) => {
-  const { handleSubmit, control, setValue, reset } = useForm();
-  const { updatePayment, setRefreshMember } = usePaymentStore();
+const AddSubscription = ({ open, onClose, data,category }) => {
+  const { handleSubmit, control, setValue } = useForm();
+  const { addPayments, setRefreshMember } = usePaymentStore();
   const [timeMetric, setTimeMetric] = useState(null);
   const { id } = useParams();
-  const onSubmit = async (form) => {
+  const onSubmit = async (data) => {
     try {
       const formData = {
         user: id,
-        expiryDate: form?.expiryDate,
+        expiryDate: data?.expiryDate,
         category: category,
-        amount: form?.amount,
+        amount: data?.amount,
       };
-      await updatePayment(data?._id, formData);
+      await addPayments(formData);
       setRefreshMember();
       onClose();
     } catch (error) {
       console.log(error);
     }
   };
+
   const handleClear = (event) => {
     event.preventDefault();
-    reset();
     onClose();
   };
 
@@ -48,10 +48,18 @@ const RenewForm = ({ open, onClose, data,category }) => {
     setTimeMetric(value);
 
     if (value) {
+      // Calculate days to add based on the selected value
       const daysToAdd = value * 365;
-      const newExpiryDate = moment(data?.expiryDate)
+      const newExpiryDate = moment(data?.renewal)
         .add(daysToAdd, "days") // Add the calculated number of days
         .format("YYYY-MM-DD");
+
+      // Log the calculated expiry date
+      console.log(
+        "Data Renewal Date:",
+        moment(data?.renewal).format("YYYY-MM-DD")
+      );
+      console.log("New Expiry Date:", newExpiryDate);
 
       setValue("expiryDate", newExpiryDate);
     }
@@ -79,7 +87,7 @@ const RenewForm = ({ open, onClose, data,category }) => {
             alignItems="center"
           >
             <Typography variant="h3" color={"#4F4F4F"}>
-              Renew
+              Add
             </Typography>
             <Typography
               onClick={(event) => handleClear(event)}
@@ -102,6 +110,7 @@ const RenewForm = ({ open, onClose, data,category }) => {
               options={option}
               onChange={handleTimeMetricChange}
             />
+
             <Typography variant="h6" color={"#333333"}>
               Amount
             </Typography>
@@ -142,4 +151,4 @@ const RenewForm = ({ open, onClose, data,category }) => {
   );
 };
 
-export default RenewForm;
+export default AddSubscription;

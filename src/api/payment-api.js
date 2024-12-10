@@ -23,7 +23,7 @@ export const addPayment = async (data) => {
 };
 export const getPaymentById = async (id) => {
   try {
-    const response = await axiosInstance.get(`/payments/${id}`);
+    const response = await axiosInstance.get(`/payments/user/${id}`);
     return response.data;
   } catch (error) {
     throw error;
@@ -40,7 +40,7 @@ export const deletePayment = async (id) => {
 };
 export const editPayment = async (id, data) => {
   try {
-    const response = await axiosInstance.put(`/payments/${id}`, data);
+    const response = await axiosInstance.put(`/payments/update/${id}`, data);
     toast.success(response.data.message);
     return response.data;
   } catch (error) {

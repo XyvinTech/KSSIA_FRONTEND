@@ -6,27 +6,32 @@ import SuspendProfile from "../components/SuspendProfile";
 import { usePaymentStore } from "../store/payment-store";
 import moment from "moment";
 import SuspendPayment from "../components/SuspendPayment";
+import AddSubscription from "../components/Members/AddSubscription";
+import { useMemberStore } from "../store/member-store";
+import { useParams } from "react-router-dom";
 
 export default function MemberSubscriptionCard({ payment, onChange }) {
   const [renew, setRenew] = useState(false);
   const { patchPayments } = usePaymentStore();
-  const [suspend, setSuspend] = useState(false);
+  const [add, setAdd] = useState(false);
+  const { suspend } = useMemberStore();
+  const [suspendOpen, setSuspendOpen] = useState(false);
+  const {id}=useParams();
   const handleRenew = () => {
     setRenew(true);
   };
- 
+
   const handleCloseRenew = () => {
     setRenew(false);
   };
   const handleSuspend = () => {
-    setSuspend(true);
+    setSuspendOpen(true);
   };
   const handleCloseSuspend = () => {
-    setSuspend(false);
+    setSuspendOpen(false);
   };
   const handleSuspendMembership = async () => {
-    const updateData = { status: "rejected" };
-    await patchPayments(payment?._id, updateData);
+    await suspend(id);
     onChange();
   };
   const formatDate = (date) => {
@@ -61,6 +66,7 @@ export default function MemberSubscriptionCard({ payment, onChange }) {
           <Typography variant="h7" color={"#2C2829"} fontWeight={700}>
             Status
           </Typography>
+          {payment?.status &&
           <Typography
             variant="h6"
             color="#2E7D32"
@@ -71,7 +77,7 @@ export default function MemberSubscriptionCard({ payment, onChange }) {
             }}
           >
             {payment?.status}
-          </Typography>
+          </Typography>}
         </Stack>
         <Divider />
         <Stack
@@ -83,9 +89,10 @@ export default function MemberSubscriptionCard({ payment, onChange }) {
           <Typography variant="h7" color={"#2C2829"} fontWeight={700}>
             Last Renewed date
           </Typography>
+          {payment?.lastRenewDate &&
           <Typography variant="h6" color="#2C2829">
-            {formatDate(payment?.date)}
-          </Typography>
+            {formatDate(payment?.lastRenewDate)}
+          </Typography>}
         </Stack>
         <Divider />{" "}
         <Stack
@@ -97,9 +104,10 @@ export default function MemberSubscriptionCard({ payment, onChange }) {
           <Typography variant="h7" color={"#2C2829"} fontWeight={700}>
             Amount paid
           </Typography>
+          {payment?.amount &&
           <Typography variant="h6" color="#2C2829">
             ₹{payment?.amount}
-          </Typography>
+          </Typography>}
         </Stack>
         <Divider />
         <Stack
@@ -111,9 +119,10 @@ export default function MemberSubscriptionCard({ payment, onChange }) {
           <Typography variant="h7" color={"#2C2829"} fontWeight={700}>
             Expiry date
           </Typography>
+          {payment?.expiryDate &&
           <Typography variant="h6" color="#2C2829">
-            {formatDate(payment?.renewal)}
-          </Typography>
+            {formatDate(payment?.expiryDate)}
+          </Typography>}
         </Stack>
         <Divider />
       </Grid>
@@ -121,23 +130,43 @@ export default function MemberSubscriptionCard({ payment, onChange }) {
       <Grid item xs={12}>
         <Grid container justifyContent="flex-end">
           <Grid item xs={6}>
-            {payment?.status === "pending" && (
+            {payment ? (
               <Stack direction="row" spacing={2} justifyContent="flex-end">
-                <StyledButton
+                {/* <StyledButton
                   name="Suspend"
                   variant="third"
                   onClick={handleSuspend}
-                />
+                /> */}
                 <StyledButton
                   name="Renew"
                   variant="primary"
                   onClick={handleRenew}
                 />
               </Stack>
+            ) : (
+              <Stack direction="row" spacing={2} justifyContent="flex-end">
+                <StyledButton
+                  name="Add Subscription"
+                  variant="primary"
+                  onClick={() => setAdd(true)}
+                />
+              </Stack>
             )}
-            <RenewForm open={renew} onClose={handleCloseRenew} data={payment} onChange={handleChange} />
+             <AddSubscription
+              open={add}
+              onClose={() => setAdd(false)}
+              data={payment}
+              category={"membership"}
+            />
+            <RenewForm
+              open={renew}
+              onClose={handleCloseRenew}
+              category={"membership"}
+              data={payment}
+              onChange={handleChange}
+            />
             <SuspendPayment
-              open={suspend}
+              open={suspendOpen}
               onClose={handleCloseSuspend}
               onChange={handleSuspendMembership}
             />

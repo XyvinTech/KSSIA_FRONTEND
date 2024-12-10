@@ -175,6 +175,12 @@ const StyledTable = ({
         return "#ff4d4f";
       case "approved":
         return "#52c41a";
+      case "active":
+        return "#13c2c2";
+      case "expired":
+        return "#8c8c8c";
+      case "expiring":
+        return "#faad14";
       default:
         return "default";
     }
