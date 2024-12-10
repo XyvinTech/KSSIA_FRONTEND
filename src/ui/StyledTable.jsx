@@ -176,7 +176,7 @@ const StyledTable = ({
       case "approved":
         return "#52c41a";
       case "active":
-        return "#13c2c2";
+        return "green";
       case "expired":
         return "#8c8c8c";
       case "expiring":
