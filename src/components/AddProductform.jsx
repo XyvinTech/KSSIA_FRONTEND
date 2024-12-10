@@ -69,10 +69,12 @@ export default function Addproductform() {
           label: `${sellerUser.abbreviation} ${sellerUser.name}`,
         });
       }
-      const selectedCat = category.find((cat) => cat?.value === products?.category);
+      const selectedCat = category.find(
+        (cat) => cat?.value === products?.category
+      );
       setValue("category", selectedCat || []);
-      setType(products?.category)
-      
+      setType(products?.category);
+
       const selectedTags = products?.subcategory?.map((Id) =>
         tagOptions.find((option) => option?.value === Id)
       );
@@ -299,14 +301,6 @@ export default function Addproductform() {
     { value: "Lathe Work", label: "Lathe Work", category: "Machine Shop" },
 
     {
-      value: "Industrial Adhesive",
-      label: "Industrial Adhesive",
-      category: "Industrial Adhesive",
-    },
-
-    { value: "Dresses", label: "Dresses", category: "Dresses" },
-
-    {
       value: "Packaged Food Products",
       label: "Packaged Food Products",
       category: "Food Products",
@@ -333,36 +327,6 @@ export default function Addproductform() {
       value: "Tooth Paste",
       label: "Tooth Paste",
       category: "Health Care Products",
-    },
-
-    {
-      value: "Welding Materials",
-      label: "Welding Materials",
-      category: "Welding Materials",
-    },
-
-    {
-      value: "Milk and Milk Products",
-      label: "Milk and Milk Products",
-      category: "Milk and Milk Products",
-    },
-
-    {
-      value: "Industrial Gas",
-      label: "Industrial Gas",
-      category: "Industrial Gas",
-    },
-
-    {
-      value: "Aluminium Products",
-      label: "Aluminium Products",
-      category: "Aluminium Products",
-    },
-
-    {
-      value: "Steel Products",
-      label: "Steel Products",
-      category: "Steel Products",
     },
 
     {
@@ -662,32 +626,34 @@ export default function Addproductform() {
                     )}
                   />
                 </Grid>
-                <Grid item xs={12}>
-                  <Typography
-                    sx={{ marginBottom: 1 }}
-                    variant="h6"
-                    fontWeight={500}
-                    color={"#333333"}
-                  >
-                    Add Subcategory
-                  </Typography>
+                {filteredTagOptions?.length > 0 && (
+                  <Grid item xs={12}>
+                    <Typography
+                      sx={{ marginBottom: 1 }}
+                      variant="h6"
+                      fontWeight={500}
+                      color={"#333333"}
+                    >
+                      Add Subcategory
+                    </Typography>
 
-                  <Controller
-                    name="tags"
-                    control={control}
-                    defaultValue={[]}
-                    render={({ field }) => (
-                      <>
-                        <StyledSelectField
-                          placeholder="Select Tag"
-                          options={filteredTagOptions}
-                          isMulti
-                          {...field}
-                        />
-                      </>
-                    )}
-                  />
-                </Grid>
+                    <Controller
+                      name="tags"
+                      control={control}
+                      defaultValue={[]}
+                      render={({ field }) => (
+                        <>
+                          <StyledSelectField
+                            placeholder="Select Tag"
+                            options={filteredTagOptions}
+                            isMulti
+                            {...field}
+                          />
+                        </>
+                      )}
+                    />
+                  </Grid>
+                )}
                 <Grid item xs={12}>
                   <Typography
                     sx={{ marginBottom: 1 }}
