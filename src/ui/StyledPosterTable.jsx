@@ -53,6 +53,7 @@ export default function StyledPosterTable() {
     { title: "End Date", field: "endDate", padding: "none" },
 
     { title: "Media", field: "poster_image_url" },
+    {title:"Status",field:"status"},
   ];
   return (
     <>

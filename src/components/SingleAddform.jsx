@@ -51,10 +51,21 @@ export default function SingleAddform() {
     { value: "suspended", label: "suspended" },
     { value: "notice", label: "notice" },
   ];
+  const abbreviation = [
+    { value: "Mr", label: "Mr" },
+    { value: "Ms", label: "Ms" },
+    { value: "Mrs", label: "Mrs" },
+    { value: "Dr", label: "Dr" },
+    { value: "Fr", label: "Fr" },
+    { value: "Smt", label: "Smt" },
+  ];
   useEffect(() => {
     if (member && isUpdate) {
       setValue("name", member?.name);
-      setValue("abbreviation", member?.abbreviation);
+      const selectedAbbreviation = abbreviation.find(
+        (item) => item.value === member.abbreviation
+      );
+      setValue("abbreviation", selectedAbbreviation || "");
       setValue("membership_id", member?.membership_id);
       setValue("blood_group", member?.blood_group);
       setValue("designation", member?.designation);
@@ -111,7 +122,7 @@ export default function SingleAddform() {
       setIsLoading(true);
       const memberData = {
         name: data?.name,
-        abbreviation: data?.abbreviation,
+        abbreviation: data?.abbreviation?.value,
         websites: Array.isArray(data.websites)
           ? data.websites.map((url) => ({ url }))
           : data.websites
@@ -210,8 +221,9 @@ export default function SingleAddform() {
                     defaultValue=""
                     render={({ field }) => (
                       <>
-                        <StyledInput
-                          placeholder="Enter the abbreviation"
+                        <StyledSelectField
+                          placeholder={"Select the Abbreviation"}
+                          options={abbreviation}
                           {...field}
                         />
                         {errors.abbreviation && (

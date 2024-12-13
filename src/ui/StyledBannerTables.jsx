@@ -53,6 +53,7 @@ export default function StyledBannerTables() {
     { title: "End Date", field: "endDate", padding: "none" },
 
     { title: "Media", field: "banner_image_url" },
+    {title:"Status",field:"status"},
   ];
   return (
     <>

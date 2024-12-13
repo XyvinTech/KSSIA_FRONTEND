@@ -60,9 +60,12 @@ export default function NewsAllpage() {
       setPageNo(1);
     }
     filter.pageNo = pageNo;
+    if(selectedTab !== "All"){
+      filter.type = selectedTab
+    }
     filter.limit = row;
     fetchNews(filter);
-  }, [isChange, pageNo, search, row]);
+  }, [isChange, pageNo, search, row,selectedTab]);
   const handleChange = () => {
     setIsChange(!isChange);
   };
@@ -108,11 +111,7 @@ export default function NewsAllpage() {
             variant={selectedTab === "All" ? "primary" : "secondary"}
             onClick={() => handleTabChange("All")}
           />
-          <StyledButton
-            name="Latest"
-            variant={selectedTab === "Latest" ? "primary" : "secondary"}
-            onClick={() => handleTabChange("Latest")}
-          />
+         
           <StyledButton
             name="Business"
             variant={selectedTab === "Business" ? "primary" : "secondary"}

@@ -160,13 +160,13 @@ const DashboardPage = () => {
               </Box>{" "}
               <Box width={"100%"} sx={{ cursor: "pointer" }} onClick={fetchSub}>
                 {" "}
-                <RevenueCard
-                  isMobile
-                  data={premiumMember}
-                 
-                />{" "}
+                <RevenueCard isMobile data={premiumMember} />{" "}
               </Box>
-              <Box width={"100%"} sx={{ cursor: "pointer" }} onClick={() => fetchActiveUser("suspended")}>
+              <Box
+                width={"100%"}
+                sx={{ cursor: "pointer" }}
+                onClick={() => fetchActiveUser("suspended")}
+              >
                 {" "}
                 <RevenueCard isMobile data={frozenMember} />{" "}
               </Box>
@@ -190,22 +190,38 @@ const DashboardPage = () => {
           <Stack spacing={2}>
             <Stack direction={"row"} spacing={2}>
               {" "}
-              <Box width={"100%"}>
+              <Box
+                width={"100%"}
+                sx={{ cursor: "pointer" }}
+                onClick={() => navigate("/events/eventlist")}
+              >
                 {" "}
                 <RevenueCard data={events} height={"160px"} />{" "}
               </Box>{" "}
-              <Box width={"100%"}>
+              <Box
+                width={"100%"}
+                sx={{ cursor: "pointer" }}
+                onClick={() => navigate("/news")}
+              >
                 {" "}
                 <RevenueCard data={news} height={"160px"} />{" "}
               </Box>
             </Stack>
             <Stack direction={"row"} spacing={2}>
               {" "}
-              <Box width={"100%"}>
+              <Box
+                width={"100%"}
+                sx={{ cursor: "pointer" }}
+                onClick={() => navigate("/notifications")}
+              >
                 {" "}
                 <RevenueCard data={notifications} height={"160px"} />{" "}
               </Box>{" "}
-              <Box width={"100%"}>
+              <Box
+                width={"100%"}
+                sx={{ cursor: "pointer" }}
+                onClick={() => navigate("/promotions")}
+              >
                 {" "}
                 <RevenueCard data={promotions} height={"160px"} />{" "}
               </Box>

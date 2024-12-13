@@ -52,6 +52,7 @@ export default function StyledVideoTable() {
     { title: "Date", field: "startDate", padding: "none" },
 
     { title: "Title", field: "video_title" },
+    {title:"Status",field:"status"},
   ];
   return (
     <>

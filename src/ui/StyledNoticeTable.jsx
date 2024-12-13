@@ -53,6 +53,7 @@ export default function StyledNoticeTable() {
 
     { title: "Title", field: "notice_title" },
     { title: "Link", field: "notice_link" },
+    {title:"Status",field:"status"},
   ];
   return (
     <>
