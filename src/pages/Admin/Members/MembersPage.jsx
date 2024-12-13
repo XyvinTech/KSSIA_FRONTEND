@@ -35,6 +35,7 @@ export default function MembersPage() {
     designation: "",
     companyName: "",
     status: "",
+    subscription: "",
   });
   const userColumns = [
     { title: "Name", field: "full_name", padding: "none" },
@@ -116,7 +117,20 @@ export default function MembersPage() {
   };
   const handleDownload = async () => {
     try {
-      const data = await getDwld();
+      let filter = {};
+  
+      // Add filters if they are present
+      if (filters.name) filter.name = filters.name;
+      if (filters.membershipId) filter.membershipId = filters.membershipId;
+      if (filters.designation) filter.designation = filters.designation;
+      if (filters.companyName) filter.companyName = filters.companyName;
+      if (filters.status) filter.status = filters.status;
+      if (filters.subscription) filter.subscription = filters.subscription;
+  
+      // Fetch the data using the API
+      const data = await getDwld(filter);
+  
+      // Check and generate Excel if data is valid
       const csvData = data.data;
       if (csvData && csvData.headers && csvData.body) {
         generateExcel(csvData.headers, csvData.body);
@@ -129,6 +143,7 @@ export default function MembersPage() {
       console.error("Error downloading users:", error);
     }
   };
+  
 
   const handleDelete = async () => {
     try {

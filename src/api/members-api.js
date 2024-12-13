@@ -73,9 +73,11 @@ export const getSingleUser = async (id) => {
     throw error;
   }
 };
-export const getDwld = async () => {
+export const getDwld = async (filter) => {
   try {
-    const response = await axiosInstance.get(`/admin/download-users`);
+    const response = await axiosInstance.get(`/admin/download-users`, {
+      params: filter,
+    });
     return response.data;
   } catch (error) {
     throw error;

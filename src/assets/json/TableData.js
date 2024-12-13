@@ -46,10 +46,10 @@ export const userColumns = [
   export const eventColumns = [
     { title: "Event Name", field: "name", padding: "none" },  
     { title: "Date", field: "date" },
-    { title: "Time", field: "time" },
-    { title: "Duration", field: "time" },
+    { title: "Start Time", field: "startTime" },
+    { title: "End Time", field: "endTime" },
     { title: "Organizer Name", field: "organiser_name" },
-    { title: "Activate", field: "activate" },
+    { title: "Status", field: "status" },
     { title: "Type", field: "type" },
     // { title: "RSVP", field: "rsvp" }
 

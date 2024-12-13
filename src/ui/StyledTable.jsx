@@ -175,6 +175,12 @@ const StyledTable = ({
         return "#ff4d4f";
       case "approved":
         return "#52c41a";
+      case "completed":
+        return "#52c41a";
+        case "live":
+          return "#1890ff";
+        case "upcoming":
+          return "#faad14";
       case "active":
         return "green";
       case "expired":
@@ -285,7 +291,7 @@ const StyledTable = ({
                         "endDate",
                       ].includes(column.field) ? (
                         formatIndianDate(row[column.field])
-                      ) : ["starttime", "endtime", "time"].includes(
+                      ) : ["starttime", "endtime", "time", "startTime", "endTime"].includes(
                           column.field
                         ) ? (
                         formatTime(row[column.field])

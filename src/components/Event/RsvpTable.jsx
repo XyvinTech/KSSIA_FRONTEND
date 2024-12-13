@@ -12,7 +12,7 @@ const RsvpTable = ({ data }) => {
   useEffect(() => {
     const transformedData = data.map((item) => ({
       full_name: `${item.name}`,
-      phone_number: item.phone_numbers.company_phone_number,
+      phone_number: item.phone_numbers.personal,
       company_name: item.company_name,
     }));
 
@@ -22,7 +22,7 @@ const RsvpTable = ({ data }) => {
   const userColumns = [
     { title: "Full Name", field: "full_name" },
     { title: "Phone Number", field: "phone_number" },
-    { title: "Designation", field: "company_name" },
+    { title: "Company Name", field: "company_name" },
   ];
 
   const handleCloseFilter = () => {
