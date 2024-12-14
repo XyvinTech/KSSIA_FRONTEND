@@ -1,19 +1,14 @@
 import { Box, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import StyledSearchbar from "../../ui/StyledSearchbar";
-import { ReactComponent as FilterIcon } from "../../assets/icons/FilterIcon.svg";
 import StyledTable from "../../ui/StyledTable";
 import { StyledButton } from "../../ui/StyledButton";
 import { generateExcel } from "../../utils/generateExcel";
 import { getDwldRsvp } from "../../api/events-api";
 import { useParams } from "react-router-dom";
 const RsvpTable = ({ data }) => {
-  const [filterOpen, setFilterOpen] = useState(false);
   const [formattedData, setFormattedData] = useState([]);
   const { id } = useParams();
-  const handleOpenFilter = () => {
-    setFilterOpen(true);
-  };
+
   useEffect(() => {
     const transformedData = data.map((item) => ({
       full_name: `${item.name}`,
@@ -30,9 +25,6 @@ const RsvpTable = ({ data }) => {
     { title: "Company Name", field: "company_name" },
   ];
 
-  const handleCloseFilter = () => {
-    setFilterOpen(false);
-  };
   const handleDownload = async () => {
     try {
       const data = await getDwldRsvp(id);
