@@ -27,22 +27,9 @@ const SpeakerTable = ({ data }) => {
         paddingBottom={'15px'}
         alignItems={"center"}
       >
-        <Stack direction={"row"} spacing={2}>
-          <StyledSearchbar />
-          <Box
-            bgcolor={"#FFFFFF"}
-            borderRadius={"50%"}
-            width={"48px"}
-            height={"48px"}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            border="1px solid rgba(0, 0, 0, 0.12)"
-            onClick={handleOpenFilter}
-            style={{ cursor: "pointer" }}
-          >
-            <FilterIcon />
-          </Box>
+        <Stack direction={"row"} spacing={2}mt={4}>
+         
+          
         </Stack>
       </Stack>{" "}
       <Box

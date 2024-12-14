@@ -3,9 +3,14 @@ import React, { useEffect, useState } from "react";
 import StyledSearchbar from "../../ui/StyledSearchbar";
 import { ReactComponent as FilterIcon } from "../../assets/icons/FilterIcon.svg";
 import StyledTable from "../../ui/StyledTable";
+import { StyledButton } from "../../ui/StyledButton";
+import { generateExcel } from "../../utils/generateExcel";
+import { getDwldRsvp } from "../../api/events-api";
+import { useParams } from "react-router-dom";
 const RsvpTable = ({ data }) => {
   const [filterOpen, setFilterOpen] = useState(false);
   const [formattedData, setFormattedData] = useState([]);
+  const { id } = useParams();
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -28,7 +33,21 @@ const RsvpTable = ({ data }) => {
   const handleCloseFilter = () => {
     setFilterOpen(false);
   };
-  console.log(data);
+  const handleDownload = async () => {
+    try {
+      const data = await getDwldRsvp(id);
+      const csvData = data.data;
+      if (csvData && csvData.headers && csvData.body) {
+        generateExcel(csvData.headers, csvData.body);
+      } else {
+        console.error(
+          "Error: Missing headers or data in the downloaded content"
+        );
+      }
+    } catch (error) {
+      console.error("Error downloading users:", error);
+    }
+  };
 
   return (
     <>
@@ -39,21 +58,11 @@ const RsvpTable = ({ data }) => {
         alignItems={"center"}
       >
         <Stack direction={"row"} spacing={2}>
-          <StyledSearchbar />
-          <Box
-            bgcolor={"#FFFFFF"}
-            borderRadius={"50%"}
-            width={"48px"}
-            height={"48px"}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            border="1px solid rgba(0, 0, 0, 0.12)"
-            onClick={handleOpenFilter}
-            style={{ cursor: "pointer" }}
-          >
-            <FilterIcon />
-          </Box>
+          <StyledButton
+            name="Download"
+            variant="primary"
+            onClick={handleDownload}
+          />
         </Stack>
       </Stack>{" "}
       <Box

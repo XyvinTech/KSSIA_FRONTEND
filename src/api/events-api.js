@@ -4,7 +4,7 @@ import axiosInstance from "./axios-interceptor";
 export const getEvents = async (filter) => {
   try {
     const response = await axiosInstance.get("/events", {
-      params: filter, 
+      params: filter,
     });
     return response.data;
   } catch (error) {
@@ -83,5 +83,14 @@ export const getEventHistory = async (filter) => {
     return response.data;
   } catch (error) {
     console.error("Error caught:", error);
+  }
+};
+
+export const getDwldRsvp = async (id) => {
+  try {
+    const response = await axiosInstance.get(`/events/download-rsvps/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
   }
 };
