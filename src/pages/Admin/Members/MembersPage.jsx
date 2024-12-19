@@ -36,6 +36,7 @@ export default function MembersPage() {
     companyName: "",
     status: "",
     subscription: "",
+    installed: "",
   });
   const userColumns = [
     { title: "Name", field: "full_name", padding: "none" },
@@ -44,6 +45,7 @@ export default function MembersPage() {
     { title: "Designation", field: "designation" },
     { title: "Phone Number", field: "mobile" },
     { title: "Subscription", field: "subscription" },
+    {title: "Status", field: "status" },
   ];
   const handleSelectionChange = (newSelectedIds) => {
     setSelectedRows(newSelectedIds);
@@ -64,6 +66,7 @@ export default function MembersPage() {
         if (filters.companyName) filter.companyName = filters.companyName;
         if (filters.status) filter.status = filters.status;
         if (filters.subscription) filter.subscription = filters.subscription;
+        if(filters.installed) filter.installed = filters.installed;
         const response = await axiosInstance.get(CONSTANTS.MEMBERS_API, {
           params: filter,
         });
@@ -231,7 +234,8 @@ export default function MembersPage() {
                     filters.designation ||
                     filters.companyName ||
                     filters.status||
-                    filters.subscription
+                    filters.subscription||
+                    filters.installed
                   )
                 }
                 sx={{

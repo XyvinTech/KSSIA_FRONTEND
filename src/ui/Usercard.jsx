@@ -47,11 +47,30 @@ const UserCard = ({ user }) => {
       <Grid item md={5} xs={12} justifyContent={"center"} alignItems={"center"}>
         <Stack spacing={"10px"}>
           <Typography
-            variant="h8"
-            color={"rgba(44, 40, 41, 0.6)"}
-            sx={{ display: "flex", alignItems: "center", gap: "8px" }}
+            variant="h7"
+            color="white"
+            width={"fit-content"}
+            fontWeight="bold"
+            sx={{
+              backgroundColor: (() => {
+                switch (user?.status) {
+                  case "active":
+                    return "green";
+                  case "inactive":
+                    return "gray";
+                  case "suspended":
+                    return "red";
+                  case "notice":
+                    return "orange";
+                  default:
+                    return "blue"; 
+                }
+              })(),
+              padding: "0px 6px",
+              borderRadius: "12px",
+            }}
           >
-            <StarIcon /> {user?.id}
+            {user?.status}
           </Typography>
 
           <Typography

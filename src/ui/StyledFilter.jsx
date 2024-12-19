@@ -14,13 +14,14 @@ import StyledSelectField from "./StyledSelectField";
 import { useMemberStore } from "../store/member-store";
 
 const StyledFilter = ({ open, onClose, onApply }) => {
-  const { memberStatus, memberSub } = useMemberStore();
+  const { memberStatus, memberSub, memberUser } = useMemberStore();
   const [membershipId, setMembershipId] = useState("");
   const [designation, setDesignation] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [status, setStatus] = useState(null);
   const [subscription, setSubscription] = useState(null);
   const [name, setName] = useState("");
+  const [installed, setInstalled] = useState(null);
 
   const handleClear = (event) => {
     event.preventDefault();
@@ -29,6 +30,7 @@ const StyledFilter = ({ open, onClose, onApply }) => {
     setDesignation("");
     setCompanyName("");
     setStatus(null);
+    setInstalled(null);
     setSubscription(null);
     onApply({
       name: "",
@@ -37,11 +39,16 @@ const StyledFilter = ({ open, onClose, onApply }) => {
       status: "",
       subscription: "",
       companyName: "",
+      installed: "",
     });
     onClose();
   };
 
-  const handleApply = (appliedStatus = status, appliedSub = subscription) => {
+  const handleApply = (
+    appliedStatus = status,
+    appliedSub = subscription,
+    appliedUser = installed
+  ) => {
     onApply({
       name,
       membershipId,
@@ -49,6 +56,7 @@ const StyledFilter = ({ open, onClose, onApply }) => {
       companyName,
       status: appliedStatus?.value || status?.value || "",
       subscription: appliedSub?.value || subscription?.value || "",
+      installed: appliedUser?.value || installed?.value || "",
     });
     onClose();
   };
@@ -56,14 +64,19 @@ const StyledFilter = ({ open, onClose, onApply }) => {
     if (memberStatus) {
       const newStatus = { value: memberStatus, label: memberStatus };
       setStatus(newStatus);
-      handleApply(newStatus, subscription);
+      handleApply(newStatus, subscription, installed);
     }
     if (memberSub) {
       const newStatus = { value: memberSub, label: memberSub };
       setSubscription(newStatus);
-      handleApply(status, newStatus);
+      handleApply(status, newStatus, installed);
     }
-  }, [memberStatus, memberSub]);
+    if (memberUser) {
+      const newUser = { value: memberUser, label: memberUser };
+      setInstalled(newUser);
+      handleApply(status, subscription, newUser);
+    }
+  }, [memberStatus, memberSub, memberUser]);
   const handleStatusChange = (selectedOption) => {
     setStatus(selectedOption);
   };
@@ -143,6 +156,16 @@ const StyledFilter = ({ open, onClose, onApply }) => {
             ]}
             value={subscription}
             onChange={(selectedOption) => setSubscription(selectedOption)}
+          />
+          <Typography>Installed Users</Typography>
+          <StyledSelectField
+            placeholder="Select Value"
+            options={[
+              { value: true, label: "True" },
+              { value: false, label: "False" },
+            ]}
+            value={installed}
+            onChange={(selectedOption) => setInstalled(selectedOption)}
           />
         </Stack>
       </DialogContent>

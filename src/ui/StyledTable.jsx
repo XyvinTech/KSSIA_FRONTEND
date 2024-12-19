@@ -177,19 +177,22 @@ const StyledTable = ({
         return "#52c41a";
       case "completed":
         return "#52c41a";
-        case "live":
-          return "#1890ff";
-        case "upcoming":
-          return "#faad14";
+      case "live":
+        return "#1890ff";
+      case "upcoming":
+        return "#faad14";
       case "active":
         return "green";
       case "expired":
         return "#8c8c8c";
       case "expiring":
         return "#faad14";
+      case "suspended": // Added case for suspended
+        return "#d9d9d9"; // Use a grayish color for suspended or any other preferred color
       default:
         return "default";
     }
+    
   };
   const formatIndianDate = (date) => {
     return moment(date).format("DD-MM-YYYY");

@@ -15,7 +15,6 @@ import { ReactComponent as NotificationIcon } from "../../assets/icons/Notificat
 import { ReactComponent as PromotionIcon } from "../../assets/icons/PromotionIcon.svg";
 import { RevenueCard } from "../../components/Dashboard/RevenueCard";
 import { getDashboard } from "../../api/dashboard-api";
-import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { useMemberStore } from "../../store/member-store";
 
@@ -23,7 +22,7 @@ const DashboardPage = () => {
   const [data, setData] = useState({});
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [year, setYear] = useState(new Date().getFullYear());
-  const { setStatus, setSub } = useMemberStore();
+  const { setStatus, setSub, setUser } = useMemberStore();
   const navigate = useNavigate();
   const totalMember = {
     title: "Total KSSIA Members",
@@ -59,6 +58,11 @@ const DashboardPage = () => {
     title: "Frozen Users",
     amount: data?.suspendedUserCount,
     icon: FrozenIcon,
+  };
+  const installedUsers = {
+    title: "Installed Users",
+    amount: data?.installedUserCount,
+    icon: ActiveMemberIcon,
   };
   const events = {
     title: "Events",
@@ -104,11 +108,19 @@ const DashboardPage = () => {
   const fetchActiveUser = async (status) => {
     setStatus(status);
     setSub(null);
+    setUser(null);
     navigate(`/members`);
   };
   const fetchSub = async () => {
     setStatus(null);
     setSub("premium");
+    setUser(null);
+    navigate(`/members`);
+  };
+  const fetchUser = async () => {
+    setStatus(null);
+    setSub(null);
+    setUser(true);
     navigate(`/members`);
   };
   return (
@@ -169,6 +181,14 @@ const DashboardPage = () => {
               >
                 {" "}
                 <RevenueCard isMobile data={frozenMember} />{" "}
+              </Box>
+              <Box
+                width={"100%"}
+                sx={{ cursor: "pointer" }}
+                onClick={fetchUser}
+              >
+                {" "}
+                <RevenueCard isMobile data={installedUsers} />{" "}
               </Box>
             </Stack>
           </Stack>
