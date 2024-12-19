@@ -115,7 +115,7 @@ const UserCard = ({ user }) => {
           {user?.subscription}
         </Typography>
       </Grid>
-      <Grid item md={12} xs={12}>
+      {/* <Grid item md={12} xs={12}>
         {" "}
         {user?.subscription === "free" && (
           <Stack direction="row" alignItems="center" spacing={2}>
@@ -135,23 +135,25 @@ const UserCard = ({ user }) => {
             />
           </Stack>
         )}
-      </Grid>
+      </Grid> */}
+      {user?.bio && (
+        <Grid
+          item
+          md={12}
+          xs={12}
+          display={"flex"}
+          alignItems={"flex-start"}
+          flexDirection={"column"}
+        >
+          <Typography variant="h7" color={"#626262"} fontWeight={700}>
+            Bio
+          </Typography>
+          <Typography variant="h6" color={"#626262"}>
+            {user?.bio}
+          </Typography>
+        </Grid>
+      )}
 
-      <Grid
-        item
-        md={12}
-        xs={12}
-        display={"flex"}
-        alignItems={"flex-start"}
-        flexDirection={"column"}
-      >
-        <Typography variant="h7" color={"#626262"} fontWeight={700}>
-          Bio
-        </Typography>
-        <Typography variant="h6" color={"#626262"}>
-          {user?.bio}
-        </Typography>
-      </Grid>
       <FreeSubscription open={unopen} onClose={handleUnClose} id={id} />
       <PremiumSubscription open={open} onClose={handleClose} id={id} />
     </Grid>
