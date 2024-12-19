@@ -72,7 +72,10 @@ const StyledFilter = ({ open, onClose, onApply }) => {
       handleApply(status, newStatus, installed);
     }
     if (memberUser) {
-      const newUser = { value: memberUser, label: memberUser };
+      const newUser = { 
+        value: memberUser, 
+        label: memberUser === true ? "True" : "False"
+      };
       setInstalled(newUser);
       handleApply(status, subscription, newUser);
     }
