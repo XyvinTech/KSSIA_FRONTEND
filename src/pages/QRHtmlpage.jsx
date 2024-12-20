@@ -72,24 +72,25 @@ const QRHtmlPage = () => {
     fetchData();
   }, []);
   const handleSaveContact = () => {
-    const vCardData = `
-  BEGIN:VCARD
-  VERSION:3.0
-  FN:${userData?.name}
-  ORG:${userData?.company_name}
-  TEL:${userData?.phone_numbers?.personal}
-  EMAIL:${userData?.email}
-  ADR:${userData?.address}
-  END:VCARD
-      `;
+    const vCardContent = `BEGIN:VCARD
+VERSION:3.0
+N:${userData?.name}
+FN:${userData?.name}
+ORG:${userData?.company_name}
+TEL;TYPE=CELL:${userData?.phone_numbers?.personal}
+EMAIL:${userData?.email}
+END:VCARD`;
 
-    const blob = new Blob([vCardData], { type: "text/vcard" });
+    const blob = new Blob([vCardContent], { type: "text/vcard;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+
     const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
+    link.href = url;
     link.download = `${userData?.name}.vcf`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
   const renderSocialIcon = (platform) => {
     switch (platform) {
@@ -175,8 +176,12 @@ const QRHtmlPage = () => {
                       direction={"column"}
                       alignItems={isMobile && "center"}
                     >
-                      <Typography variant="h3" color="textTertiary" textTransform={"capitalize"}>
-                      {userData?.abbreviation} {' '} {userData?.name}
+                      <Typography
+                        variant="h3"
+                        color="textTertiary"
+                        textTransform={"capitalize"}
+                      >
+                        {userData?.abbreviation} {userData?.name}
                       </Typography>
 
                       {userData?.company_name && (
@@ -225,7 +230,7 @@ const QRHtmlPage = () => {
                               </>
                             }
                           />
-                          
+
                           <StyledButton
                             variant={"primary"}
                             name={
