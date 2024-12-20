@@ -22,7 +22,7 @@ const DashboardPage = () => {
   const [data, setData] = useState({});
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [year, setYear] = useState(new Date().getFullYear());
-  const { setStatus, setSub, setUser } = useMemberStore();
+  const { setMemStatus, setMemSub, setMemUser } = useMemberStore();
   const navigate = useNavigate();
   const totalMember = {
     title: "Total KSSIA Members",
@@ -106,21 +106,21 @@ const DashboardPage = () => {
     fetchData();
   }, []);
   const fetchActiveUser = async (status) => {
-    setStatus(status);
-    setSub(null);
-    setUser(null);
+    setMemStatus(status);
+    setMemSub(null);
+    setMemUser(null);
     navigate(`/members`);
   };
   const fetchSub = async () => {
-    setStatus(null);
-    setSub("premium");
-    setUser(null);
+    setMemStatus(null);
+    setMemSub("premium");
+    setMemUser(null);
     navigate(`/members`);
   };
   const fetchUser = async () => {
-    setStatus(null);
-    setSub(null);
-    setUser(true);
+    setMemStatus(null);
+    setMemSub(null);
+    setMemUser(true);
     navigate(`/members`);
   };
   return (

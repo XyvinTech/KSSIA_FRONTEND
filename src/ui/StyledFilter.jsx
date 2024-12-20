@@ -14,7 +14,7 @@ import StyledSelectField from "./StyledSelectField";
 import { useMemberStore } from "../store/member-store";
 
 const StyledFilter = ({ open, onClose, onApply }) => {
-  const { memberStatus, memberSub, memberUser } = useMemberStore();
+  const { memberStatus, memberSub, memberUser,setMemStatus, setMemSub, setMemUser } = useMemberStore();
   const [membershipId, setMembershipId] = useState("");
   const [designation, setDesignation] = useState("");
   const [companyName, setCompanyName] = useState("");
@@ -29,6 +29,9 @@ const StyledFilter = ({ open, onClose, onApply }) => {
     setMembershipId("");
     setDesignation("");
     setCompanyName("");
+    setMemStatus(null);
+    setMemSub(null);
+    setMemUser(null);
     setStatus(null);
     setInstalled(null);
     setSubscription(null);

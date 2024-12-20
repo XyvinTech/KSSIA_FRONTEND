@@ -20,9 +20,9 @@ const useMemberStore = create((set) => ({
   memberSub:"",
   memberUser: null,
   refreshMembers: false,
-  setStatus: (newStatus) => set({ memberStatus: newStatus }), 
-  setSub: (newSub) => set({ memberSub: newSub }), 
-  setUser: (newUser) => set({ memberUser: newUser }), 
+  setMemStatus: (newStatus) => set({ memberStatus: newStatus }), 
+  setMemSub: (newSub) => set({ memberSub: newSub }), 
+  setMemUser: (newUser) => set({ memberUser: newUser }), 
   addMembers: async (data) => {
     await createMember(data);
   },
