@@ -288,7 +288,7 @@ const StyledTable = ({
                       {[
                         "renewal",
                         "paymentdate",
-                        "date",
+                        "date","expiryDate",
                         "createdAt",
                         "startDate",
                         "endDate",

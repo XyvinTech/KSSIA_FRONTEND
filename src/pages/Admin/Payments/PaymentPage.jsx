@@ -1,14 +1,21 @@
-import { Box, Grid, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Divider,
+  Grid,
+  Stack,
+  Tab,
+  Tabs,
+  Typography,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { StyledButton } from "../../../ui/StyledButton";
 import StyledSearchbar from "../../../ui/StyledSearchbar";
-import { ReactComponent as FilterIcon } from "../../../assets/icons/FilterIcon.svg";
 import StyledTable from "../../../ui/StyledTable";
-import RejectionEntryForm from "../../../components/Members/RejectionEntryForm";
-import MemberShipRenewal from "../../../components/MemberShipRenewal";
 import { usePaymentStore } from "../../../store/payment-store";
 import { toast } from "react-toastify";
+import ParentSubscription from "../../../components/payments/ParentSubscription";
+import { StyledButton } from "../../../ui/StyledButton";
+import ParentSub from "../../../components/payments/ParentSub";
 export default function PaymentPage() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
@@ -16,13 +23,10 @@ export default function PaymentPage() {
   const [pageNo, setPageNo] = useState(1);
   const [row, setRow] = useState(10);
   const [isChange, setIsChange] = useState(false);
-
-  const {
-    payments,
-    fetchPayment,
-    deletePayments,
-    totalCount,
-  } = usePaymentStore();
+  const [selectedTab, setSelectedTab] = useState(0);
+  const [open, setOpen] = useState(false);
+  const { payments, fetchPayment, deletePayments, totalCount } =
+    usePaymentStore();
   const userColumns = [
     { title: "Member name", field: "full_name", padding: "none" },
     { title: "Date", field: "date" },
@@ -58,10 +62,12 @@ export default function PaymentPage() {
     }
   };
 
-  const handleView2 = (id) => {
-    navigate(`/payments/addpaymentdetails`);
+  const handleParent = () => {
+    setOpen(true);
   };
-
+  const handleTabChange = (event, newValue) => {
+    setSelectedTab(newValue);
+  };
   return (
     <>
       {" "}
@@ -79,46 +85,94 @@ export default function PaymentPage() {
             </Typography>
           </Grid>
           <Grid item xs={6} container justifyContent="flex-end" spacing={2}>
-            <Grid item></Grid>
+            <Grid item>
+              {selectedTab === 2 && (
+                <StyledButton
+                  name="Add"
+                  variant="primary"
+                  onClick={handleParent}
+                />
+              )}
+            </Grid>
           </Grid>
         </Grid>
       </Box>
-      <Box padding="15px" marginBottom={4}>
-        <>
-          <Stack
-            direction={"row"}
-            justifyContent={"end"}
-            paddingBottom={"15px"}
-            alignItems={"center"}
-          >
-            <Stack direction={"row"} spacing={2}>
-              <StyledSearchbar
-                placeholder={"Search payments"}
-                onchange={(e) => setSearch(e.target.value)}
-              />
-            </Stack>
-          </Stack>{" "}
-          <Box
-            borderRadius={"16px"}
-            bgcolor={"white"}
-            p={1}
-            border={"1px solid rgba(0, 0, 0, 0.12)"}
-          >
-            <StyledTable
-              columns={userColumns}
-              data={payments}
-              onSelectionChange={handleSelectionChange}
-              onDelete={handleDelete}
-              menu
-              totalCount={totalCount}
-              pageNo={pageNo}
-              setPageNo={setPageNo}
-              rowPerSize={row}
-              setRowPerSize={setRow}
-            />{" "}
-          </Box>
-        </>
-      </Box>
+      <Tabs
+        value={selectedTab}
+        onChange={handleTabChange}
+        aria-label="tabs"
+        TabIndicatorProps={{
+          style: {
+            backgroundColor: "#004797",
+            height: 4,
+            borderRadius: "4px",
+          },
+        }}
+        sx={{
+          paddingTop: "10px",
+          "& .MuiTabs-indicator": {
+            backgroundColor: "#004797",
+          },
+          "& .MuiTab-root": {
+            textTransform: "none",
+            fontSize: "16px",
+            fontWeight: 600,
+            margin: "0 30px",
+          },
+          "& .Mui-selected": {
+            color: "#004797",
+          },
+        }}
+      >
+        <Tab label="Active Payments" />
+        <Tab label="Pending Payments" />
+        <Tab label="Parent Subscription" />
+      </Tabs>
+      <Divider />
+      {selectedTab === 0 && (
+        <Box padding="15px" marginBottom={4}>
+          <>
+            <Stack
+              direction={"row"}
+              justifyContent={"end"}
+              paddingBottom={"15px"}
+              alignItems={"center"}
+            >
+              <Stack direction={"row"} spacing={2}>
+                <StyledSearchbar
+                  placeholder={"Search payments"}
+                  onchange={(e) => setSearch(e.target.value)}
+                />
+              </Stack>
+            </Stack>{" "}
+            <Box
+              borderRadius={"16px"}
+              bgcolor={"white"}
+              p={1}
+              border={"1px solid rgba(0, 0, 0, 0.12)"}
+            >
+              <StyledTable
+                columns={userColumns}
+                data={payments}
+                onSelectionChange={handleSelectionChange}
+                onDelete={handleDelete}
+                menu
+                totalCount={totalCount}
+                pageNo={pageNo}
+                setPageNo={setPageNo}
+                rowPerSize={row}
+                setRowPerSize={setRow}
+              />{" "}
+            </Box>
+          </>
+        </Box>
+      )}
+      {selectedTab === 2 && (
+        <Box padding="15px" marginBottom={4}>
+          <ParentSubscription />
+        </Box>
+      )}
+      <ParentSub open={open} onClose={() => setOpen(false)} />
     </>
   );
 }

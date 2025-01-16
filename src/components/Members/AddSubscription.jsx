@@ -7,7 +7,7 @@ import {
   Box,
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import moment from "moment";
 import { StyledButton } from "../../ui/StyledButton";
 import StyledSelectField from "../../ui/StyledSelectField";
@@ -16,17 +16,21 @@ import { StyledCalender } from "../../ui/StyledCalender";
 import { usePaymentStore } from "../../store/payment-store";
 import { useParams } from "react-router-dom";
 import StyledInput from "../../ui/StyledInput";
+import { set } from "date-fns";
 
-const AddSubscription = ({ open, onClose, data,category }) => {
+const AddSubscription = ({ open, onClose, data, category }) => {
   const { handleSubmit, control, setValue } = useForm();
-  const { addPayments, setRefreshMember } = usePaymentStore();
-  const [timeMetric, setTimeMetric] = useState(null);
+  const { addPayments, setRefreshMember, payments, fetchParentSub } =
+    usePaymentStore();
   const { id } = useParams();
+  useEffect(() => {
+    fetchParentSub();
+  }, []);
   const onSubmit = async (data) => {
     try {
       const formData = {
         user: id,
-        expiryDate: data?.expiryDate,
+        parentSub: data?.academicYear?.value,
         category: category,
         amount: data?.amount,
       };
@@ -43,33 +47,14 @@ const AddSubscription = ({ open, onClose, data,category }) => {
     onClose();
   };
 
-  const handleTimeMetricChange = (selectedOption) => {
-    const { value } = selectedOption;
-    setTimeMetric(value);
+  const option = payments?.map((item) => ({
+    value: item?._id,
+    label: item?.academicYear,
+  })) || [];
+  
+    
 
-    if (value) {
-      // Calculate days to add based on the selected value
-      const daysToAdd = value * 365;
-      const newExpiryDate = moment(data?.renewal)
-        .add(daysToAdd, "days") // Add the calculated number of days
-        .format("YYYY-MM-DD");
-
-      // Log the calculated expiry date
-      console.log(
-        "Data Renewal Date:",
-        moment(data?.renewal).format("YYYY-MM-DD")
-      );
-      console.log("New Expiry Date:", newExpiryDate);
-
-      setValue("expiryDate", newExpiryDate);
-    }
-  };
-
-  const option = [
-    { value: 1, label: "1 Year" },
-    { value: 2, label: "2 Years" },
-    { value: 3, label: "3 Years" },
-  ];
+console.log("option",option);
 
   return (
     <Dialog
@@ -103,12 +88,19 @@ const AddSubscription = ({ open, onClose, data,category }) => {
         >
           <Stack spacing={2} paddingTop={2}>
             <Typography variant="h6" color={"#333333"}>
-              Time metric
+              Academic Year
             </Typography>
-            <StyledSelectField
-              placeholder={"Year"}
-              options={option}
-              onChange={handleTimeMetricChange}
+            <Controller
+              name="academicYear"
+              control={control}
+              defaultValue="" // Default value for the academic year
+              render={({ field }) => (
+                <StyledSelectField
+                  {...field}
+                  placeholder="Year"
+                  options={option}
+                />
+              )}
             />
 
             <Typography variant="h6" color={"#333333"}>
@@ -122,18 +114,6 @@ const AddSubscription = ({ open, onClose, data,category }) => {
                 <>
                   <StyledInput placeholder={"amount"} {...field} />
                 </>
-              )}
-            />
-            <Typography variant="h6" color={"#333333"}>
-              New Expiry date
-            </Typography>
-            <Controller
-              name="expiryDate"
-              control={control}
-              defaultValue={""}
-              rules={{ required: "Date is required" }}
-              render={({ field }) => (
-                <StyledCalender placeholder={"Select Date"} {...field} />
               )}
             />
           </Stack>

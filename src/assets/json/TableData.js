@@ -9,6 +9,11 @@ export const userColumns = [
     // { title: "Membership Status", field: "status" },
 
   ];
+  export const parentSubColums = [
+    { title: "Year", field: "academicYear", padding: "none" }, 
+    { title: "Expiry Date", field: "expiryDate" },
+
+  ];
   export const productColums = [
     {title:"Product Name",field:"name"},
     {title:"Product Image",field:"image"},

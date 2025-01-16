@@ -1,9 +1,11 @@
 import { create } from "zustand";
 import {
+  addParentSub,
   addPayment,
   deletePayment,
   editPayment,
   editSubscription,
+  getParentSub,
   getPayment,
   getPaymentById,
   patchPayment,
@@ -21,8 +23,16 @@ const usePaymentStore = create((set) => ({
     set({ payments: allData?.data || [] });
     set({ totalCount: allData?.totalCount || 0 });
   },
+  fetchParentSub: async () => {
+    const allData = await getParentSub();
+    set({ payments: allData?.data || [] });
+    set({ totalCount: allData?.totalCount || 0 });
+  },
   addPayments: async (data) => {
     await addPayment(data);
+  },
+  addParentSubscription: async (data) => {
+    await addParentSub(data);
   },
   deletePayments: async (id) => {
     await deletePayment(id);

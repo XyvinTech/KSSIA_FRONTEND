@@ -69,3 +69,23 @@ export const patchPayment = async (id, data) => {
     throw error;
   }
 };
+export const addParentSub = async (data) => {
+  try {
+    const response = await axiosInstance.post(
+      "/payments/parent-subscription",
+      data
+    );
+    toast.success(response.data.message);
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+export const getParentSub = async () => {
+  try {
+    const response = await axiosInstance.get(`/payments/parent-subscription`);
+    return response.data;
+  } catch (error) {
+    return null;
+  }
+};
