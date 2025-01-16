@@ -21,13 +21,12 @@ const NewsPreview = ({ open, onClose, onChange, data, onEdit }) => {
     try {
       const newPublishedStatus = !data.published;
 
-      const formData = new FormData();
-
-      formData.append("published", newPublishedStatus);
-      formData.append("category", data.category);
-      formData.append("title", data.title);
-      formData.append("content", data.content);
-      
+      const formData = {
+        published: newPublishedStatus,
+        category: data.category,
+        title: data.title,
+        content: data.content,
+      };
 
       await updateNews(data._id, formData);
 
@@ -51,7 +50,8 @@ const NewsPreview = ({ open, onClose, onChange, data, onEdit }) => {
   return (
     <Dialog
       open={open}
-      onClose={onClose} maxWidth={"md"}
+      onClose={onClose}
+      maxWidth={"md"}
       PaperProps={{
         sx: { borderRadius: "12px" },
       }}
@@ -73,7 +73,8 @@ const NewsPreview = ({ open, onClose, onChange, data, onEdit }) => {
         <DialogContent sx={{ height: "auto", padding: 0 }}>
           <Stack spacing={2} padding={2} justifyContent={"center"}>
             <Box display={"flex"} justifyContent={"center"}>
-            <img src={data?.image} width={"461px"} height={"262px"} /></Box>
+              <img src={data?.image} width={"461px"} height={"262px"} />
+            </Box>
             <Typography variant="h5" color={"#2C2829"}>
               {data?.title}
             </Typography>

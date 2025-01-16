@@ -1,7 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { Stack, Typography } from "@mui/material";
+import DashboardSelect from "../../ui/DashboardSelect";
 
-export const RevenueCard = ({ isMobile, data, spacing, height }) => {
+export const RevenueCard = ({ isMobile, data, spacing, height, year }) => {
+  const currentYear = new Date().getFullYear();
+  const yearOptions = Array.from({ length: 10 }, (_, index) => ({
+    value: (currentYear - index).toString(),
+    label: (currentYear - index).toString(),
+  }));
+  const [selectedYear, setSelectedYear] = useState(currentYear.toString());
+
+  const handleYearChange = (event) => {
+    setSelectedYear(event.target.value);
+  };
   return (
     <Stack
       bgcolor={"white"}
@@ -24,6 +35,15 @@ export const RevenueCard = ({ isMobile, data, spacing, height }) => {
             {data?.title}
           </Typography>
         </Stack>
+        {year && (
+          <Stack>
+            <DashboardSelect
+              options={yearOptions}
+              value={selectedYear}
+              onChange={handleYearChange}
+            />
+          </Stack>
+        )}
       </Stack>
 
       <Stack
