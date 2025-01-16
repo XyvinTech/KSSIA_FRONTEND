@@ -129,7 +129,7 @@ export default function MembersPage() {
       if (filters.companyName) filter.companyName = filters.companyName;
       if (filters.status) filter.status = filters.status;
       if (filters.subscription) filter.subscription = filters.subscription;
-  
+      if(filters.installed) filter.installed = filters.installed;
       // Fetch the data using the API
       const data = await getDwld(filter);
   
