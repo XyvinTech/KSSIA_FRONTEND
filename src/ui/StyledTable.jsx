@@ -441,12 +441,15 @@ const StyledTable = ({
                           <>
                             {" "}
                             <MenuItem onClick={handleModify}>Edit</MenuItem>
-                            <MenuItem
-                              onClick={() => handleRowDelete(row._id)}
-                              style={{ color: "red" }}
-                            >
-                              Remove
-                            </MenuItem>
+                            {onDeleteRow && (
+                               <MenuItem
+                               onClick={() => handleRowDelete(row._id)}
+                               style={{ color: "red" }}
+                             >
+                               Remove
+                             </MenuItem>
+                            )}
+                           
                           </>
                         )}
                       </Menu>
