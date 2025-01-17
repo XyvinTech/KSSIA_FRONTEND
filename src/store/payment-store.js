@@ -4,20 +4,26 @@ import {
   addPayment,
   deletePayment,
   editPayment,
+  editPaymentSub,
   editSubscription,
   getParentSub,
   getPayment,
   getPaymentById,
+  getSubById,
   patchPayment,
 } from "../api/payment-api";
 import { getSubscriptionsByUserId } from "../api/members-api";
+import { sub } from "date-fns";
 
 const usePaymentStore = create((set) => ({
   payments: [],
-  payment: [],cards : [],
+  payment: [],
+  cards: [],
   loadings: false,
   totalCount: 0,
   refreshMember: false,
+  sub: [],
+  subscriptions: [],
   fetchPayment: async (filter) => {
     const allData = await getPayment(filter);
     set({ payments: allData?.data || [] });
@@ -25,7 +31,7 @@ const usePaymentStore = create((set) => ({
   },
   fetchParentSub: async () => {
     const allData = await getParentSub();
-    set({ payments: allData?.data || [] });
+    set({ subscriptions: allData?.data || [] });
     set({ totalCount: allData?.totalCount || 0 });
   },
   addPayments: async (data) => {
@@ -43,13 +49,15 @@ const usePaymentStore = create((set) => ({
     set({ payment: allData?.data || [] });
     set({ loadings: false });
   },
- 
 
   updatePayment: async (id, data) => {
     await editPayment(id, data);
   },
+  editParentSub: async (id, data) => {
+    await editPaymentSub(id, data);
+  },
   changePayment: async (id, data) => {
-   await editSubscription(id, data);
+    await editSubscription(id, data);
   },
   fetchsubscriptionByUser: async (id) => {
     const allData = await getSubscriptionsByUserId(id);
@@ -60,6 +68,10 @@ const usePaymentStore = create((set) => ({
   },
   setRefreshMember: () =>
     set((state) => ({ refreshMember: !state.refreshMember })),
+  fetchParentSubByiD: async (id) => {
+    const allData = await getSubById(id);
+    set({ sub: allData?.data || [] });
+  },
 }));
 
 export { usePaymentStore };

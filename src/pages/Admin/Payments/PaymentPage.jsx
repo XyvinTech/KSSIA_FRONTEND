@@ -34,7 +34,7 @@ export default function PaymentPage() {
   const [confirmationAction, setConfirmationAction] = useState("");
   const [paymentId, setPaymentId] = useState(null);
 
-  const { payments, fetchPayment, deletePayments, totalCount,  patchPayments } =
+  const { payments, fetchPayment, deletePayments, totalCount, patchPayments } =
     usePaymentStore();
   const userColumns = [
     { title: "Member name", field: "full_name", padding: "none" },
@@ -95,9 +95,9 @@ export default function PaymentPage() {
   };
   const confirmAction = async () => {
     if (confirmationAction === "approve") {
-      await  patchPayments(paymentId, { status: "accepted" });
+      await patchPayments(paymentId, { status: "accepted" });
     } else if (confirmationAction === "reject") {
-      await  patchPayments(paymentId, { status: "cancelled" });
+      await patchPayments(paymentId, { status: "cancelled" });
     }
     setConfirmOpen(false);
     setIsChange(!isChange);

@@ -15,17 +15,36 @@ import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { usePaymentStore } from "../../store/payment-store";
 
-const ParentSub = ({ open, onClose, data, category }) => {
+const ParentSub = ({ open, onClose, sub, isUpdate, onChange }) => {
   const { handleSubmit, control, setValue } = useForm();
-  const { addParentSubscription } = usePaymentStore();
-  const { id } = useParams();
+  const { addParentSubscription,  editParentSub } =
+    usePaymentStore();
+
+  useEffect(() => {
+    if (sub && isUpdate) {
+      setValue("from", {
+        value: sub?.academicYear?.split("-")[0],
+        label: sub?.academicYear?.split("-")[0],
+      });
+      setValue("to", {
+        value: sub?.academicYear?.split("-")[1],
+        label: sub?.academicYear?.split("-")[1],
+      });
+      setValue("expiryDate", sub?.expiryDate);
+    }
+  }, [sub, isUpdate, setValue]);
   const onSubmit = async (data) => {
     try {
       const formData = {
         academicYear: `${data?.from.value}-${data?.to.value}`,
-        expiryDate: data?.expiryDate, 
+        expiryDate: data?.expiryDate,
       };
-      await addParentSubscription(formData);
+      if (isUpdate) {
+        await editParentSub(sub?._id, formData);
+      } else {
+        await addParentSubscription(formData);
+      }
+      onChange();
       onClose();
     } catch (error) {
       console.log(error);
@@ -54,7 +73,7 @@ const ParentSub = ({ open, onClose, data, category }) => {
   useEffect(() => {
     if (toValue) {
       const expiryDate = `${toValue.value}-03-31T00:00:00.000Z`;
-      setValue("expiryDate", expiryDate); 
+      setValue("expiryDate", expiryDate);
     }
   }, [toValue, setValue]);
   return (

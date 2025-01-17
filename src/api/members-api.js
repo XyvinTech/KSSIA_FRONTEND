@@ -38,6 +38,7 @@ export const getUserById = async (id) => {
     return null;
   }
 };
+
 export const updateUser = async (id, data) => {
   try {
     const response = await axiosInstance.put(`/admin/users/${id}`, data);

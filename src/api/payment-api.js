@@ -29,6 +29,14 @@ export const getPaymentById = async (id) => {
     throw error;
   }
 };
+export const getSubById = async (id) => {
+  try {
+    const response = await axiosInstance.get(`/payments/parent-subscription/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 export const deletePayment = async (id) => {
   try {
     const response = await axiosInstance.delete(`/payments/${id}`);
@@ -41,6 +49,15 @@ export const deletePayment = async (id) => {
 export const editPayment = async (id, data) => {
   try {
     const response = await axiosInstance.put(`/payments/update/${id}`, data);
+    toast.success(response.data.message);
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+export const editPaymentSub = async (id, data) => {
+  try {
+    const response = await axiosInstance.put(`/payments/parent-subscription/${id}`, data);
     toast.success(response.data.message);
     return response.data;
   } catch (error) {
