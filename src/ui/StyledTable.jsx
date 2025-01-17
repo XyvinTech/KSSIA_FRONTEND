@@ -167,6 +167,8 @@ const StyledTable = ({
     switch (status) {
       case "pending":
         return "#BFBABA";
+        case "inactive":
+        return "#BFBABA";
       case "accepted":
         return "#1890ff";
       case "rejected":
@@ -415,14 +417,14 @@ const StyledTable = ({
                             </MenuItem>
                           </>
                         ) : payment ? (
-                          row.status === "pending" ? (
+                          row.status === "pending" || row.status === "active" ? (
                             <>
                               <MenuItem onClick={handleModify}>
                                 Approve
                               </MenuItem>
                               <MenuItem onClick={handleAction}>Reject</MenuItem>
                             </>
-                          ) : null
+                          ) :  null
                         ) : product ? (
                           <>
                             <MenuItem onClick={handleModify}>Edit</MenuItem>

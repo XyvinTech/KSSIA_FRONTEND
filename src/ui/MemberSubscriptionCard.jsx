@@ -1,5 +1,16 @@
 import React, { useState } from "react";
-import { Typography, Stack, Grid, Box, Divider } from "@mui/material";
+import {
+  Typography,
+  Stack,
+  Grid,
+  Box,
+  Divider,
+  DialogActions,
+  DialogContentText,
+  DialogContent,
+  DialogTitle,
+  Dialog,
+} from "@mui/material";
 import { StyledButton } from "./StyledButton";
 import RenewForm from "../components/Members/RenewForm";
 import SuspendProfile from "../components/SuspendProfile";
@@ -10,35 +21,28 @@ import AddSubscription from "../components/Members/AddSubscription";
 import { useMemberStore } from "../store/member-store";
 import { useParams } from "react-router-dom";
 
-export default function MemberSubscriptionCard({ payment, onChange }) {
-  const [renew, setRenew] = useState(false);
-  const { patchPayments } = usePaymentStore();
+export default function MemberSubscriptionCard({ payment }) {
   const [add, setAdd] = useState(false);
-  const { suspend } = useMemberStore();
-  const [suspendOpen, setSuspendOpen] = useState(false);
-  const {id}=useParams();
+  const [isUpdate, setIsUpdate] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const { patchPayments, setRefreshMember } = usePaymentStore();
   const handleRenew = () => {
-    setRenew(true);
+    setIsUpdate(true);
+    setAdd(true);
   };
 
-  const handleCloseRenew = () => {
-    setRenew(false);
-  };
-  const handleSuspend = () => {
-    setSuspendOpen(true);
-  };
-  const handleCloseSuspend = () => {
-    setSuspendOpen(false);
-  };
-  const handleSuspendMembership = async () => {
-    await suspend(id);
-    onChange();
-  };
   const formatDate = (date) => {
     return date ? moment(date).format("DD-MM-YYYY") : "-";
   };
-  const handleChange = () => {
-    onChange();
+  const handleReject = (e) => {
+    e.preventDefault();
+    setConfirmOpen(true);
+  };
+  const handleConfirm = async (e) => {
+    e.preventDefault();
+    await patchPayments(payment?._id, { status: "cancelled" });
+    setRefreshMember();
+    setConfirmOpen(false);
   };
   return (
     <Grid
@@ -66,18 +70,19 @@ export default function MemberSubscriptionCard({ payment, onChange }) {
           <Typography variant="h7" color={"#2C2829"} fontWeight={700}>
             Status
           </Typography>
-          {payment?.status &&
-          <Typography
-            variant="h6"
-            color="#2E7D32"
-            sx={{
-              padding: "0px 6px",
-              borderRadius: "12px",
-              border: "1px solid #2E7D32",
-            }}
-          >
-            {payment?.status}
-          </Typography>}
+          {payment?.status && (
+            <Typography
+              variant="h6"
+              color="#2E7D32"
+              sx={{
+                padding: "0px 6px",
+                borderRadius: "12px",
+                border: "1px solid #2E7D32",
+              }}
+            >
+              {payment?.status}
+            </Typography>
+          )}
         </Stack>
         <Divider />
         <Stack
@@ -87,12 +92,13 @@ export default function MemberSubscriptionCard({ payment, onChange }) {
           justifyContent={"space-between"}
         >
           <Typography variant="h7" color={"#2C2829"} fontWeight={700}>
-            Last Renewed date
+            Year
           </Typography>
-          {payment?.lastRenewDate &&
-          <Typography variant="h6" color="#2C2829">
-            {formatDate(payment?.lastRenewDate)}
-          </Typography>}
+          {payment?.parentSub?.academicYear && (
+            <Typography variant="h6" color="#2C2829">
+              {payment?.parentSub?.academicYear}
+            </Typography>
+          )}
         </Stack>
         <Divider />{" "}
         <Stack
@@ -104,10 +110,11 @@ export default function MemberSubscriptionCard({ payment, onChange }) {
           <Typography variant="h7" color={"#2C2829"} fontWeight={700}>
             Amount paid
           </Typography>
-          {payment?.amount &&
-          <Typography variant="h6" color="#2C2829">
-            ₹{payment?.amount}
-          </Typography>}
+          {payment?.amount && (
+            <Typography variant="h6" color="#2C2829">
+              ₹{payment?.amount}
+            </Typography>
+          )}
         </Stack>
         <Divider />
         <Stack
@@ -119,10 +126,11 @@ export default function MemberSubscriptionCard({ payment, onChange }) {
           <Typography variant="h7" color={"#2C2829"} fontWeight={700}>
             Expiry date
           </Typography>
-          {payment?.expiryDate &&
-          <Typography variant="h6" color="#2C2829">
-            {formatDate(payment?.expiryDate)}
-          </Typography>}
+          {payment?.parentSub?.expiryDate && (
+            <Typography variant="h6" color="#2C2829">
+              {formatDate(payment?.parentSub?.expiryDate)}
+            </Typography>
+          )}
         </Stack>
         <Divider />
       </Grid>
@@ -132,16 +140,21 @@ export default function MemberSubscriptionCard({ payment, onChange }) {
           <Grid item xs={6}>
             {payment ? (
               <Stack direction="row" spacing={2} justifyContent="flex-end">
-                {/* <StyledButton
-                  name="Suspend"
-                  variant="third"
-                  onClick={handleSuspend}
-                /> */}
                 <StyledButton
                   name="Renew"
                   variant="primary"
                   onClick={handleRenew}
                 />
+                {payment?.status === "active" && (
+                  <StyledButton
+                  name="Cancel"
+                  variant="secondary"
+                  onClick={(e) => {
+                    handleReject(e);
+                  }}
+                />
+                )}
+                
               </Stack>
             ) : (
               <Stack direction="row" spacing={2} justifyContent="flex-end">
@@ -152,25 +165,43 @@ export default function MemberSubscriptionCard({ payment, onChange }) {
                 />
               </Stack>
             )}
-             <AddSubscription
+            <AddSubscription
               open={add}
-              onClose={() => setAdd(false)}
-              data={payment}
+              onClose={() => {
+                setAdd(false);
+                setIsUpdate(false);
+              }}
+              payment={payment}
               category={"membership"}
-            />
-            <RenewForm
-              open={renew}
-              onClose={handleCloseRenew}
-              category={"membership"}
-              data={payment}
-              onChange={handleChange}
-            />
-            <SuspendPayment
-              open={suspendOpen}
-              onClose={handleCloseSuspend}
-              onChange={handleSuspendMembership}
+              isUpdate={isUpdate}
             />
           </Grid>
+          <Dialog
+            open={confirmOpen}
+            onClose={() => setConfirmOpen(false)}
+            aria-labelledby="confirm-dialog-title"
+          >
+            <DialogTitle id="confirm-dialog-title">
+              Confirm Rejection
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Are you sure you want to reject this payment?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <StyledButton
+                name="Cancel"
+                variant="secondary"
+                onClick={() => setConfirmOpen(false)}
+              />
+              <StyledButton
+                name={"Reject"}
+                variant="primary"
+                onClick={(e) => handleConfirm(e)}
+              />
+            </DialogActions>
+          </Dialog>
         </Grid>
       </Grid>
     </Grid>

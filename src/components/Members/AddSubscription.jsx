@@ -18,9 +18,9 @@ import { useParams } from "react-router-dom";
 import StyledInput from "../../ui/StyledInput";
 import { set } from "date-fns";
 
-const AddSubscription = ({ open, onClose, data, category }) => {
-  const { handleSubmit, control, setValue } = useForm();
-  const { addPayments, setRefreshMember, payments, fetchParentSub } =
+const AddSubscription = ({ open, onClose, payment, category,isUpdate }) => {
+  const { handleSubmit, control, reset } = useForm();
+  const { addPayments, setRefreshMember, payments, fetchParentSub,updatePayment } =
     usePaymentStore();
   const { id } = useParams();
   useEffect(() => {
@@ -32,10 +32,17 @@ const AddSubscription = ({ open, onClose, data, category }) => {
         user: id,
         parentSub: data?.academicYear?.value,
         category: category,
+        status:"active",
         amount: data?.amount,
       };
-      await addPayments(formData);
+      if(isUpdate){
+        await updatePayment(payment?._id, formData);
+      }
+      else{
+        await addPayments(formData);
+      }
       setRefreshMember();
+      reset();
       onClose();
     } catch (error) {
       console.log(error);

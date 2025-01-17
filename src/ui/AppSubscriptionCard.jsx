@@ -1,24 +1,45 @@
 import React, { useState } from "react";
-import { Typography, Stack, Grid, Box, Divider } from "@mui/material";
+import {
+  Typography,
+  Stack,
+  Grid,
+  Box,
+  Divider,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from "@mui/material";
 import { StyledButton } from "./StyledButton";
 import RenewForm from "../components/Members/RenewForm";
 import moment from "moment";
 import AddSubscription from "../components/Members/AddSubscription";
+import { usePaymentStore } from "../store/payment-store";
 
 export default function AppSubscriptionCard({ payment }) {
-  const [renew, setRenew] = useState(false);
   const [add, setAdd] = useState(false);
+  const [isUpdate, setIsUpdate] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const { patchPayments, setRefreshMember } = usePaymentStore();
   const handleRenew = () => {
-    setRenew(true);
-  };
-  const handleCloseRenew = () => {
-    setRenew(false);
+    setIsUpdate(true);
+    setAdd(true);
   };
 
   const formatDate = (date) => {
     return date ? moment(date).format("DD-MM-YYYY") : "-";
   };
-
+  const handleReject = (e) => {
+    e.preventDefault();
+    setConfirmOpen(true);
+  };
+  const handleConfirm = async (e) => {
+    e.preventDefault();
+    await patchPayments(payment?._id, { status: "cancelled" });
+    setRefreshMember();
+    setConfirmOpen(false);
+  };
   return (
     <Grid
       container
@@ -47,12 +68,11 @@ export default function AppSubscriptionCard({ payment }) {
           {payment?.status && (
             <Typography
               variant="h6"
-              color="#EB5860"
-              textTransform={"capitalize"}
+              color="#2E7D32"
               sx={{
                 padding: "0px 6px",
                 borderRadius: "12px",
-                border: "1px solid #EB5860",
+                border: "1px solid #2E7D32",
               }}
             >
               {payment?.status}
@@ -67,11 +87,11 @@ export default function AppSubscriptionCard({ payment }) {
           justifyContent={"space-between"}
         >
           <Typography variant="h7" color={"#2C2829"} fontWeight={700}>
-            Last Renewed date
+            Year
           </Typography>
-          {payment?.lastRenewDate && (
+          {payment?.parentSub?.academicYear && (
             <Typography variant="h6" color="#2C2829">
-              {formatDate(payment?.lastRenewDate)}
+              {payment?.parentSub?.academicYear}
             </Typography>
           )}
         </Stack>
@@ -101,9 +121,9 @@ export default function AppSubscriptionCard({ payment }) {
           <Typography variant="h7" color={"#2C2829"} fontWeight={700}>
             Expiry date
           </Typography>
-          {payment?.expiryDate && (
+          {payment?.parentSub?.expiryDate && (
             <Typography variant="h6" color="#2C2829">
-              {formatDate(payment?.expiryDate)}
+              {formatDate(payment?.parentSub?.expiryDate)}
             </Typography>
           )}
         </Stack>
@@ -121,6 +141,15 @@ export default function AppSubscriptionCard({ payment }) {
                   variant="primary"
                   onClick={handleRenew}
                 />
+                {payment?.status === "active" && (
+                  <StyledButton
+                    name="Cancel"
+                    variant="secondary"
+                    onClick={(e) => {
+                      handleReject(e);
+                    }}
+                  />
+                )}
               </Stack>
             ) : (
               <Stack direction="row" spacing={2} justifyContent="flex-end">
@@ -131,19 +160,43 @@ export default function AppSubscriptionCard({ payment }) {
                 />
               </Stack>
             )}
-            <RenewForm
-              open={renew}
-              onClose={handleCloseRenew}
-              category={"app"}
-              data={payment}
-            />
             <AddSubscription
               open={add}
-              onClose={() => setAdd(false)}
-              data={payment}
+              onClose={() => {
+                setAdd(false);
+                setIsUpdate(false);
+              }}
               category={"app"}
+              payment={payment}
+              isUpdate={isUpdate}
             />
           </Grid>
+          <Dialog
+            open={confirmOpen}
+            onClose={() => setConfirmOpen(false)}
+            aria-labelledby="confirm-dialog-title"
+          >
+            <DialogTitle id="confirm-dialog-title">
+              Confirm Rejection
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Are you sure you want to reject this payment?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <StyledButton
+                name="Cancel"
+                variant="secondary"
+                onClick={() => setConfirmOpen(false)}
+              />
+              <StyledButton
+                name={"Reject"}
+                variant="primary"
+                onClick={(e) => handleConfirm(e)}
+              />
+            </DialogActions>
+          </Dialog>
         </Grid>
       </Grid>
     </Grid>

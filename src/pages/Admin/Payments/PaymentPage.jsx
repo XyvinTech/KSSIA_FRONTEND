@@ -1,5 +1,10 @@
 import {
   Box,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Divider,
   Grid,
   Stack,
@@ -25,12 +30,15 @@ export default function PaymentPage() {
   const [isChange, setIsChange] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
   const [open, setOpen] = useState(false);
-  const { payments, fetchPayment, deletePayments, totalCount } =
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [confirmationAction, setConfirmationAction] = useState("");
+  const [paymentId, setPaymentId] = useState(null);
+
+  const { payments, fetchPayment, deletePayments, totalCount,  patchPayments } =
     usePaymentStore();
   const userColumns = [
     { title: "Member name", field: "full_name", padding: "none" },
-    { title: "Date", field: "date" },
-    { title: "Time", field: "time" },
+    { title: "Date", field: "createdAt" },
     { title: "Category", field: "category" },
     { title: "Amount", field: "amount" },
     { title: "Status", field: "status" },
@@ -47,8 +55,14 @@ export default function PaymentPage() {
     }
     filter.limit = row;
     filter.pageNo = pageNo;
+    if (selectedTab === 0) {
+      filter.status = "active";
+    }
+    if (selectedTab === 1) {
+      filter.status = "pending";
+    }
     fetchPayment(filter);
-  }, [isChange, pageNo, search, row]);
+  }, [isChange, pageNo, search, row, selectedTab]);
 
   const handleSelectionChange = (newSelectedIds) => {
     setSelectedRows(newSelectedIds);
@@ -67,6 +81,26 @@ export default function PaymentPage() {
   };
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
+  };
+  const handleApprove = async (id) => {
+    setPaymentId(id);
+    setConfirmationAction("approve");
+    setConfirmOpen(true);
+  };
+
+  const handleReject = async (id) => {
+    setPaymentId(id);
+    setConfirmationAction("reject");
+    setConfirmOpen(true);
+  };
+  const confirmAction = async () => {
+    if (confirmationAction === "approve") {
+      await  patchPayments(paymentId, { status: "accepted" });
+    } else if (confirmationAction === "reject") {
+      await  patchPayments(paymentId, { status: "cancelled" });
+    }
+    setConfirmOpen(false);
+    setIsChange(!isChange);
   };
   return (
     <>
@@ -129,7 +163,7 @@ export default function PaymentPage() {
         <Tab label="Parent Subscription" />
       </Tabs>
       <Divider />
-      {selectedTab === 0 && (
+      {(selectedTab === 0 || selectedTab === 1) && (
         <Box padding="15px" marginBottom={4}>
           <>
             <Stack
@@ -156,11 +190,13 @@ export default function PaymentPage() {
                 data={payments}
                 onSelectionChange={handleSelectionChange}
                 onDelete={handleDelete}
-                menu
+                payment
                 totalCount={totalCount}
                 pageNo={pageNo}
                 setPageNo={setPageNo}
                 rowPerSize={row}
+                onModify={handleApprove}
+                onAction={handleReject}
                 setRowPerSize={setRow}
               />{" "}
             </Box>
@@ -173,6 +209,36 @@ export default function PaymentPage() {
         </Box>
       )}
       <ParentSub open={open} onClose={() => setOpen(false)} />
+      <Dialog
+        open={confirmOpen}
+        onClose={() => setConfirmOpen(false)}
+        aria-labelledby="confirm-dialog-title"
+      >
+        <DialogTitle id="confirm-dialog-title">
+          {confirmationAction === "approve"
+            ? "Confirm Approval"
+            : "Confirm Rejection"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to{" "}
+            {confirmationAction === "approve" ? "approve" : "reject"} this
+            payment?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <StyledButton
+            name="Cancel"
+            variant="secondary"
+            onClick={() => setConfirmOpen(false)}
+          />
+          <StyledButton
+            name={confirmationAction === "approve" ? "Approve" : "Reject"}
+            variant="primary"
+            onClick={confirmAction}
+          />
+        </DialogActions>
+      </Dialog>
     </>
   );
 }
