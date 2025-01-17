@@ -177,11 +177,12 @@ export default function AppSubscriptionCard({ payment }) {
             aria-labelledby="confirm-dialog-title"
           >
             <DialogTitle id="confirm-dialog-title">
-              Confirm Rejection
+              {" "}
+              Confirm Cancellation
             </DialogTitle>
             <DialogContent>
               <DialogContentText>
-                Are you sure you want to reject this payment?
+                Are you sure you want to Cancel this payment?
               </DialogContentText>
             </DialogContent>
             <DialogActions>
@@ -191,7 +192,7 @@ export default function AppSubscriptionCard({ payment }) {
                 onClick={() => setConfirmOpen(false)}
               />
               <StyledButton
-                name={"Reject"}
+                name={"Yes ,Cancel"}
                 variant="primary"
                 onClick={(e) => handleConfirm(e)}
               />

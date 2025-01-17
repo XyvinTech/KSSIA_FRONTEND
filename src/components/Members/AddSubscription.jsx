@@ -18,10 +18,15 @@ import { useParams } from "react-router-dom";
 import StyledInput from "../../ui/StyledInput";
 import { set } from "date-fns";
 
-const AddSubscription = ({ open, onClose, payment, category,isUpdate }) => {
+const AddSubscription = ({ open, onClose, payment, category, isUpdate }) => {
   const { handleSubmit, control, reset } = useForm();
-  const { addPayments, setRefreshMember, payments, fetchParentSub,updatePayment } =
-    usePaymentStore();
+  const {
+    addPayments,
+    setRefreshMember,
+    subscriptions,
+    fetchParentSub,
+    updatePayment,
+  } = usePaymentStore();
   const { id } = useParams();
   useEffect(() => {
     fetchParentSub();
@@ -32,13 +37,12 @@ const AddSubscription = ({ open, onClose, payment, category,isUpdate }) => {
         user: id,
         parentSub: data?.academicYear?.value,
         category: category,
-        status:"active",
+        status: "active",
         amount: data?.amount,
       };
-      if(isUpdate){
+      if (isUpdate) {
         await updatePayment(payment?._id, formData);
-      }
-      else{
+      } else {
         await addPayments(formData);
       }
       setRefreshMember();
@@ -54,14 +58,12 @@ const AddSubscription = ({ open, onClose, payment, category,isUpdate }) => {
     onClose();
   };
 
-  const option = payments?.map((item) => ({
-    value: item?._id,
-    label: item?.academicYear,
-  })) || [];
-  
-    
+  const option =
+    subscriptions?.map((item) => ({
+      value: item?._id,
+      label: item?.academicYear,
+    })) || [];
 
-console.log("option",option);
 
   return (
     <Dialog

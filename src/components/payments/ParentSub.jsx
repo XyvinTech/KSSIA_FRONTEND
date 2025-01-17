@@ -15,9 +15,9 @@ import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { usePaymentStore } from "../../store/payment-store";
 
-const ParentSub = ({ open, onClose, sub, isUpdate, onChange }) => {
-  const { handleSubmit, control, setValue } = useForm();
-  const { addParentSubscription,  editParentSub } =
+const ParentSub = ({ open, onClose, sub, isUpdate }) => {
+  const { handleSubmit, control, setValue, reset } = useForm();
+  const { addParentSubscription, editParentSub, setRefreshMember } =
     usePaymentStore();
 
   useEffect(() => {
@@ -44,7 +44,8 @@ const ParentSub = ({ open, onClose, sub, isUpdate, onChange }) => {
       } else {
         await addParentSubscription(formData);
       }
-      onChange();
+      setRefreshMember();
+      reset();
       onClose();
     } catch (error) {
       console.log(error);
@@ -65,7 +66,7 @@ const ParentSub = ({ open, onClose, sub, isUpdate, onChange }) => {
   const toValue = useWatch({ control, name: "to" });
 
   const toOptions = fromValue
-    ? Array.from({ length: 5 }, (_, i) => ({
+    ? Array.from({ length: 1 }, (_, i) => ({
         value: `${parseInt(fromValue.value) + i + 1}`,
         label: `${parseInt(fromValue.value) + i + 1}`,
       }))

@@ -21,6 +21,7 @@ import { toast } from "react-toastify";
 import ParentSubscription from "../../../components/payments/ParentSubscription";
 import { StyledButton } from "../../../ui/StyledButton";
 import ParentSub from "../../../components/payments/ParentSub";
+import PayementView from "./PayementView";
 export default function PaymentPage() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
@@ -33,8 +34,9 @@ export default function PaymentPage() {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [confirmationAction, setConfirmationAction] = useState("");
   const [paymentId, setPaymentId] = useState(null);
+  const [openView, setOpenView] = useState(false);
 
-  const { payments, fetchPayment, deletePayments, totalCount, patchPayments } =
+  const { payments, fetchPayment, deletePayments, totalCount, patchPayments,fetchSinglePayment,singlePayment } =
     usePaymentStore();
   const userColumns = [
     { title: "Member name", field: "full_name", padding: "none" },
@@ -55,10 +57,10 @@ export default function PaymentPage() {
     }
     filter.limit = row;
     filter.pageNo = pageNo;
-    if (selectedTab === 0) {
+    if (selectedTab === 1) {
       filter.status = "active";
     }
-    if (selectedTab === 1) {
+    if (selectedTab === 2) {
       filter.status = "pending";
     }
     fetchPayment(filter);
@@ -101,6 +103,10 @@ export default function PaymentPage() {
     }
     setConfirmOpen(false);
     setIsChange(!isChange);
+  };
+  const handleView = async (id) => {
+    await fetchSinglePayment(id);
+    setOpenView(true);
   };
   return (
     <>
@@ -158,12 +164,13 @@ export default function PaymentPage() {
           },
         }}
       >
+        <Tab label="All Payments" />
         <Tab label="Active Payments" />
         <Tab label="Pending Payments" />
         <Tab label="Parent Subscription" />
       </Tabs>
       <Divider />
-      {(selectedTab === 0 || selectedTab === 1) && (
+      {(selectedTab === 0 || selectedTab === 1 || selectedTab === 2) && (
         <Box padding="15px" marginBottom={4}>
           <>
             <Stack
@@ -191,6 +198,7 @@ export default function PaymentPage() {
                 onSelectionChange={handleSelectionChange}
                 onDelete={handleDelete}
                 payment
+                onView={handleView}
                 totalCount={totalCount}
                 pageNo={pageNo}
                 setPageNo={setPageNo}
@@ -203,7 +211,7 @@ export default function PaymentPage() {
           </>
         </Box>
       )}
-      {selectedTab === 2 && (
+      {selectedTab === 3 && (
         <Box padding="15px" marginBottom={4}>
           <ParentSubscription />
         </Box>
@@ -239,6 +247,7 @@ export default function PaymentPage() {
           />
         </DialogActions>
       </Dialog>
+      <PayementView open={openView} onClose={() => setOpenView(false)}data={singlePayment} />
     </>
   );
 }

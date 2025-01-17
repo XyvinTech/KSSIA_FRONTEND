@@ -166,34 +166,35 @@ const StyledTable = ({
     }
     switch (status) {
       case "pending":
-        return "#BFBABA";
-        case "inactive":
-        return "#BFBABA";
+        return "#f0ad4e"; // A different color for pending (e.g., amber)
+      case "inactive":
+        return "#cccccc"; // A gray color for inactive
       case "accepted":
-        return "#1890ff";
+        return "#1890ff"; // Blue color for accepted
       case "rejected":
-        return "#ff4d4f";
+        return "#ff4d4f"; // Red color for rejected
       case "reported":
-        return "#ff4d4f";
+        return "#ff4d4f"; // Red color for reported
       case "approved":
-        return "#52c41a";
+        return "#52c41a"; // Green color for approved
       case "completed":
-        return "#52c41a";
+        return "#52c41a"; // Green color for completed
       case "live":
-        return "#1890ff";
+        return "#1890ff"; // Blue color for live
       case "upcoming":
-        return "#faad14";
+        return "#faad14"; // Yellow color for upcoming
       case "active":
-        return "green";
+        return "green"; // Green color for active
       case "expired":
-        return "#8c8c8c";
+        return "#8c8c8c"; // Gray color for expired (different from inactive)
       case "expiring":
-        return "#faad14";
+        return "#faad14"; // Yellow color for expiring
       case "suspended": // Added case for suspended
-        return "#d9d9d9"; // Use a grayish color for suspended or any other preferred color
+        return "#d9d9d9"; // Grayish color for suspended
       default:
-        return "default";
+        return "default"; // Default color
     }
+    
     
   };
   const formatIndianDate = (date) => {

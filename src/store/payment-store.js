@@ -9,6 +9,7 @@ import {
   getParentSub,
   getPayment,
   getPaymentById,
+  getSinglePayment,
   getSubById,
   patchPayment,
 } from "../api/payment-api";
@@ -24,10 +25,15 @@ const usePaymentStore = create((set) => ({
   refreshMember: false,
   sub: [],
   subscriptions: [],
+  singlePayment: [],
   fetchPayment: async (filter) => {
     const allData = await getPayment(filter);
     set({ payments: allData?.data || [] });
     set({ totalCount: allData?.totalCount || 0 });
+  },
+  fetchSinglePayment: async (id) => {
+    const allData = await getSinglePayment(id);
+    set({ singlePayment: allData?.data || [] });
   },
   fetchParentSub: async () => {
     const allData = await getParentSub();

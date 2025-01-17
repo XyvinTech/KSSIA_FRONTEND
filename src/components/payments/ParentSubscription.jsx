@@ -9,12 +9,17 @@ const ParentSubscription = () => {
   const [row, setRow] = useState(10);
   const [open, setOpen] = useState(false);
   const [update, setUpdate] = useState(false);
-  const[change, setChange] = useState(false)
-  const { subscriptions, totalCount, fetchParentSub, fetchParentSubByiD, sub } =
-    usePaymentStore();
+  const {
+    subscriptions,
+    totalCount,
+    fetchParentSub,
+    fetchParentSubByiD,
+    sub,
+    refreshMember,
+  } = usePaymentStore();
   useEffect(() => {
     fetchParentSub();
-  }, [pageNo, row, change]);
+  }, [pageNo, row, refreshMember]);
   const parentSubColums = [
     { title: "Year", field: "academicYear" },
     { title: "Expiry Date", field: "expiryDate" },
@@ -28,9 +33,7 @@ const ParentSubscription = () => {
     setOpen(false);
     setUpdate(false);
   };
-  const handleChange = () => {
-    setChange(!change);
-  };
+
   return (
     <Box
       borderRadius={"16px"}
@@ -53,7 +56,6 @@ const ParentSubscription = () => {
         onClose={(e) => handleClose(e)}
         isUpdate={update}
         sub={sub}
-        onChange={handleChange}
       />
     </Box>
   );

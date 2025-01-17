@@ -11,6 +11,14 @@ export const getPayment = async (filter) => {
     return null;
   }
 };
+export const getSinglePayment = async (id) => {
+  try {
+    const response = await axiosInstance.get(`/payments/${id}`);
+    return response.data;
+  } catch (error) {
+    return null;
+  }
+};
 
 export const addPayment = async (data) => {
   try {
