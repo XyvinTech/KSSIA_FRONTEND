@@ -155,9 +155,13 @@ export default function PromotionForm({ isUpdate }) {
           return;
         }
       }
+      const currentDate = moment().startOf('day');
+      const endDate = moment(data?.endDate).startOf('day');
+      const isStatusTrue = endDate.isAfter(currentDate);
       const formData = {
         startDate: data?.startDate,
         endDate: data?.endDate,
+        status: isStatusTrue,
       };
       if (type === "notice") {
         formData.type = "notice";

@@ -157,7 +157,7 @@ export const StyledCrop = ({ label, value, onChange, ratio }) => {
 
       if (value instanceof File) {
         setSelectedFile(value);
-        setSelectedImage(value.name);
+        // setSelectedImage(value.name);
       } else if (typeof value === "string") {
         setSelectedImage(value);
         if (!isPdfFile) {
@@ -176,7 +176,7 @@ export const StyledCrop = ({ label, value, onChange, ratio }) => {
       <CustomTextField
         fullWidth
         label={label}
-        value={selectedImage || ""}
+        // value={selectedImage || ""}
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
