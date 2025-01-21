@@ -18,6 +18,7 @@ import { StyledMultilineTextField } from "../ui/StyledMultilineTextField .jsx";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import uploadFileToS3 from "../utils/s3Upload.js";
+import moment from "moment";
 
 export default function AddEvent({ eventId, setSelectedTab }) {
   const {
@@ -25,6 +26,7 @@ export default function AddEvent({ eventId, setSelectedTab }) {
     handleSubmit,
     reset,
     setValue,
+    getValues,
     formState: { errors },
   } = useForm();
   const [isChecked, setIsChecked] = useState(false);
@@ -121,6 +123,18 @@ export default function AddEvent({ eventId, setSelectedTab }) {
           };
         })
       );
+      const currentDate = moment().startOf("day");
+      const startDate = moment(data?.startDate).startOf("day");
+      const endDate = moment(data?.endDate).startOf("day");
+
+      let status;
+      if (currentDate.isAfter(endDate)) {
+        status = "pending";
+      } else if (currentDate.isSameOrAfter(startDate)) {
+        status = "live";
+      } else {
+        status = "pending";
+      }
       const formData = {
         organiser_name: data.organiser_name,
         organiser_company_name: data.organiser_company_name,
@@ -147,6 +161,7 @@ export default function AddEvent({ eventId, setSelectedTab }) {
         formData.meeting_link = data.meeting_link;
       }
       if (eventId) {
+        formData.status = status;
         await updateEventById(eventId, formData);
         navigate(`/events/eventlist`);
       } else {
@@ -311,7 +326,6 @@ export default function AddEvent({ eventId, setSelectedTab }) {
                   {errors.image && (
                     <span style={{ color: "red" }}>{errors.image.message}</span>
                   )}
-               
                 </>
               )}
             />
@@ -388,12 +402,25 @@ export default function AddEvent({ eventId, setSelectedTab }) {
             <Controller
               name="endDate"
               control={control}
-              defaultValue={""}
-              rules={{ required: " Date is required" }}
+              defaultValue=""
+              rules={{
+                required: "End Date is required",
+                validate: (value) => {
+                  const startDate = moment(
+                    getValues("startDate"),
+                    "YYYY-MM-DD"
+                  );
+                  const endDate = moment(value, "YYYY-MM-DD");
+                  if (endDate.isBefore(startDate)) {
+                    return "End Date cannot be before Start Date";
+                  }
+                  return true;
+                },
+              }}
               render={({ field }) => (
                 <>
                   <StyledCalender
-                    label="Select Date from Calender"
+                    label="Select End Date"
                     {...field}
                     value={field.value}
                   />
@@ -714,7 +741,6 @@ export default function AddEvent({ eventId, setSelectedTab }) {
                         }}
                         value={field.value}
                       />
-                    
                     </>
                   )}
                 />
