@@ -145,11 +145,11 @@ const DashboardPage = () => {
               {" "}
               <Box width={"100%"}>
                 {" "}
-                <RevenueCard isMobile data={membershipRevenue} year/>{" "}
+                <RevenueCard isMobile data={membershipRevenue}/>{" "}
               </Box>{" "}
               <Box width={"100%"}>
                 {" "}
-                <RevenueCard isMobile data={appRevenue} year />{" "}
+                <RevenueCard isMobile data={appRevenue} />{" "}
               </Box>
             </Stack>
           </Stack>
