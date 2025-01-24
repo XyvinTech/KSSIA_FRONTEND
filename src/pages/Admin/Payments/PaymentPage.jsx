@@ -126,7 +126,7 @@ export default function PaymentPage() {
           </Grid>
           <Grid item xs={6} container justifyContent="flex-end" spacing={2}>
             <Grid item>
-              {selectedTab === 2 && (
+              {selectedTab === 3 && (
                 <StyledButton
                   name="Add"
                   variant="primary"
