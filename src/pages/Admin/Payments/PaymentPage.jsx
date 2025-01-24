@@ -40,7 +40,8 @@ export default function PaymentPage() {
     usePaymentStore();
   const userColumns = [
     { title: "Member name", field: "full_name", padding: "none" },
-    { title: "Date", field: "createdAt" },
+    { title: "Expiry Date", field: "expiry_date" },
+    { title: "Year", field: "year" },
     { title: "Category", field: "category" },
     { title: "Amount", field: "amount" },
     { title: "Status", field: "status" },
