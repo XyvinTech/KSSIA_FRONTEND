@@ -292,7 +292,7 @@ const StyledTable = ({
                         "renewal",
                         "paymentdate",
                         "date","expiryDate",
-                        "createdAt",
+                        "createdAt","expiry_date",
                         "startDate",
                         "endDate",
                       ].includes(column.field) ? (
