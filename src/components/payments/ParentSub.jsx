@@ -54,13 +54,14 @@ const ParentSub = ({ open, onClose, sub, isUpdate }) => {
 
   const handleClear = (event) => {
     event.preventDefault();
+    reset();
     onClose();
   };
-  const currentYear = new Date().getFullYear();
-  const fromOptions = Array.from({ length: 5 }, (_, i) => ({
-    value: `${currentYear - i - 1}`,
-    label: `${currentYear - i - 1}`,
+  const fromOptions = Array.from({ length: 2033 - 2023 + 1 }, (_, i) => ({
+    value: `${2023 + i}`,
+    label: `${2023 + i}`,
   }));
+  
 
   const fromValue = useWatch({ control, name: "from" });
   const toValue = useWatch({ control, name: "to" });
