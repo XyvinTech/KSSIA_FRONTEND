@@ -381,7 +381,9 @@ export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
           {pdfPreview ? (
             <Box sx={{ mt: 1 }}>
               <iframe
-                src={`https://docs.google.com/gview?url=${pdfPreview}&embedded=true`}
+                src={`https://docs.google.com/gview?url=${encodeURIComponent(
+                  pdfPreview
+                )}&embedded=true`}
                 title="PDF Preview"
                 width="100%"
                 height="500px"
