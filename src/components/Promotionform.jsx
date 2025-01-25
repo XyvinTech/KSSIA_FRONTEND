@@ -13,7 +13,6 @@ import { StyledCalender } from "../ui/StyledCalender.jsx";
 import { ReactComponent as CloseIcon } from "../assets/icons/CloseIcon.svg";
 import { Controller, useForm } from "react-hook-form";
 import StyledSelectField from "../ui/StyledSelectField.jsx";
-import { StyledEventUpload } from "../ui/StyledEventUpload.jsx";
 import StyledInput from "../ui/StyledInput.jsx";
 import { usePromotionStore } from "../store/promotionStore.js";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -155,8 +154,8 @@ export default function PromotionForm({ isUpdate }) {
           return;
         }
       }
-      const currentDate = moment().startOf('day');
-      const endDate = moment(data?.endDate).startOf('day');
+      const currentDate = moment().startOf("day");
+      const endDate = moment(data?.endDate).startOf("day");
       const isStatusTrue = endDate.isAfter(currentDate);
       const formData = {
         startDate: data?.startDate,

@@ -14,12 +14,27 @@ export default function StyledNoticeTable() {
   const [isChange, setIsChange] = useState(false);
   const [pageNo, setPageNo] = useState(1);
   const [row, setRow] = useState(10);
-  const { promotions, fetchPromotion, deletePromotions, totalCount } =
+  const { promotions, fetchPromotion, deletePromotions,updatePromotion, totalCount } =
     usePromotionStore();
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
-
+  const handleActiveStatus = async (id) => {
+    try {
+      await updatePromotion(id, { status: true, type: "notice" });
+      setIsChange(!isChange);
+    } catch (e) {
+      toast.error(e.message);
+    }
+  };
+  const handleInactiveStatus = async (id) => {
+    try {
+      await updatePromotion(id, { status: false, type: "notice" });
+      setIsChange(!isChange);
+    } catch (e) {
+      toast.error(e.message);
+    }
+  };
   const handleCloseFilter = () => {
     setFilterOpen(false);
   };
@@ -79,6 +94,9 @@ export default function StyledNoticeTable() {
             onDelete={handleDelete}
             totalCount={totalCount}
             pageNo={pageNo}
+            promotion
+            onAction={handleActiveStatus}
+            onApprove={handleInactiveStatus}
             setPageNo={setPageNo}
             onDeleteRow={handleRowDelete}
             onModify={handleEdit}

@@ -15,7 +15,7 @@ export default function StyledVideoTable() {
   const[pageNo, setPageNo] = useState(1)
   const [row, setRow] = useState(10);
   const [selectedRows, setSelectedRows] = useState([]);
-  const { promotions, fetchPromotion, deletePromotions, totalCount } = usePromotionStore();
+  const { promotions, fetchPromotion, deletePromotions,updatePromotion, totalCount } = usePromotionStore();
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -32,6 +32,22 @@ export default function StyledVideoTable() {
       toast.success('Deleted successfully');
       setIsChange(!isChange);
       setSelectedRows([]);
+    }
+  };
+  const handleActiveStatus = async (id) => {
+    try {
+      await updatePromotion(id, { status: true, type: "video" });
+      setIsChange(!isChange);
+    } catch (e) {
+      toast.error(e.message);
+    }
+  };
+  const handleInactiveStatus = async (id) => {
+    try {
+      await updatePromotion(id, { status: false, type: "video" });
+      setIsChange(!isChange);
+    } catch (e) {
+      toast.error(e.message);
     }
   };
   const handleEdit = (id) => {
@@ -76,6 +92,9 @@ export default function StyledVideoTable() {
           <StyledTable
             columns={userColumns}
             data={promotions}
+            promotion
+            onAction={handleActiveStatus}
+            onApprove={handleInactiveStatus}
             onSelectionChange={handleSelectionChange}
             onDelete={handleDelete}
             totalCount={totalCount}

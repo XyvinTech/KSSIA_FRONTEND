@@ -15,7 +15,7 @@ export default function StyledPosterTable() {
   const [isChange, setIsChange] = useState(false);
   const[pageNo, setPageNo] = useState(1)
   const [row, setRow] = useState(10);
-  const { promotions, fetchPromotion, deletePromotions, totalCount } = usePromotionStore();
+  const { promotions, fetchPromotion, deletePromotions,updatePromotion, totalCount } = usePromotionStore();
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -35,6 +35,22 @@ export default function StyledPosterTable() {
       toast.success('Deleted successfully');
       setIsChange(!isChange);
       setSelectedRows([]);
+    }
+  };
+  const handleActiveStatus = async (id) => {
+    try {
+      await updatePromotion(id, { status: true, type: "poster" });
+      setIsChange(!isChange);
+    } catch (e) {
+      toast.error(e.message);
+    }
+  };
+  const handleInactiveStatus = async (id) => {
+    try {
+      await updatePromotion(id, { status: false, type: "poster" });
+      setIsChange(!isChange);
+    } catch (e) {
+      toast.error(e.message);
     }
   };
   const handleRowDelete = async (id) => {
@@ -77,6 +93,9 @@ export default function StyledPosterTable() {
           <StyledTable
             columns={userColumns}
             data={promotions}
+            promotion
+            onAction={handleActiveStatus}
+            onApprove={handleInactiveStatus}
             onSelectionChange={handleSelectionChange}
             onDelete={handleDelete}
             totalCount={totalCount}

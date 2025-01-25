@@ -75,6 +75,7 @@ const StyledTable = ({
   member,
   report,
   product,
+  promotion,
   onApprove,
   payment,
   rowPerSize,
@@ -194,8 +195,6 @@ const StyledTable = ({
       default:
         return "default"; // Default color
     }
-    
-    
   };
   const formatIndianDate = (date) => {
     return moment(date).format("DD-MM-YYYY");
@@ -291,15 +290,21 @@ const StyledTable = ({
                       {[
                         "renewal",
                         "paymentdate",
-                        "date","expiryDate",
-                        "createdAt","expiry_date",
+                        "date",
+                        "expiryDate",
+                        "createdAt",
+                        "expiry_date",
                         "startDate",
                         "endDate",
                       ].includes(column.field) ? (
                         formatIndianDate(row[column.field])
-                      ) : ["starttime", "endtime", "time", "startTime", "endTime"].includes(
-                          column.field
-                        ) ? (
+                      ) : [
+                          "starttime",
+                          "endtime",
+                          "time",
+                          "startTime",
+                          "endTime",
+                        ].includes(column.field) ? (
                         formatTime(row[column.field])
                       ) : [
                           "banner_image_url",
@@ -387,6 +392,25 @@ const StyledTable = ({
                               Remove
                             </MenuItem>
                           </>
+                        ) : promotion ? (
+                          <>
+                            <MenuItem onClick={handleModify}>Edit</MenuItem>
+                            {row.status === true && (
+                              <MenuItem onClick={handleApprove}>
+                                Inactive
+                              </MenuItem>
+                            )}
+                            {row.status === false && (
+                              <MenuItem onClick={handleAction}>Active</MenuItem>
+                            )}
+
+                            <MenuItem
+                              onClick={() => handleRowDelete(row._id)}
+                              style={{ color: "red" }}
+                            >
+                              Remove
+                            </MenuItem>
+                          </>
                         ) : report ? (
                           <>
                             <MenuItem onClick={handleAction}>Report</MenuItem>
@@ -418,14 +442,15 @@ const StyledTable = ({
                             </MenuItem>
                           </>
                         ) : payment ? (
-                          row.status === "pending" || row.status === "active" ? (
+                          row.status === "pending" ||
+                          row.status === "active" ? (
                             <>
                               <MenuItem onClick={handleModify}>
                                 Approve
                               </MenuItem>
                               <MenuItem onClick={handleAction}>Reject</MenuItem>
                             </>
-                          ) :  null
+                          ) : null
                         ) : product ? (
                           <>
                             <MenuItem onClick={handleModify}>Edit</MenuItem>
@@ -443,14 +468,13 @@ const StyledTable = ({
                             {" "}
                             <MenuItem onClick={handleModify}>Edit</MenuItem>
                             {onDeleteRow && (
-                               <MenuItem
-                               onClick={() => handleRowDelete(row._id)}
-                               style={{ color: "red" }}
-                             >
-                               Remove
-                             </MenuItem>
+                              <MenuItem
+                                onClick={() => handleRowDelete(row._id)}
+                                style={{ color: "red" }}
+                              >
+                                Remove
+                              </MenuItem>
                             )}
-                           
                           </>
                         )}
                       </Menu>

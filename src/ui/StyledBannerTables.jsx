@@ -14,8 +14,13 @@ export default function StyledBannerTables() {
   const [isChange, setIsChange] = useState(false);
   const [pageNo, setPageNo] = useState(1);
   const [row, setRow] = useState(10);
-  const { promotions, fetchPromotion, deletePromotions, totalCount } =
-    usePromotionStore();
+  const {
+    promotions,
+    fetchPromotion,
+    deletePromotions,
+    totalCount,
+    updatePromotion,
+  } = usePromotionStore();
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -48,12 +53,28 @@ export default function StyledBannerTables() {
     filter.limit = row;
     fetchPromotion("banner", filter);
   }, [isChange, pageNo, row]);
+  const handleActiveStatus = async (id) => {
+    try {
+      await updatePromotion(id, { status: true, type: "banner" });
+      setIsChange(!isChange);
+    } catch (e) {
+      toast.error(e.message);
+    }
+  };
+  const handleInactiveStatus = async (id) => {
+    try {
+      await updatePromotion(id, { status: false, type: "banner" });
+      setIsChange(!isChange);
+    } catch (e) {
+      toast.error(e.message);
+    }
+  };
   const userColumns = [
     { title: "Start Date", field: "startDate", padding: "none" },
     { title: "End Date", field: "endDate", padding: "none" },
 
     { title: "Media", field: "banner_image_url" },
-    {title:"Status",field:"status"},
+    { title: "Status", field: "status" },
   ];
   return (
     <>
@@ -79,10 +100,13 @@ export default function StyledBannerTables() {
             onDelete={handleDelete}
             totalCount={totalCount}
             pageNo={pageNo}
+            promotion
+            onAction={handleActiveStatus}
             setPageNo={setPageNo}
             onDeleteRow={handleRowDelete}
             onModify={handleEdit}
             rowPerSize={row}
+            onApprove={handleInactiveStatus}
             setRowPerSize={setRow}
           />{" "}
         </Box>
