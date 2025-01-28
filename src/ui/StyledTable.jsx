@@ -167,9 +167,9 @@ const StyledTable = ({
     }
     switch (status) {
       case "pending":
-        return "#f0ad4e"; // A different color for pending (e.g., amber)
+        return "#f0ad4e"; // Amber color for pending
       case "inactive":
-        return "#cccccc"; // A gray color for inactive
+        return "#cccccc"; // Gray color for inactive
       case "accepted":
         return "#1890ff"; // Blue color for accepted
       case "rejected":
@@ -187,14 +187,17 @@ const StyledTable = ({
       case "active":
         return "green"; // Green color for active
       case "expired":
-        return "#8c8c8c"; // Gray color for expired (different from inactive)
+        return "#8c8c8c"; // Gray color for expired
       case "expiring":
         return "#faad14"; // Yellow color for expiring
-      case "suspended": // Added case for suspended
+      case "suspended":
         return "#d9d9d9"; // Grayish color for suspended
+      case "cancelled":
+        return "#ff7875"; // Light red color for cancelled
       default:
         return "default"; // Default color
     }
+    
   };
   const formatIndianDate = (date) => {
     return moment(date).format("DD-MM-YYYY");
