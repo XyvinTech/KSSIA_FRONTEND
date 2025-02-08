@@ -117,7 +117,7 @@ export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
       category: data.category.value,
       title: data.title,
       content: data.content,
-      pdf: pdfUrl,
+      ...(pdfUrl && { pdf: pdfUrl }),
     };
 
     if (isUpdate && id) {
@@ -256,7 +256,6 @@ export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
               name="pdf"
               control={control}
               defaultValue=""
-              rules={{ required: "File is required" }}
               render={({ field: { onChange, value } }) => (
                 <>
                   <StyledCrop
@@ -267,9 +266,6 @@ export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
                     }}
                     value={value}
                   />
-                  {errors.pdf && (
-                    <span style={{ color: "red" }}>{errors.pdf.message}</span>
-                  )}
                 </>
               )}
             />
