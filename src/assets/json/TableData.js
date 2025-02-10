@@ -45,7 +45,7 @@ export const userData = [
 export const eventColumns = [
   { title: "Event Name", field: "name", padding: "none" },
   { title: "Start Date", field: "startDate" },
-  { title: "End Datee", field: "endDate" },
+  { title: "End Date", field: "endDate" },
   { title: "Organizer Name", field: "organiser_name" },
   { title: "Status", field: "status" },
   { title: "Type", field: "type" },
