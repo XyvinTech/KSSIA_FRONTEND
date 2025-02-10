@@ -129,11 +129,11 @@ export default function AddEvent({ eventId, setSelectedTab }) {
 
       let status;
       if (currentDate.isAfter(endDate)) {
-        status = "pending";
+        status = "upcoming";
       } else if (currentDate.isSameOrAfter(startDate)) {
         status = "live";
       } else {
-        status = "pending";
+        status = "upcoming";
       }
       const formData = {
         organiser_name: data.organiser_name,
