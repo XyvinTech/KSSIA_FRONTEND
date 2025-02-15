@@ -42,6 +42,7 @@ export const userData = [
   },
 ];
 
+
 export const eventColumns = [
   { title: "Event Name", field: "name", padding: "none" },
   { title: "Start Date", field: "startDate" },
