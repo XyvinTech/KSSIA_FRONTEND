@@ -20,12 +20,17 @@ export default function Events() {
   const [isChange, setIsChange] = useState(false);
 
   const handleDelete = async () => {
+    try{
     if (selectedRows.length > 0) {
       await Promise.all(selectedRows?.map((id) => deleteEventById(id)));
       toast.success("Deleted successfully");
       setIsChange(!isChange);
       setSelectedRows([]);
     }
+  }
+  catch(error){
+   toast.error(error.message);
+  }
   };
   const handleRowDelete = async (id) => {
     await deleteEventById(id);

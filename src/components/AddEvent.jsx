@@ -5,9 +5,8 @@ import { StyledButton } from "../ui/StyledButton.jsx";
 import { StyledTime } from "../ui/StyledTime.jsx";
 import { StyledCalender } from "../ui/StyledCalender.jsx";
 import StyledInput from "../ui/StyledInput.jsx";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import StyledSelectField from "../ui/StyledSelectField.jsx";
-import { ReactComponent as Delete } from "../assets/icons/delete.svg";
 import StyledSwitch from "/src/ui/StyledSwitch.jsx";
 import {
   createEvent,
@@ -19,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import uploadFileToS3 from "../utils/s3Upload.js";
 import moment from "moment";
+import { Delete } from "@mui/icons-material";
 
 export default function AddEvent({ eventId, setSelectedTab }) {
   const {
@@ -28,7 +28,18 @@ export default function AddEvent({ eventId, setSelectedTab }) {
     setValue,
     getValues,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      speakers: [
+        {
+          speaker_name: "",
+          speaker_designation: "",
+          speaker_role: "",
+          speaker_image: "",
+        },
+      ],
+    },
+  });
   const [isChecked, setIsChecked] = useState(false);
   const [type, setType] = useState();
   const [loading, setLoading] = useState(false);
@@ -43,14 +54,10 @@ export default function AddEvent({ eventId, setSelectedTab }) {
     reset();
     navigate(-1);
   };
-  const [speakers, setSpeakers] = useState([
-    {
-      speaker_name: "",
-      speaker_designation: "",
-      speaker_role: "",
-      speaker_image: "",
-    },
-  ]);
+  const { fields, append, remove, replace } = useFieldArray({
+    control,
+    name: "speakers",
+  });
   const handleSwitchChange = (e) => {
     setIsChecked(e.target.checked);
   };
@@ -67,6 +74,7 @@ export default function AddEvent({ eventId, setSelectedTab }) {
     { value: "online", label: "Online" },
     { value: "offline", label: "Offline" },
   ];
+
   const onSubmit = async (data) => {
     try {
       setLoading(true);
@@ -86,17 +94,18 @@ export default function AddEvent({ eventId, setSelectedTab }) {
           return;
         }
       }
+
       const filteredSpeakers = data?.speakers?.filter(
         (speaker) =>
           speaker.speaker_name ||
           speaker.speaker_designation ||
-          speaker.speaker_role ||
+          speaker.spealer_role ||
           speaker.speaker_image
       );
 
-      const speakersData = await Promise.all(
-        filteredSpeakers.map(async (speaker, index) => {
-          let speakerImageUrl = speakers[index]?.speaker_image || "";
+      const speakersData = await Promise?.all(
+        filteredSpeakers.map(async (speaker) => {
+          let speakerImageUrl = speaker.speaker_image || "";
 
           if (
             speaker?.speaker_image &&
@@ -175,17 +184,6 @@ export default function AddEvent({ eventId, setSelectedTab }) {
     }
   };
 
-  const addSpeaker = () => {
-    setSpeakers([
-      ...speakers,
-      {
-        speaker_name: "",
-        speaker_designation: "",
-        speaker_role: "",
-        speaker_image: "",
-      },
-    ]);
-  };
   useEffect(() => {
     if (eventId) {
       const fetchEventData = async () => {
@@ -196,26 +194,27 @@ export default function AddEvent({ eventId, setSelectedTab }) {
             ...eventData,
           };
           setType(updatedEventData.type);
-          if (Array.isArray(updatedEventData.speakers)) {
-            setSpeakers(updatedEventData.speakers);
-            updatedEventData.speakers.forEach((speaker, index) => {
-              setValue(
-                `speakers[${index}].speaker_name`,
-                speaker.speaker_name || ""
-              );
-              setValue(
-                `speakers[${index}].speaker_designation`,
-                speaker.speaker_designation || ""
-              );
-              setValue(
-                `speakers[${index}].speaker_role`,
-                speaker.speaker_role || ""
-              );
-              setValue(
-                `speakers[${index}].speaker_image`,
-                speaker.speaker_image || ""
-              );
-            });
+          if (
+            Array.isArray(eventData.speakers) &&
+            eventData.speakers.length > 0
+          ) {
+            replace(
+              eventData.speakers.map((speaker) => ({
+                speaker_name: speaker.speaker_name || "",
+                speaker_designation: speaker.speaker_designation || "",
+                speaker_role: speaker.speaker_role || "",
+                speaker_image: speaker.speaker_image || "",
+              }))
+            );
+          } else {
+            replace([
+              {
+                speaker_name: "",
+                speaker_designation: "",
+                speaker_role: "",
+                speaker_image: "",
+              },
+            ]);
           }
           reset(updatedEventData);
           setIsChecked(updatedEventData.activate || false);
@@ -228,11 +227,126 @@ export default function AddEvent({ eventId, setSelectedTab }) {
     }
   }, [eventId, reset]);
 
-  const removeSpeaker = (index) => {
-    const newSpeakers = speakers.filter((_, i) => i !== index);
-    setSpeakers(newSpeakers);
-    setValue("speakers", newSpeakers);
+  const addSpeaker = () => {
+    append({
+      speaker_name: "",
+      speaker_designation: "",
+      speaker_role: "",
+      speaker_image: "",
+    });
   };
+
+  const removeSpeaker = (index) => {
+    if (fields.length > 1) {
+      console.log("index", index);
+
+      remove(index);
+    } else {
+      console.log("index s", index);
+      setValue(`speakers.${index}.speaker_name`, "");
+      setValue(`speakers.${index}.speaker_designation`, "");
+      setValue(`speakers.${index}.speaker_role`, "");
+      setValue(`speakers.${index}.speaker_image`, "");
+    }
+  };
+  console.log("fields", fields);
+
+  const renderSpeakers = () => (
+    <Grid item xs={12}>
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={2}
+      >
+        <Typography
+          sx={{ marginBottom: 1 }}
+          variant="h6"
+          fontWeight={500}
+          color={"#333333"}
+        >
+          Add Speakers
+        </Typography>
+        <Box
+          onClick={addSpeaker}
+          sx={{
+            width: "auto",
+            padding: "8px 16px",
+            cursor: "pointer",
+            fontWeight: 500,
+            fontSize: "16px",
+            color: "#004797",
+            "&:hover": {
+              textDecoration: "underline",
+            },
+          }}
+        >
+          + Add more
+        </Box>
+      </Stack>
+
+      {fields.map((field, index) => (
+        <Box key={field.id} sx={{ position: "relative", mb: 4 }}>
+          <Grid container spacing={4}>
+            <Grid item xs={6}>
+              <Controller
+                name={`speakers.${index}.speaker_name`}
+                control={control}
+                render={({ field }) => (
+                  <StyledInput placeholder="Enter speaker name" {...field} />
+                )}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Controller
+                name={`speakers.${index}.speaker_designation`}
+                control={control}
+                render={({ field }) => (
+                  <StyledInput
+                    placeholder="Enter speaker designation"
+                    {...field}
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Controller
+                name={`speakers.${index}.speaker_role`}
+                control={control}
+                render={({ field }) => (
+                  <StyledInput placeholder="Enter speaker role" {...field} />
+                )}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Controller
+                name={`speakers.${index}.speaker_image`}
+                control={control}
+                render={({ field }) => (
+                  <StyledEventUpload
+                    label="Upload speaker image"
+                    onChange={(file) => field.onChange(file)}
+                    value={field.value}
+                  />
+                )}
+              />
+            </Grid>
+          </Grid>
+          <Box
+            onClick={() => removeSpeaker(index)}
+            sx={{
+              alignSelf: "flex-end",
+              cursor: "pointer",
+              padding: "8px",
+              mt: 2,
+            }}
+          >
+            <Delete />
+          </Box>
+        </Box>
+      ))}
+    </Grid>
+  );
 
   return (
     <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"12px"}>
@@ -596,36 +710,6 @@ export default function AddEvent({ eventId, setSelectedTab }) {
               )}
             />
           </Grid>
-          {/* <Grid item xs={6}>
-            <Typography
-              sx={{ marginBottom: 1 }}
-              variant="h6"
-              fontWeight={500}
-              color={"#333333"}
-            >
-              Upload image
-            </Typography>
-            <Controller
-              name="guest_image"
-              control={control}
-              defaultValue=""
-              rules={{ required: "Image is required" }}
-              render={({ field: { onChange, value } }) => (
-                <>
-                  <StyledEventUpload
-                    label="Upload Chief guest image here"
-                    onChange={onChange}
-                    value={value}
-                  />
-                  {errors.guest_image && (
-                    <span style={{ color: "red" }}>
-                      {errors.guest_image.message}
-                    </span>
-                  )}
-                </>
-              )}
-            />
-          </Grid> */}
           <Grid item xs={6}>
             <Typography
               sx={{ marginBottom: 1 }}
@@ -685,83 +769,9 @@ export default function AddEvent({ eventId, setSelectedTab }) {
             />
           </Grid>
           <Grid item xs={6}></Grid>
-          <Grid item xs={6}></Grid>
-          {speakers.map((speaker, index) => (
-            <Grid container key={index} spacing={4} padding={4}>
-              <Grid item xs={12}>
-                <Typography variant="h6" fontWeight={500} color={"#333333"}>
-                  Speaker {index + 1}
-                </Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <Controller
-                  name={`speakers[${index}].speaker_name`}
-                  control={control}
-                  defaultValue={speaker.speaker_name}
-                  render={({ field }) => (
-                    <StyledInput placeholder="Speaker Name" {...field} />
-                  )}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <Controller
-                  name={`speakers[${index}].speaker_designation`}
-                  control={control}
-                  defaultValue={speaker.speaker_designation}
-                  render={({ field }) => (
-                    <StyledInput placeholder="Speaker Designation" {...field} />
-                  )}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <Controller
-                  name={`speakers[${index}].speaker_role`}
-                  control={control}
-                  defaultValue={speaker.speaker_role}
-                  render={({ field }) => (
-                    <StyledInput placeholder="Speaker Role" {...field} />
-                  )}
-                />
-              </Grid>
-
-              <Grid item xs={6}>
-                <Controller
-                  name={`speakers[${index}].speaker_image`}
-                  control={control}
-                  defaultValue={speaker.speaker_image}
-                  render={({ field }) => (
-                    <>
-                      <StyledEventUpload
-                        label="Upload Speaker Image here"
-                        onChange={(file) => {
-                          const updatedSpeakers = [...speakers];
-                          updatedSpeakers[index].speaker_image = file;
-                          setSpeakers(updatedSpeakers);
-                          field.onChange(file);
-                        }}
-                        value={field.value}
-                      />
-                    </>
-                  )}
-                />
-              </Grid>
-
-              <Grid item xs={6}></Grid>
-              <Grid item xs={6} display={"flex"} justifyContent={"end"}>
-                <Delete onClick={() => removeSpeaker(index)} />
-              </Grid>
-            </Grid>
-          ))}
           <Grid item xs={12}>
-            <Typography
-              sx={{ marginBottom: 1 }}
-              variant="h6"
-              fontWeight={500}
-              color={"#004797"}
-              onClick={addSpeaker}
-            >
-              + Add more
-            </Typography>
+            {" "}
+            {renderSpeakers()}
           </Grid>
           <Grid item xs={6}>
             <Typography
