@@ -100,7 +100,7 @@ export default function AddEvent({ eventId, setSelectedTab }) {
           speaker.speaker_name ||
           speaker.speaker_designation ||
           speaker.spealer_role ||
-          speaker.speaker_image
+          speaker.speaker_image 
       );
 
       const speakersData = await Promise?.all(
@@ -238,19 +238,16 @@ export default function AddEvent({ eventId, setSelectedTab }) {
 
   const removeSpeaker = (index) => {
     if (fields.length > 1) {
-      console.log("index", index);
-
       remove(index);
     } else {
-      console.log("index s", index);
-      setValue(`speakers.${index}.speaker_name`, "");
-      setValue(`speakers.${index}.speaker_designation`, "");
-      setValue(`speakers.${index}.speaker_role`, "");
-      setValue(`speakers.${index}.speaker_image`, "");
+      replace([{
+        speaker_name: "",
+        speaker_designation: "",
+        speaker_role: "",
+        speaker_image: ""
+      }]);
     }
   };
-  console.log("fields", fields);
-
   const renderSpeakers = () => (
     <Grid item xs={12}>
       <Stack
