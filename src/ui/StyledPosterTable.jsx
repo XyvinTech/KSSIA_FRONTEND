@@ -13,9 +13,15 @@ export default function StyledPosterTable() {
   const [filterOpen, setFilterOpen] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
   const [isChange, setIsChange] = useState(false);
-  const[pageNo, setPageNo] = useState(1)
+  const [pageNo, setPageNo] = useState(1);
   const [row, setRow] = useState(10);
-  const { promotions, fetchPromotion, deletePromotions,updatePromotion, totalCount } = usePromotionStore();
+  const {
+    promotions,
+    fetchPromotion,
+    deletePromotions,
+    updatePromotion,
+    totalCount,
+  } = usePromotionStore();
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -32,7 +38,7 @@ export default function StyledPosterTable() {
   const handleDelete = async () => {
     if (selectedRows.length > 0) {
       await Promise.all(selectedRows?.map((id) => deletePromotions(id)));
-      toast.success('Deleted successfully');
+      toast.success("Deleted successfully");
       setIsChange(!isChange);
       setSelectedRows([]);
     }
@@ -55,21 +61,21 @@ export default function StyledPosterTable() {
   };
   const handleRowDelete = async (id) => {
     await deletePromotions(id);
-    toast.success('Deleted successfully');
+    toast.success("Deleted successfully");
     setIsChange(!isChange);
   };
   useEffect(() => {
-    let filter = { }
+    let filter = {};
     filter.pageNo = pageNo;
     filter.limit = row;
-    fetchPromotion("poster",filter);
-  }, [isChange,pageNo,row]);
+    fetchPromotion("poster", filter);
+  }, [isChange, pageNo, row]);
   const userColumns = [
     { title: "Start Date", field: "startDate", padding: "none" },
     { title: "End Date", field: "endDate", padding: "none" },
-
+    { title: "Title", field: "poster_title", padding: "none" },
     { title: "Media", field: "poster_image_url" },
-    {title:"Status",field:"status"},
+    { title: "Status", field: "status" },
   ];
   return (
     <>
@@ -77,12 +83,10 @@ export default function StyledPosterTable() {
         <Stack
           direction={"row"}
           justifyContent={"end"}
-          paddingBottom={'15px'}
+          paddingBottom={"15px"}
           alignItems={"center"}
         >
-          <Stack direction={"row"} spacing={2}>
-          
-          </Stack>
+          <Stack direction={"row"} spacing={2}></Stack>
         </Stack>{" "}
         <Box
           borderRadius={"16px"}

@@ -124,11 +124,17 @@ export default function PromotionForm({ isUpdate }) {
       } else if (promotions.type === "video") {
         setValue("title", promotions.video_title || "");
         setValue("yt_link", promotions.yt_link || "");
-      } else if (promotions.type === "banner" || promotions.type === "poster") {
+      } else if (promotions.type === "banner") {
         setValue(
           "file",
           promotions.banner_image_url || promotions.poster_image_url || ""
         );
+      } else if (promotions.type === "poster") {
+        setValue(
+          "file",
+          promotions.banner_image_url || promotions.poster_image_url || ""
+        );
+        setValue("title", promotions.poster_title);
       }
 
       setType(promotions.type);
@@ -169,15 +175,18 @@ export default function PromotionForm({ isUpdate }) {
         if (data?.link) {
           formData.notice_link = data?.link;
         }
-      } else if (type === "banner" || type === "poster") {
+      } else if (type === "banner") {
         formData.type = type;
         formData.file_url = imageUrl;
       } else if (type === "video") {
         formData.type = "video";
         formData.yt_link = data?.yt_link;
         formData.video_title = data?.title;
+      } else if (type === "poster") {
+        formData.type = type;
+        formData.file_url = imageUrl;
+        formData.poster_title = data?.title;
       }
-
       if (isUpdate && id) {
         await updatePromotion(id, formData);
       } else {
@@ -281,7 +290,7 @@ export default function PromotionForm({ isUpdate }) {
             </Grid>
           )}
 
-          {(type === "video" || type === "notice") && (
+          {(type === "video" || type === "notice" || type === "poster") && (
             <Grid item xs={12}>
               <Typography
                 sx={{ marginBottom: 1 }}

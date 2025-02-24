@@ -22,8 +22,9 @@ const ProductReject = ({ open, onClose, data, onChange }) => {
     handleSubmit,
     formState: { errors },
     getValues,
+    reset,
   } = useForm();
-  const { patchProducts} = useProductsStore();
+  const { patchProducts } = useProductsStore();
   const [reject, setReject] = useState(false);
   const [previewData, setPreviewData] = useState(null);
 
@@ -36,6 +37,7 @@ const ProductReject = ({ open, onClose, data, onChange }) => {
       await patchProducts(data?._id, updateData);
       onChange();
       onClose();
+      reset();
     } catch (error) {
       console.error(error.message);
     }
@@ -50,12 +52,17 @@ const ProductReject = ({ open, onClose, data, onChange }) => {
   const handleCloseReject = () => {
     setReject(false);
     setPreviewData(null);
+    reset();
+  };
+  const handleDialogClose = () => {
+    reset(); // Reset the form when the dialog is closed
+    onClose();
   };
   return (
     <>
       <Dialog
         open={open}
-        onClose={onClose}
+        onClose={handleDialogClose}
         PaperProps={{
           sx: { borderRadius: "12px" },
         }}
@@ -71,7 +78,7 @@ const ProductReject = ({ open, onClose, data, onChange }) => {
                 Rejection notice
               </Typography>
               <Typography
-                onClick={onClose}
+                onClick={handleDialogClose}
                 color="#E71D36"
                 style={{ cursor: "pointer" }}
               >
