@@ -45,17 +45,25 @@ export default function StyledNoticeTable() {
     setSelectedRows(newSelectedIds);
   };
   const handleDelete = async () => {
-    if (selectedRows.length > 0) {
-      await Promise.all(selectedRows?.map((id) => deletePromotions(id)));
-      toast.success("Deleted successfully");
-      setIsChange(!isChange);
-      setSelectedRows([]);
+    try {
+      if (selectedRows.length > 0) {
+        await Promise.all(selectedRows?.map((id) => deletePromotions(id)));
+        toast.success("Deleted successfully");
+        setIsChange(!isChange);
+        setSelectedRows([]);
+      }
+    } catch (e) {
+      toast.error(e.message);
     }
   };
   const handleRowDelete = async (id) => {
-    await deletePromotions(id);
-    toast.success("Deleted successfully");
-    setIsChange(!isChange);
+    try {
+      await deletePromotions(id);
+      toast.success("Deleted successfully");
+      setIsChange(!isChange);
+    } catch (e) {
+      toast.error(e.message);
+    }
   };
   useEffect(() => {
     let filter = {};

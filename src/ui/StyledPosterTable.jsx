@@ -36,11 +36,24 @@ export default function StyledPosterTable() {
     navigate(`/promotion/edit/${id}`, { state: { value: "poster" } });
   };
   const handleDelete = async () => {
-    if (selectedRows.length > 0) {
-      await Promise.all(selectedRows?.map((id) => deletePromotions(id)));
+    try {
+      if (selectedRows.length > 0) {
+        await Promise.all(selectedRows?.map((id) => deletePromotions(id)));
+        toast.success("Deleted successfully");
+        setIsChange(!isChange);
+        setSelectedRows([]);
+      }
+    } catch (e) {
+      toast.error(e.message);
+    }
+  };
+  const handleRowDelete = async (id) => {
+    try {
+      await deletePromotions(id);
       toast.success("Deleted successfully");
       setIsChange(!isChange);
-      setSelectedRows([]);
+    } catch (e) {
+      toast.error(e.message);
     }
   };
   const handleActiveStatus = async (id) => {
@@ -59,11 +72,7 @@ export default function StyledPosterTable() {
       toast.error(e.message);
     }
   };
-  const handleRowDelete = async (id) => {
-    await deletePromotions(id);
-    toast.success("Deleted successfully");
-    setIsChange(!isChange);
-  };
+
   useEffect(() => {
     let filter = {};
     filter.pageNo = pageNo;

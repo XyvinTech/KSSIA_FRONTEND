@@ -12,10 +12,16 @@ export default function StyledVideoTable() {
   const navigate = useNavigate();
   const [filterOpen, setFilterOpen] = useState(false);
   const [isChange, setIsChange] = useState(false);
-  const[pageNo, setPageNo] = useState(1)
+  const [pageNo, setPageNo] = useState(1);
   const [row, setRow] = useState(10);
   const [selectedRows, setSelectedRows] = useState([]);
-  const { promotions, fetchPromotion, deletePromotions,updatePromotion, totalCount } = usePromotionStore();
+  const {
+    promotions,
+    fetchPromotion,
+    deletePromotions,
+    updatePromotion,
+    totalCount,
+  } = usePromotionStore();
   const handleOpenFilter = () => {
     setFilterOpen(true);
   };
@@ -27,11 +33,24 @@ export default function StyledVideoTable() {
     setSelectedRows(newSelectedIds);
   };
   const handleDelete = async () => {
-    if (selectedRows.length > 0) {
-      await Promise.all(selectedRows?.map((id) => deletePromotions(id)));
-      toast.success('Deleted successfully');
+    try {
+      if (selectedRows.length > 0) {
+        await Promise.all(selectedRows?.map((id) => deletePromotions(id)));
+        toast.success("Deleted successfully");
+        setIsChange(!isChange);
+        setSelectedRows([]);
+      }
+    } catch (e) {
+      toast.error(e.message);
+    }
+  };
+  const handleRowDelete = async (id) => {
+    try {
+      await deletePromotions(id);
+      toast.success("Deleted successfully");
       setIsChange(!isChange);
-      setSelectedRows([]);
+    } catch (e) {
+      toast.error(e.message);
     }
   };
   const handleActiveStatus = async (id) => {
@@ -53,22 +72,18 @@ export default function StyledVideoTable() {
   const handleEdit = (id) => {
     navigate(`/promotion/edit/${id}`, { state: { value: "video" } });
   };
-  const handleRowDelete = async (id) => {
-    await deletePromotions(id);
-    toast.success('Deleted successfully');
-    setIsChange(!isChange);
-  };
+
   useEffect(() => {
-    let filter = { }
+    let filter = {};
     filter.pageNo = pageNo;
-    filter.limit=row;
-    fetchPromotion("video",filter);
-  }, [isChange, pageNo,row]);
+    filter.limit = row;
+    fetchPromotion("video", filter);
+  }, [isChange, pageNo, row]);
   const userColumns = [
     { title: "Date", field: "startDate", padding: "none" },
 
     { title: "Title", field: "video_title" },
-    {title:"Status",field:"status"},
+    { title: "Status", field: "status" },
   ];
   return (
     <>
@@ -76,12 +91,10 @@ export default function StyledVideoTable() {
         <Stack
           direction={"row"}
           justifyContent={"end"}
-          paddingBottom={'15px'}
+          paddingBottom={"15px"}
           alignItems={"center"}
         >
-          <Stack direction={"row"} spacing={2}>
-           
-          </Stack>
+          <Stack direction={"row"} spacing={2}></Stack>
         </Stack>{" "}
         <Box
           borderRadius={"16px"}
