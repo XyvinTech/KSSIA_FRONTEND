@@ -140,12 +140,12 @@ const DashboardPage = () => {
         <Grid item md={6}>
           <Stack spacing={2}>
             {" "}
-            <RevenueCard data={totalRevenue}  year/>
+            <RevenueCard data={totalRevenue} year />
             <Stack direction={"row"} spacing={2}>
               {" "}
               <Box width={"100%"}>
                 {" "}
-                <RevenueCard isMobile data={membershipRevenue}/>{" "}
+                <RevenueCard isMobile data={membershipRevenue} />{" "}
               </Box>{" "}
               <Box width={"100%"}>
                 {" "}
