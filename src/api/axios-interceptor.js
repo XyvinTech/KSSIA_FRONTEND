@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseURL = "https://api.kssiathrissur.com/api/v1/"
+const baseURL = import.meta.env.VITE_APP_API_STAGE_URL;
 const axiosInstance = axios.create({
   baseURL: baseURL,
 });
