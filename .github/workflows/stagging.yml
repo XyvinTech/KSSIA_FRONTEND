@@ -66,19 +66,18 @@ jobs:
           username: ec2-user
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # Create deployment directory if it does not exist
-            sudo mkdir -p /var/www/html/kssia-frontend
-            sudo chown -R www-data:www-data /var/www/html/kssia-frontend
-            sudo chmod -R 755 /var/www/html/kssia-frontend
-
             # Remove old deployment
-            sudo rm -rf /var/www/html/kssia-frontend/*
+            sudo rm -rf /usr/share/nginx/html/kssia-frontend
 
             # Move new files to the deployment directory
-            sudo mv ~/deploy-temp/* /var/www/html/kssia-frontend/
+            sudo mv ~/deploy-temp/* /usr/share/nginx/html/kssia-frontend
 
             # Remove temporary deployment folder
             sudo rm -rf ~/deploy-temp
+
+            # Set proper permissions
+            sudo chown -R www-data:www-data /usr/share/nginx/html/kssia-frontend
+            sudo chmod -R 755 /usr/share/nginx/html/kssia-frontend
 
             # Restart NGINX to apply changes
             sudo systemctl restart nginx
