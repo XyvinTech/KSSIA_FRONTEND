@@ -12,7 +12,7 @@ export default function EventHistorypage() {
   const [search, setSearch] = useState("");
   const [row, setRow] = useState(10);
   const [pageNo, setPageNo] = useState(1);
-
+  const navigate = useNavigate();
   const { eventHistory, events, totalCount } = useEventStore();
   useEffect(() => {
     let filter = {};
@@ -24,6 +24,9 @@ export default function EventHistorypage() {
     filter.pageNo = pageNo;
     eventHistory(filter);
   }, [pageNo, search, row]);
+  const handleEdit = (id) => {
+    navigate(`/events/eventlist/${id}`);
+  };
   return (
     <>
       {" "}
@@ -67,6 +70,7 @@ export default function EventHistorypage() {
               columns={eventColumns}
               data={events}
               pageNo={pageNo}
+              onModify={handleEdit}
               setPageNo={setPageNo}
               rowPerSize={row}
               setRowPerSize={setRow}
