@@ -100,7 +100,11 @@ const MemberProfile = ({ data }) => {
                     ml={1}
                   >
                     <a
-                      href={website?.url}
+                     href={
+                      website?.url?.startsWith("http")
+                        ? website.url
+                        : `https://${website.url}`
+                    }
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -132,7 +136,7 @@ const MemberProfile = ({ data }) => {
           </Grid>
         )}
         {data?.video?.map((videoItem, index) => (
-          <Grid item md={4} xs={12} key={index}>
+          <Grid item md={6} xs={12} key={index}>
             <Video url={videoItem.url} />
           </Grid>
         ))}
