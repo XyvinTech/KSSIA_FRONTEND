@@ -30,7 +30,7 @@ const RsvpTable = ({ data }) => {
       const data = await getDwldRsvp(id);
       const csvData = data.data;
       if (csvData && csvData.headers && csvData.body) {
-        generateExcel(csvData.headers, csvData.body);
+        generateExcel(csvData.headers, csvData.body,"Event");
       } else {
         console.error(
           "Error: Missing headers or data in the downloaded content"

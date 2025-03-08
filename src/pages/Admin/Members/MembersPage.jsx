@@ -125,7 +125,6 @@ export default function MembersPage() {
     try {
       let filter = {};
   
-      // Add filters if they are present
       if (filters.name) filter.name = filters.name;
       if (filters.membershipId) filter.membershipId = filters.membershipId;
       if (filters.designation) filter.designation = filters.designation;
@@ -135,13 +134,10 @@ export default function MembersPage() {
       if (typeof filters.installed === 'boolean') {
         filter.installed = filters.installed;
     }
-      // Fetch the data using the API
       const data = await getDwld(filter);
-  
-      // Check and generate Excel if data is valid
       const csvData = data.data;
       if (csvData && csvData.headers && csvData.body) {
-        generateExcel(csvData.headers, csvData.body);
+        generateExcel(csvData.headers, csvData.body, "Members");
       } else {
         console.error(
           "Error: Missing headers or data in the downloaded content"
