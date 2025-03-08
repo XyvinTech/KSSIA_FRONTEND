@@ -23,7 +23,7 @@ export default function AdminActivity() {
     console.log("Selected items:", newSelectedIds);
   };
   const handleView = (id) => {
-    console.log("View item:", id);
+    // console.log("View item:", id);
     navigate(`/events/eventlist/:id`);
   };
 

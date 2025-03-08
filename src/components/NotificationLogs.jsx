@@ -27,7 +27,7 @@ export default function NotificationLogs() {
     setFilterOpen(true);
   };
   const handleView = async (id) => {
-    console.log("View item Selected", id);
+    // console.log("View item Selected", id);
     
     await fetchSingleNotification(id);
     setPreviewOpen(true);

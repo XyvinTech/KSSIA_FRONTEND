@@ -66,7 +66,10 @@ export default function MembersPage() {
         if (filters.companyName) filter.companyName = filters.companyName;
         if (filters.status) filter.status = filters.status;
         if (filters.subscription) filter.subscription = filters.subscription;
-        if(filters.installed) filter.installed = filters.installed;
+        if (typeof filters.installed === 'boolean') {
+          filter.installed = filters.installed;
+      }
+      
         const response = await axiosInstance.get(CONSTANTS.MEMBERS_API, {
           params: filter,
         });
@@ -147,7 +150,6 @@ export default function MembersPage() {
     }
   };
   
-
   const handleDelete = async () => {
     try {
       if (selectedRows.length > 0) {
@@ -235,7 +237,7 @@ export default function MembersPage() {
                     filters.companyName ||
                     filters.status||
                     filters.subscription||
-                    filters.installed
+                    (filters.installed !== undefined && filters.installed !== "")
                   )
                 }
                 sx={{

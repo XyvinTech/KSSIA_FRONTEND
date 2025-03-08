@@ -15,11 +15,11 @@ const PromotionItems = () => {
 
   const handleSelectionChange = (newSelectedIds) => {
     setSelectedRows(newSelectedIds);
-    console.log("Selected items:", newSelectedIds);
+    // console.log("Selected items:", newSelectedIds);
   };
 
   const handleView = (id) => {
-    console.log("View item:", id);
+    // console.log("View item:", id);
   };
   const handleChange = (event, newValue) => {
     setSelectedTab(newValue);
