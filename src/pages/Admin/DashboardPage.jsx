@@ -25,7 +25,7 @@ const DashboardPage = () => {
   const { setMemStatus, setMemSub, setMemUser } = useMemberStore();
   const navigate = useNavigate();
   const totalMember = {
-    title: "Total KSSIA Members",
+    title: "Total Members",
     amount: data?.userCount,
     icon: TotalMemberIcon,
   };

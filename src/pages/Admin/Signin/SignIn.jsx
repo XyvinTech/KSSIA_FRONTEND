@@ -11,7 +11,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { Visibility, VisibilityOff, Phone } from "@mui/icons-material";
-import kssiaImage from "../../../assets/images/logo-demo.png";
+import kssiaImage from "../../../assets/images/logo.jpg";
 import { StyledButton } from "../../../ui/StyledButton";
 import TextField from "@mui/material/TextField";
 import { ReactComponent as Lock } from "../../../assets/icons/Lock.svg";
@@ -52,7 +52,7 @@ const SignIn = () => {
       <Grid item xs={12} sm={8} md={6} lg={4}>
         <Box sx={{ p: 4, bgcolor: "#FFFFFF", borderRadius: 5, boxShadow: 2 }}>
           <Stack spacing={3} justifyContent="center" alignItems={"center"}>
-            <img src={kssiaImage} alt="KSSIA" width={"150px"} height="100px" />
+            <img src={kssiaImage} alt="KSSIA" width={"150px"} height="150px" />
           </Stack>
           <Stack
             direction={"column"}

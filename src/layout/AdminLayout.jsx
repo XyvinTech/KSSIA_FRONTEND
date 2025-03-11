@@ -17,7 +17,7 @@ import Typography from "@mui/material/Typography";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import kssiaImage from "../assets/images/logo-demo.png";
+import kssiaImage from "../assets/images/logo.jpg";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
@@ -204,7 +204,7 @@ const AdminLayout = (props) => {
             alignItems: "flex-start",
           }}
         >
-          <img src={kssiaImage} alt="KSSIA" width={"50px"} height="30px" />
+          <img src={kssiaImage} alt="KSSIA" width={"40px"} height="40px" />
           <Typography
             sx={{
               fontFamily: "Inter",
