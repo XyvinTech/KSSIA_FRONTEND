@@ -30,5 +30,6 @@ export const generateExcel = (headers = [], body = [], fileName) => {
   });
   const date = new Date();
   const newDate = date.toISOString().split("T")[0];
-  saveAs(blob, `${fileName}_report(${newDate}).xlsx`);
+  const time=date.toLocaleTimeString();
+  saveAs(blob, `${fileName}_report(${newDate},${time}).xlsx`);
 };

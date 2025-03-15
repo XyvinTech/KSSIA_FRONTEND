@@ -12,6 +12,7 @@ import ProductCard from "./ProductCard";
 import CertificateCard from "./CertificateCard";
 import AwardCard from "./AwardCard";
 import Video from "./Video";
+import { Facebook } from "@mui/icons-material";
 
 const MemberProfile = ({ data }) => {
   const renderSocialIcon = (platform) => {
@@ -22,6 +23,8 @@ const MemberProfile = ({ data }) => {
         return <TwitterIcon />;
       case "linkedin":
         return <LinkedInIcon />;
+      case "facebook":
+        return <Facebook sx={{ color: "#004797" }} />;
       default:
         return null;
     }
@@ -100,7 +103,11 @@ const MemberProfile = ({ data }) => {
                     ml={1}
                   >
                     <a
-                      href={website?.url}
+                      href={
+                        website?.url?.startsWith("http")
+                          ? website.url
+                          : `https://${website.url}`
+                      }
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -132,7 +139,7 @@ const MemberProfile = ({ data }) => {
           </Grid>
         )}
         {data?.video?.map((videoItem, index) => (
-          <Grid item md={4} xs={12} key={index}>
+          <Grid item md={6} xs={12} key={index}>
             <Video url={videoItem.url} />
           </Grid>
         ))}
