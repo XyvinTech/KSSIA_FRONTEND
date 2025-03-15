@@ -18,7 +18,7 @@ const useMemberStore = create((set) => ({
   totalCount: 0,
   memberStatus: "",
   memberSub:"",
-  memberUser: null,
+  memberUser: "",
   refreshMembers: false,
   setMemStatus: (newStatus) => set({ memberStatus: newStatus }), 
   setMemSub: (newSub) => set({ memberSub: newSub }), 

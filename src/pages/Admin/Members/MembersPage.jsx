@@ -66,7 +66,10 @@ export default function MembersPage() {
         if (filters.companyName) filter.companyName = filters.companyName;
         if (filters.status) filter.status = filters.status;
         if (filters.subscription) filter.subscription = filters.subscription;
-        if(filters.installed) filter.installed = filters.installed;
+        if (typeof filters.installed === 'boolean') {
+          filter.installed = filters.installed;
+      }
+      
         const response = await axiosInstance.get(CONSTANTS.MEMBERS_API, {
           params: filter,
         });
@@ -122,21 +125,19 @@ export default function MembersPage() {
     try {
       let filter = {};
   
-      // Add filters if they are present
       if (filters.name) filter.name = filters.name;
       if (filters.membershipId) filter.membershipId = filters.membershipId;
       if (filters.designation) filter.designation = filters.designation;
       if (filters.companyName) filter.companyName = filters.companyName;
       if (filters.status) filter.status = filters.status;
       if (filters.subscription) filter.subscription = filters.subscription;
-      if(filters.installed) filter.installed = filters.installed;
-      // Fetch the data using the API
+      if (typeof filters.installed === 'boolean') {
+        filter.installed = filters.installed;
+    }
       const data = await getDwld(filter);
-  
-      // Check and generate Excel if data is valid
       const csvData = data.data;
       if (csvData && csvData.headers && csvData.body) {
-        generateExcel(csvData.headers, csvData.body);
+        generateExcel(csvData.headers, csvData.body, "Members");
       } else {
         console.error(
           "Error: Missing headers or data in the downloaded content"
@@ -147,7 +148,6 @@ export default function MembersPage() {
     }
   };
   
-
   const handleDelete = async () => {
     try {
       if (selectedRows.length > 0) {
@@ -235,7 +235,7 @@ export default function MembersPage() {
                     filters.companyName ||
                     filters.status||
                     filters.subscription||
-                    filters.installed
+                    (filters.installed !== undefined && filters.installed !== "")
                   )
                 }
                 sx={{

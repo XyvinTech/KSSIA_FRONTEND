@@ -20,14 +20,14 @@ const uploadFileToS3 = async (file, onSuccess, onError) => {
 
     // Check if file size is greater than 1MB (1MB = 1 * 1024 * 1024 bytes)
     if (file.size > 1 * 1024 * 1024 && file.type.startsWith("image/")) {
-      console.log("Compressing image...");
+      // console.log("Compressing image...");
       const options = {
         maxSizeMB: 1, // Target size in MB
         maxWidthOrHeight: 1920, // Optional: Resize image to reduce file size further
         useWebWorker: true,
       };
       fileToUpload = await imageCompression(file, options);
-      console.log("Image compressed successfully");
+      // console.log("Image compressed successfully");
     }
 
     const params = {

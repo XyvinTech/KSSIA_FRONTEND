@@ -63,7 +63,7 @@ export default function RoleManagement() {
   ];
   const handleSelectionChange = (newSelectedIds) => {
     setSelectedRows(newSelectedIds);
-    console.log("Selected items:", newSelectedIds);
+    // console.log("Selected items:", newSelectedIds);
   };
 
   const handleView2 = (id) => {

@@ -141,7 +141,7 @@ export default function MembersPage() {
       const data = await getDwldProduct();
       const csvData = data.data;
       if (csvData && csvData.headers && csvData.body) {
-        generateExcel(csvData.headers, csvData.body);
+        generateExcel(csvData.headers, csvData.body,"Products");
       } else {
         console.error(
           "Error: Missing headers or data in the downloaded content"

@@ -29,7 +29,7 @@ export default function Addnewrole() {
     { value: "option3", label: "Option 3" },
   ];
   const onSubmit = (data) => {
-    console.log("Form data:", data);
+    // console.log("Form data:", data);
   };
 
   const addPhoneNumber = () => {

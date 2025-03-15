@@ -25,7 +25,6 @@ const FileUpload = () => {
 
     try {
       const result = await updatefile(formData);
-      console.log("Uploaded successfully:", result);
     } catch (error) {
       toast.error(`Upload failed: ${error.message}`);
     }

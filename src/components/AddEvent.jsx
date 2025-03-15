@@ -158,6 +158,7 @@ export default function AddEvent({ eventId, setSelectedTab }) {
         image: imageUrl,
         description: data.description,
         speakers: speakersData,
+        status:status
       };
       if (data?.plaform) {
         formData.plaform = data?.plaform;
@@ -170,7 +171,7 @@ export default function AddEvent({ eventId, setSelectedTab }) {
         formData.meeting_link = data.meeting_link;
       }
       if (eventId) {
-        formData.status = status;
+       
         await updateEventById(eventId, formData);
         navigate(`/events/eventlist`);
       } else {
