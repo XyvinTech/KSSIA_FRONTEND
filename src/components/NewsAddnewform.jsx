@@ -22,6 +22,7 @@ import uploadFileToS3 from "../utils/s3Upload";
 import StyledCrop from "../ui/StyledCrop";
 import { StyledEventUpload } from "../ui/StyledEventUpload";
 import { set } from "date-fns";
+import { upload } from "../api/admin-api";
 
 export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
   const {
@@ -85,12 +86,13 @@ export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
     let pdfUrl = data?.pdf || "";
     if (imageFile) {
       try {
-        imageUrl = await new Promise((resolve, reject) => {
-          uploadFileToS3(
-            imageFile,
-            (location) => resolve(location),
-            (error) => reject(error)
-          );
+        imageUrl = await new Promise(async (resolve, reject) => {
+          try {
+            const response = await upload(imageFile);
+            resolve(response?.data || "");
+          } catch (error) {
+            reject(error);
+          }
         });
       } catch (error) {
         console.error("Failed to upload image:", error);
@@ -99,12 +101,13 @@ export default function NewsAddnewform({ isUpdate, setSelectedTab }) {
     }
     if (pdfFile) {
       try {
-        pdfUrl = await new Promise((resolve, reject) => {
-          uploadFileToS3(
-            pdfFile,
-            (location) => resolve(location),
-            (error) => reject(error)
-          );
+        pdfUrl = await new Promise(async (resolve, reject) => {
+          try {
+            const response = await upload(pdfFile);
+            resolve(response?.data || "");
+          } catch (error) {
+            reject(error);
+          }
         });
       } catch (error) {
         console.error("Failed to upload pdf:", error);
