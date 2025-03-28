@@ -151,11 +151,12 @@ export default function SingleAddform() {
         business_category: data?.business_category?.value,
         status: data.status.value,
         sub_category: data?.sub_category?.value,
+        membership_id: data.membership_id,  
       };
 
-      if (!isUpdate) {
-        memberData.membership_id = data.membership_id;
-      }
+      // if (!isUpdate) {
+      //   memberData.membership_id = data.membership_id;
+      // }
 
       if (isUpdate && memberId) {
         await editUser(memberId, memberData);

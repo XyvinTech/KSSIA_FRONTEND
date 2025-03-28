@@ -21,6 +21,7 @@ import moment from "moment";
 import { StyledMultilineTextField } from "../ui/StyledMultilineTextField .jsx";
 import uploadFileToS3 from "../utils/s3Upload.js";
 import StyledCrop from "../ui/StyledCrop.jsx";
+import { upload } from "../api/admin-api.js";
 
 export default function PromotionForm({ isUpdate }) {
   const {
@@ -148,18 +149,20 @@ export default function PromotionForm({ isUpdate }) {
 
       if (imageFile) {
         try {
-          imageUrl = await new Promise((resolve, reject) => {
-            uploadFileToS3(
-              imageFile,
-              (location) => resolve(location),
-              (error) => reject(error)
-            );
+          imageUrl = await new Promise(async (resolve, reject) => {
+            try {
+              const response = await upload(imageFile);
+              resolve(response?.data || "");
+            } catch (error) {
+              reject(error);
+            }
           });
         } catch (error) {
           console.error("Failed to upload image:", error);
           return;
         }
       }
+
       const currentDate = moment().startOf("day");
       const endDate = moment(data?.endDate).startOf("day");
       const isStatusTrue = endDate.isAfter(currentDate);

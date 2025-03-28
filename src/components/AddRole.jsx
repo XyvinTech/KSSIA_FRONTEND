@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import StyledInput from "../ui/StyledInput";
 import { useRoleStore } from "../store/roleStore";
+import StyledSelectField from "../ui/StyledSelectField";
 
 const CircleButton = styled.span`
   display: inline-block;
@@ -56,19 +57,26 @@ const AddRole = () => {
   const [permissions, setPermissions] = useState([]);
   const [loading, setLoading] = useState(false);
   const location = useLocation();
-  const { addRole,updateRole,getRoleById,singleRole } = useRoleStore();
+  const { addRole, updateRole, getRoleById, singleRole } = useRoleStore();
   const { roleId, isUpdate } = location.state || {};
+  const statusOptions = [
+    { value: "active", label: "Active" },
+    { value: "inactive", label: "Inactive" },
+  ];
   const onSubmit = async (data) => {
     try {
       setLoading(true);
       const roleData = {
-        ...data,
+        roleName: data.roleName,
+        description: data.description,
+        status: data?.status?.value === "inactive" ? false : true,
+
         permissions,
       };
       if (isUpdate) {
         await updateRole(roleId, roleData);
       } else {
-      await addRole(roleData);
+        await addRole(roleData);
       }
       reset();
       setPermissions([]);
@@ -79,23 +87,26 @@ const AddRole = () => {
       setLoading(false);
     }
   };
-const handleClear=(event)=>{
-  event.preventDefault();
-  navigate(-1)
-
-}
-    useEffect(() => {
-      if (isUpdate && roleId) {
-        getRoleById(roleId);
-      }
-    }, [roleId, isUpdate]);
-    useEffect(() => {
-      if (singleRole && isUpdate) {
-        setValue("roleName", singleRole.roleName);
-        setPermissions(singleRole.permissions);
-        setValue("description", singleRole.description);
-      }
-    }, [singleRole, isUpdate, setValue]);
+  const handleClear = (event) => {
+    event.preventDefault();
+    navigate(-1);
+  };
+  useEffect(() => {
+    if (isUpdate && roleId) {
+      getRoleById(roleId);
+    }
+  }, [roleId, isUpdate]);
+  useEffect(() => {
+    if (singleRole && isUpdate) {
+      setValue("roleName", singleRole.roleName);
+      setPermissions(singleRole.permissions);
+      setValue("description", singleRole.description);
+      const selectedStatus = statusOptions.find(
+        (status) => status.value === (singleRole.status ? "active" : "inactive")
+      );
+      setValue("status", selectedStatus);
+    }
+  }, [singleRole, isUpdate, setValue]);
 
   const handlePermissionChange = (permissionId, type) => {
     const permissionKey = `${permissionId}_${type}`;
@@ -249,12 +260,37 @@ const handleClear=(event)=>{
               ))}
             </Grid>
           </Grid>
-
-          {/* Buttons */}
-          <Grid item xs={6}></Grid>
           <Grid item xs={6}>
+            <Typography
+              sx={{ marginBottom: 1 }}
+              variant="h6"
+              fontWeight={500}
+              color={"#333333"}
+            >
+              Status
+            </Typography>
+            <Controller
+              name="status"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <>
+                  <StyledSelectField
+                    placeholder="Choose the status"
+                    options={statusOptions}
+                    {...field}
+                  />
+                </>
+              )}
+            />
+          </Grid>
+          <Grid item xs={12}>
             <Stack direction={"row"} spacing={2} justifyContent={"flex-end"}>
-              <StyledButton name="Cancel" variant="secondary" onClick={(event) => handleClear(event)}/>
+              <StyledButton
+                name="Cancel"
+                variant="secondary"
+                onClick={(event) => handleClear(event)}
+              />
               <StyledButton
                 name={loading ? "Saving..." : "Save"}
                 variant="primary"

@@ -16,9 +16,9 @@ import {
 import { StyledMultilineTextField } from "../ui/StyledMultilineTextField .jsx";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import uploadFileToS3 from "../utils/s3Upload.js";
 import moment from "moment";
 import { Delete } from "@mui/icons-material";
+import { upload } from "../api/admin-api.js";
 
 export default function AddEvent({ eventId, setSelectedTab }) {
   const {
@@ -82,12 +82,13 @@ export default function AddEvent({ eventId, setSelectedTab }) {
 
       if (imageFile) {
         try {
-          imageUrl = await new Promise((resolve, reject) => {
-            uploadFileToS3(
-              imageFile,
-              (location) => resolve(location),
-              (error) => reject(error)
-            );
+          imageUrl = await new Promise(async (resolve, reject) => {
+            try {
+              const response = await upload(imageFile);
+              resolve(response?.data || "");
+            } catch (error) {
+              reject(error);
+            }
           });
         } catch (error) {
           console.error("Failed to upload image:", error);
@@ -100,7 +101,7 @@ export default function AddEvent({ eventId, setSelectedTab }) {
           speaker.speaker_name ||
           speaker.speaker_designation ||
           speaker.spealer_role ||
-          speaker.speaker_image 
+          speaker.speaker_image
       );
 
       const speakersData = await Promise?.all(
@@ -112,12 +113,13 @@ export default function AddEvent({ eventId, setSelectedTab }) {
             typeof speaker.speaker_image === "object"
           ) {
             try {
-              speakerImageUrl = await new Promise((resolve, reject) => {
-                uploadFileToS3(
-                  speaker.speaker_image,
-                  (location) => resolve(location),
-                  (error) => reject(error)
-                );
+              speakerImageUrl = await new Promise(async (resolve, reject) => {
+                try {
+                  const response = await upload(speaker.speaker_image);
+                  resolve(response?.data || "");
+                } catch (error) {
+                  reject(error);
+                }
               });
             } catch (error) {
               console.error(`Failed to upload image for speaker:`, error);
@@ -158,7 +160,7 @@ export default function AddEvent({ eventId, setSelectedTab }) {
         image: imageUrl,
         description: data.description,
         speakers: speakersData,
-        status:status
+        status: status,
       };
       if (data?.plaform) {
         formData.plaform = data?.plaform;
@@ -171,7 +173,6 @@ export default function AddEvent({ eventId, setSelectedTab }) {
         formData.meeting_link = data.meeting_link;
       }
       if (eventId) {
-       
         await updateEventById(eventId, formData);
         navigate(`/events/eventlist`);
       } else {
@@ -241,12 +242,14 @@ export default function AddEvent({ eventId, setSelectedTab }) {
     if (fields.length > 1) {
       remove(index);
     } else {
-      replace([{
-        speaker_name: "",
-        speaker_designation: "",
-        speaker_role: "",
-        speaker_image: ""
-      }]);
+      replace([
+        {
+          speaker_name: "",
+          speaker_designation: "",
+          speaker_role: "",
+          speaker_image: "",
+        },
+      ]);
     }
   };
   const renderSpeakers = () => (

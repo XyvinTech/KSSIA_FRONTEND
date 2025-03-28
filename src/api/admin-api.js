@@ -16,7 +16,7 @@ export const getLogin = async (datas) => {
 export const getAdminById = async () => {
   try {
     const response = await axiosInstance.get(`/auth`);
-    
+
     return response.data;
   } catch (error) {
     console.log(error.response.data.message);
@@ -67,6 +67,21 @@ export const deleteAdmin = async (id) => {
     throw error.response.data;
   }
 };
+export const upload = async (file) => {
+  try {
+    const formData = new FormData();
+    formData.append("image", file);
+    const response = await axios.post(`${baseURL}upload`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
 
-          
-          
+    return response.data;
+  } catch (error) {
+    const errorMsg =
+      error.response?.data?.message || "An error occurred during file upload";
+    toast.error(errorMsg);
+    throw error;
+  }
+};

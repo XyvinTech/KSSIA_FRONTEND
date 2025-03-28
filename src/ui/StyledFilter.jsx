@@ -59,7 +59,7 @@ const StyledFilter = ({ open, onClose, onApply }) => {
       companyName,
       status: appliedStatus?.value || status?.value || "",
       subscription: appliedSub?.value || subscription?.value || "",
-      installed: appliedUser?.value || installed?.value || false,
+      installed: appliedUser?.value || installed?.value || "",
     });
     onClose();
   };
