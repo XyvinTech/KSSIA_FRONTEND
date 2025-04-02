@@ -42,6 +42,7 @@ export default function Addproductform() {
   const [type, setType] = useState();
   const location = useLocation();
   const { productId, isUpdate } = location.state || {};
+  const{userId}=location.state||{};
   const [imageFile, setImageFile] = useState(null);
   useEffect(() => {
     let filter = {};
@@ -81,7 +82,16 @@ export default function Addproductform() {
       );
       setValue("tags", selectedTags || []);
     }
-  }, [products, isUpdate, setValue, users]);
+    else if (userId) {
+      const defaultSeller = users.find((user) => user?._id === userId);
+      if (defaultSeller) {
+        setValue("seller_id", {
+          value: defaultSeller._id,
+          label: `${defaultSeller.abbreviation} ${defaultSeller.name}`,
+        });
+      }
+    }
+  }, [products, isUpdate, setValue, users, userId]);
   const option =
     users && Array.isArray(users)
       ? users.map((user) => ({

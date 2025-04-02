@@ -38,7 +38,8 @@ const ReviewContainer = styled(Grid)`
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 `;
 const MembersSinglepage = () => {
-  const [selectedTab, setSelectedTab] = useState(0);
+  const storeTab= localStorage.getItem("memberTab");
+  const [selectedTab, setSelectedTab] = useState(storeTab? Number(storeTab) : 0);
   const [userData, setUserData] = useState({});
   const [isChange, setIsChange] = useState(false);
   const { id } = useParams();
@@ -61,6 +62,7 @@ const MembersSinglepage = () => {
   };
 
   const handleChange = (event, newValue) => {
+    localStorage.setItem("memberTab", newValue);
     setSelectedTab(newValue);
   };
   useEffect(() => {

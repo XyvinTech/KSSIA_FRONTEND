@@ -1,7 +1,5 @@
 import { Box, Stack } from "@mui/material";
 import { react, useEffect, useState } from "react";
-import StyledSearchbar from "./StyledSearchbar";
-import { ReactComponent as FilterIcon } from "../assets/icons/FilterIcon.svg";
 import StyledTable from "./StyledTable";
 import { usePromotionStore } from "../store/promotionStore";
 import { useNavigate } from "react-router-dom";

@@ -197,7 +197,6 @@ const StyledTable = ({
       default:
         return "default"; // Default color
     }
-    
   };
   const formatIndianDate = (date) => {
     return moment(date).format("DD-MM-YYYY");
@@ -366,7 +365,8 @@ const StyledTable = ({
                       )}{" "}
                       {!menu &&
                         row.status !== "rejected" &&
-                        row.status !== "reported" &&   row.status !== "cancelled" &&
+                        row.status !== "reported" &&
+                        row.status !== "cancelled" &&
                         row.status !== "approved" && (
                           <IconButton
                             aria-controls="simple-menu"
@@ -463,7 +463,11 @@ const StyledTable = ({
                             >
                               Remove
                             </MenuItem>
-                            <MenuItem onClick={handleApprove}>Approve</MenuItem>
+                            {row.status !== "accepted" && (
+                              <MenuItem onClick={handleApprove}>
+                                Approve
+                              </MenuItem>
+                            )}
                             <MenuItem onClick={handleAction}>Reject</MenuItem>
                           </>
                         ) : (

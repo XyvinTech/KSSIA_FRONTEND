@@ -1,35 +1,27 @@
-import { Box, Divider, Grid, Stack, Tab, Tabs, Typography } from "@mui/material";
+import {
+  Box,
+  Divider,
+  Grid,
+  Tab,
+  Tabs,
+} from "@mui/material";
 import React, { useState } from "react";
 import StyledBannerTables from "../ui/StyledBannerTables";
 import StyledVideoTable from "../ui/StyledVideoTable";
 import StyledPosterTable from "../ui/StyledPosterTable";
 import StyledNoticeTable from "../ui/StyledNoticeTable";
 
-
-
-
-
 const PromotionItems = () => {
-  const [selectedTab, setSelectedTab] = useState(0);
-  const [selectedRows, setSelectedRows] = useState([]);
-
-  const handleSelectionChange = (newSelectedIds) => {
-    setSelectedRows(newSelectedIds);
-    // console.log("Selected items:", newSelectedIds);
-  };
-
-  const handleView = (id) => {
-    // console.log("View item:", id);
-  };
+  const storeTab= localStorage.getItem("promotionTab");
+  const [selectedTab, setSelectedTab] = useState(storeTab? Number(storeTab) : 0);
   const handleChange = (event, newValue) => {
+    localStorage.setItem("promotionTab", newValue);
     setSelectedTab(newValue);
   };
-  
+
   return (
     <>
-
       <Tabs
-        
         value={selectedTab}
         onChange={handleChange}
         aria-label="tabs"
@@ -41,16 +33,15 @@ const PromotionItems = () => {
           },
         }}
         sx={{
-          
           paddingTop: "10px",
           "& .MuiTabs-indicator": {
             backgroundColor: "#004797",
           },
           "& .MuiTab-root": {
             textTransform: "none",
-            fontSize:'16px', 
+            fontSize: "16px",
             fontWeight: 600,
-            margin: '0 30px',
+            margin: "0 30px",
           },
           "& .Mui-selected": {
             color: "#004797",
@@ -62,29 +53,28 @@ const PromotionItems = () => {
         <Tab label="Poster" />
         <Tab label="Notice" />
       </Tabs>
-      <Divider/>
+      <Divider />
       <Box padding="15px" marginBottom={4}>
         {selectedTab === 0 && (
-             <Grid>
-             <StyledBannerTables/>
-           </Grid>
+          <Grid>
+            <StyledBannerTables />
+          </Grid>
         )}
         {selectedTab === 1 && (
           <Grid>
-           <StyledVideoTable/>
+            <StyledVideoTable />
           </Grid>
         )}
         {selectedTab === 2 && (
-         <Grid>
-           <StyledPosterTable/>
-         </Grid>
+          <Grid>
+            <StyledPosterTable />
+          </Grid>
         )}
         {selectedTab === 3 && (
           <Grid>
-          <StyledNoticeTable/>
-        </Grid>
+            <StyledNoticeTable />
+          </Grid>
         )}
-       
       </Box>
     </>
   );

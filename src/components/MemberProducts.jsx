@@ -44,7 +44,7 @@ export default function MembersProducts({ id }) {
               <StyledButton
                 name="Add product"
                 variant="primary"
-                onClick={() => navigate(`/products/addproduct`)}
+                onClick={() => navigate(`/products/addproduct`, { state: { userId:id } })}
               >
                 Add product
               </StyledButton>

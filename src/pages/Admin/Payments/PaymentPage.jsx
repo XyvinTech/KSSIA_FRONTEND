@@ -24,20 +24,30 @@ import ParentSub from "../../../components/payments/ParentSub";
 import PayementView from "./PayementView";
 export default function PaymentPage() {
   const navigate = useNavigate();
+  const storeTab = localStorage.getItem("paymentTab");
   const [selectedRows, setSelectedRows] = useState([]);
   const [search, setSearch] = useState("");
   const [pageNo, setPageNo] = useState(1);
   const [row, setRow] = useState(10);
   const [isChange, setIsChange] = useState(false);
-  const [selectedTab, setSelectedTab] = useState(0);
+  const [selectedTab, setSelectedTab] = useState(
+    storeTab ? Number(storeTab) : 0
+  );
   const [open, setOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [confirmationAction, setConfirmationAction] = useState("");
   const [paymentId, setPaymentId] = useState(null);
   const [openView, setOpenView] = useState(false);
 
-  const { payments, fetchPayment, deletePayments, totalCount, patchPayments,fetchSinglePayment,singlePayment } =
-    usePaymentStore();
+  const {
+    payments,
+    fetchPayment,
+    deletePayments,
+    totalCount,
+    patchPayments,
+    fetchSinglePayment,
+    singlePayment,
+  } = usePaymentStore();
   const userColumns = [
     { title: "Member name", field: "full_name", padding: "none" },
     { title: "Expiry Date", field: "expiry_date" },
@@ -83,6 +93,7 @@ export default function PaymentPage() {
     setOpen(true);
   };
   const handleTabChange = (event, newValue) => {
+    localStorage.setItem("paymentTab", newValue);
     setSelectedTab(newValue);
   };
   const handleApprove = async (id) => {
@@ -248,7 +259,11 @@ export default function PaymentPage() {
           />
         </DialogActions>
       </Dialog>
-      <PayementView open={openView} onClose={() => setOpenView(false)}data={singlePayment} />
+      <PayementView
+        open={openView}
+        onClose={() => setOpenView(false)}
+        data={singlePayment}
+      />
     </>
   );
 }

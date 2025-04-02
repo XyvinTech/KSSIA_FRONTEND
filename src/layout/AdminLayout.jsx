@@ -86,6 +86,9 @@ const SimpleDialog = ({ open, onClose }) => {
   }, []);
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("promotionTab");
+    localStorage.removeItem("paymentTab");
+    localStorage.removeItem("memberTab");
     navigate("/");
   };
   return (
