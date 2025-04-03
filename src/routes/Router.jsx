@@ -30,6 +30,7 @@ import EditPromotion from "../pages/Admin/Promotions/EditPromotion.jsx";
 import { PrivateRoute } from "./privateRouter.jsx";
 import Report from "../pages/Report.jsx";
 import QRHtmlPage from "../pages/QRHtmlpage.jsx";
+import AddRequirementPage from "../pages/Admin/Members/AddRequirementPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -92,6 +93,16 @@ const router = createBrowserRouter([
       <PrivateRoute>
         <AdminLayout>
           <AddProductSinglepage />
+        </AdminLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/requirement/addrequirement",
+    element: (
+      <PrivateRoute>
+        <AdminLayout>
+          <AddRequirementPage />
         </AdminLayout>
       </PrivateRoute>
     ),

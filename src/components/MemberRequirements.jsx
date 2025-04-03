@@ -6,32 +6,47 @@ import { ReactComponent as FilterIcon } from "../assets/icons/FilterIcon.svg";
 import StyledSearchbar from "../ui/StyledSearchbar";
 import StyledTable from "../ui/StyledTable";
 import { useApprovalStore } from "../store/approval-store";
+import { StyledButton } from "../ui/StyledButton";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import useRequirementStore from "../store/requirementStore";
 
 export default function MembersRequirements({ id }) {
-  const [filterOpen, setFilterOpen] = useState(false);
+  const navigate = useNavigate();
   const [pageNo, setPageNo] = useState(1);
+  const [isChange, setIsChange] = useState(false);
+  const [selectedRows, setSelectedRows] = useState([]);
   const [row, setRow] = useState(10);
   const { approvalByUser, fetchApprovalByUser, totalCount } =
     useApprovalStore();
-  const handleOpenFilter = () => {
-    setFilterOpen(true);
-  };
-
-  const handleCloseFilter = () => {
-    setFilterOpen(false);
-  };
+  const { deleteRequiremnts } = useRequirementStore();
   useEffect(() => {
     let filter = {};
     filter.pageNo = pageNo;
     filter.limit = row;
     fetchApprovalByUser(id, filter);
-  }, [pageNo, row]);
+  }, [pageNo, row, isChange]);
   const userColumns = [
     { title: "date", field: "createdAt", padding: "none" },
     { title: "image", field: "image" },
-    ,
     { title: "Status", field: "status" },
   ];
+  const handleSelectionChange = (newSelectedIds) => {
+    setSelectedRows(newSelectedIds);
+  };
+
+  const handleDelete = async () => {
+    try {
+      if (selectedRows.length > 0) {
+        await Promise.all(selectedRows?.map((id) => deleteRequiremnts(id)));
+        toast.success("Deleted successfully");
+        setIsChange(!isChange);
+        setSelectedRows([]);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   return (
     <>
       {" "}
@@ -43,7 +58,15 @@ export default function MembersRequirements({ id }) {
           alignItems={"center"}
         >
           <Stack direction={"row"} spacing={2}>
-          
+            <StyledButton
+              name="Add Requirement"
+              variant="primary"
+              onClick={() =>
+                navigate(`/requirement/addrequirement`, {
+                  state: { userId: id },
+                })
+              }
+            />
           </Stack>
         </Stack>{" "}
         <Box
@@ -58,6 +81,8 @@ export default function MembersRequirements({ id }) {
             setRowPerSize={setRow}
             data={approvalByUser}
             pageNo={pageNo}
+            onSelectionChange={handleSelectionChange}
+            onDelete={handleDelete}
             setPageNo={setPageNo}
             totalCount={totalCount}
             menu
