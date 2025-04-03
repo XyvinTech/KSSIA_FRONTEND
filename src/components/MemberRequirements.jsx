@@ -29,6 +29,7 @@ export default function MembersRequirements({ id }) {
   const userColumns = [
     { title: "date", field: "createdAt", padding: "none" },
     { title: "image", field: "image" },
+    { title: "Content", field: "content" },
     { title: "Status", field: "status" },
   ];
   const handleSelectionChange = (newSelectedIds) => {
