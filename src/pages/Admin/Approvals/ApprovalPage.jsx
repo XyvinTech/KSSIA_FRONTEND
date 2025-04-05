@@ -8,10 +8,12 @@ import StyledTable from "../../../ui/StyledTable";
 import RequirementDetail from "../../../components/RequirementDetail";
 import { useApprovalStore } from "../../../store/approval-store";
 import ApproveReject from "../../../components/ApproveReject";
+import ApprovalView from "../../../components/ApprovalView";
 export default function ApprovalPage() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
   const [search, setSearch] = useState("");
+  const [view, setView] = useState(false);
   const [rejectOpen, setRejectOpen] = useState(false);
   const [approveOpen, setApproveOpen] = useState(false);
   const [isChange, setIsChange] = useState(false);
@@ -67,7 +69,10 @@ export default function ApprovalPage() {
   const handleCloseReject = (id) => {
     setRejectOpen(false);
   };
-
+  const handleView = async (id) => {
+    await fetchApprovalById(id);
+    setView(true);
+  };
   return (
     <>
       {" "}
@@ -113,6 +118,7 @@ export default function ApprovalPage() {
               onSelectionChange={handleSelectionChange}
               onModify={handleApprove}
               payment
+              onView={handleView}
               onAction={handleReject}
               totalCount={totalCount}
               pageNo={pageNo}
@@ -133,6 +139,7 @@ export default function ApprovalPage() {
               onChange={handleChange}
               onDeny={handleReject}
             />
+            <ApprovalView open={view} onClose={() => setView(false)} data={approval} />
           </Box>
         </>
       </Box>
