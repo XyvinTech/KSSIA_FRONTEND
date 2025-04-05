@@ -81,7 +81,7 @@ export default function AddRequirement() {
       const formData = {
         author: data?.author.value,
         content: data?.content,
-        image: imageUrl,
+        ...(imageUrl && { image: imageUrl }),
         status: "approved",
       };
 
