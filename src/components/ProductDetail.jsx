@@ -131,7 +131,7 @@ const ProductDetail = ({ open, onClose, onChange, data, onDeny }) => {
 
               <Box sx={{ display: "flex", mt: 1 }}>
                 <Typography variant="body2" fontWeight="bold" color="#E71D36">
-                  ${data?.offer_price || 0}
+                ₹{data?.offer_price || 0}
                 </Typography>
                 {data?.price && data.price !== data.offer_price && (
                   <Typography
@@ -139,7 +139,7 @@ const ProductDetail = ({ open, onClose, onChange, data, onDeny }) => {
                     sx={{ ml: 1, textDecoration: "line-through" }}
                     color="text.secondary"
                   >
-                    ${data?.price}
+                    ₹{data?.price}
                   </Typography>
                 )}
                 <Typography
