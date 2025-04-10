@@ -143,7 +143,7 @@ export default function SingleAddform() {
         },
         ...(data?.blood_group && { blood_group: data?.blood_group }),
         designation: data.designation,
-        email: data.email,
+        ...(data?.email && { email: data?.email }),
         company_name: data?.company_name,
         ...(data?.address && { address: data?.address }),
         bio: data.bio,
@@ -389,9 +389,9 @@ export default function SingleAddform() {
                           placeholder="Enter personal phone number"
                           {...field}
                         />
-                        {errors.phone && (
+                        {errors.phone_number && (
                           <span style={{ color: "red" }}>
-                            {errors.phone.message}
+                            {errors.phone_number.message}
                           </span>
                         )}
                       </>
@@ -528,18 +528,18 @@ export default function SingleAddform() {
                     name="designation"
                     control={control}
                     defaultValue=""
-                    rules={{ required: "Designation is required" }}
+                    // rules={{ required: "Designation is required" }}
                     render={({ field }) => (
                       <>
                         <StyledInput
                           placeholder="Enter the member's designation"
                           {...field}
                         />
-                        {errors.designation && (
+                        {/* {errors.designation && (
                           <span style={{ color: "red" }}>
                             {errors.designation.message}
                           </span>
-                        )}
+                        )} */}
                       </>
                     )}
                   />
