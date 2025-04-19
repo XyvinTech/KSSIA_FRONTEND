@@ -309,17 +309,21 @@ const StyledTable = ({
                         ].includes(column.field) ? (
                         formatTime(row[column.field])
                       ) : [
-                          "banner_image_url",
-                          "poster_image_url",
-                          "image",
-                          "event image",
-                          "speaker_image",
-                        ].includes(column.field) ? (
-                        <img
-                          src={row[column.field]}
-                          alt={column.title}
-                          style={{ width: "50px", height: "50px" }}
-                        />
+                        "banner_image_url",
+                        "poster_image_url",
+                        "image",
+                        "event image",
+                        "speaker_image",
+                      ].includes(column.field) ? (
+                        row[column.field] ? (
+                          <img
+                            src={row[column.field]}
+                            alt={column.title}
+                            style={{ width: "50px", height: "50px", objectFit: "cover" }}
+                          />
+                        ) : (
+                          "-"
+                        )
                       ) : column.field === "status" ||
                         column.field === "activate" ? (
                         <Box

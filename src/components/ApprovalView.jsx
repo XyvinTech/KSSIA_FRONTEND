@@ -77,15 +77,16 @@ const ApprovalView = ({ open, onClose, data }) => {
             {data?.image && (
               <Box mb={3} sx={{ borderRadius: 2, overflow: "hidden" }}>
                 <img
-                  src={data?.image}
-                  alt="Content"
-                  style={{
-                    width: "100%",
-                    maxHeight: "300px",
-                    objectFit: "cover",
-                    borderRadius: "8px",
-                  }}
-                />
+  src={data?.image}
+  alt="Content"
+  style={{
+    width: "100%",
+    maxHeight: "300px",
+    objectFit: "contain", 
+    borderRadius: "8px",
+  }}
+/>
+
               </Box>
             )}
 
