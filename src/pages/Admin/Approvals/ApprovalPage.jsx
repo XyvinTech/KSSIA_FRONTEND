@@ -9,6 +9,8 @@ import RequirementDetail from "../../../components/RequirementDetail";
 import { useApprovalStore } from "../../../store/approval-store";
 import ApproveReject from "../../../components/ApproveReject";
 import ApprovalView from "../../../components/ApprovalView";
+import { toast } from "react-toastify";
+import useRequirementStore from "../../../store/requirementStore";
 export default function ApprovalPage() {
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
@@ -19,6 +21,7 @@ export default function ApprovalPage() {
   const [isChange, setIsChange] = useState(false);
   const [pageNo, setPageNo] = useState(1);
   const [row, setRow] = useState(10);
+  const { deleteRequiremnts } = useRequirementStore();
   const [formattedApprovals, setFormattedApprovals] = useState([]);
   const { approvals, fetchApproval, fetchApprovalById, totalCount, approval } =
     useApprovalStore();
@@ -73,6 +76,18 @@ export default function ApprovalPage() {
     await fetchApprovalById(id);
     setView(true);
   };
+  const handleDelete = async () => {
+    try {
+      if (selectedRows.length > 0) {
+        await Promise.all(selectedRows?.map((id) => deleteRequiremnts(id)));
+        toast.success("Deleted successfully");
+        setIsChange(!isChange);
+        setSelectedRows([]);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   return (
     <>
       {" "}
@@ -122,6 +137,7 @@ export default function ApprovalPage() {
               onAction={handleReject}
               totalCount={totalCount}
               pageNo={pageNo}
+              onDelete={handleDelete}
               rowPerSize={row}
               setRowPerSize={setRow}
               setPageNo={setPageNo}
@@ -139,7 +155,11 @@ export default function ApprovalPage() {
               onChange={handleChange}
               onDeny={handleReject}
             />
-            <ApprovalView open={view} onClose={() => setView(false)} data={approval} />
+            <ApprovalView
+              open={view}
+              onClose={() => setView(false)}
+              data={approval}
+            />
           </Box>
         </>
       </Box>
