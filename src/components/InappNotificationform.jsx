@@ -89,7 +89,7 @@ export default function InappNotificationform({ setSelectedTab }) {
       let userIds = data.to.map((user) => user.value);
 
       if (userIds.includes("*")) {
-        newformData.to = "*";
+        newformData.to = ["*"];
       } else {
         newformData.to = userIds;
       }
