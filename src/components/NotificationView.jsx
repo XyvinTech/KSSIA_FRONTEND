@@ -7,10 +7,10 @@ import {
   Box,
   Divider,
   Link,
+  Chip,
 } from "@mui/material";
 import moment from "moment";
 import { ReactComponent as CloseIcon } from "../assets/icons/CloseIcon.svg";
-import { da } from "date-fns/locale";
 
 const NotificationView = ({ open, onClose, data }) => {
   const handleClear = (event) => {
@@ -53,21 +53,35 @@ const NotificationView = ({ open, onClose, data }) => {
 
       <DialogContent sx={{ width: "500px", padding: 0 }}>
         <Stack spacing={2} padding={3}>
-          {data?.file_url && (
+          {data?.media_url && (
             <Box
               component="img"
-              src={data.file_url}
-              alt="Notification"
+              src={data.media_url}
+              alt="Notification Media"
               width="100%"
-              height="auto"
-              sx={{ borderRadius: "8px" }}
+              height="400px"
+              sx={{ borderRadius: "8px", objectFit: "cover" }}
             />
           )}
 
           <Box>
-            <Typography variant="h5" color="#2C2829" fontWeight="bold">
-              {data?.subject}
-            </Typography>
+            <Stack direction="row" alignItems="center" spacing={1} mb={0.5}>
+              <Typography variant="h5" color="#2C2829" fontWeight="bold">
+                {data?.subject}
+              </Typography>
+              {data?.type && (
+                <Chip
+                  label={data.type.toUpperCase()}
+                  size="small"
+                  color="primary"
+                  sx={{
+                    textTransform: "uppercase",
+                    fontWeight: "bold",
+                    fontSize: "10px",
+                  }}
+                />
+              )}
+            </Stack>
 
             {data?.createdAt && (
               <Typography
@@ -82,7 +96,7 @@ const NotificationView = ({ open, onClose, data }) => {
             )}
           </Box>
 
-          <Typography variant="body1" color="#4A4647">
+          <Typography variant="body1" color="#4A4647" whiteSpace="pre-wrap">
             {data?.content}
           </Typography>
 
@@ -90,8 +104,8 @@ const NotificationView = ({ open, onClose, data }) => {
             <Link
               href={
                 data?.link_url?.startsWith("http")
-                  ? data?.link_url
-                  : `https://${data?.link_url}`
+                  ? data.link_url
+                  : `https://${data.link_url}`
               }
               target="_blank"
               rel="noopener noreferrer"
