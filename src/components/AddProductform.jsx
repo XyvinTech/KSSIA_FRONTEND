@@ -42,7 +42,7 @@ export default function Addproductform() {
   const [type, setType] = useState();
   const location = useLocation();
   const { productId, isUpdate } = location.state || {};
-  const{userId}=location.state||{};
+  const { userId } = location.state || {};
   const [imageFile, setImageFile] = useState(null);
   useEffect(() => {
     let filter = {};
@@ -54,13 +54,22 @@ export default function Addproductform() {
       fetchProductById(productId);
     }
   }, [productId, isUpdate, fetchProductById]);
+  const units = [
+    { value: "kg", label: "Kg" },
+    { value: "g", label: "Gm" },
+    { value: "L", label: "litre" },
+    { value: "Price per unit", label: "Price per unit" },
+  ];
   useEffect(() => {
     if (products && isUpdate) {
       setValue("productname", products.name);
       setValue("description", products.description);
       setValue("price", products.price);
       setValue("offer_price", products.offer_price);
-      setValue("units", products.units);
+      const selectedUnit = units.find(
+        (unit) => unit?.value === products.units
+      )
+      setValue("units", selectedUnit || []);
       setValue("image", products.image);
       const sellerUser = users.find(
         (user) => user?._id === products.seller_id?._id
@@ -81,8 +90,7 @@ export default function Addproductform() {
         tagOptions.find((option) => option?.value === Id)
       );
       setValue("tags", selectedTags || []);
-    }
-    else if (userId) {
+    } else if (userId) {
       const defaultSeller = users.find((user) => user?._id === userId);
       if (defaultSeller) {
         setValue("seller_id", {
@@ -378,7 +386,7 @@ export default function Addproductform() {
       setLoading(true);
       let imageUrl = data?.image || "";
 
-    if (imageFile) {
+      if (imageFile) {
         try {
           imageUrl = await new Promise(async (resolve, reject) => {
             try {
@@ -398,7 +406,7 @@ export default function Addproductform() {
         description: data?.description,
         offer_price: data?.offer_price,
         price: data?.price,
-        units: data?.units,
+        units: data?.units?.value,
         image: imageUrl,
         category: type,
         subcategory: data?.tags.map((i) => i.value),
@@ -682,7 +690,7 @@ export default function Addproductform() {
                     rules={{ required: "Units is required" }}
                     render={({ field }) => (
                       <>
-                        <StyledInput placeholder="Select the unit" {...field} />
+                        <StyledSelectField {...field} options={units} />
                         {errors.unit && (
                           <span style={{ color: "red" }}>
                             {errors.unit.message}
