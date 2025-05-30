@@ -1,7 +1,5 @@
 import { Box, Grid, Stack, Tab, Tabs, Typography } from "@mui/material";
 import React, { useState } from "react";
-import SingleAddform from "../../../components/SingleAddform.jsx"
-import BulkAddform from "../../../components/BulkAddform";
 import EmailNotificationform from "../../../components/EmailNotificationform.jsx";
 import InappNotificationform from "../../../components/InappNotificationform.jsx";
 import NotificationLogs from "../../../components/NotificationLogs.jsx";
