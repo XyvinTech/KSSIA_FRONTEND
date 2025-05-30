@@ -23,10 +23,16 @@ const NotificationView = ({ open, onClose, data }) => {
       open={open}
       onClose={onClose}
       PaperProps={{
-        sx: { borderRadius: "12px" },
+        sx: {
+          borderRadius: "16px",
+          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.08)",
+          maxWidth: "600px",
+          width: "100%",
+          margin: { xs: 1, sm: 2 },
+        },
       }}
     >
-      <DialogTitle sx={{ padding: 2 }}>
+      <DialogTitle sx={{ padding: "16px 24px" }}>
         <Box display="flex" justifyContent="flex-end">
           <Box
             onClick={handleClear}
@@ -35,49 +41,67 @@ const NotificationView = ({ open, onClose, data }) => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              width: 32,
-              height: 32,
+              width: 40,
+              height: 40,
               borderRadius: "50%",
-              transition: "0.2s",
+              transition: "all 0.3s ease",
               "&:hover": {
-                backgroundColor: "#f5f5f5",
+                backgroundColor: "#f0f2f5",
+                transform: "scale(1.1)",
               },
             }}
           >
-            <CloseIcon />
+            <CloseIcon style={{ width: 24, height: 24, color: "#666" }} />
           </Box>
         </Box>
       </DialogTitle>
 
-      <Divider />
+      <Divider sx={{ borderColor: "#e8ecef" }} />
 
-      <DialogContent sx={{ width: "500px", padding: 0 }}>
-        <Stack spacing={2} padding={3}>
+      <DialogContent sx={{ padding: 0 }}>
+        <Stack spacing={3} padding={{ xs: 2, sm: 4 }}>
           {data?.media_url && (
             <Box
               component="img"
               src={data.media_url}
               alt="Notification Media"
-              width="100%"
-              height="400px"
-              sx={{ borderRadius: "8px", objectFit: "cover" }}
+              sx={{
+                width: "100%",
+                maxHeight: "300px",
+                borderRadius: "12px",
+                objectFit: "cover",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                transition: "transform 0.3s ease",
+                "&:hover": {
+                  transform: "scale(1.02)",
+                },
+              }}
             />
           )}
 
           <Box>
-            <Stack direction="row" alignItems="center" spacing={1} mb={0.5}>
-              <Typography variant="h5" color="#2C2829" fontWeight="bold">
+            <Stack direction="row" alignItems="center" spacing={1.5} mb={1}>
+              <Typography
+                variant="h4"
+                sx={{
+                  color: "#1a1a1a",
+                  fontWeight: 700,
+                  fontSize: { xs: "1.5rem", sm: "1.75rem" },
+                }}
+              >
                 {data?.subject}
               </Typography>
               {data?.type && (
                 <Chip
                   label={data.type.toUpperCase()}
                   size="small"
-                  color="primary"
                   sx={{
-                    textTransform: "uppercase",
-                    fontWeight: "bold",
-                    fontSize: "10px",
+                    backgroundColor: "#e3f2fd",
+                    color: "#1565c0",
+                    fontWeight: 600,
+                    fontSize: "0.75rem",
+                    borderRadius: "6px",
+                    padding: "2px 4px",
                   }}
                 />
               )}
@@ -86,17 +110,47 @@ const NotificationView = ({ open, onClose, data }) => {
             {data?.createdAt && (
               <Typography
                 variant="body2"
-                color="text.secondary"
-                sx={{ mt: 0.5 }}
+                sx={{
+                  color: "#757575",
+                  mt: 0.5,
+                  fontSize: "0.9rem",
+                }}
               >
                 {moment(data.createdAt)
-                  .format("DD-MM-YYYY, hh.mmA")
+                  .format("DD MMMM YYYY, hh:mm A")
                   .toLowerCase()}
+              </Typography>
+            )}
+
+            {data?.to?.length > 0 && (
+              <Typography
+                variant="body2"
+                sx={{
+                  color: "#757575",
+                  mt: 1.5,
+                  fontSize: "0.9rem",
+                }}
+              >
+                <strong>To:</strong>{" "}
+                {data.to.map((user, index) => (
+                  <span key={user._id}>
+                    {user.name}
+                    {index < data.to.length - 1 && ", "}
+                  </span>
+                ))}
               </Typography>
             )}
           </Box>
 
-          <Typography variant="body1" color="#4A4647" whiteSpace="pre-wrap">
+          <Typography
+            variant="body1"
+            sx={{
+              color: "#333",
+              whiteSpace: "pre-wrap",
+              lineHeight: 1.6,
+              fontSize: "1rem",
+            }}
+          >
             {data?.content}
           </Typography>
 
@@ -109,10 +163,40 @@ const NotificationView = ({ open, onClose, data }) => {
               }
               target="_blank"
               rel="noopener noreferrer"
-              underline="hover"
-              sx={{ mt: 1 }}
+              sx={{
+                mt: 2,
+                color: "#1976d2",
+                fontWeight: 500,
+                textDecoration: "none",
+                display: "inline-flex",
+                alignItems: "center",
+                transition: "color 0.2s ease",
+                "&:hover": {
+                  color: "#1565c0",
+                  textDecoration: "underline",
+                },
+              }}
             >
               View more details
+              <Box
+                component="span"
+                sx={{
+                  ml: 0.5,
+                  display: "inline-flex",
+                  alignItems: "center",
+                }}
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </Box>
             </Link>
           )}
         </Stack>
