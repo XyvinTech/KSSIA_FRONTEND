@@ -12,12 +12,15 @@ import { useForm } from "react-hook-form";
 import { StyledButton } from "../ui/StyledButton";
 import { ReactComponent as CloseIcon } from "../assets/icons/CloseIcon.svg";
 import { useProductsStore } from "../store/productStore";
+import { useState } from "react";
 
 const ProductDetail = ({ open, onClose, onChange, data, onDeny }) => {
   const { handleSubmit } = useForm();
   const { patchProducts } = useProductsStore();
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = async () => {
+    setLoading(true);
     try {
       const updateData = { status: "accepted" };
       await patchProducts(data?._id, updateData);
@@ -25,6 +28,8 @@ const ProductDetail = ({ open, onClose, onChange, data, onDeny }) => {
       onClose();
     } catch (error) {
       console.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -55,7 +60,7 @@ const ProductDetail = ({ open, onClose, onChange, data, onDeny }) => {
       open={open}
       onClose={onClose}
       PaperProps={{
-        sx: { borderRadius: "8px",width: "480px" },
+        sx: { borderRadius: "8px", width: "480px" },
       }}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -131,7 +136,7 @@ const ProductDetail = ({ open, onClose, onChange, data, onDeny }) => {
 
               <Box sx={{ display: "flex", mt: 1 }}>
                 <Typography variant="body2" fontWeight="bold" color="#E71D36">
-                ₹{data?.offer_price || 0}
+                  ₹{data?.offer_price || 0}
                 </Typography>
                 {data?.price && data.price !== data.offer_price && (
                   <Typography
@@ -220,10 +225,16 @@ const ProductDetail = ({ open, onClose, onChange, data, onDeny }) => {
           <StyledButton
             variant="secondary"
             name="Deny"
+            disabled={loading}
             onClick={(event) => handleClear(event)}
           />
           {data?.status !== "accepted" && (
-            <StyledButton variant="primary" name="Approve" type="submit" />
+            <StyledButton
+              variant="primary"
+              name={loading ? "Approving..." : "Approve"}
+              type="submit"
+              disabled={loading}
+            />
           )}
         </Box>
       </form>

@@ -2,16 +2,15 @@ import React, { useState } from "react";
 import { Stack, Typography } from "@mui/material";
 import DashboardSelect from "../../ui/DashboardSelect";
 
-export const RevenueCard = ({ isMobile, data, spacing, height, year }) => {
+export const RevenueCard = ({ isMobile, data, spacing, height, year, onYearChange }) => {
   const currentYear = new Date().getFullYear();
   const yearOptions = Array.from({ length: 10 }, (_, index) => ({
     value: (currentYear - index).toString(),
     label: (currentYear - index).toString(),
   }));
-  const [selectedYear, setSelectedYear] = useState(currentYear.toString());
 
   const handleYearChange = (event) => {
-    setSelectedYear(event.target.value);
+    onYearChange(event.target.value);
   };
   return (
     <Stack
@@ -39,7 +38,7 @@ export const RevenueCard = ({ isMobile, data, spacing, height, year }) => {
           <Stack>
             <DashboardSelect
               options={yearOptions}
-              value={selectedYear}
+              value={year?.toString()} // use prop
               onChange={handleYearChange}
             />
           </Stack>

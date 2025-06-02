@@ -27,8 +27,9 @@ const ProductReject = ({ open, onClose, data, onChange }) => {
   const { patchProducts } = useProductsStore();
   const [reject, setReject] = useState(false);
   const [previewData, setPreviewData] = useState(null);
-
+  const [loading, setLoading] = useState(false);
   const onSubmit = async (formData) => {
+    setLoading(true);
     try {
       const updateData = {
         reason: formData?.reason,
@@ -40,6 +41,8 @@ const ProductReject = ({ open, onClose, data, onChange }) => {
       reset();
     } catch (error) {
       console.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -55,7 +58,7 @@ const ProductReject = ({ open, onClose, data, onChange }) => {
     reset();
   };
   const handleDialogClose = () => {
-    reset(); // Reset the form when the dialog is closed
+    reset(); 
     onClose();
   };
   return (
@@ -124,7 +127,12 @@ const ProductReject = ({ open, onClose, data, onChange }) => {
               name="Preview"
               onClick={handleReject}
             />
-            <StyledButton variant="primary" name="Send" type="submit" />
+            <StyledButton
+              variant="primary"
+              name={loading ? "Sending..." : "Send"}
+              type="submit"
+              disabled={loading}
+            />
           </Stack>
         </form>
       </Dialog>
@@ -134,6 +142,7 @@ const ProductReject = ({ open, onClose, data, onChange }) => {
         onClose={handleCloseReject}
         data={previewData}
         onChange={onSubmit}
+        loading={loading}
       />
     </>
   );

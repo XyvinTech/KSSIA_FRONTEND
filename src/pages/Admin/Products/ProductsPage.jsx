@@ -13,7 +13,6 @@ import { useProductsStore } from "../../../store/productStore";
 import { toast } from "react-toastify";
 import ProductReject from "../../../components/ProductReject";
 import ProductDetail from "../../../components/ProductDetail";
-import StyledFilter from "../../../ui/StyledFilter";
 import ProductFilter from "../../../ui/ProductFilter";
 import { getDwldProduct } from "../../../api/members-api";
 import { generateExcel } from "../../../utils/generateExcel";

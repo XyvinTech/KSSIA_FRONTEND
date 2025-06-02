@@ -9,8 +9,9 @@ import {
 } from "@mui/material";
 import { StyledButton } from "../ui/StyledButton";
 import { ReactComponent as CloseIcon } from "../assets/icons/CloseIcon.svg";
+import { useState } from "react";
 
-const ApproveRejectDisplay = ({ open, onClose, data, onChange }) => {
+const ApproveRejectDisplay = ({ open, onClose, data, onChange, loading }) => {
   const handleClear = (event) => {
     event.preventDefault();
     onClose();
@@ -101,13 +102,23 @@ const ApproveRejectDisplay = ({ open, onClose, data, onChange }) => {
             Reason for Rejection
           </Typography>
           <Typography variant="h6" color={"#4A4647"}>
-            {data?.reason }
+            {data?.reason}
           </Typography>
         </Stack>
       </DialogContent>
       <Stack direction={"row"} spacing={2} padding={2} justifyContent={"end"}>
-        <StyledButton variant="secondary" name="Cancel" onClick={handleClear} />
-        <StyledButton variant="primary" name="Send" onClick={handleSubmit} />
+        <StyledButton
+          variant="secondary"
+          name="Cancel"
+          onClick={handleClear}
+          disabled={loading}
+        />
+        <StyledButton
+          variant="primary"
+          name={loading ? "Sending..." : "Send"}
+          onClick={handleSubmit}
+          disabled={loading}
+        />
       </Stack>
     </Dialog>
   );

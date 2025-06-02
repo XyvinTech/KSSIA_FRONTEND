@@ -816,16 +816,13 @@ export default function AddEvent({ eventId, setSelectedTab }) {
                 variant="secondary"
                 disabled={loading}
                 onClick={(event) => handleClear(event)}
-              >
-                Cancel
-              </StyledButton>
+              />
               <StyledButton
                 name={loading ? "Saving..." : "Save"}
                 variant="primary"
+                disabled={loading}
                 type="submit"
-              >
-                Save
-              </StyledButton>
+              />
             </Stack>
           </Grid>
         </Grid>

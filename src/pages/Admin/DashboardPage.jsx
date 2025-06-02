@@ -102,9 +102,13 @@ const DashboardPage = () => {
       console.error("Error fetching dashboard data:", error);
     }
   };
-  useEffect(() => {
-    fetchData();
-  }, []);
+useEffect(() => {
+  fetchData(); // refetch whenever year changes
+}, [year]);
+
+const handleYearChange = (newYear) => {
+  setYear(parseInt(newYear)); // convert string to number if needed
+};
   const fetchActiveUser = async (status) => {
     setMemStatus(status);
     setMemSub(null);
@@ -140,7 +144,7 @@ const DashboardPage = () => {
         <Grid item md={6}>
           <Stack spacing={2}>
             {" "}
-            <RevenueCard data={totalRevenue} year />
+            <RevenueCard data={totalRevenue} year={year} onYearChange={handleYearChange}  />
             <Stack direction={"row"} spacing={2}>
               {" "}
               <Box width={"100%"}>
