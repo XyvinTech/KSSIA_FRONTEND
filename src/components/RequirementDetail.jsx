@@ -12,6 +12,7 @@ import { StyledButton } from "../ui/StyledButton";
 import { ReactComponent as CloseIcon } from "../assets/icons/CloseIcon.svg";
 import { useApprovalStore } from "../store/approval-store";
 import { set } from "date-fns";
+import { useState } from "react";
 
 const RequirementDetail = ({ open, onClose, onChange, data, onDeny }) => {
   const { handleSubmit } = useForm();
