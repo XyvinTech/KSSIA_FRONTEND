@@ -19,13 +19,20 @@ import image from "../assets/images/Group.png";
 import QRProductCard from "./QRProductCard";
 import moment from "moment";
 import { useReportStore } from "../store/reportStore";
+import { useState } from "react";
 
 const ReportPreview = ({ open, onClose, onChange, data }) => {
   const { patchProducts } = useProductsStore();
   const { patchApprovals } = useApprovalStore();
+  const [submit, setSubmit] = useState(false);
+  const [approve, setApprove] = useState(false);
   const { reportChat } = useReportStore();
+  const [chat, setChat] = useState(false);
+  const [report, setReport] = useState(false);
+  const [requirement, setRequirement] = useState(false);
   const { suspend } = useMemberStore();
   const handleSubmit = async () => {
+    setSubmit(true);
     try {
       const updateData = { status: "reported" };
       await patchProducts(data?.reportedElement?._id, updateData);
@@ -33,18 +40,24 @@ const ReportPreview = ({ open, onClose, onChange, data }) => {
       onClose();
     } catch (error) {
       console.error(error.message);
+    } finally {
+      setSubmit(false);
     }
   };
   const handleReportChat = async () => {
+    setChat(true);
     try {
       await reportChat(data?.reportedElement?._id);
       onChange();
       onClose();
     } catch (error) {
       console.error(error.message);
+    } finally {
+      setChat(false);
     }
   };
   const handleApproveProduct = async () => {
+    setApprove(true);
     try {
       const updateData = { status: "accepted" };
       await patchProducts(data?.reportedElement?._id, updateData);
@@ -52,9 +65,12 @@ const ReportPreview = ({ open, onClose, onChange, data }) => {
       onClose();
     } catch (error) {
       console.error(error.message);
+    } finally {
+      setApprove(false);
     }
   };
   const handleApproveRequirement = async () => {
+    setRequirement(true);
     try {
       const updateData = { status: "approved" };
       await patchApprovals(data?.reportedElement?._id, updateData);
@@ -62,9 +78,12 @@ const ReportPreview = ({ open, onClose, onChange, data }) => {
       onClose();
     } catch (error) {
       console.error(error.message);
+    } finally {
+      setRequirement(false);
     }
   };
   const handleRequirementSubmit = async () => {
+    setReport(true);
     try {
       const updateData = { status: "reported" };
       await patchApprovals(data?.reportedElement?._id, updateData);
@@ -72,6 +91,8 @@ const ReportPreview = ({ open, onClose, onChange, data }) => {
       onClose();
     } catch (error) {
       console.error(error.message);
+    } finally {
+      setReport(false);
     }
   };
   const handleSuspend = async () => {
@@ -178,7 +199,10 @@ const ReportPreview = ({ open, onClose, onChange, data }) => {
                           }}
                         />
                         <Stack justifyContent={"start"} width={"100%"}>
-                          <Typography fontWeight={600} textTransform={"capitalize"}>
+                          <Typography
+                            fontWeight={600}
+                            textTransform={"capitalize"}
+                          >
                             {data?.reportedElement?.designation}
                           </Typography>
                           <Typography>
@@ -463,11 +487,13 @@ const ReportPreview = ({ open, onClose, onChange, data }) => {
               <StyledButton
                 variant="secondary"
                 name={"Cancel"}
+                disabled={chat}
                 onClick={handleClear}
               />{" "}
               <StyledButton
                 variant="primary"
-                name={"Report Chat"}
+                name={chat ? "Reporting" : "Report Chat"}
+                disabled={chat}
                 onClick={handleReportChat}
               />
             </>
@@ -479,7 +505,8 @@ const ReportPreview = ({ open, onClose, onChange, data }) => {
           {data?.reportedElement?.status === "reported" ? (
             <StyledButton
               variant="primary"
-              name={"RePublish"}
+              name={approve ? "Reporting" : "RePublish"}
+              disabled={approve}
               onClick={handleApproveProduct}
             />
           ) : (
@@ -488,11 +515,13 @@ const ReportPreview = ({ open, onClose, onChange, data }) => {
               <StyledButton
                 variant="secondary"
                 name={"Cancel"}
+                disabled={submit}
                 onClick={handleClear}
               />{" "}
               <StyledButton
                 variant="primary"
-                name={"Report Product"}
+                disabled={submit}
+                name={submit ? "Reporting" : "Report Product"}
                 onClick={handleSubmit}
               />
             </>
@@ -504,7 +533,8 @@ const ReportPreview = ({ open, onClose, onChange, data }) => {
           {data?.reportedElement?.status === "reported" ? (
             <StyledButton
               variant="primary"
-              name={"RePublish"}
+              name={requirement ? "Reporting" : "RePublish"}
+              disabled={requirement}
               onClick={handleApproveRequirement}
             />
           ) : (
@@ -513,11 +543,13 @@ const ReportPreview = ({ open, onClose, onChange, data }) => {
               <StyledButton
                 variant="secondary"
                 name={"Cancel"}
+                disabled={report}
                 onClick={handleClear}
               />{" "}
               <StyledButton
                 variant="primary"
-                name={"Report Requirement"}
+                name={report ? "Reporting" : "Report Requirement"}
+                disabled={report}
                 onClick={handleRequirementSubmit}
               />
             </>

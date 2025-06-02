@@ -100,6 +100,7 @@ const RequirementDetail = ({ open, onClose, onChange, data, onDeny }) => {
           />
           <StyledButton
             variant="primary"
+            disabled={loading}
             name={loading ? "Approving..." : "Approve"}
             type="submit"
           />
