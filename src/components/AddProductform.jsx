@@ -728,18 +728,16 @@ export default function Addproductform() {
                     <StyledButton
                       name="Cancel"
                       variant="secondary"
+                      disabled={loading}
                       onClick={(event) => handleClear(event)}
                       style={{ width: "auto" }}
-                    >
-                      Cancel
-                    </StyledButton>
+                    />
                     <StyledButton
                       name={loading ? "Saving..." : "Save"}
                       variant="primary"
                       type="submit"
-                    >
-                      Save
-                    </StyledButton>
+                      disabled={loading}
+                    />
                   </Stack>
                 </Grid>
               </Grid>

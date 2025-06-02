@@ -181,6 +181,7 @@ export default function AddRequirement() {
                   <StyledButton
                     name="Cancel"
                     variant="secondary"
+                    disabled={loading}
                     onClick={(event) => handleClear(event)}
                     style={{ width: "auto" }}
                   />
@@ -188,6 +189,7 @@ export default function AddRequirement() {
                     name={loading ? "Saving..." : "Save"}
                     variant="primary"
                     type="submit"
+                    disabled={loading}
                   />
                 </Stack>
               </Grid>

@@ -248,19 +248,17 @@ export default function InappNotificationform({ setSelectedTab }) {
               <StyledButton
                 name="Cancel"
                 variant="secondary"
+                disabled={loading}
                 style={{ width: "auto" }}
                 onClick={(event) => handleClear(event)}
-              >
-                Cancel
-              </StyledButton>
+              />
               <StyledButton
                 name={loading ? "Saving..." : "Save"}
                 variant="primary"
+                disabled={loading}
                 type="submit"
                 style={{ width: "auto" }}
-              >
-                Save
-              </StyledButton>
+              />
             </Stack>
           </Grid>
         </Grid>
