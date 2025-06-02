@@ -82,7 +82,7 @@ export default function AddRequirement() {
         author: data?.author.value,
         content: data?.content,
         ...(imageUrl && { image: imageUrl }),
-        status: "approved",
+        status: "pending",
       };
 
       await createRequirement(formData);

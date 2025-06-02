@@ -479,7 +479,7 @@ const ReportPreview = ({ open, onClose, onChange, data }) => {
           {data?.reportedElement?.status === "reported" ? (
             <StyledButton
               variant="primary"
-              name={"Publish"}
+              name={"RePublish"}
               onClick={handleApproveProduct}
             />
           ) : (
@@ -504,7 +504,7 @@ const ReportPreview = ({ open, onClose, onChange, data }) => {
           {data?.reportedElement?.status === "reported" ? (
             <StyledButton
               variant="primary"
-              name={"Publish"}
+              name={"RePublish"}
               onClick={handleApproveRequirement}
             />
           ) : (

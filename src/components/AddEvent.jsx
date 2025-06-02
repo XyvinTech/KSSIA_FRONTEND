@@ -814,6 +814,7 @@ export default function AddEvent({ eventId, setSelectedTab }) {
               <StyledButton
                 name="Cancel"
                 variant="secondary"
+                disabled={loading}
                 onClick={(event) => handleClear(event)}
               >
                 Cancel

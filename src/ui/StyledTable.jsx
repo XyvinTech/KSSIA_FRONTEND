@@ -368,6 +368,7 @@ const StyledTable = ({
                         </IconButton>
                       )}{" "}
                       {!menu &&
+                        row.status !== "expired" &&
                         row.status !== "rejected" &&
                         row.status !== "reported" &&
                         row.status !== "cancelled" &&
@@ -420,7 +421,7 @@ const StyledTable = ({
                           </>
                         ) : report ? (
                           <>
-                            <MenuItem onClick={handleAction}>Report</MenuItem>
+                            <MenuItem onClick={handleAction}>View Report</MenuItem>
                             <MenuItem
                               onClick={() => handleRowDelete(row._id)}
                               style={{ color: "red" }}

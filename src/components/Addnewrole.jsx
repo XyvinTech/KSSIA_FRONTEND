@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Box, Typography, Grid, Stack, Divider } from "@mui/material";
 
-
 import { StyledButton } from "../ui/StyledButton";
 
 import StyledInput from "../ui/StyledInput";
@@ -39,7 +38,6 @@ export default function Addnewrole() {
     <Box sx={{ padding: 3 }} bgcolor={"white"} borderRadius={"12px"}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={4}>
-        
           <Grid item xs={12}>
             <Typography
               sx={{ marginBottom: 1 }}
@@ -56,9 +54,14 @@ export default function Addnewrole() {
               rules={{ required: "Name of role  is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput placeholder="Enter the name of the role" {...field}/>
+                  <StyledInput
+                    placeholder="Enter the name of the role"
+                    {...field}
+                  />
                   {errors.rolename && (
-                    <span style={{ color: "red" }}>{errors.rolename.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.rolename.message}
+                    </span>
                   )}
                 </>
               )}
@@ -80,9 +83,14 @@ export default function Addnewrole() {
               rules={{ required: "Description of role  is required" }}
               render={({ field }) => (
                 <>
-                  <StyledInput placeholder="Enter the role description" {...field}/>
+                  <StyledInput
+                    placeholder="Enter the role description"
+                    {...field}
+                  />
                   {errors.rolename && (
-                    <span style={{ color: "red" }}>{errors.rolename.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.rolename.message}
+                    </span>
                   )}
                 </>
               )}
@@ -104,64 +112,66 @@ export default function Addnewrole() {
               rules={{ required: "Description of role  is required" }}
               render={({ field }) => (
                 <>
-                  <Grid marginTop={3} marginLeft={2}><StyledSelectAccess placeholder="Enter the role description" {...field}/></Grid>
+                  <Grid marginTop={3} marginLeft={2}>
+                    <StyledSelectAccess
+                      placeholder="Enter the role description"
+                      {...field}
+                    />
+                  </Grid>
                   {errors.rolename && (
-                    <span style={{ color: "red" }}>{errors.rolename.message}</span>
+                    <span style={{ color: "red" }}>
+                      {errors.rolename.message}
+                    </span>
                   )}
                 </>
               )}
             />
           </Grid>
           <Grid item xs={6}>
-            
-              <Typography
-                sx={{ marginBottom: 1 }}
-                variant="h6"
-                fontWeight={500}
-                color={"#333333"}
-              >
-                Activate
-              </Typography>
-              </Grid>
-              <Grid item xs={6} style={{ textAlign: 'right' }}> 
-              <Controller
-                name="activate"
-                control={control}
-                defaultValue={false}
-                rules={{ required: "Activate is required" }}
-                render={({ field }) => (
-                  <>
-                    <StyledSwitch
-                      checked={field.value}
-                      onChange={(e) => {
-                        field.onChange(e.target.checked);
-                        handleSwitchChange(e);
-                      }}
-                    />{" "}
-                    {errors.activate && (
-                      <span style={{ color: "red" }}>
-                        {errors.activate.message}
-                      </span>
-                    )}{" "}
-                  </>
-                )}
-              />
-            
+            <Typography
+              sx={{ marginBottom: 1 }}
+              variant="h6"
+              fontWeight={500}
+              color={"#333333"}
+            >
+              Activate
+            </Typography>
           </Grid>
-          
+          <Grid item xs={6} style={{ textAlign: "right" }}>
+            <Controller
+              name="activate"
+              control={control}
+              defaultValue={false}
+              rules={{ required: "Activate is required" }}
+              render={({ field }) => (
+                <>
+                  <StyledSwitch
+                    checked={field.value}
+                    onChange={(e) => {
+                      field.onChange(e.target.checked);
+                      handleSwitchChange(e);
+                    }}
+                  />{" "}
+                  {errors.activate && (
+                    <span style={{ color: "red" }}>
+                      {errors.activate.message}
+                    </span>
+                  )}{" "}
+                </>
+              )}
+            />
+          </Grid>
 
-          
-         
-          <Grid item xs={6}></Grid> 
-          
-          <Grid item xs={6}display={'flex'} justifyContent={'end'}>
+          <Grid item xs={6}></Grid>
+
+          <Grid item xs={6} display={"flex"} justifyContent={"end"}>
             {" "}
-            <Stack direction={"row"} spacing={2} >
+            <Stack direction={"row"} spacing={2}>
               <StyledButton
                 name="Cancel"
+                disabled={loading}
                 variant="secondary"
                 style={{ width: "auto" }}
-                
               >
                 Cancel
               </StyledButton>

@@ -77,16 +77,15 @@ const ApprovalView = ({ open, onClose, data }) => {
             {data?.image && (
               <Box mb={3} sx={{ borderRadius: 2, overflow: "hidden" }}>
                 <img
-  src={data?.image}
-  alt="Content"
-  style={{
-    width: "100%",
-    maxHeight: "300px",
-    objectFit: "contain", 
-    borderRadius: "8px",
-  }}
-/>
-
+                  src={data?.image}
+                  alt="Content"
+                  style={{
+                    width: "100%",
+                    maxHeight: "300px",
+                    objectFit: "contain",
+                    borderRadius: "8px",
+                  }}
+                />
               </Box>
             )}
 
@@ -104,7 +103,7 @@ const ApprovalView = ({ open, onClose, data }) => {
 
             <Box display="flex" justifyContent="space-between" mt={3}>
               <Typography variant="caption" color="text.secondary">
-               Created on {moment(data.createdAt).format("DD-MM-YYYY")}
+                Created on {moment(data.createdAt).format("DD-MM-YYYY")}
               </Typography>
             </Box>
           </Box>

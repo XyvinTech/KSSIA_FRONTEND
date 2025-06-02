@@ -11,18 +11,13 @@ import {
 
 import { StyledEventUpload } from "../ui/StyledEventUpload";
 import { StyledButton } from "../ui/StyledButton";
-import { StyledMultilineTextField } from "../ui/StyledMultilineTextField ";
 import StyledInput from "../ui/StyledInput";
 import { Controller, useForm } from "react-hook-form";
 import StyledSelectField from "../ui/StyledSelectField";
-import axiosInstance from "../api/axios-interceptor";
-import CONSTANTS from "../constants";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDropDownStore } from "../store/dropDownStore";
 import { useProductsStore } from "../store/productStore";
 import { toast } from "react-toastify";
-import uploadFileToS3 from "../utils/s3Upload";
-import CloseIcon from "@mui/icons-material/Close";
 import { upload } from "../api/admin-api";
 
 export default function Addproductform() {
@@ -65,6 +60,7 @@ export default function Addproductform() {
       setValue("productname", products.name);
       setValue("description", products.description);
       setValue("price", products.price);
+      setValue("moq", products.moq);
       setValue("offer_price", products.offer_price);
       const selectedUnit = units.find(
         (unit) => unit?.value === products.units
@@ -409,6 +405,7 @@ export default function Addproductform() {
         units: data?.units?.value,
         image: imageUrl,
         category: type,
+        moq: data?.moq,
         subcategory: data?.tags.map((i) => i.value),
         name: data?.productname,
       };
@@ -700,7 +697,30 @@ export default function Addproductform() {
                     )}
                   />
                 </Grid>
-
+   <Grid item xs={12}>
+                  <Typography
+                    sx={{ marginBottom: 1 }}
+                    variant="h6"
+                    fontWeight={500}
+                    color={"#333333"}
+                  >
+                   MOQ
+                  </Typography>
+                  <Controller
+                    name="moq"
+                    control={control}
+                    defaultValue=""
+                    render={({ field }) => (
+                      <>
+                        <StyledInput
+                          placeholder="Enter the Product MOQ"
+                          {...field}
+                        />
+                    
+                      </>
+                    )}
+                  />
+                </Grid>
                 <Grid item xs={6}></Grid>
                 <Grid item xs={6} display={"flex"} justifyContent={"end"}>
                   {" "}

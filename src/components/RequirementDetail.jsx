@@ -11,11 +11,14 @@ import { useForm } from "react-hook-form";
 import { StyledButton } from "../ui/StyledButton";
 import { ReactComponent as CloseIcon } from "../assets/icons/CloseIcon.svg";
 import { useApprovalStore } from "../store/approval-store";
+import { set } from "date-fns";
 
 const RequirementDetail = ({ open, onClose, onChange, data, onDeny }) => {
   const { handleSubmit } = useForm();
   const { patchApprovals } = useApprovalStore();
+  const [loading, setLoading] = useState(false);
   const onSubmit = async () => {
+    setLoading(true);
     try {
       const updateData = { status: "approved" };
       await patchApprovals(data?._id, updateData);
@@ -23,6 +26,8 @@ const RequirementDetail = ({ open, onClose, onChange, data, onDeny }) => {
       onClose();
     } catch (error) {
       console.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -89,9 +94,14 @@ const RequirementDetail = ({ open, onClose, onChange, data, onDeny }) => {
           <StyledButton
             variant="secondary"
             name="Deny"
+            disabled={loading}
             onClick={(event) => handleClear(event)}
           />
-          <StyledButton variant="primary" name="Approve" type="submit" />
+          <StyledButton
+            variant="primary"
+            name={loading ? "Approving..." : "Approve"}
+            type="submit"
+          />
         </Stack>
       </form>
     </Dialog>
